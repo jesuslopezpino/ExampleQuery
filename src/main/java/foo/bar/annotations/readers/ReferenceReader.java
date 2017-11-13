@@ -1,9 +1,11 @@
-package foo.bar.annotations;
+package foo.bar.annotations.readers;
 
 import java.lang.reflect.Field;
 
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
+
+import foo.bar.annotations.Reference;
 
 public class ReferenceReader {
 

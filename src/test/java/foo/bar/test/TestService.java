@@ -19,9 +19,9 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import org.mockito.Mockito;
 
-import foo.bar.NuevoUtils;
+import foo.bar.Utils;
 import foo.bar.domain.Customer;
-import foo.bar.service.ServiceImpl;
+import foo.bar.service.impl.ServiceImpl;
 import foo.bar.service.utils.HQL_CONDITIONS;
 
 public class TestService {
@@ -79,20 +79,20 @@ public class TestService {
 		example1.setName("Jesus");
 		example1.setLastName("Lopez");
 		example1.setDocument("30973837J");
-		example1.setBirthDateStart(NuevoUtils.getDate("01/01/1983 00:00:00", "dd/MM/yyyy hh:mm:ss"));
-		example1.setBirthDateEnd(NuevoUtils.getDate("01/01/1983 00:00:00", "dd/MM/yyyy hh:mm:ss"));
+		example1.setBirthDateStart(Utils.getDate("01/01/1983 00:00:00", "dd/MM/yyyy hh:mm:ss"));
+		example1.setBirthDateEnd(Utils.getDate("01/01/1983 00:00:00", "dd/MM/yyyy hh:mm:ss"));
 
 		Customer example2 = new Customer();
 		example2.setName("Jesus");
 		example2.setLastName("Lopez");
 		example2.setDocument("30973837J");
-		example2.setBirthDateStart(NuevoUtils.getDate("01/01/1983 00:00:00", "dd/MM/yyyy hh:mm:ss"));
+		example2.setBirthDateStart(Utils.getDate("01/01/1983 00:00:00", "dd/MM/yyyy hh:mm:ss"));
 
 		Customer example3 = new Customer();
 		example3.setName("Jesus");
 		example3.setLastName("Lopez");
 		example3.setDocument("30973837J");
-		example3.setBirthDateEnd(NuevoUtils.getDate("01/01/1983 00:00:00", "dd/MM/yyyy hh:mm:ss"));
+		example3.setBirthDateEnd(Utils.getDate("01/01/1983 00:00:00", "dd/MM/yyyy hh:mm:ss"));
 
 		List<String> documentTypeListExample = new ArrayList<>();
 		documentTypeListExample.add("DNI");

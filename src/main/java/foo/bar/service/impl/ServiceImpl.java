@@ -1,4 +1,4 @@
-package foo.bar.service;
+package foo.bar.service.impl;
 
 import java.lang.reflect.ParameterizedType;
 import java.util.Date;
@@ -15,10 +15,13 @@ import javax.persistence.TypedQuery;
 import org.apache.log4j.Logger;
 import org.mockito.InjectMocks;
 
-import foo.bar.NuevoUtils;
-import foo.bar.annotations.ReferenceReader;
+import foo.bar.Utils;
 import foo.bar.annotations.readers.DateRangeReader;
+import foo.bar.annotations.readers.ReferenceReader;
+import foo.bar.domain.BasicVO;
 import foo.bar.exceptions.UniqueException;
+import foo.bar.service.Service;
+import foo.bar.service.SortOrder;
 import foo.bar.service.utils.HQL_CONDITIONS;
 
 public abstract class ServiceImpl<VO extends BasicVO> implements Service<VO> {
@@ -93,7 +96,7 @@ public abstract class ServiceImpl<VO extends BasicVO> implements Service<VO> {
 			if (filter != null) {
 				for (String filterField : filter.keySet()) {
 					final String condition = filter.get(filterField);
-					final Object filterValue = NuevoUtils.getFieldValue(example, filterField, false);
+					final Object filterValue = Utils.getFieldValue(example, filterField, false);
 					LOGGER.info(
 							"filter: \"" + filterField + "\" condition: \"" + condition + "\" value: " + filterValue);
 					// new impl
@@ -193,7 +196,7 @@ public abstract class ServiceImpl<VO extends BasicVO> implements Service<VO> {
 	private TypedQuery rellenarParametros(VO example, Map<String, String> filter, TypedQuery typedQuery) {
 		for (String filterField : filter.keySet()) {
 			final String condition = filter.get(filterField);
-			final Object filterValue = NuevoUtils.getFieldValue(example, filterField, false);
+			final Object filterValue = Utils.getFieldValue(example, filterField, false);
 			final boolean isDateFieldAnnotated = DateRangeReader.isDateRangeAnnotatedField(filterField, example);
 			if ((filterValue != null && !filterValue.equals("")) || condition.equals(HQL_CONDITIONS.ES_NULL)
 					|| isDateFieldAnnotated) {
@@ -253,7 +256,7 @@ public abstract class ServiceImpl<VO extends BasicVO> implements Service<VO> {
 			Entry<String, String> type = iterator.next();
 			String condition = type.getValue();
 			String filterField = type.getKey();
-			Object exampleFieldValue = NuevoUtils.getFieldValue(example, filterField, false);
+			Object exampleFieldValue = Utils.getFieldValue(example, filterField, false);
 			if (exampleFieldValue != null) {
 				switch (condition) {
 				case HQL_CONDITIONS.NOT_EQUALS:
@@ -293,8 +296,8 @@ public abstract class ServiceImpl<VO extends BasicVO> implements Service<VO> {
 			} else if (exampleFieldValue == null && condition.equals(HQL_CONDITIONS.IN)) {
 				if (ReferenceReader.isReferenceField(filterField, example)) {
 					String referenceField = ReferenceReader.getReferenceField(filterField, example);
-					if (NuevoUtils.isListField(referenceField, example)) {
-						List listValues = (List) NuevoUtils.getFieldValue(example, filterField, false);
+					if (Utils.isListField(referenceField, example)) {
+						List listValues = (List) Utils.getFieldValue(example, filterField, false);
 						where += getClauseConditionCase("tabla", filterField, condition);
 						parameters.put(getNameForParameter(filterField), listValues);
 					}

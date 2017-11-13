@@ -10,7 +10,7 @@ import java.util.Locale;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 
-import foo.bar.NuevoUtils;
+import foo.bar.Utils;
 
 /**
  * The Class RangoFechaReader.
@@ -33,9 +33,9 @@ public class DateRangeReader {
 		try {
 			final DateRange dateRange = getDataRangeValue(campo, objeto);
 			final String campoInicio = dateRange.startField();
-			final String methodName = NuevoUtils.getGetterOfField(campoInicio);
+			final String methodName = Utils.getGetterOfField(campoInicio);
 
-			if (NuevoUtils.isSuperClassField(campoInicio)) {
+			if (Utils.isSuperClassField(campoInicio)) {
 				result = (Date) objeto.getClass().getSuperclass().getMethod(methodName, null).invoke(objeto, null);
 			} else {
 				result = (Date) objeto.getClass().getMethod(methodName, null).invoke(objeto, null);
@@ -62,9 +62,9 @@ public class DateRangeReader {
 		try {
 			final DateRange rangoBusqueda = getDataRangeValue(campo, objeto);
 			final String campoFin = rangoBusqueda.endField();
-			final String methodName = NuevoUtils.getGetterOfField(campoFin);
+			final String methodName = Utils.getGetterOfField(campoFin);
 
-			if (NuevoUtils.isSuperClassField(campoFin)) {
+			if (Utils.isSuperClassField(campoFin)) {
 				result = (Date) objeto.getClass().getSuperclass().getMethod(methodName, null).invoke(objeto, null);
 			} else {
 				result = (Date) objeto.getClass().getMethod(methodName, null).invoke(objeto, null);
@@ -110,7 +110,7 @@ public class DateRangeReader {
 				int i = 0;
 				for (String field : fieldPath) {
 					if (i < fieldPath.length - 1) {
-						String getter = NuevoUtils.getGetterOfField(field);
+						String getter = Utils.getGetterOfField(field);
 						object = object.getClass().getMethod(getter, null).invoke(object, null);
 						i++;
 					} else {
@@ -119,12 +119,12 @@ public class DateRangeReader {
 				}
 			}
 
-			if (NuevoUtils.isSuperClassField(fieldName)) {
+			if (Utils.isSuperClassField(fieldName)) {
 				isSuperClassField = true;
 				result = object.getClass().getSuperclass().getDeclaredField(fieldName).getType().equals(Date.class);
 			} else {
 				isSuperClassField = false;
-				result = NuevoUtils.isDateField(fieldName, object);
+				result = Utils.isDateField(fieldName, object);
 			}
 			if (result) {
 				Field field = null;
@@ -151,12 +151,12 @@ public class DateRangeReader {
 		boolean campoSuperclass = false;
 		boolean isDate = false;
 		try {
-			if (NuevoUtils.isSuperClassField(fieldName)) {
+			if (Utils.isSuperClassField(fieldName)) {
 				campoSuperclass = true;
 				isDate = object.getClass().getSuperclass().getDeclaredField(fieldName).getType().equals(Date.class);
 			} else {
 				campoSuperclass = false;
-				isDate = NuevoUtils.isDateField(fieldName, object);
+				isDate = Utils.isDateField(fieldName, object);
 			}
 			if (isDate) {
 				Field field = null;

@@ -1,11 +1,7 @@
 package foo.bar.test;
 
-import java.util.List;
-import java.util.Map;
-
 import foo.bar.domain.Customer;
-import foo.bar.service.ServiceImpl;
+import foo.bar.service.impl.ServiceImpl;
 
 public class CustomerServiceImpl extends ServiceImpl<Customer> {
-
 }

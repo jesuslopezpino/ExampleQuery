@@ -1,4 +1,4 @@
-package foo.bar.service;
+package foo.bar.domain;
 
 import java.util.Iterator;
 import java.util.Map;
@@ -9,7 +9,7 @@ import javax.persistence.Id;
 
 import org.apache.log4j.Logger;
 
-import foo.bar.NuevoUtils;
+import foo.bar.Utils;
 
 public abstract class BasicVO<PK> {
 
@@ -25,7 +25,7 @@ public abstract class BasicVO<PK> {
 		super();
 		for (Iterator<Entry<String, Object>> iterator = mapValues.entrySet().iterator(); iterator.hasNext();) {
 			Entry<String, Object> entry = iterator.next();
-			NuevoUtils.setFieldValue(entry.getKey(), entry.getValue(), this);
+			Utils.setFieldValue(entry.getKey(), entry.getValue(), this);
 		}
 	}
 

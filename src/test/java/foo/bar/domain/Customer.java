@@ -10,7 +10,6 @@ import javax.persistence.Transient;
 
 import foo.bar.annotations.Reference;
 import foo.bar.annotations.readers.DateRange;
-import foo.bar.service.BasicVO;
 
 @Entity
 public class Customer extends BasicVO<Long> {

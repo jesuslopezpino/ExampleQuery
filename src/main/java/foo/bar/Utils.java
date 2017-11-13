@@ -10,9 +10,9 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 
-public class NuevoUtils {
+public class Utils {
 
-	private static Logger LOGGER = Logger.getLogger(NuevoUtils.class);
+	private static Logger LOGGER = Logger.getLogger(Utils.class);
 
 	/**
 	 * Obtener valor string.
@@ -41,7 +41,7 @@ public class NuevoUtils {
 
 		Object invokedValue = null;
 		for (int i = 0; i < campos.size(); i++) {
-			final String methodName = NuevoUtils.getGetterOfField(campos.get(i));
+			final String methodName = Utils.getGetterOfField(campos.get(i));
 			LOGGER.debug("methodName: " + methodName);
 			try {
 				if (i == campos.size() - 1) {
