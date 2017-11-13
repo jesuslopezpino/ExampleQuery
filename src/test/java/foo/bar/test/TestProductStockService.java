@@ -1,28 +1,28 @@
 package foo.bar.test;
 
+import java.util.HashMap;
 import java.util.Map;
 
 import foo.bar.domain.ProductStock;
 import foo.bar.service.impl.ProductStockServiceImpl;
+import foo.bar.service.utils.HqlConditions;
 
-public class TestProductStockService extends TestCommon<ProductStockServiceImpl, ProductStock>{
-
-	@Override
-	public void testFindByExample() {
-		// TODO Auto-generated method stub
-		
-	}
+public class TestProductStockService extends TestCommon<ProductStockServiceImpl, ProductStock> {
 
 	@Override
 	protected Map<String, String> initFilter() {
-		// TODO Auto-generated method stub
-		return null;
+		Map<String, String> filter = new HashMap<>();
+		filter.put(ProductStock.PRODUCT, HqlConditions.NOT_IN);
+		filter.put(ProductStock.QUANTITY, HqlConditions.BETWEEN);
+		return filter;
 	}
 
 	@Override
 	protected ProductStock[] initExamples() {
-		// TODO Auto-generated method stub
-		return null;
+		ProductStock example1 = new ProductStock();
+		ProductStock example2 = new ProductStock();
+		ProductStock[] examples = { example1, example2 };
+		return examples;
 	}
 
 }
