@@ -165,6 +165,7 @@ public abstract class ServiceImpl<VO extends BasicVO> implements Service<VO> {
 		String select = "select new " + voClass.getName() + " ( ";
 		int fieldsLength = fields.length;
 		int lastField = fieldsLength - 1;
+		// TODO: detect duplicated fields to avoid problems
 		for (int i = 0; i < fieldsLength; i++) {
 			String field = fields[i];
 			select += field + " as '" + field + "'";
@@ -185,6 +186,7 @@ public abstract class ServiceImpl<VO extends BasicVO> implements Service<VO> {
 			Entry<String, String> type = iterator.next();
 			String condition = type.getValue();
 			String filterField = type.getKey();
+			// TODO: detect duplicated filter fields to avoid problems
 			Object exampleFieldValue = Utils.getFieldValue(example, filterField, false);
 			if (exampleFieldValue != null) {
 				// Field Value necessary
