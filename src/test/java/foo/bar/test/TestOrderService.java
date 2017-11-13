@@ -26,7 +26,7 @@ public class TestOrderService extends TestCommon<OrderServiceImpl, Order> {
 	@Override
 	protected Order[] initExamples() {
 		Customer customer = new Customer();
-		customer.setId(1L);
+		customer.setPk(1L);
 
 		Order example1 = new Order();
 		example1.setCustomer(customer);
@@ -37,11 +37,11 @@ public class TestOrderService extends TestCommon<OrderServiceImpl, Order> {
 		Order example3 = new Order();
 		List<ProductStock> products = new ArrayList<>();
 		ProductStock product1 = new ProductStock();
-		product1.setId(1L);
+		product1.setPk(1L);
 		products.add(product1);
 
 		ProductStock product2 = new ProductStock();
-		product2.setId(2L);
+		product2.setPk(2L);
 		products.add(product2);
 		example3.setProducts(products);
 		Order[] examples = { example1, example2, example3 };

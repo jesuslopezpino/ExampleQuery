@@ -31,13 +31,13 @@ public abstract class BasicVO<PK> {
 
 	@Id
 	@Column(name = BasicVO.PK)
-	public PK id;
+	public PK pk;
 	
-	public PK getId() {
-		return id;
+	public PK getPk() {
+		return pk;
 	}
 
-	public void setId(PK id) {
-		this.id = id;
+	public void setPk(PK pk) {
+		this.pk = pk;
 	}
 }
