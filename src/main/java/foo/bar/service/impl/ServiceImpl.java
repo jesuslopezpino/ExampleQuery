@@ -20,7 +20,7 @@ import foo.bar.annotations.readers.ReferenceReader;
 import foo.bar.domain.BasicVO;
 import foo.bar.exceptions.UniqueException;
 import foo.bar.service.Service;
-import foo.bar.service.utils.HQL_CONDITIONS;
+import foo.bar.service.utils.HqlConditions;
 import foo.bar.service.utils.SortOrder;
 import foo.bar.utils.Utils;
 
@@ -101,9 +101,9 @@ public abstract class ServiceImpl<VO extends BasicVO> implements Service<VO> {
 							"filter: \"" + filterField + "\" condition: \"" + condition + "\" value: " + filterValue);
 					// new impl
 					// if condition == " is null"
-					if (condition.equals(HQL_CONDITIONS.ES_NULL)) {
+					if (condition.equals(HqlConditions.IS_NULL)) {
 
-					} else if (condition.equals(HQL_CONDITIONS.LIKE_IGNORE_CASE)) {
+					} else if (condition.equals(HqlConditions.LIKE_IGNORE_CASE)) {
 
 					}
 					// else
@@ -116,7 +116,7 @@ public abstract class ServiceImpl<VO extends BasicVO> implements Service<VO> {
 
 					final boolean isDateFieldAnnotated = DateRangeReader.isDateRangeAnnotatedField(filterField,
 							example);
-					if ((filterValue != null && !filterValue.equals("")) || condition.equals(HQL_CONDITIONS.ES_NULL)
+					if ((filterValue != null && !filterValue.equals("")) || condition.equals(HqlConditions.IS_NULL)
 							|| isDateFieldAnnotated) {
 
 						Date inicioRango = null;
@@ -151,7 +151,7 @@ public abstract class ServiceImpl<VO extends BasicVO> implements Service<VO> {
 								query += " )";
 							}
 						} else if (!isDateFieldAnnotated) {
-							if (condition.equals(HQL_CONDITIONS.LIKE_IGNORE_CASE)) {
+							if (condition.equals(HqlConditions.LIKE_IGNORE_CASE)) {
 								query += getClauseLikeIgnoreCase("tabla", filterField, condition);
 							} else {
 								query += " and tabla." + filterField + condition + ":"
@@ -198,7 +198,7 @@ public abstract class ServiceImpl<VO extends BasicVO> implements Service<VO> {
 			final String condition = filter.get(filterField);
 			final Object filterValue = Utils.getFieldValue(example, filterField, false);
 			final boolean isDateFieldAnnotated = DateRangeReader.isDateRangeAnnotatedField(filterField, example);
-			if ((filterValue != null && !filterValue.equals("")) || condition.equals(HQL_CONDITIONS.ES_NULL)
+			if ((filterValue != null && !filterValue.equals("")) || condition.equals(HqlConditions.IS_NULL)
 					|| isDateFieldAnnotated) {
 
 				Date inicioRango = null;
@@ -223,7 +223,7 @@ public abstract class ServiceImpl<VO extends BasicVO> implements Service<VO> {
 					}
 				} else if (!isDateFieldAnnotated) {
 
-					if (condition.equals(HQL_CONDITIONS.LIKE_IGNORE_CASE)) {
+					if (condition.equals(HqlConditions.LIKE_IGNORE_CASE)) {
 						typedQuery = typedQuery.setParameter(getNameForParameter(filterField),
 								"%" + filterValue.toString().toUpperCase() + "%");
 					} else {
@@ -259,13 +259,13 @@ public abstract class ServiceImpl<VO extends BasicVO> implements Service<VO> {
 			Object exampleFieldValue = Utils.getFieldValue(example, filterField, false);
 			if (exampleFieldValue != null) {
 				switch (condition) {
-				case HQL_CONDITIONS.NOT_EQUALS:
-				case HQL_CONDITIONS.EQUALS:
-				case HQL_CONDITIONS.ES_NULL:
+				case HqlConditions.NOT_EQUALS:
+				case HqlConditions.EQUALS:
+				case HqlConditions.IS_NULL:
 					where += getClauseConditionCase("tabla", filterField, condition);
 					parameters.put(getNameForParameter(filterField), exampleFieldValue);
 					break;
-				case HQL_CONDITIONS.LIKE_IGNORE_CASE:
+				case HqlConditions.LIKE_IGNORE_CASE:
 					where += getClauseLikeIgnoreCase("tabla", filterField, condition);
 					parameters.put(getNameForParameter(filterField),
 							"%" + exampleFieldValue.toString().toUpperCase() + "%");
@@ -274,9 +274,9 @@ public abstract class ServiceImpl<VO extends BasicVO> implements Service<VO> {
 					LOGGER.error("UNKNOWN CONDITION: " + condition);
 					break;
 				}
-			} else if (exampleFieldValue == null && condition.equals(HQL_CONDITIONS.ES_NULL)) {
+			} else if (exampleFieldValue == null && condition.equals(HqlConditions.IS_NULL)) {
 				where += getClauseConditionCase("tabla", filterField, condition);
-			} else if (exampleFieldValue == null && condition.equals(HQL_CONDITIONS.BETWEEN)) {
+			} else if (exampleFieldValue == null && condition.equals(HqlConditions.BETWEEN)) {
 				boolean isAnnotated = DateRangeReader.isDateRangeAnnotatedField(filterField, example);
 				if (isAnnotated) {
 					Date startValue = DateRangeReader.getStartFieldValue(filterField, example);
@@ -293,7 +293,7 @@ public abstract class ServiceImpl<VO extends BasicVO> implements Service<VO> {
 				} else {
 					LOGGER.warn(filterField + " is not annotated with @DataRange");
 				}
-			} else if (exampleFieldValue == null && condition.equals(HQL_CONDITIONS.IN)) {
+			} else if (exampleFieldValue == null && condition.equals(HqlConditions.IN)) {
 				if (ReferenceReader.isReferenceField(filterField, example)) {
 					String referenceField = ReferenceReader.getReferenceField(filterField, example);
 					if (Utils.isListField(referenceField, example)) {

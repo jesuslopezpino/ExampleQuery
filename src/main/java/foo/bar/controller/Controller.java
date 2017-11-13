@@ -3,11 +3,11 @@ package foo.bar.controller;
 import java.util.List;
 import java.util.Map;
 
-import foo.bar.service.utils.HQL_CONDITIONS;
+import foo.bar.service.utils.HqlConditions;
 
 public interface Controller<VO> {
 
-	Map<String, HQL_CONDITIONS> getFinderConditions();
+	Map<String, HqlConditions> getFinderConditions();
 
 	String goToFinder();
 	

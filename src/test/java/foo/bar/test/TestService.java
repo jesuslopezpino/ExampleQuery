@@ -22,7 +22,7 @@ import org.mockito.Mockito;
 import foo.bar.domain.Customer;
 import foo.bar.service.impl.CustomerServiceImpl;
 import foo.bar.service.impl.ServiceImpl;
-import foo.bar.service.utils.HQL_CONDITIONS;
+import foo.bar.service.utils.HqlConditions;
 import foo.bar.utils.Utils;
 
 public class TestService {
@@ -68,11 +68,11 @@ public class TestService {
 	@Test
 	public void testFindByExample() {
 		Map<String, String> filter = new HashMap<>();
-		filter.put(Customer.NAME, HQL_CONDITIONS.LIKE_IGNORE_CASE);
-		filter.put(Customer.LAST_NAME, HQL_CONDITIONS.EQUALS);
-		filter.put(Customer.BIRTH_DATE, HQL_CONDITIONS.BETWEEN);
-		filter.put(Customer.DOCUMENT, HQL_CONDITIONS.EQUALS);
-		filter.put(Customer.DOCUMENT_TYPE, HQL_CONDITIONS.IN);
+		filter.put(Customer.NAME, HqlConditions.LIKE_IGNORE_CASE);
+		filter.put(Customer.LAST_NAME, HqlConditions.EQUALS);
+		filter.put(Customer.BIRTH_DATE, HqlConditions.BETWEEN);
+		filter.put(Customer.DOCUMENT, HqlConditions.EQUALS);
+		filter.put(Customer.DOCUMENT_TYPE, HqlConditions.IN);
 
 		String[] fields = { Customer.PK, Customer.NAME, Customer.LAST_NAME };
 
