@@ -3,6 +3,7 @@ package foo.bar.test;
 import java.util.HashMap;
 import java.util.Map;
 
+import foo.bar.domain.Order;
 import foo.bar.domain.Product;
 import foo.bar.service.impl.ProductServiceImpl;
 import foo.bar.service.utils.HqlConditions;
@@ -25,6 +26,15 @@ public class TestProductService extends TestCommon<ProductServiceImpl, Product> 
 		example2.setDescription("fruit");
 		Product[] examples = { example1, example2 };
 		return examples;
+	}
+
+	@Override
+	protected String[] initCustomFields() {
+		String field1 = Product.PK;
+		String field2 = Product.NAME;
+		String field3 = Product.DESCRIPTION;
+		String fields[] = {field1, field2, field3};
+		return fields;
 	}
 
 }

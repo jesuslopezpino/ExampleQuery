@@ -48,4 +48,13 @@ public class TestOrderService extends TestCommon<OrderServiceImpl, Order> {
 		return examples;
 	}
 
+	@Override
+	protected String[] initCustomFields() {
+		String field1 = Order.CUSTOMER;
+		String field2 = Order.PK;
+		String field3 = Order.DATE;
+		String fields[] = {field1, field2, field3};
+		return fields;
+	}
+
 }

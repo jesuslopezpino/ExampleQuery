@@ -36,14 +36,18 @@ public abstract class TestCommon<ServiceVO extends ServiceImpl, VO extends Basic
 
 	protected VO[] examples;
 
+	protected String[] customFields;
+	
 	public TestCommon() {
-		this.serviceVoClass = (Class<ServiceVO>) ((ParameterizedType) this.getClass().getGenericSuperclass())
-				.getActualTypeArguments()[0];
+		this.serviceVoClass = (Class<ServiceVO>) ((ParameterizedType) this.getClass().getGenericSuperclass()).getActualTypeArguments()[0];
 		LOGGER.info("Creating test for class: " + this.serviceVoClass.getName());
 		this.filter = this.initFilter();
 		this.examples = this.initExamples();
+		this.customFields = this.initCustomFields();
 	}
 
+	protected abstract String[] initCustomFields();
+	
 	protected abstract VO[] initExamples();
 
 	protected abstract Map<String, String> initFilter();
@@ -82,6 +86,15 @@ public abstract class TestCommon<ServiceVO extends ServiceImpl, VO extends Basic
 		for (int i = 0; i < examples.length; i++) {
 			VO example = examples[i];
 			List<VO> result = service.findByExample(example, filter);
+			assert (result == null);
+		}
+	}
+	
+	public void findCustomByExample(){
+		LOGGER.info("findCustomByExample at class: " + this.getClass().getName());
+		for (int i = 0; i < examples.length; i++) {
+			VO example = examples[i];
+			List<VO> result = service.findCustomByExample(example, customFields, filter);
 			assert (result == null);
 		}
 	}

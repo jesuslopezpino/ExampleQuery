@@ -47,9 +47,19 @@ public class TestCustomerService extends TestCommon<CustomerServiceImpl, Custome
 		documentTypeListExample.add("PASSPORT");
 		Customer example4 = new Customer();
 		example4.setDocumentTypeList(documentTypeListExample);
-		
+
 		Customer[] examples = { example1, example2, example3, example4 };
 		return examples;
+	}
+
+	@Override
+	protected String[] initCustomFields() {
+		String field1 = Customer.NAME;
+		String field2 = Customer.DOCUMENT;
+		String field3 = Customer.BIRTH_DATE;
+		String field4 = Customer.LAST_NAME;
+		String[] fields = { field1, field2, field3, field4 };
+		return fields;
 	}
 
 }
