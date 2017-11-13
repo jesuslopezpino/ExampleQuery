@@ -15,7 +15,7 @@ public class HqlConditions {
 	public static final String LOWER_THAN = " < ";
 	public static final String LOWER_EQUALS = " <= ";
 	public static final String NOT_IN = " not in ";
-	public static final String IS_NOT_NULL = " is null ";
+	public static final String IS_NOT_NULL = " is not null ";
 	public static final String IS_EMPTY = " is empty ";
 	public static final String IS_NOT_EMPTY = " is not empty ";
 	public static final String MEMBER_OF = " member of ";

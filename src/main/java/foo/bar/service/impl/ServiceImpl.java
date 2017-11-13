@@ -105,6 +105,10 @@ public abstract class ServiceImpl<VO extends BasicVO> implements Service<VO> {
 		this.entityManager = entityManager;
 	}
 
+	private String getClauseIsNullOrNotNull(String tableName, String filterField, String condition) {
+		return " and (" + tableName + "." + filterField + " " + condition + ")";
+	}
+
 	private String getClauseBetween(String tableName, String filterField) {
 		return " and (" + tableName + "." + filterField + " between " + ":" + getNameForParameter(filterField) + START
 				+ " and :" + getNameForParameter(filterField) + END + ")";
@@ -198,35 +202,43 @@ public abstract class ServiceImpl<VO extends BasicVO> implements Service<VO> {
 					LOGGER.error("UNKNOWN CONDITION: " + condition);
 					break;
 				}
-			} else if (exampleFieldValue == null && condition.equals(HqlConditions.IS_NULL)) {
-				where += getClauseConditionCase("tabla", filterField, condition);
-			} else if (exampleFieldValue == null && condition.equals(HqlConditions.BETWEEN)) {
-				boolean isAnnotated = DateRangeReader.isDateRangeAnnotatedField(filterField, example);
-				if (isAnnotated) {
-					Date startValue = DateRangeReader.getStartFieldValue(filterField, example);
-					Date endValue = DateRangeReader.getEndFieldValue(filterField, example);
-					if (startValue != null && endValue != null) {
-						where += getClauseBetween("tabla", filterField);
-						parameters.put(getNameForParameterStart(filterField), startValue);
-					} else if (startValue != null) {
-						where += getClauseBetweenStart("tabla", filterField);
-					} else if (endValue != null) {
-						where += getClauseBetweenEnd("tabla", filterField);
-						parameters.put(getNameForParameterEnd(filterField), startValue);
+			} else if (exampleFieldValue == null) {
+				switch (condition) {
+				case HqlConditions.IS_NULL:
+				case HqlConditions.IS_NOT_NULL:
+				case HqlConditions.IS_EMPTY:
+				case HqlConditions.IS_NOT_EMPTY:
+					where += getClauseIsNullOrNotNull("tabla", filterField, condition);
+					break;
+				case HqlConditions.BETWEEN:
+					boolean isAnnotated = DateRangeReader.isDateRangeAnnotatedField(filterField, example);
+					if (isAnnotated) {
+						Date startValue = DateRangeReader.getStartFieldValue(filterField, example);
+						Date endValue = DateRangeReader.getEndFieldValue(filterField, example);
+						if (startValue != null && endValue != null) {
+							where += getClauseBetween("tabla", filterField);
+							parameters.put(getNameForParameterStart(filterField), startValue);
+						} else if (startValue != null) {
+							where += getClauseBetweenStart("tabla", filterField);
+						} else if (endValue != null) {
+							where += getClauseBetweenEnd("tabla", filterField);
+							parameters.put(getNameForParameterEnd(filterField), startValue);
+						}
+					} else {
+						LOGGER.warn(filterField + " is not annotated with @DataRange");
 					}
-				} else {
-					LOGGER.warn(filterField + " is not annotated with @DataRange");
-				}
-			} else if (exampleFieldValue == null
-					&& (condition.equals(HqlConditions.IN) || condition.equals(HqlConditions.NOT_IN))) {
-				if (ReferenceReader.isReferenceField(filterField, example)) {
-					String referenceField = ReferenceReader.getReferenceField(filterField, example);
-					if (Utils.isListField(referenceField, example)) {
-						List listValues = (List) Utils.getFieldValue(example, filterField, false);
-						where += getClauseConditionCase("tabla", filterField, condition);
-						parameters.put(getNameForParameter(filterField), listValues);
+					break;
+				case HqlConditions.IN:
+				case HqlConditions.NOT_IN:
+					if (ReferenceReader.isReferenceField(filterField, example)) {
+						String referenceField = ReferenceReader.getReferenceField(filterField, example);
+						if (Utils.isListField(referenceField, example)) {
+							List listValues = (List) Utils.getFieldValue(example, filterField, false);
+							where += getClauseConditionCase("tabla", filterField, condition);
+							parameters.put(getNameForParameter(filterField), listValues);
+						}
 					}
-
+					break;
 				}
 			}
 
@@ -240,4 +252,5 @@ public abstract class ServiceImpl<VO extends BasicVO> implements Service<VO> {
 		}
 		return query;
 	}
+
 }
