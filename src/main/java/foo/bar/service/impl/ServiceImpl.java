@@ -36,9 +36,8 @@ public abstract class ServiceImpl<VO extends BasicVO> implements Service<VO> {
 
 	public ServiceImpl() {
 		super();
-		this.voClass = (Class<VO>) ((ParameterizedType) this.getClass().getGenericSuperclass())
-				.getActualTypeArguments()[0];
-		LOGGER.info("Creating service for class: " + this.voClass);
+		this.voClass = (Class<VO>) ((ParameterizedType) this.getClass().getGenericSuperclass()).getActualTypeArguments()[0];
+		LOGGER.info("Creating service for class: " + this.voClass.getName());
 	}
 
 	public VO findByPk(Object primaryKey) {
@@ -57,6 +56,92 @@ public abstract class ServiceImpl<VO extends BasicVO> implements Service<VO> {
 		return result;
 	}
 
+	public List<VO> findByExample(VO example, Map<String, String> filter) {
+		String select = "select tabla";
+		Query query = createQueryForExample(example, filter, select);
+		return query.getResultList();
+	}
+
+	public List<VO> findCustomByExample(VO example, String[] fields, Map<String, String> filter) {
+		String select = this.createCustomSelect(fields);
+		Query query = createQueryForExample(example, filter, select);
+		return query.getResultList();
+	}
+
+	public boolean delete(VO entity) {
+		boolean result = false;
+		try {
+			this.entityManager.remove(entity);
+			result = true;
+		} catch (Exception e) {
+			// TODO: implement
+		}
+		return result;
+	}
+
+	public VO save(VO entity) throws UniqueException {
+		try {
+			this.entityManager.persist(entity);
+		} catch (Exception e) {
+			// TODO: implement
+		}
+		return entity;
+	}
+
+	public VO update(VO entity) {
+		try {
+			this.entityManager.merge(entity);
+		} catch (Exception e) {
+			// TODO: implement
+		}
+		return entity;
+	}
+
+	public EntityManager getEntityManager() {
+		return entityManager;
+	}
+
+	public void setEntityManager(EntityManager entityManager) {
+		this.entityManager = entityManager;
+	}
+
+	
+	
+	
+	private String getClauseBetween(String tableName, String filterField) {
+		return " and (" + tableName + "." + filterField + " between " + ":" + getNameForParameter(filterField) + START
+				+ " and :" + getNameForParameter(filterField) + END + ")";
+	}
+
+	private String getClauseBetweenEnd(String tableName, String filterField) {
+		return " and (" + tableName + "." + filterField + " <= " + ":" + getNameForParameter(filterField) + END + ")";
+	}
+
+	private String getClauseBetweenStart(String tableName, String filterField) {
+		return " and (" + tableName + "." + filterField + " >= " + ":" + getNameForParameter(filterField) + START + ")";
+	}
+	
+	private String getClauseLikeIgnoreCase(String tableName, String filterField, final String condition) {
+		return " and (UPPER(" + tableName + "." + filterField + ")" + condition + ":" + getNameForParameter(filterField)
+				+ ")";
+	}
+
+	private String getClauseConditionCase(String tableName, String filterField, final String condition) {
+		return " and (" + tableName + "." + filterField + "" + condition + ":" + getNameForParameter(filterField) + ")";
+	}
+
+	private String getNameForParameter(String filterField) {
+		return filterField.replaceAll("\\.", "_");
+	}
+
+	private String getNameForParameterStart(String filterField) {
+		return getNameForParameter(filterField) + START;
+	}
+
+	private String getNameForParameterEnd(String filterField) {
+		return getNameForParameter(filterField) + END;
+	}
+	
 	private String createCustomSelect(String[] fields) {
 		// String select = "select new " + voClass.getName() + " ( ";
 		// int fieldsLength = fields.length;
@@ -85,40 +170,7 @@ public abstract class ServiceImpl<VO extends BasicVO> implements Service<VO> {
 		LOGGER.debug("createCustomSelect: " + select);
 		return select;
 	}
-
-	private String getClauseLikeIgnoreCase(String tableName, String filterField, final String condition) {
-		return " and (UPPER(" + tableName + "." + filterField + ")" + condition + ":" + getNameForParameter(filterField)
-				+ ")";
-	}
-
-	private String getClauseConditionCase(String tableName, String filterField, final String condition) {
-		return " and (" + tableName + "." + filterField + "" + condition + ":" + getNameForParameter(filterField) + ")";
-	}
-
-	private String getNameForParameter(String filterField) {
-		return filterField.replaceAll("\\.", "_");
-	}
-
-	private String getNameForParameterStart(String filterField) {
-		return getNameForParameter(filterField) + START;
-	}
-
-	private String getNameForParameterEnd(String filterField) {
-		return getNameForParameter(filterField) + END;
-	}
-
-	public List<VO> findByExample(VO example, Map<String, String> filter) {
-		String select = "select tabla";
-		Query query = createQueryForExample(example, filter, select);
-		return query.getResultList();
-	}
-
-	public List<VO> findCustomByExample(VO example, String[] fields, Map<String, String> filter) {
-		String select = this.createCustomSelect(fields);
-		Query query = createQueryForExample(example, filter, select);
-		return query.getResultList();
-	}
-
+	
 	private Query createQueryForExample(VO example, Map<String, String> filter, String select) {
 		Map<String, Object> parameters = new HashMap<>();
 		String from = " from " + voClass.getName() + " tabla";
@@ -186,55 +238,4 @@ public abstract class ServiceImpl<VO extends BasicVO> implements Service<VO> {
 		}
 		return query;
 	}
-
-	private String getClauseBetween(String tableName, String filterField) {
-		return " and (" + tableName + "." + filterField + " between " + ":" + getNameForParameter(filterField) + START
-				+ " and :" + getNameForParameter(filterField) + END + ")";
-	}
-
-	private String getClauseBetweenEnd(String tableName, String filterField) {
-		return " and (" + tableName + "." + filterField + " <= " + ":" + getNameForParameter(filterField) + END + ")";
-	}
-
-	private String getClauseBetweenStart(String tableName, String filterField) {
-		return " and (" + tableName + "." + filterField + " >= " + ":" + getNameForParameter(filterField) + START + ")";
-	}
-
-	public boolean delete(VO entity) {
-		boolean result = false;
-		try {
-			this.entityManager.remove(entity);
-			result = true;
-		} catch (Exception e) {
-			// TODO: hacer
-		}
-		return result;
-	}
-
-	public VO save(VO entity) throws UniqueException {
-		try {
-			this.entityManager.persist(entity);
-		} catch (Exception e) {
-			// TODO: hacer
-		}
-		return entity;
-	}
-
-	public VO update(VO entity) {
-		try {
-			this.entityManager.merge(entity);
-		} catch (Exception e) {
-			// TODO: hacer
-		}
-		return entity;
-	}
-
-	public EntityManager getEntityManager() {
-		return entityManager;
-	}
-
-	public void setEntityManager(EntityManager entityManager) {
-		this.entityManager = entityManager;
-	}
-
 }
