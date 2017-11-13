@@ -10,7 +10,7 @@ import java.util.Locale;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 
-import foo.bar.Utils;
+import foo.bar.utils.Utils;
 
 /**
  * The Class RangoFechaReader.

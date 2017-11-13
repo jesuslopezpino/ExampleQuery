@@ -1,4 +1,4 @@
-package foo.bar.service;
+package foo.bar.service.utils;
 
 // TODO: todo
 public class SortOrder {

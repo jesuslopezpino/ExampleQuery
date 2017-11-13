@@ -1,4 +1,4 @@
-package foo.bar.test;
+package foo.bar.service.impl;
 
 import foo.bar.domain.Customer;
 import foo.bar.service.impl.ServiceImpl;

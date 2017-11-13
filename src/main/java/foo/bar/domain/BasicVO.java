@@ -9,7 +9,7 @@ import javax.persistence.Id;
 
 import org.apache.log4j.Logger;
 
-import foo.bar.Utils;
+import foo.bar.utils.Utils;
 
 public abstract class BasicVO<PK> {
 

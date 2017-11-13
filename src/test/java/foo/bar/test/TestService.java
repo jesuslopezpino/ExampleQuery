@@ -19,10 +19,11 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import org.mockito.Mockito;
 
-import foo.bar.Utils;
 import foo.bar.domain.Customer;
+import foo.bar.service.impl.CustomerServiceImpl;
 import foo.bar.service.impl.ServiceImpl;
 import foo.bar.service.utils.HQL_CONDITIONS;
+import foo.bar.utils.Utils;
 
 public class TestService {
 

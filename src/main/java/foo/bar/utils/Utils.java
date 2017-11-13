@@ -1,4 +1,4 @@
-package foo.bar;
+package foo.bar.utils;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;

@@ -15,14 +15,14 @@ import javax.persistence.TypedQuery;
 import org.apache.log4j.Logger;
 import org.mockito.InjectMocks;
 
-import foo.bar.Utils;
 import foo.bar.annotations.readers.DateRangeReader;
 import foo.bar.annotations.readers.ReferenceReader;
 import foo.bar.domain.BasicVO;
 import foo.bar.exceptions.UniqueException;
 import foo.bar.service.Service;
-import foo.bar.service.SortOrder;
 import foo.bar.service.utils.HQL_CONDITIONS;
+import foo.bar.service.utils.SortOrder;
+import foo.bar.utils.Utils;
 
 public abstract class ServiceImpl<VO extends BasicVO> implements Service<VO> {
 
