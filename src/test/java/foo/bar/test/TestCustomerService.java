@@ -5,8 +5,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.junit.Test;
-
 import foo.bar.domain.Customer;
 import foo.bar.service.impl.CustomerServiceImpl;
 import foo.bar.service.utils.HqlConditions;
@@ -14,18 +12,19 @@ import foo.bar.utils.Utils;
 
 public class TestCustomerService extends TestCommon<CustomerServiceImpl, Customer> {
 
-
-	@Test
-	public void testFindByExample() {
+	@Override
+	protected Map<String, String> initFilter() {
 		Map<String, String> filter = new HashMap<>();
 		filter.put(Customer.NAME, HqlConditions.LIKE_IGNORE_CASE);
 		filter.put(Customer.LAST_NAME, HqlConditions.EQUALS);
 		filter.put(Customer.BIRTH_DATE, HqlConditions.BETWEEN);
 		filter.put(Customer.DOCUMENT, HqlConditions.EQUALS);
 		filter.put(Customer.DOCUMENT_TYPE, HqlConditions.IN);
+		return filter;
+	}
 
-		String[] fields = { Customer.PK, Customer.NAME, Customer.LAST_NAME };
-
+	@Override
+	protected Customer[] initExamples() {
 		Customer example1 = new Customer();
 		example1.setName("Jesus");
 		example1.setLastName("Lopez");
@@ -48,14 +47,9 @@ public class TestCustomerService extends TestCommon<CustomerServiceImpl, Custome
 		documentTypeListExample.add("PASSPORT");
 		Customer example4 = new Customer();
 		example4.setDocumentTypeList(documentTypeListExample);
-
+		
 		Customer[] examples = { example1, example2, example3, example4 };
-
-		for (int i = 0; i < examples.length; i++) {
-			Customer example = examples[i];
-			List<Customer> result = service.findByExample(example, filter);
-			assert (result == null);
-		}
+		return examples;
 	}
 
 }
