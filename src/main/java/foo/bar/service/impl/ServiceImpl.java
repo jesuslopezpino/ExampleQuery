@@ -122,6 +122,11 @@ public abstract class ServiceImpl<VO extends BasicVO> implements Service<VO> {
 		return " and (" + tableName + "." + filterField + " >= " + ":" + getNameForParameter(filterField) + START + ")";
 	}
 
+	private String getClauseLike(String tableName, String filterField, final String condition) {
+		return " and (" + tableName + "." + filterField + " " + condition + ":" + getNameForParameter(filterField)
+				+ ")";
+	}
+	
 	private String getClauseLikeIgnoreCase(String tableName, String filterField, final String condition) {
 		return " and (UPPER(" + tableName + "." + filterField + ")" + condition + ":" + getNameForParameter(filterField)
 				+ ")";
@@ -182,6 +187,7 @@ public abstract class ServiceImpl<VO extends BasicVO> implements Service<VO> {
 			String filterField = type.getKey();
 			Object exampleFieldValue = Utils.getFieldValue(example, filterField, false);
 			if (exampleFieldValue != null) {
+				// Field Value necessary
 				switch (condition) {
 				case HqlConditions.LOWER_EQUALS:
 				case HqlConditions.LOWER_THAN:
@@ -193,23 +199,31 @@ public abstract class ServiceImpl<VO extends BasicVO> implements Service<VO> {
 					where += getClauseConditionCase("tabla", filterField, condition);
 					parameters.put(getNameForParameter(filterField), exampleFieldValue);
 					break;
+				case HqlConditions.LIKE:
+					where += getClauseLike("tabla", filterField, condition);
+					parameters.put(getNameForParameter(filterField),
+							"%" + exampleFieldValue.toString() + "%");
+					break;
 				case HqlConditions.LIKE_IGNORE_CASE:
 					where += getClauseLikeIgnoreCase("tabla", filterField, condition);
 					parameters.put(getNameForParameter(filterField),
 							"%" + exampleFieldValue.toString().toUpperCase() + "%");
 					break;
 				default:
-					LOGGER.error("UNKNOWN CONDITION: " + condition);
+					LOGGER.error("UNEXPECTED CONDITION: " + condition);
+					// TODO: throw Exception
 					break;
 				}
 			} else if (exampleFieldValue == null) {
 				switch (condition) {
+			 	// Non value necessary
 				case HqlConditions.IS_NULL:
 				case HqlConditions.IS_NOT_NULL:
 				case HqlConditions.IS_EMPTY:
 				case HqlConditions.IS_NOT_EMPTY:
 					where += getClauseIsNullOrNotNull("tabla", filterField, condition);
 					break;
+				// Range Values necessaries
 				case HqlConditions.BETWEEN:
 					boolean isAnnotated = DateRangeReader.isDateRangeAnnotatedField(filterField, example);
 					if (isAnnotated) {
@@ -228,6 +242,7 @@ public abstract class ServiceImpl<VO extends BasicVO> implements Service<VO> {
 						LOGGER.warn(filterField + " is not annotated with @DataRange");
 					}
 					break;
+				// Reference field necessary
 				case HqlConditions.IN:
 				case HqlConditions.NOT_IN:
 					if (ReferenceReader.isReferenceField(filterField, example)) {
