@@ -17,6 +17,7 @@ import org.apache.log4j.Logger;
 import foo.bar.annotations.readers.DateRangeReader;
 import foo.bar.annotations.readers.ReferenceReader;
 import foo.bar.domain.BasicVO;
+import foo.bar.exceptions.ExampleQueryException;
 import foo.bar.exceptions.UniqueException;
 import foo.bar.service.Service;
 import foo.bar.service.utils.HqlConditions;
@@ -36,7 +37,8 @@ public abstract class ServiceImpl<VO extends BasicVO> implements Service<VO> {
 
 	public ServiceImpl() {
 		super();
-		this.voClass = (Class<VO>) ((ParameterizedType) this.getClass().getGenericSuperclass()).getActualTypeArguments()[0];
+		this.voClass = (Class<VO>) ((ParameterizedType) this.getClass().getGenericSuperclass())
+				.getActualTypeArguments()[0];
 		LOGGER.info("Creating service for class: " + this.voClass.getName());
 	}
 
@@ -56,13 +58,13 @@ public abstract class ServiceImpl<VO extends BasicVO> implements Service<VO> {
 		return result;
 	}
 
-	public List<VO> findByExample(VO example, Map<String, String> filter) {
+	public List<VO> findByExample(VO example, Map<String, String> filter) throws ExampleQueryException {
 		String select = "select tabla";
 		Query query = createQueryForExample(example, filter, select);
 		return query.getResultList();
 	}
 
-	public List<VO> findCustomByExample(VO example, String[] fields, Map<String, String> filter) {
+	public List<VO> findCustomByExample(VO example, String[] fields, Map<String, String> filter) throws ExampleQueryException {
 		String select = this.createCustomSelect(fields);
 		Query query = createQueryForExample(example, filter, select);
 		return query.getResultList();
@@ -126,7 +128,7 @@ public abstract class ServiceImpl<VO extends BasicVO> implements Service<VO> {
 		return " and (" + tableName + "." + filterField + " " + condition + ":" + getNameForParameter(filterField)
 				+ ")";
 	}
-	
+
 	private String getClauseLikeIgnoreCase(String tableName, String filterField, final String condition) {
 		return " and (UPPER(" + tableName + "." + filterField + ")" + condition + ":" + getNameForParameter(filterField)
 				+ ")";
@@ -178,7 +180,8 @@ public abstract class ServiceImpl<VO extends BasicVO> implements Service<VO> {
 		return select;
 	}
 
-	private Query createQueryForExample(VO example, Map<String, String> filter, String select) {
+	private Query createQueryForExample(VO example, Map<String, String> filter, String select)
+			throws ExampleQueryException {
 		Map<String, Object> parameters = new HashMap<>();
 		String from = " from " + voClass.getName() + " tabla";
 		String where = " where 1=1";
@@ -203,22 +206,29 @@ public abstract class ServiceImpl<VO extends BasicVO> implements Service<VO> {
 					break;
 				case HqlConditions.LIKE:
 					where += getClauseLike("tabla", filterField, condition);
-					parameters.put(getNameForParameter(filterField),
-							"%" + exampleFieldValue.toString() + "%");
+					parameters.put(getNameForParameter(filterField), "%" + exampleFieldValue.toString() + "%");
 					break;
 				case HqlConditions.LIKE_IGNORE_CASE:
 					where += getClauseLikeIgnoreCase("tabla", filterField, condition);
 					parameters.put(getNameForParameter(filterField),
 							"%" + exampleFieldValue.toString().toUpperCase() + "%");
 					break;
+				case HqlConditions.IN:
+				case HqlConditions.NOT_IN:
+					if (Utils.isListField(filterField, example)) {
+						where += getClauseConditionCase("tabla", filterField, condition);
+						parameters.put(getNameForParameter(filterField), exampleFieldValue);
+					}else{
+						
+					}
+					break;
 				default:
 					LOGGER.error("UNEXPECTED CONDITION: " + condition);
-					// TODO: throw Exception
-					break;
+					throw new ExampleQueryException("UNEXPECTED CONDITION: " + condition);
 				}
 			} else if (exampleFieldValue == null) {
 				switch (condition) {
-			 	// Non value necessary
+				// Non value necessary
 				case HqlConditions.IS_NULL:
 				case HqlConditions.IS_NOT_NULL:
 				case HqlConditions.IS_EMPTY:
@@ -256,6 +266,19 @@ public abstract class ServiceImpl<VO extends BasicVO> implements Service<VO> {
 						}
 					}
 					break;
+				case HqlConditions.LOWER_EQUALS:
+				case HqlConditions.LOWER_THAN:
+				case HqlConditions.GREATER_EQUALS:
+				case HqlConditions.GREATER_THAN:
+				case HqlConditions.NOT_EQUALS:
+				case HqlConditions.EQUALS:
+				case HqlConditions.LIKE:
+				case HqlConditions.LIKE_IGNORE_CASE:
+					// Nothing to do, maybe default and these cases are unnecessary
+					break;
+				default:
+					LOGGER.error("UNEXPECTED CONDITION: " + condition);
+					throw new ExampleQueryException("UNEXPECTED CONDITION: " + condition);
 				}
 			}
 
