@@ -1,69 +1,19 @@
 package foo.bar.test;
 
-import static org.junit.Assert.fail;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.persistence.EntityManager;
-import javax.persistence.TypedQuery;
-
-import org.junit.After;
-import org.junit.AfterClass;
-import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
-import org.mockito.Mockito;
 
 import foo.bar.domain.Customer;
 import foo.bar.service.impl.CustomerServiceImpl;
-import foo.bar.service.impl.ServiceImpl;
 import foo.bar.service.utils.HqlConditions;
 import foo.bar.utils.Utils;
 
-public class TestService {
+public class TestService extends TestCommon<CustomerServiceImpl, Customer> {
 
-	@BeforeClass
-	public static void setUpBeforeClass() throws Exception {
-	}
-
-	@AfterClass
-	public static void tearDownAfterClass() throws Exception {
-	}
-
-	private ServiceImpl<Customer> service;
-	private EntityManager entityManager;
-
-	@Before
-	public void setUp() throws Exception {
-		service = new CustomerServiceImpl();
-		entityManager = mock(EntityManager.class);
-		service.setEntityManager(entityManager);
-
-		TypedQuery<Customer> query = mock(TypedQuery.class);
-		when(entityManager.createQuery(Mockito.anyString())).thenReturn(query);
-	}
-
-	@After
-	public void tearDown() throws Exception {
-	}
-
-	// @Test
-	public void testFindById() {
-		fail("Not yet implemented");
-	}
-
-//	@Test
-	public void testFindCustomByPk() {
-
-		String[] fields = { Customer.PK, Customer.NAME, Customer.LAST_NAME, Customer.DOCUMENT, Customer.DOCUMENT_TYPE };
-		Customer result = service.findCustomByPk(1, fields);
-		assert (result == null);
-	}
 
 	@Test
 	public void testFindByExample() {
@@ -85,14 +35,11 @@ public class TestService {
 
 		Customer example2 = new Customer();
 		example2.setName("Jesus");
-		example2.setLastName("Lopez");
 		example2.setDocument("30973837J");
 		example2.setBirthDateStart(Utils.getDate("01/01/1983 00:00:00", "dd/MM/yyyy hh:mm:ss"));
 
 		Customer example3 = new Customer();
-		example3.setName("Jesus");
 		example3.setLastName("Lopez");
-		example3.setDocument("30973837J");
 		example3.setBirthDateEnd(Utils.getDate("01/01/1983 00:00:00", "dd/MM/yyyy hh:mm:ss"));
 
 		List<String> documentTypeListExample = new ArrayList<>();
