@@ -29,7 +29,7 @@ public abstract class ServiceImpl<VO extends BasicVO> implements Service<VO> {
 	private static final String END = "_fin";
 
 	private static final String START = "_inicio";
-	
+
 	EntityManager entityManager;
 
 	private static Logger LOGGER = Logger.getLogger(ServiceImpl.class);
@@ -88,90 +88,6 @@ public abstract class ServiceImpl<VO extends BasicVO> implements Service<VO> {
 		return select;
 	}
 
-	private TypedQuery<VO> createCustomQuery(VO example, Map<String, String> filter, String query,
-			TypedQuery<VO> typedQuery, String sortField, SortOrder sortOrder) {
-		LOGGER.info("createCustomQuery - inicio");
-		query += " WHERE 1=1 ";
-		if (example != null) {
-			if (filter != null) {
-				for (String filterField : filter.keySet()) {
-					final String condition = filter.get(filterField);
-					final Object filterValue = Utils.getFieldValue(example, filterField, false);
-					LOGGER.info(
-							"filter: \"" + filterField + "\" condition: \"" + condition + "\" value: " + filterValue);
-					// new impl
-					// if condition == " is null"
-					if (condition.equals(HqlConditions.IS_NULL)) {
-
-					} else if (condition.equals(HqlConditions.LIKE_IGNORE_CASE)) {
-
-					}
-					// else
-					// if DateRange
-					// if Date??
-					// if Referencia
-					// if List
-					// setParameters
-					// new impl
-
-					final boolean isDateFieldAnnotated = DateRangeReader.isDateRangeAnnotatedField(filterField,
-							example);
-					if ((filterValue != null && !filterValue.equals("")) || condition.equals(HqlConditions.IS_NULL)
-							|| isDateFieldAnnotated) {
-
-						Date inicioRango = null;
-						Date finRango = null;
-						if (isDateFieldAnnotated) {
-							inicioRango = DateRangeReader.getStartFieldValue(filterField, example);
-							finRango = DateRangeReader.getEndFieldValue(filterField, example);
-						}
-
-						if (isDateFieldAnnotated && inicioRango != null && finRango != null) {
-							query += " and (tabla." + filterField + " BETWEEN " + ":" + getNameForParameter(filterField)
-									+ START;
-							query += " AND :" + getNameForParameter(filterField) + END + ")";
-						}
-
-						if (filterValue instanceof List) {
-							final List lista = (List) filterValue;
-							final String referencia = ReferenceReader.getReferenceField(filterField, example);
-							int i = 0;
-							if (lista.size() > 0) {
-								query += " and (";
-								for (int j = 0; j < lista.size(); j++) {
-									if (i > 0) {
-										query += " or tabla." + referencia + condition + ":"
-												+ getNameForParameter(filterField) + "_" + i;
-									} else {
-										query += " tabla." + referencia + condition + ":"
-												+ getNameForParameter(filterField) + "_" + i;
-									}
-									i++;
-								}
-								query += " )";
-							}
-						} else if (!isDateFieldAnnotated) {
-							if (condition.equals(HqlConditions.LIKE_IGNORE_CASE)) {
-								query += getClauseLikeIgnoreCase("tabla", filterField, condition);
-							} else {
-								query += " and tabla." + filterField + condition + ":"
-										+ getNameForParameter(filterField);
-							}
-						}
-					}
-				}
-				if (sortField != null && sortOrder != null) {
-					query += " order by tabla." + sortField + " "
-							+ (sortOrder.equals(sortOrder.ASCENDING) ? "ASC" : "DESC");
-				}
-				typedQuery = (TypedQuery) entityManager.createQuery(query);
-				typedQuery = rellenarParametros(example, filter, typedQuery);
-			}
-		}
-		LOGGER.info("createCustomQuery - fin");
-		return typedQuery;
-	}
-
 	private String getClauseLikeIgnoreCase(String tableName, String filterField, final String condition) {
 		return " and (UPPER(" + tableName + "." + filterField + ")" + condition + ":" + getNameForParameter(filterField)
 				+ ")";
@@ -191,49 +107,6 @@ public abstract class ServiceImpl<VO extends BasicVO> implements Service<VO> {
 
 	private String getNameForParameterEnd(String filterField) {
 		return getNameForParameter(filterField) + END;
-	}
-
-	private TypedQuery rellenarParametros(VO example, Map<String, String> filter, TypedQuery typedQuery) {
-		for (String filterField : filter.keySet()) {
-			final String condition = filter.get(filterField);
-			final Object filterValue = Utils.getFieldValue(example, filterField, false);
-			final boolean isDateFieldAnnotated = DateRangeReader.isDateRangeAnnotatedField(filterField, example);
-			if ((filterValue != null && !filterValue.equals("")) || condition.equals(HqlConditions.IS_NULL)
-					|| isDateFieldAnnotated) {
-
-				Date inicioRango = null;
-				Date finRango = null;
-				if (isDateFieldAnnotated) {
-					inicioRango = DateRangeReader.getStartFieldValue(filterField, example);
-					finRango = DateRangeReader.getEndFieldValue(filterField, example);
-				}
-
-				if (isDateFieldAnnotated && inicioRango != null && finRango != null) {
-					typedQuery = typedQuery.setParameter(getNameForParameterStart(filterField), inicioRango);
-					typedQuery = typedQuery.setParameter(getNameForParameterEnd(filterField), finRango);
-
-				} else if (filterValue instanceof List) {
-					final List lista = (List) filterValue;
-					if (lista.size() > 0) {
-						int i = 0;
-						for (Object object : lista) {
-							typedQuery = typedQuery.setParameter(getNameForParameter(filterField) + "_" + i, object);
-							i++;
-						}
-					}
-				} else if (!isDateFieldAnnotated) {
-
-					if (condition.equals(HqlConditions.LIKE_IGNORE_CASE)) {
-						typedQuery = typedQuery.setParameter(getNameForParameter(filterField),
-								"%" + filterValue.toString().toUpperCase() + "%");
-					} else {
-						typedQuery = typedQuery.setParameter(getNameForParameter(filterField), filterValue);
-					}
-				}
-
-			}
-		}
-		return typedQuery;
 	}
 
 	public List<VO> findByExample(VO example, Map<String, String> filter) {
