@@ -274,7 +274,7 @@ public abstract class ServiceImpl<VO extends BasicVO> implements Service<VO> {
 				case HqlConditions.EQUALS:
 				case HqlConditions.LIKE:
 				case HqlConditions.LIKE_IGNORE_CASE:
-					// Nothing to do, maybe default and these cases are unnecessary
+					// Nothing to do because we have to ignore null for those cases, maybe default and these cases are unnecessary
 					break;
 				default:
 					LOGGER.error("UNEXPECTED CONDITION: " + condition);
