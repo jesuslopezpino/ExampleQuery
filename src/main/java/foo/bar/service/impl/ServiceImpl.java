@@ -105,9 +105,6 @@ public abstract class ServiceImpl<VO extends BasicVO> implements Service<VO> {
 		this.entityManager = entityManager;
 	}
 
-	
-	
-	
 	private String getClauseBetween(String tableName, String filterField) {
 		return " and (" + tableName + "." + filterField + " between " + ":" + getNameForParameter(filterField) + START
 				+ " and :" + getNameForParameter(filterField) + END + ")";
@@ -120,7 +117,7 @@ public abstract class ServiceImpl<VO extends BasicVO> implements Service<VO> {
 	private String getClauseBetweenStart(String tableName, String filterField) {
 		return " and (" + tableName + "." + filterField + " >= " + ":" + getNameForParameter(filterField) + START + ")";
 	}
-	
+
 	private String getClauseLikeIgnoreCase(String tableName, String filterField, final String condition) {
 		return " and (UPPER(" + tableName + "." + filterField + ")" + condition + ":" + getNameForParameter(filterField)
 				+ ")";
@@ -141,7 +138,7 @@ public abstract class ServiceImpl<VO extends BasicVO> implements Service<VO> {
 	private String getNameForParameterEnd(String filterField) {
 		return getNameForParameter(filterField) + END;
 	}
-	
+
 	private String createCustomSelect(String[] fields) {
 		// String select = "select new " + voClass.getName() + " ( ";
 		// int fieldsLength = fields.length;
@@ -170,7 +167,7 @@ public abstract class ServiceImpl<VO extends BasicVO> implements Service<VO> {
 		LOGGER.debug("createCustomSelect: " + select);
 		return select;
 	}
-	
+
 	private Query createQueryForExample(VO example, Map<String, String> filter, String select) {
 		Map<String, Object> parameters = new HashMap<>();
 		String from = " from " + voClass.getName() + " tabla";
@@ -182,6 +179,10 @@ public abstract class ServiceImpl<VO extends BasicVO> implements Service<VO> {
 			Object exampleFieldValue = Utils.getFieldValue(example, filterField, false);
 			if (exampleFieldValue != null) {
 				switch (condition) {
+				case HqlConditions.LOWER_EQUALS:
+				case HqlConditions.LOWER_THAN:
+				case HqlConditions.GREATER_EQUALS:
+				case HqlConditions.GREATER_THAN:
 				case HqlConditions.NOT_EQUALS:
 				case HqlConditions.EQUALS:
 				case HqlConditions.IS_NULL:
@@ -216,7 +217,8 @@ public abstract class ServiceImpl<VO extends BasicVO> implements Service<VO> {
 				} else {
 					LOGGER.warn(filterField + " is not annotated with @DataRange");
 				}
-			} else if (exampleFieldValue == null && condition.equals(HqlConditions.IN)) {
+			} else if (exampleFieldValue == null
+					&& (condition.equals(HqlConditions.IN) || condition.equals(HqlConditions.NOT_IN))) {
 				if (ReferenceReader.isReferenceField(filterField, example)) {
 					String referenceField = ReferenceReader.getReferenceField(filterField, example);
 					if (Utils.isListField(referenceField, example)) {
