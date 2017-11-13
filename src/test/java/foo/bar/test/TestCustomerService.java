@@ -12,7 +12,7 @@ import foo.bar.service.impl.CustomerServiceImpl;
 import foo.bar.service.utils.HqlConditions;
 import foo.bar.utils.Utils;
 
-public class TestService extends TestCommon<CustomerServiceImpl, Customer> {
+public class TestCustomerService extends TestCommon<CustomerServiceImpl, Customer> {
 
 
 	@Test

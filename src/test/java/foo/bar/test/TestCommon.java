@@ -32,7 +32,7 @@ public abstract class TestCommon<ServiceVO extends ServiceImpl, VO extends Basic
 	public TestCommon() {
 		this.serviceVoClass = (Class<ServiceVO>) ((ParameterizedType) this.getClass().getGenericSuperclass())
 				.getActualTypeArguments()[0];
-		LOGGER.info("Creating service for class: " + this.serviceVoClass.getName());
+		LOGGER.info("Creating test for class: " + this.serviceVoClass.getName());
 	}
 
 	@BeforeClass
