@@ -21,12 +21,12 @@ public class HqlConditions {
 	// Range Values necessaries
 	public static final String BETWEEN = " between ";
 	
-	// Reference field necessary
+	// Reference field necessary or Field Value necessaries??
 	public static final String IN = " in ";
 	public static final String NOT_IN = " not in ";
 
 
-	// TODO: posible cases to configure
+	// TODO: posible cases to configure?
 	public static final String MEMBER_OF = " member of ";
 	public static final String NOT_MEMBER_OF = " not member of ";
 	
