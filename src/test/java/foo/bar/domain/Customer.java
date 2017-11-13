@@ -2,10 +2,10 @@ package foo.bar.domain;
 
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.OneToMany;
 import javax.persistence.Transient;
 
 import foo.bar.annotations.Reference;
@@ -30,15 +30,8 @@ public class Customer extends BasicVO<Long> {
 
 	public static final String BIRTH_DATE_END = "birthDateEnd";
 
+	public static final String ORDERS = "orders";
 	
-	public Customer() {
-		super();
-	}
-
-	public Customer(Map<String, Object> mapValues) {
-		super(mapValues);
-	}
-
 	@Column(name = NAME)
 	public String name;
 
@@ -51,14 +44,16 @@ public class Customer extends BasicVO<Long> {
 	@Reference(DOCUMENT_TYPE_LIST)
 	@Column(name = DOCUMENT_TYPE)
 	public String documentType;
-
-	@Transient
-	public List<String> documentTypeList;
-
 	
 	@DateRange(startField = BIRTH_DATE_START, endField = BIRTH_DATE_END)
 	@Column(name = BIRTH_DATE)
 	public Date birthDate;
+
+	@OneToMany(mappedBy = Order.CUSTOMER)
+	public List<Order> orders;
+	
+	@Transient
+	public List<String> documentTypeList;
 
 	@Transient
 	public Date birthDateStart;
