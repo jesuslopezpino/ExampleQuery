@@ -219,7 +219,7 @@ public abstract class ServiceImpl<VO extends BasicVO> implements Service<VO> {
 						where += getClauseConditionCase("tabla", filterField, condition);
 						parameters.put(getNameForParameter(filterField), exampleFieldValue);
 					}else{
-						
+						throw new ExampleQueryException("field: " + filterField + " is not List ");
 					}
 					break;
 				default:
