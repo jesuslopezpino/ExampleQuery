@@ -20,6 +20,7 @@ import org.mockito.Mockito;
 
 import foo.bar.domain.BasicVO;
 import foo.bar.domain.Customer;
+import foo.bar.exceptions.ExampleQueryException;
 import foo.bar.service.impl.ServiceImpl;
 
 public abstract class TestCommon<ServiceVO extends ServiceImpl, VO extends BasicVO> {
@@ -81,7 +82,8 @@ public abstract class TestCommon<ServiceVO extends ServiceImpl, VO extends Basic
 	}
 
 	@Test
-	public void testFindByExample() {
+	public void testFindByExample() throws ExampleQueryException {
+		LOGGER.info("-----------------------------------------------------------------------------");
 		LOGGER.info("testFindByExample at class: " + this.getClass().getName());
 		for (int i = 0; i < examples.length; i++) {
 			VO example = examples[i];
@@ -89,8 +91,10 @@ public abstract class TestCommon<ServiceVO extends ServiceImpl, VO extends Basic
 			assert (result == null);
 		}
 	}
-	
-	public void findCustomByExample(){
+
+	@Test
+	public void findCustomByExample() throws ExampleQueryException{
+		LOGGER.info("-----------------------------------------------------------------------------");
 		LOGGER.info("findCustomByExample at class: " + this.getClass().getName());
 		for (int i = 0; i < examples.length; i++) {
 			VO example = examples[i];
