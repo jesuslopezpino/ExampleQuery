@@ -9,7 +9,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Transient;
 
 import foo.bar.annotations.Reference;
-import foo.bar.annotations.readers.DateRange;
+import foo.bar.annotations.readers.Range;
 
 @Entity
 public class Customer extends BasicVO<Long> {
@@ -45,7 +45,7 @@ public class Customer extends BasicVO<Long> {
 	@Column(name = DOCUMENT_TYPE)
 	public String documentType;
 	
-	@DateRange(startField = BIRTH_DATE_START, endField = BIRTH_DATE_END)
+	@Range(startField = BIRTH_DATE_START, endField = BIRTH_DATE_END)
 	@Column(name = BIRTH_DATE)
 	public Date birthDate;
 

@@ -13,11 +13,11 @@ import org.apache.log4j.Logger;
 import foo.bar.utils.Utils;
 
 /**
- * The Class RangoFechaReader.
+ * The Class RangeReader.
  */
-public class DateRangeReader {
+public class RangeReader {
 
-	private static final Logger LOGGER = LogManager.getLogger(DateRangeReader.class);
+	private static final Logger LOGGER = LogManager.getLogger(RangeReader.class);
 
 	/**
 	 * Obtener valor campo inicio.
@@ -31,8 +31,8 @@ public class DateRangeReader {
 	public static Date getStartFieldValue(String campo, Object objeto) {
 		Date result = null;
 		try {
-			final DateRange dateRange = getDataRangeValue(campo, objeto);
-			final String campoInicio = dateRange.startField();
+			final Range range = getRangeValue(campo, objeto);
+			final String campoInicio = range.startField();
 			final String methodName = Utils.getGetterOfField(campoInicio);
 
 			if (Utils.isSuperClassField(campoInicio)) {
@@ -43,6 +43,7 @@ public class DateRangeReader {
 
 		} catch (IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
 			LOGGER.error(e.getMessage(), e);
+			// TODO: throw exception
 		}
 
 		return result;
@@ -60,7 +61,7 @@ public class DateRangeReader {
 	public static Date getEndFieldValue(String campo, Object objeto) {
 		Date result = null;
 		try {
-			final DateRange rangoBusqueda = getDataRangeValue(campo, objeto);
+			final Range rangoBusqueda = getRangeValue(campo, objeto);
 			final String campoFin = rangoBusqueda.endField();
 			final String methodName = Utils.getGetterOfField(campoFin);
 
@@ -85,6 +86,7 @@ public class DateRangeReader {
 
 		} catch (IllegalAccessException | InvocationTargetException | NoSuchMethodException | ParseException e) {
 			LOGGER.error(e.getMessage(), e);
+			// TODO: throw exception
 		}
 		return result;
 	}
@@ -133,7 +135,7 @@ public class DateRangeReader {
 				} else {
 					field = object.getClass().getDeclaredField(fieldName);
 				}
-				final DateRange rangoBusqueda = field.getDeclaredAnnotation(DateRange.class);
+				final Range rangoBusqueda = field.getDeclaredAnnotation(Range.class);
 				result = (rangoBusqueda != null);
 			}
 		}
@@ -141,13 +143,14 @@ public class DateRangeReader {
 		catch (NoSuchFieldException | IllegalAccessException | IllegalArgumentException | InvocationTargetException
 				| NoSuchMethodException | SecurityException e) {
 			LOGGER.error(e.getMessage(), e);
+			// TODO: throw exception
 		}
 		return result;
 	}
 
 
-	private static <T> DateRange getDataRangeValue(String fieldName, T object) {
-		DateRange rangoBusqueda = null;
+	private static <T> Range getRangeValue(String fieldName, T object) {
+		Range rangoBusqueda = null;
 		boolean campoSuperclass = false;
 		boolean isDate = false;
 		try {
@@ -159,13 +162,14 @@ public class DateRangeReader {
 				isDate = Utils.isDateField(fieldName, object);
 			}
 			if (isDate) {
+				// check date patterns and throw exception if they are not present
 				Field field = null;
 				if (campoSuperclass) {
 					field = object.getClass().getSuperclass().getDeclaredField(fieldName);
 				} else {
 					field = object.getClass().getDeclaredField(fieldName);
 				}
-				rangoBusqueda = field.getDeclaredAnnotation(DateRange.class);
+				rangoBusqueda = field.getDeclaredAnnotation(Range.class);
 			}
 		} catch (NoSuchFieldException e) {
 			LOGGER.error(e.getMessage(), e);
