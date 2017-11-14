@@ -27,7 +27,7 @@ public class Utils {
 	 *            the return string value
 	 * @return the object
 	 */
-	public static <T> Object getFieldValue(T objeto, String field, boolean returnStringValue) {
+	public static <T> Object getFieldValue(T objeto, String field) {
 		final String[] fieldSplit = field.split("\\.");
 		final List<String> campos = new ArrayList<>();
 		if (fieldSplit.length == 0) {
@@ -45,21 +45,11 @@ public class Utils {
 			LOGGER.debug("methodName: " + methodName);
 			try {
 				if (i == campos.size() - 1) {
+					// TODO: check at superclasses for the field
 					invokedValue = objeto.getClass().getMethod(methodName).invoke(objeto, null);
-					if (invokedValue instanceof Date) {
-						if (returnStringValue) {
-							// TODO: update DateRange with data format field
-							final SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-							invokedValue = sdf.format(invokedValue);
-						} else {
-							// devuelve la fecha como Date (para usarlo al
-							// llamar a la
-							// cfv persistence)
-						}
-					}
 				} else {
 					invokedValue = objeto.getClass().getMethod(methodName).invoke(objeto, (Object[]) null);
-					return getFieldValue(invokedValue, field.replaceAll(campos.get(i) + ".", ""), returnStringValue);
+					return getFieldValue(invokedValue, field.replaceAll(campos.get(i) + ".", ""));
 
 				}
 			} catch (IllegalAccessException e) {
