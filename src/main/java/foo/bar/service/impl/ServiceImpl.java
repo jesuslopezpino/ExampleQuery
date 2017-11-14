@@ -14,7 +14,7 @@ import javax.persistence.TypedQuery;
 
 import org.apache.log4j.Logger;
 
-import foo.bar.annotations.readers.DateRangeReader;
+import foo.bar.annotations.readers.RangeReader;
 import foo.bar.annotations.readers.ReferenceReader;
 import foo.bar.domain.BasicVO;
 import foo.bar.exceptions.ExampleQueryException;
@@ -64,7 +64,8 @@ public abstract class ServiceImpl<VO extends BasicVO> implements Service<VO> {
 		return query.getResultList();
 	}
 
-	public List<VO> findCustomByExample(VO example, String[] fields, Map<String, String> filter) throws ExampleQueryException {
+	public List<VO> findCustomByExample(VO example, String[] fields, Map<String, String> filter)
+			throws ExampleQueryException {
 		String select = this.createCustomSelect(fields);
 		Query query = createQueryForExample(example, filter, select);
 		return query.getResultList();
@@ -190,7 +191,7 @@ public abstract class ServiceImpl<VO extends BasicVO> implements Service<VO> {
 			String condition = type.getValue();
 			String filterField = type.getKey();
 			// TODO: detect duplicated filter fields to avoid problems
-			Object exampleFieldValue = Utils.getFieldValue(example, filterField, false);
+			Object exampleFieldValue = Utils.getFieldValue(example, filterField);
 			if (exampleFieldValue != null) {
 				// Field Value necessary
 				switch (condition) {
@@ -218,7 +219,7 @@ public abstract class ServiceImpl<VO extends BasicVO> implements Service<VO> {
 					if (Utils.isListField(filterField, example)) {
 						where += getClauseConditionCase("tabla", filterField, condition);
 						parameters.put(getNameForParameter(filterField), exampleFieldValue);
-					}else{
+					} else {
 						throw new ExampleQueryException("field: " + filterField + " is not List ");
 					}
 					break;
@@ -237,10 +238,10 @@ public abstract class ServiceImpl<VO extends BasicVO> implements Service<VO> {
 					break;
 				// Range Values necessaries
 				case HqlConditions.BETWEEN:
-					boolean isAnnotated = DateRangeReader.isDateRangeAnnotatedField(filterField, example);
+					boolean isAnnotated = RangeReader.isDateRangeAnnotatedField(filterField, example);
 					if (isAnnotated) {
-						Date startValue = DateRangeReader.getStartFieldValue(filterField, example);
-						Date endValue = DateRangeReader.getEndFieldValue(filterField, example);
+						Date startValue = RangeReader.getStartFieldValue(filterField, example);
+						Date endValue = RangeReader.getEndFieldValue(filterField, example);
 						if (startValue != null && endValue != null) {
 							where += getClauseBetween("tabla", filterField);
 							parameters.put(getNameForParameterStart(filterField), startValue);
@@ -260,7 +261,7 @@ public abstract class ServiceImpl<VO extends BasicVO> implements Service<VO> {
 					if (ReferenceReader.isReferenceField(filterField, example)) {
 						String referenceField = ReferenceReader.getReferenceField(filterField, example);
 						if (Utils.isListField(referenceField, example)) {
-							List listValues = (List) Utils.getFieldValue(example, filterField, false);
+							List listValues = (List) Utils.getFieldValue(example, filterField);
 							where += getClauseConditionCase("tabla", filterField, condition);
 							parameters.put(getNameForParameter(filterField), listValues);
 						}
@@ -274,7 +275,8 @@ public abstract class ServiceImpl<VO extends BasicVO> implements Service<VO> {
 				case HqlConditions.EQUALS:
 				case HqlConditions.LIKE:
 				case HqlConditions.LIKE_IGNORE_CASE:
-					// Nothing to do because we have to ignore null for those cases, maybe default and these cases are unnecessary
+					// Nothing to do because we have to ignore null for those
+					// cases, maybe default and these cases are unnecessary
 					break;
 				default:
 					LOGGER.error("UNEXPECTED CONDITION: " + condition);
