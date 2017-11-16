@@ -226,6 +226,7 @@ public abstract class ServiceImpl<VO extends BasicVO> implements Service<VO> {
 			result = "%" + stringValue.toUpperCase() + "%";
 			break;
 		default:
+			// TODO: consider date formats here??
 			result = valueForQuery;
 			break;
 		}
