@@ -1,7 +1,6 @@
 package foo.bar.service.impl;
 
 import java.lang.reflect.ParameterizedType;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -13,9 +12,6 @@ import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 
 import org.apache.log4j.Logger;
-
-import foo.bar.annotations.readers.RangeReader;
-import foo.bar.annotations.readers.ReferenceReader;
 import foo.bar.domain.BasicVO;
 import foo.bar.exceptions.ExampleQueryException;
 import foo.bar.exceptions.UniqueException;
@@ -25,9 +21,6 @@ import foo.bar.utils.Utils;
 
 public abstract class ServiceImpl<VO extends BasicVO> implements Service<VO> {
 
-//	private static final String END = "_fin";
-//
-//	private static final String START = "_inicio";
 
 	EntityManager entityManager;
 
@@ -112,24 +105,6 @@ public abstract class ServiceImpl<VO extends BasicVO> implements Service<VO> {
 		return " and (" + tableName + "." + filterField + " " + condition + ")";
 	}
 
-	// private String getClauseBetween(String tableName, String filterField) {
-	// return " and (" + tableName + "." + filterField + " between " + ":" +
-	// getNameForParameter(filterField) + START
-	// + " and :" + getNameForParameter(filterField) + END + ")";
-	// }
-
-	// private String getClauseBetweenEnd(String tableName, String filterField)
-	// {
-	// return " and (" + tableName + "." + filterField + " <= " + ":" +
-	// getNameForParameter(filterField) + END + ")";
-	// }
-
-	// private String getClauseBetweenStart(String tableName, String
-	// filterField) {
-	// return " and (" + tableName + "." + filterField + " >= " + ":" +
-	// getNameForParameter(filterField) + START + ")";
-	// }
-
 	private String getClauseLike(String tableName, String filterField, final String condition,
 			String nameForParameter) {
 		return " and (" + tableName + "." + filterField + " " + condition + ":" + nameForParameter + ")";
@@ -159,14 +134,6 @@ public abstract class ServiceImpl<VO extends BasicVO> implements Service<VO> {
 		}
 		return result;
 	}
-
-	// private String getNameForParameterStart(String filterField) {
-	// return getNameForParameter(filterField) + START;
-	// }
-	//
-	// private String getNameForParameterEnd(String filterField) {
-	// return getNameForParameter(filterField) + END;
-	// }
 
 	private String createCustomSelect(String[] fields) {
 		// String select = "select new " + voClass.getName() + " ( ";
@@ -205,142 +172,43 @@ public abstract class ServiceImpl<VO extends BasicVO> implements Service<VO> {
 		String where = " where 1=1";
 		for (Iterator<Entry<String, String>> iterator = filter.entrySet().iterator(); iterator.hasNext();) {
 			Entry<String, String> type = iterator.next();
-			// first check if the field is transient or not
 			String condition = type.getValue();
 			String filterField = type.getKey();
+			String fieldForQuery = null;
+			Object valueForQuery = null;
+
+			// first check if the field is transient or not
 			boolean isTransient = Utils.isTransientField(filterField, example);
-			// if it is part of the entity
-			String fieldForQuery;
-			Object valueForQuery;
 			if (isTransient) {
+				// field for query = the referenced field
 				fieldForQuery = Utils.getReferencedField(example, filterField);
-				valueForQuery = Utils.getFieldValue(example, filterField);
 			} else {
+				// field for query = the current field name
 				fieldForQuery = filterField;
-				valueForQuery = Utils.getFieldValue(example, filterField);
 			}
+			valueForQuery = Utils.getFieldValue(example, filterField);
+
+			// then check if we have to apply the current value to the query
+			// (depends on condition + value)
 			boolean applyValue = this.hasToApplyConditionForQuery(condition, valueForQuery);
 			if (applyValue) {
-				String nameForParameter = getNameForParameter(filterField, condition);
-				where += getClauseCondition("tabla", filterField, condition, nameForParameter);
+				String nameForParameter = getNameForParameter(fieldForQuery, condition);
+				where += getClauseCondition("tabla", fieldForQuery, condition, nameForParameter);
 				if (nameForParameter != null) {
 					Object fixedValueForQuery = this.fixValueForQuery(valueForQuery, condition);
 					parameters.put(nameForParameter, fixedValueForQuery);
 				}
 			}
-			// then check if we have to apply the current value to the query
-			// (depends on condition + value)
-			// if we have to apply the value
-			// field for query = the current field name
-			// value for query = the current field value
-			// else
-			// nothing
-			// if it is transient
-			// then check if we have to apply the current value to the query
-			// (depends on condition + value)
-			// if we have to apply the value
-			// field for query = the referenced field
-			// value for query = the current field value
-
-//			// TODO: detect duplicated filter fields to avoid problems
-//			Object exampleFieldValue = Utils.getFieldValue(example, filterField);
-//			if (exampleFieldValue != null) {
-//				// Field Value necessary
-//				switch (condition) {
-//				case HqlConditions.LOWER_EQUALS:
-//				case HqlConditions.LOWER_THAN:
-//				case HqlConditions.GREATER_EQUALS:
-//				case HqlConditions.GREATER_THAN:
-//				case HqlConditions.NOT_EQUALS:
-//				case HqlConditions.EQUALS:
-//				case HqlConditions.IS_NULL:
-//					where += getClauseConditionCase("tabla", filterField, condition);
-//					parameters.put(getNameForParameter(filterField), exampleFieldValue);
-//					break;
-//				case HqlConditions.LIKE:
-//					where += getClauseLike("tabla", filterField, condition);
-//					parameters.put(getNameForParameter(filterField), "%" + exampleFieldValue.toString() + "%");
-//					break;
-//				case HqlConditions.LIKE_IGNORE_CASE:
-//					where += getClauseLikeIgnoreCase("tabla", filterField, condition);
-//					parameters.put(getNameForParameter(filterField),
-//							"%" + exampleFieldValue.toString().toUpperCase() + "%");
-//					break;
-//				case HqlConditions.IN:
-//				case HqlConditions.NOT_IN:
-//					if (Utils.isListField(filterField, example)) {
-//						where += getClauseConditionCase("tabla", filterField, condition);
-//						parameters.put(getNameForParameter(filterField), exampleFieldValue);
-//					} else {
-//						throw new ExampleQueryException("field: " + filterField + " is not List ");
-//					}
-//					break;
-//				default:
-//					LOGGER.error("UNEXPECTED CONDITION: " + condition);
-//					throw new ExampleQueryException("UNEXPECTED CONDITION: " + condition);
-//				}
-//			} else if (exampleFieldValue == null) {
-//				switch (condition) {
-//				// Non value necessary
-//				case HqlConditions.IS_NULL:
-//				case HqlConditions.IS_NOT_NULL:
-//				case HqlConditions.IS_EMPTY:
-//				case HqlConditions.IS_NOT_EMPTY:
-//					where += getClauseIsNullOrNotNull("tabla", filterField, condition);
-//					break;
-//				// Range Values necessaries
-//				case HqlConditions.BETWEEN:
-//					boolean isAnnotated = RangeReader.isDateRangeAnnotatedField(filterField, example);
-//					if (isAnnotated) {
-//						Date startValue = RangeReader.getStartFieldValue(filterField, example);
-//						Date endValue = RangeReader.getEndFieldValue(filterField, example);
-//						if (startValue != null && endValue != null) {
-//							where += getClauseBetween("tabla", filterField);
-//							parameters.put(getNameForParameterStart(filterField), startValue);
-//						} else if (startValue != null) {
-//							where += getClauseBetweenStart("tabla", filterField);
-//						} else if (endValue != null) {
-//							where += getClauseBetweenEnd("tabla", filterField);
-//							parameters.put(getNameForParameterEnd(filterField), startValue);
-//						}
-//					} else {
-//						LOGGER.warn(filterField + " is not annotated with @DataRange");
-//					}
-//					break;
-//				// Reference field necessary
-//				case HqlConditions.IN:
-//				case HqlConditions.NOT_IN:
-//				case HqlConditions.LOWER_EQUALS:
-//				case HqlConditions.LOWER_THAN:
-//				case HqlConditions.GREATER_EQUALS:
-//				case HqlConditions.GREATER_THAN:
-//				case HqlConditions.NOT_EQUALS:
-//				case HqlConditions.EQUALS:
-//				case HqlConditions.LIKE:
-//				case HqlConditions.LIKE_IGNORE_CASE:
-//					if (ReferenceReader.isReferenceField(filterField, example)) {
-//						String referenceFieldName = ReferenceReader.getReferenceFieldName(filterField, example);
-//						Object value = Utils.getFieldValue(example, referenceFieldName);
-//						if (value != null) {
-//							String referenceFor = ReferenceReader.getReferenceForField(filterField, example);
-//							where += getClauseConditionCase("tabla", referenceFor, condition);
-//							parameters.put(getNameForParameter(filterField), value);
-//						}
-//					}
-//					break;
-//				default:
-//					LOGGER.error("UNEXPECTED CONDITION: " + condition);
-//					throw new ExampleQueryException("UNEXPECTED CONDITION: " + condition);
-//				}
-//			}
-
 		}
 		String hqlString = select + from + where;
 		LOGGER.info("ExampleQuery: " + hqlString);
 		Query query = this.entityManager.createQuery(hqlString);
 		for (Iterator<Entry<String, Object>> iterator = parameters.entrySet().iterator(); iterator.hasNext();) {
-			Entry<String, Object> parameter = (Entry) iterator.next();
-			query.setParameter(parameter.getKey(), parameter.getValue());
+			Entry<String, Object> parameter = iterator.next();
+			String parameterKey = parameter.getKey();
+			Object parameterValue = parameter.getValue();
+			LOGGER.info("parameter: \"" + parameterKey + "\"\tvalue: \"" + parameterValue + "\"");
+			query.setParameter(parameterKey, parameterValue);
 		}
 		return query;
 	}
