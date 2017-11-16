@@ -21,9 +21,9 @@ public class Customer extends BasicVO<Long> {
 	public static final String DOCUMENT = "document";
 
 	public static final String DOCUMENT_TYPE = "documentType";
-	
+
 	public static final String DOCUMENT_TYPE_LIST = "documentTypeList";
-	
+
 	public static final String BIRTH_DATE = "birthDate";
 
 	public static final String BIRTH_DATE_START = "birthDateStart";
@@ -31,7 +31,9 @@ public class Customer extends BasicVO<Long> {
 	public static final String BIRTH_DATE_END = "birthDateEnd";
 
 	public static final String ORDERS = "orders";
-	
+
+	public static final String ORDERS_PRODUCTS_NAME = "ordersProductsName";
+
 	@Column(name = NAME)
 	public String name;
 
@@ -41,18 +43,22 @@ public class Customer extends BasicVO<Long> {
 	@Column(name = DOCUMENT)
 	public String document;
 
-	@Reference(DOCUMENT_TYPE_LIST)
 	@Column(name = DOCUMENT_TYPE)
 	public String documentType;
-	
+
 	@Range(startField = BIRTH_DATE_START, endField = BIRTH_DATE_END)
 	@Column(name = BIRTH_DATE)
 	public Date birthDate;
 
 	@OneToMany(mappedBy = Order.CUSTOMER)
 	public List<Order> orders;
-	
+
+	@Reference(fieldName = ORDERS_PRODUCTS_NAME, referenceFor = Customer.ORDERS + "." + Order.PRODUCTS + "."
+			+ Product.NAME)
+	public String ordersProductsName;
+
 	@Transient
+	@Reference(fieldName = DOCUMENT_TYPE_LIST, referenceFor = DOCUMENT_TYPE)
 	public List<String> documentTypeList;
 
 	@Transient
@@ -124,6 +130,21 @@ public class Customer extends BasicVO<Long> {
 	public void setDocumentTypeList(List<String> documentTypeList) {
 		this.documentTypeList = documentTypeList;
 	}
-	
-	
+
+	public String getOrdersProductsName() {
+		return ordersProductsName;
+	}
+
+	public void setOrdersProductsName(String ordersProductsName) {
+		this.ordersProductsName = ordersProductsName;
+	}
+
+	public List<Order> getOrders() {
+		return orders;
+	}
+
+	public void setOrders(List<Order> orders) {
+		this.orders = orders;
+	}
+
 }

@@ -10,6 +10,8 @@ import java.lang.annotation.Target;
 @Retention(RUNTIME)
 public @interface Reference {
 
-	String value();
+	String fieldName();
+
+	String referenceFor();
 
 }

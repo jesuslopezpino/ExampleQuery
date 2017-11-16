@@ -20,6 +20,7 @@ public class TestCustomerService extends TestCommon<CustomerServiceImpl, Custome
 		filter.put(Customer.BIRTH_DATE, HqlConditions.BETWEEN);
 		filter.put(Customer.DOCUMENT, HqlConditions.EQUALS);
 		filter.put(Customer.DOCUMENT_TYPE, HqlConditions.IN);
+		filter.put(Customer.ORDERS_PRODUCTS_NAME, HqlConditions.LIKE_IGNORE_CASE);
 		return filter;
 	}
 
@@ -40,6 +41,7 @@ public class TestCustomerService extends TestCommon<CustomerServiceImpl, Custome
 		Customer example3 = new Customer();
 		example3.setLastName("Lopez");
 		example3.setBirthDateEnd(Utils.getDate("01/01/1983 00:00:00", "dd/MM/yyyy hh:mm:ss"));
+		example3.setOrdersProductsName("Pizza");
 
 		List<String> documentTypeListExample = new ArrayList<>();
 		documentTypeListExample.add("DNI");

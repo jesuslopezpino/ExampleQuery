@@ -258,15 +258,6 @@ public abstract class ServiceImpl<VO extends BasicVO> implements Service<VO> {
 				// Reference field necessary
 				case HqlConditions.IN:
 				case HqlConditions.NOT_IN:
-					if (ReferenceReader.isReferenceField(filterField, example)) {
-						String referenceField = ReferenceReader.getReferenceField(filterField, example);
-						if (Utils.isListField(referenceField, example)) {
-							List listValues = (List) Utils.getFieldValue(example, filterField);
-							where += getClauseConditionCase("tabla", filterField, condition);
-							parameters.put(getNameForParameter(filterField), listValues);
-						}
-					}
-					break;
 				case HqlConditions.LOWER_EQUALS:
 				case HqlConditions.LOWER_THAN:
 				case HqlConditions.GREATER_EQUALS:
@@ -275,8 +266,15 @@ public abstract class ServiceImpl<VO extends BasicVO> implements Service<VO> {
 				case HqlConditions.EQUALS:
 				case HqlConditions.LIKE:
 				case HqlConditions.LIKE_IGNORE_CASE:
-					// Nothing to do because we have to ignore null for those
-					// cases, maybe default and these cases are unnecessary
+					if (ReferenceReader.isReferenceField(filterField, example)) {
+						String referenceFieldName = ReferenceReader.getReferenceFieldName(filterField, example);
+						Object value = Utils.getFieldValue(example, referenceFieldName);
+						if (value != null) {
+							String referenceFor = ReferenceReader.getReferenceForField(filterField, example);
+							where += getClauseConditionCase("tabla", referenceFor, condition);
+							parameters.put(getNameForParameter(filterField), value);
+						}
+					}
 					break;
 				default:
 					LOGGER.error("UNEXPECTED CONDITION: " + condition);
