@@ -188,6 +188,20 @@ public abstract class ServiceImpl<VO extends BasicVO> implements Service<VO> {
 		String where = " where 1=1";
 		for (Iterator<Entry<String, String>> iterator = filter.entrySet().iterator(); iterator.hasNext();) {
 			Entry<String, String> type = iterator.next();
+			// first check if the field is transient or not
+			// if it is part of the entity
+				// then check if we have to apply the current value to the query (depends on condition + value)
+				// if we have to apply the value
+					// field for query = the current field name
+					// value for query = the current field value
+				// else 
+					// nothing
+			// if it is transient
+				// then check if we have to apply the current value to the query (depends on condition + value)
+				// if we have to apply the value
+					// field for query = the referenced field
+					// value for query = the current field value
+			
 			String condition = type.getValue();
 			String filterField = type.getKey();
 			// TODO: detect duplicated filter fields to avoid problems
