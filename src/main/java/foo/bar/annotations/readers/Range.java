@@ -9,13 +9,13 @@ import java.lang.annotation.Target;
 @Target({ FIELD })
 @Retention(RUNTIME)
 public @interface Range {
-
-	String startField();
-
-	String startDatePattern() default "";
-
-	String endField();
-
-	String endDatePattern() default "";
+// TODO: consider to delete it
+//	String startField();
+//
+//	String startDatePattern() default "";
+//
+//	String endField();
+//
+//	String endDatePattern() default "";
 
 }

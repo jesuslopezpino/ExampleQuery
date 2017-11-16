@@ -14,7 +14,7 @@ public class TestProductStockService extends TestCommon<ProductStockServiceImpl,
 	protected Map<String, String> initFilter() {
 		Map<String, String> filter = new HashMap<>();
 		filter.put(ProductStock.PRODUCT, HqlConditions.NOT_IN);
-		filter.put(ProductStock.QUANTITY, HqlConditions.BETWEEN);
+//		filter.put(ProductStock.QUANTITY, HqlConditions.BETWEEN);
 		return filter;
 	}
 

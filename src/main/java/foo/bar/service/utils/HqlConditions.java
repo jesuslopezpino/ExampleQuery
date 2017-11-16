@@ -18,8 +18,11 @@ public class HqlConditions {
 	public static final String LOWER_THAN = " < ";
 	public static final String LOWER_EQUALS = " <= ";
 
+	// Note: 
+	// Between it is not going to be consider, because I think that with new reference annotation usage,
+	// it's unnecesary, and also Range will be useless
 	// Range Values necessaries
-	public static final String BETWEEN = " between ";
+	//	public static final String BETWEEN = " between ";
 	
 	// Reference field necessary or Field Value necessaries??
 	public static final String IN = " in ";

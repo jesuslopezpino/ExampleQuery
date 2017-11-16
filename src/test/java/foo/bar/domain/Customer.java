@@ -46,7 +46,7 @@ public class Customer extends BasicVO<Long> {
 	@Column(name = DOCUMENT_TYPE)
 	public String documentType;
 
-	@Range(startField = BIRTH_DATE_START, endField = BIRTH_DATE_END)
+//	@Range(startField = BIRTH_DATE_START, endField = BIRTH_DATE_END)
 	@Column(name = BIRTH_DATE)
 	public Date birthDate;
 
@@ -62,9 +62,11 @@ public class Customer extends BasicVO<Long> {
 	public List<String> documentTypeList;
 
 	@Transient
+	@Reference(fieldName = BIRTH_DATE_START, referenceFor = BIRTH_DATE)
 	public Date birthDateStart;
 
 	@Transient
+	@Reference(fieldName = BIRTH_DATE_END, referenceFor = BIRTH_DATE)
 	public Date birthDateEnd;
 
 	public String getName() {

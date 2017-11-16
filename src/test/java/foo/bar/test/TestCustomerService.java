@@ -17,7 +17,9 @@ public class TestCustomerService extends TestCommon<CustomerServiceImpl, Custome
 		Map<String, String> filter = new HashMap<>();
 		filter.put(Customer.NAME, HqlConditions.LIKE_IGNORE_CASE);
 		filter.put(Customer.LAST_NAME, HqlConditions.EQUALS);
-		filter.put(Customer.BIRTH_DATE, HqlConditions.BETWEEN);
+//		filter.put(Customer.BIRTH_DATE, HqlConditions.BETWEEN);
+		filter.put(Customer.BIRTH_DATE_START, HqlConditions.GREATER_EQUALS);
+		filter.put(Customer.BIRTH_DATE_END, HqlConditions.LOWER_EQUALS);
 		filter.put(Customer.DOCUMENT, HqlConditions.EQUALS);
 		filter.put(Customer.DOCUMENT_TYPE, HqlConditions.IN);
 		filter.put(Customer.ORDERS_PRODUCTS_NAME, HqlConditions.LIKE_IGNORE_CASE);

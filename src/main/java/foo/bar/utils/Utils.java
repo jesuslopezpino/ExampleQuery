@@ -1,5 +1,7 @@
 package foo.bar.utils;
 
+import java.lang.annotation.Annotation;
+import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.text.ParseException;
@@ -8,7 +10,12 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import javax.persistence.Transient;
+
 import org.apache.log4j.Logger;
+
+import foo.bar.annotations.Reference;
+import foo.bar.annotations.readers.ReferenceReader;
 
 public class Utils {
 
@@ -146,6 +153,27 @@ public class Utils {
 			e.printStackTrace();
 		}
 		return result;
+	}
+
+	public static boolean isTransientField(String fieldName, Object object) {
+		return hasAnnotation(fieldName, object, Transient.class);
+	}
+
+	public static boolean hasAnnotation(String fieldName, Object object, Class<? extends Annotation> annotation) {
+		boolean result = false;
+		Field field;
+		try {
+			field = object.getClass().getDeclaredField(fieldName);
+			result = field.isAnnotationPresent(annotation);
+		} catch (NoSuchFieldException | SecurityException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return result;
+	}
+
+	public static String getReferencedField(Object object, String fieldName) {
+		return ReferenceReader.getReferenceFieldName(fieldName, object);
 	}
 
 }
