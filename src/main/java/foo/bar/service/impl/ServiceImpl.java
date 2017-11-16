@@ -238,8 +238,6 @@ public abstract class ServiceImpl<VO extends BasicVO> implements Service<VO> {
 		switch (condition) {
 		case HqlConditions.LIKE:
 			result = getClauseLike("tabla", filterField, condition, nameForParameter);
-			// parameters.put(getNameForParameter(filterField), "%" +
-			// exampleFieldValue.toString() + "%");
 			break;
 		case HqlConditions.LIKE_IGNORE_CASE:
 			result = getClauseLikeIgnoreCase("tabla", filterField, condition, nameForParameter);
