@@ -83,9 +83,9 @@ public abstract class TestCommon<ServiceVO extends ServiceImpl, VO extends Basic
 
 	@Test
 	public void testFindByExample() throws ExampleQueryException {
-		LOGGER.info("-----------------------------------------------------------------------------");
 		LOGGER.info("testFindByExample at class: " + this.getClass().getName());
 		for (int i = 0; i < examples.length; i++) {
+			LOGGER.info("-----------------------------------------------------------------------------");
 			VO example = examples[i];
 			List<VO> result = service.findByExample(example, filter);
 			assert (result == null);
@@ -94,9 +94,9 @@ public abstract class TestCommon<ServiceVO extends ServiceImpl, VO extends Basic
 
 	@Test
 	public void findCustomByExample() throws ExampleQueryException{
-		LOGGER.info("-----------------------------------------------------------------------------");
 		LOGGER.info("findCustomByExample at class: " + this.getClass().getName());
 		for (int i = 0; i < examples.length; i++) {
+			LOGGER.info("-----------------------------------------------------------------------------");
 			VO example = examples[i];
 			List<VO> result = service.findCustomByExample(example, customFields, filter);
 			assert (result == null);
