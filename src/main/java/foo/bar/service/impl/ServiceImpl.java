@@ -19,7 +19,7 @@ import foo.bar.service.Service;
 import foo.bar.service.utils.HqlConditions;
 import foo.bar.utils.Utils;
 
-public abstract class ServiceImpl<VO extends BasicVO> implements Service<VO> {
+public abstract class ServiceImpl<VO extends BasicVO<?>> implements Service<VO> {
 
 
 	EntityManager entityManager;

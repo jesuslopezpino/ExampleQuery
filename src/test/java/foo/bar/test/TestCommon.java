@@ -1,5 +1,6 @@
 package foo.bar.test;
 
+import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -24,7 +25,7 @@ import foo.bar.exceptions.ExampleQueryException;
 import foo.bar.service.impl.ServiceImpl;
 import foo.bar.service.utils.HqlConditions;
 
-public abstract class TestCommon<ServiceVO extends ServiceImpl, VO extends BasicVO> {
+public abstract class TestCommon<ServiceVO extends ServiceImpl, VO extends BasicVO<?>> {
 
 	protected static Logger LOGGER = Logger.getLogger(TestCommon.class);
 
@@ -89,7 +90,7 @@ public abstract class TestCommon<ServiceVO extends ServiceImpl, VO extends Basic
 			LOGGER.info("-----------------------------------------------------------------------------");
 			VO example = examples[i];
 			List<VO> result = service.findByExample(example, filter);
-			assert (result == null);
+			assertTrue(result.isEmpty());
 		}
 	}
 
@@ -100,7 +101,7 @@ public abstract class TestCommon<ServiceVO extends ServiceImpl, VO extends Basic
 			LOGGER.info("-----------------------------------------------------------------------------");
 			VO example = examples[i];
 			List<VO> result = service.findCustomByExample(example, customFields, filter);
-			assert (result == null);
+			assertTrue(result.isEmpty());
 		}
 	}
 }
