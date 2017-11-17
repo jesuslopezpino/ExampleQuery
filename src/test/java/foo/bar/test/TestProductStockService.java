@@ -15,13 +15,19 @@ public class TestProductStockService extends TestCommon<ProductStockServiceImpl,
 		Map<String, HqlConditions> filter = new HashMap<>();
 		filter.put(ProductStock.PRODUCT, HqlConditions.NOT_IN);
 //		filter.put(ProductStock.QUANTITY, HqlConditions.BETWEEN);
+		filter.put(ProductStock.PRODUCT_NAME, HqlConditions.LIKE);
+		filter.put(ProductStock.MAX_QUANTITY, HqlConditions.LOWER_EQUALS);
+		filter.put(ProductStock.MIN_QUANTITY, HqlConditions.GREATER_THAN);
 		return filter;
 	}
 
 	@Override
 	protected ProductStock[] initExamples() {
 		ProductStock example1 = new ProductStock();
+		example1.setProductName("Cookies");
 		ProductStock example2 = new ProductStock();
+		example2.setMaxQuantity(10);
+		example2.setMinQuantity(3);
 		ProductStock[] examples = { example1, example2 };
 		return examples;
 	}
