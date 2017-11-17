@@ -53,8 +53,9 @@ public class Customer extends BasicVO<Long> {
 	@OneToMany(mappedBy = Order.CUSTOMER)
 	public List<Order> orders;
 
-	@Reference(fieldName = ORDERS_PRODUCTS_NAME, referenceFor = Customer.ORDERS + "." + Order.PRODUCTS + "."
-			+ Product.NAME)
+	// TODO: if we don't include the transient annotation que query will not consider the Reference Annotation...
+	@Transient
+	@Reference(fieldName = ORDERS_PRODUCTS_NAME, referenceFor = Customer.ORDERS + "." + Order.PRODUCTS + "." + Product.NAME)
 	public String ordersProductsName;
 
 	@Transient

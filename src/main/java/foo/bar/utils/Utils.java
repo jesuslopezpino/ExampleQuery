@@ -173,7 +173,7 @@ public class Utils {
 	}
 
 	public static String getReferencedField(Object object, String fieldName) {
-		return ReferenceReader.getReferenceFieldName(fieldName, object);
+		return ReferenceReader.getReferenceForField(fieldName, object);
 	}
 
 }
