@@ -11,8 +11,8 @@ import foo.bar.service.utils.HqlConditions;
 public class TestProductStockService extends TestCommon<ProductStockServiceImpl, ProductStock> {
 
 	@Override
-	protected Map<String, String> initFilter() {
-		Map<String, String> filter = new HashMap<>();
+	protected Map<String, HqlConditions> initFilter() {
+		Map<String, HqlConditions> filter = new HashMap<>();
 		filter.put(ProductStock.PRODUCT, HqlConditions.NOT_IN);
 //		filter.put(ProductStock.QUANTITY, HqlConditions.BETWEEN);
 		return filter;

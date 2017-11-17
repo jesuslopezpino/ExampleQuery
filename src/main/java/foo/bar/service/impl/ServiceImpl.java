@@ -32,6 +32,7 @@ public abstract class ServiceImpl<VO extends BasicVO> implements Service<VO> {
 		super();
 		this.voClass = (Class<VO>) ((ParameterizedType) this.getClass().getGenericSuperclass())
 				.getActualTypeArguments()[0];
+		LOGGER.info("****************************************************************************");
 		LOGGER.info("Creating service for class: " + this.voClass.getName());
 	}
 
@@ -51,13 +52,13 @@ public abstract class ServiceImpl<VO extends BasicVO> implements Service<VO> {
 		return result;
 	}
 
-	public List<VO> findByExample(VO example, Map<String, String> filter) throws ExampleQueryException {
+	public List<VO> findByExample(VO example, Map<String, HqlConditions> filter) throws ExampleQueryException {
 		String select = "select tabla";
 		Query query = createQueryForExample(example, filter, select);
 		return query.getResultList();
 	}
 
-	public List<VO> findCustomByExample(VO example, String[] fields, Map<String, String> filter)
+	public List<VO> findCustomByExample(VO example, String[] fields, Map<String, HqlConditions> filter)
 			throws ExampleQueryException {
 		String select = this.createCustomSelect(fields);
 		Query query = createQueryForExample(example, filter, select);
@@ -101,32 +102,32 @@ public abstract class ServiceImpl<VO extends BasicVO> implements Service<VO> {
 		this.entityManager = entityManager;
 	}
 
-	private String getClauseIsNullOrNotNull(String tableName, String filterField, String condition) {
+	private String getClauseIsNullOrNotNull(String tableName, String filterField, HqlConditions condition) {
 		return " and (" + tableName + "." + filterField + " " + condition + ")";
 	}
 
-	private String getClauseLike(String tableName, String filterField, final String condition,
+	private String getClauseLike(String tableName, String filterField, final HqlConditions condition,
 			String nameForParameter) {
 		return " and (" + tableName + "." + filterField + " " + condition + ":" + nameForParameter + ")";
 	}
 
-	private String getClauseLikeIgnoreCase(String tableName, String filterField, final String condition,
+	private String getClauseLikeIgnoreCase(String tableName, String filterField, final HqlConditions condition,
 			String nameForParameter) {
 		return " and (UPPER(" + tableName + "." + filterField + ")" + condition + ":" + nameForParameter + ")";
 	}
 
-	private String getClauseConditionCase(String tableName, String filterField, final String condition,
+	private String getClauseConditionCase(String tableName, String filterField, final HqlConditions condition,
 			String nameForParameter) {
 		return " and (" + tableName + "." + filterField + "" + condition + ":" + nameForParameter + ")";
 	}
 
-	private String getNameForParameter(String filterField, String condition) {
+	private String getNameForParameter(String filterField, HqlConditions condition) {
 		String result = null;
 		switch (condition) {
-		case HqlConditions.IS_NOT_EMPTY:
-		case HqlConditions.IS_NOT_NULL:
-		case HqlConditions.IS_EMPTY:
-		case HqlConditions.IS_NULL:
+		case IS_NOT_EMPTY:
+		case IS_NOT_NULL:
+		case IS_EMPTY:
+		case IS_NULL:
 			break;
 		default:
 			result = filterField.replaceAll("\\.", "_");
@@ -165,14 +166,14 @@ public abstract class ServiceImpl<VO extends BasicVO> implements Service<VO> {
 		return select;
 	}
 
-	private Query createQueryForExample(VO example, Map<String, String> filter, String select)
+	private Query createQueryForExample(VO example, Map<String, HqlConditions> filter, String select)
 			throws ExampleQueryException {
 		Map<String, Object> parameters = new HashMap<>();
 		String from = " from " + voClass.getName() + " tabla";
 		String where = " where 1=1";
-		for (Iterator<Entry<String, String>> iterator = filter.entrySet().iterator(); iterator.hasNext();) {
-			Entry<String, String> type = iterator.next();
-			String condition = type.getValue();
+		for (Iterator<Entry<String, HqlConditions>> iterator = filter.entrySet().iterator(); iterator.hasNext();) {
+			Entry<String, HqlConditions> type = iterator.next();
+			HqlConditions condition = type.getValue();
 			String filterField = type.getKey();
 			String fieldForQuery = null;
 			Object valueForQuery = null;
@@ -213,50 +214,50 @@ public abstract class ServiceImpl<VO extends BasicVO> implements Service<VO> {
 		return query;
 	}
 
-	private Object fixValueForQuery(Object valueForQuery, String condition) {
+	private Object fixValueForQuery(Object valueForQuery, HqlConditions condition) {
 		Object result = null;
 		String stringValue = null;
 		switch (condition) {
-		case HqlConditions.LIKE:
+		case LIKE:
 			stringValue = (String) valueForQuery;
 			result = "%" + stringValue + "%";
 			break;
-		case HqlConditions.LIKE_IGNORE_CASE:
+		case LIKE_IGNORE_CASE:
 			stringValue = (String) valueForQuery;
 			result = "%" + stringValue.toUpperCase() + "%";
 			break;
 		default:
-			// TODO: consider date formats here??
+			// TODO: consider date formats here!!!
 			result = valueForQuery;
 			break;
 		}
 		return result;
 	}
 
-	private String getClauseCondition(String tableName, String filterField, String condition, String nameForParameter) {
+	private String getClauseCondition(String tableName, String filterField, HqlConditions condition, String nameForParameter) {
 		String result = null;
 		switch (condition) {
-		case HqlConditions.LIKE:
+		case LIKE:
 			result = getClauseLike("tabla", filterField, condition, nameForParameter);
 			break;
-		case HqlConditions.LIKE_IGNORE_CASE:
+		case LIKE_IGNORE_CASE:
 			result = getClauseLikeIgnoreCase("tabla", filterField, condition, nameForParameter);
 			break;
-		case HqlConditions.IS_NOT_EMPTY:
-		case HqlConditions.IS_NOT_NULL:
-		case HqlConditions.IS_EMPTY:
-		case HqlConditions.IS_NULL:
+		case IS_NOT_EMPTY:
+		case IS_NOT_NULL:
+		case IS_EMPTY:
+		case IS_NULL:
 			result = getClauseIsNullOrNotNull("tabla", filterField, condition);
 			break;
 		// case HqlConditions.BETWEEN:
-		case HqlConditions.EQUALS:
-		case HqlConditions.GREATER_EQUALS:
-		case HqlConditions.GREATER_THAN:
-		case HqlConditions.IN:
-		case HqlConditions.LOWER_EQUALS:
-		case HqlConditions.LOWER_THAN:
-		case HqlConditions.NOT_EQUALS:
-		case HqlConditions.NOT_IN:
+		case EQUALS:
+		case GREATER_EQUALS:
+		case GREATER_THAN:
+		case IN:
+		case LOWER_EQUALS:
+		case LOWER_THAN:
+		case NOT_EQUALS:
+		case NOT_IN:
 			result = getClauseConditionCase("tabla", filterField, condition, nameForParameter);
 			break;
 		// case HqlConditions.MEMBER_OF:
@@ -267,34 +268,34 @@ public abstract class ServiceImpl<VO extends BasicVO> implements Service<VO> {
 		return result;
 	}
 
-	private boolean hasToApplyConditionForQuery(String condition, Object value) {
+	private boolean hasToApplyConditionForQuery(HqlConditions condition, Object value) {
 		boolean result = false;
 		switch (condition) {
-		case HqlConditions.IS_NOT_EMPTY:
-		case HqlConditions.IS_NOT_NULL:
-		case HqlConditions.IS_EMPTY:
-		case HqlConditions.IS_NULL:
+		case IS_NOT_EMPTY:
+		case IS_NOT_NULL:
+		case IS_EMPTY:
+		case IS_NULL:
 			result = true;
 			break;
 		// case HqlConditions.BETWEEN:
-		case HqlConditions.EQUALS:
-		case HqlConditions.GREATER_EQUALS:
-		case HqlConditions.GREATER_THAN:
-		case HqlConditions.IN:
-		case HqlConditions.LIKE:
-		case HqlConditions.LIKE_IGNORE_CASE:
-		case HqlConditions.LOWER_EQUALS:
-		case HqlConditions.LOWER_THAN:
-		case HqlConditions.NOT_EQUALS:
-		case HqlConditions.NOT_IN:
+		case EQUALS:
+		case GREATER_EQUALS:
+		case GREATER_THAN:
+		case IN:
+		case LIKE:
+		case LIKE_IGNORE_CASE:
+		case LOWER_EQUALS:
+		case LOWER_THAN:
+		case NOT_EQUALS:
+		case NOT_IN:
 			if (value != null) {
 				result = true;
 			}
 			break;
-		case HqlConditions.MEMBER_OF:
-		case HqlConditions.NOT_MEMBER_OF:
 			// TODO: consider???
-			break;
+			// case HqlConditions.MEMBER_OF:
+			// case HqlConditions.NOT_MEMBER_OF:
+			// break;
 		default:
 			break;
 		}

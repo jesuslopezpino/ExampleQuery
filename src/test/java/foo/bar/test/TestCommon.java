@@ -22,6 +22,7 @@ import foo.bar.domain.BasicVO;
 import foo.bar.domain.Customer;
 import foo.bar.exceptions.ExampleQueryException;
 import foo.bar.service.impl.ServiceImpl;
+import foo.bar.service.utils.HqlConditions;
 
 public abstract class TestCommon<ServiceVO extends ServiceImpl, VO extends BasicVO> {
 
@@ -33,7 +34,7 @@ public abstract class TestCommon<ServiceVO extends ServiceImpl, VO extends Basic
 
 	protected Class serviceVoClass;
 
-	protected Map<String, String> filter;
+	protected Map<String, HqlConditions> filter;
 
 	protected VO[] examples;
 
@@ -51,7 +52,7 @@ public abstract class TestCommon<ServiceVO extends ServiceImpl, VO extends Basic
 	
 	protected abstract VO[] initExamples();
 
-	protected abstract Map<String, String> initFilter();
+	protected abstract Map<String, HqlConditions> initFilter();
 
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {

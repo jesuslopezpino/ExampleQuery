@@ -13,8 +13,8 @@ import foo.bar.utils.Utils;
 public class TestCustomerService extends TestCommon<CustomerServiceImpl, Customer> {
 
 	@Override
-	protected Map<String, String> initFilter() {
-		Map<String, String> filter = new HashMap<>();
+	protected Map<String, HqlConditions> initFilter() {
+		Map<String, HqlConditions> filter = new HashMap<>();
 		filter.put(Customer.NAME, HqlConditions.LIKE_IGNORE_CASE);
 		filter.put(Customer.LAST_NAME, HqlConditions.EQUALS);
 //		filter.put(Customer.BIRTH_DATE, HqlConditions.BETWEEN);

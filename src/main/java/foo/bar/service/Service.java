@@ -5,6 +5,7 @@ import java.util.Map;
 
 import foo.bar.exceptions.ExampleQueryException;
 import foo.bar.exceptions.UniqueException;
+import foo.bar.service.utils.HqlConditions;
 
 public interface Service<VO> {
 
@@ -12,9 +13,9 @@ public interface Service<VO> {
 
 	VO findCustomByPk(Object primaryKey, String[] fields);
 	
-	List<VO> findByExample(VO example, Map<String, String> filter) throws ExampleQueryException;
+	List<VO> findByExample(VO example, Map<String, HqlConditions> filter) throws ExampleQueryException;
 
-	public List<VO> findCustomByExample(VO example, String[] fields, Map<String, String> filter) throws ExampleQueryException;
+	public List<VO> findCustomByExample(VO example, String[] fields, Map<String, HqlConditions> filter) throws ExampleQueryException;
 	
 	boolean delete(VO element);
 

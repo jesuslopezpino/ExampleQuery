@@ -11,8 +11,8 @@ import foo.bar.service.utils.HqlConditions;
 public class TestProductService extends TestCommon<ProductServiceImpl, Product> {
 
 	@Override
-	protected Map<String, String> initFilter() {
-		Map<String, String> filter = new HashMap<String, String>();
+	protected Map<String, HqlConditions> initFilter() {
+		Map<String, HqlConditions> filter = new HashMap<String, HqlConditions>();
 		filter.put(Product.DESCRIPTION, HqlConditions.LIKE_IGNORE_CASE);
 		filter.put(Product.NAME, HqlConditions.LIKE_IGNORE_CASE);
 		return filter;

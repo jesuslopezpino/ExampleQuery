@@ -1,37 +1,38 @@
 package foo.bar.service.utils;
 
-public class HqlConditions {
+public enum HqlConditions {
 
-	// Non value necessary
-	public static final String IS_NULL = " is null ";
-	public static final String IS_NOT_NULL = " is not null ";
-	public static final String IS_EMPTY = " is empty ";
-	public static final String IS_NOT_EMPTY = " is not empty ";
-
-	// Field Value necessary
-	public static final String LIKE = " like ";
-	public static final String LIKE_IGNORE_CASE = " LIKE ";
-	public static final String EQUALS = " = ";
-	public static final String NOT_EQUALS = " <> ";
-	public static final String GREATER_THAN = " > ";
-	public static final String GREATER_EQUALS = " >= ";
-	public static final String LOWER_THAN = " < ";
-	public static final String LOWER_EQUALS = " <= ";
-
-	// Note: 
-	// Between it is not going to be consider, because I think that with new reference annotation usage,
-	// it's unnecesary, and also Range will be useless
-	// Range Values necessaries
-	//	public static final String BETWEEN = " between ";
-	
-	// Reference field necessary or Field Value necessaries??
-	public static final String IN = " in ";
-	public static final String NOT_IN = " not in ";
-
-
+	IS_NULL(" is null "), 
+	IS_NOT_NULL(" is not null "), 
+	IS_EMPTY(" is empty "), 
+	IS_NOT_EMPTY(" is not empty "),
+	LIKE(" like "), 
+	LIKE_IGNORE_CASE(" LIKE "), 
+	EQUALS(" = "), 
+	NOT_EQUALS(" <> "), 
+	GREATER_THAN(" > "), 
+	GREATER_EQUALS(" >= "), 
+	LOWER_THAN(" < "), 
+	LOWER_EQUALS(" <= "),
+	IN(" in "), 
+	NOT_IN(" not in ");
 	// TODO: posible cases to configure?
-	public static final String MEMBER_OF = " member of ";
-	public static final String NOT_MEMBER_OF = " not member of ";
+	//	MEMBER_OF(" member of "), 
+	//	NOT_MEMBER_OF(" not member of ");
+
+	private final String condition;
+
+	@Override
+	public String toString() {
+		return this.condition;
+	}
+
+	HqlConditions(final String condition) {
+		this.condition = condition;
+	}
 	
-	
+	public boolean equalsName(String otherName) {
+        // (otherName == null) check is not needed because name.equals(null) returns false 
+        return condition.equals(otherName);
+    }
 }

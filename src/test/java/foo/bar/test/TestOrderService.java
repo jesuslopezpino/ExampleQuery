@@ -15,8 +15,8 @@ import foo.bar.service.utils.HqlConditions;
 public class TestOrderService extends TestCommon<OrderServiceImpl, Order> {
 
 	@Override
-	protected Map<String, String> initFilter() {
-		Map<String, String> filter = new HashMap<String, String>();
+	protected Map<String, HqlConditions> initFilter() {
+		Map<String, HqlConditions> filter = new HashMap<String, HqlConditions>();
 		filter.put(Order.DATE, HqlConditions.LOWER_THAN);
 		filter.put(Order.PRODUCTS, HqlConditions.IN);
 		filter.put(Order.CUSTOMER, HqlConditions.NOT_EQUALS);
