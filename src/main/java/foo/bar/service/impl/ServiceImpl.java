@@ -193,7 +193,7 @@ public abstract class ServiceImpl<VO extends BasicVO> implements Service<VO> {
 			// (depends on condition + value)
 			boolean applyValue = this.hasToApplyConditionForQuery(condition, valueForQuery);
 			if (applyValue) {
-				String nameForParameter = getNameForParameter(fieldForQuery, condition);
+				String nameForParameter = getNameForParameter(filterField, condition);
 				where += getClauseCondition("tabla", fieldForQuery, condition, nameForParameter);
 				if (nameForParameter != null) {
 					Object fixedValueForQuery = this.fixValueForQuery(valueForQuery, condition);
