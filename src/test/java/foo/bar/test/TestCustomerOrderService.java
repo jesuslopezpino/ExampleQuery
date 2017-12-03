@@ -17,17 +17,18 @@ public class TestCustomerOrderService extends TestCommon<CustomerOrderServiceImp
 	@Override
 	protected Map<String, Object> initEntityFields() {
 		Map<String, Object> mapValues = new HashMap<>();
-//		mapValues.put(CustomerOrder.DATE, new Date());
-		mapValues.put(CustomerOrder.CUSTOMER+"."+Customer.NAME, "Jesus");
+		mapValues.put(CustomerOrder.DATE, new Date());
+		mapValues.put(CustomerOrder.CUSTOMER + "." + Customer.NAME, "Jesus");
 		return mapValues;
 	}
 
 	@Override
 	protected Map<String, HqlConditions> initFilter() {
 		Map<String, HqlConditions> filter = new HashMap<String, HqlConditions>();
-//		filter.put(CustomerOrder.DATE, HqlConditions.LOWER_THAN);
-		filter.put(CustomerOrder.PRODUCTS_STOCK, HqlConditions.IN);
-//		filter.put(CustomerOrder.CUSTOMER, HqlConditions.NOT_EQUALS);
+		filter.put(CustomerOrder.DATE, HqlConditions.LOWER_THAN);
+		// TODO
+		// filter.put(CustomerOrder.PRODUCTS_STOCK, HqlConditions.IN);
+		filter.put(CustomerOrder.CUSTOMER, HqlConditions.NOT_EQUALS);
 		return filter;
 	}
 
@@ -52,26 +53,16 @@ public class TestCustomerOrderService extends TestCommon<CustomerOrderServiceImp
 		product2.setPk(2L);
 		products.add(product2);
 		example3.setProductsStock(products);
-		CustomerOrder[] examples = { 
-//				example1
-//				, 
-//				example2
-//				, 
-				example3 
-				};
+		CustomerOrder[] examples = { example1, example2, example3 };
 		return examples;
 	}
 
 	@Override
 	protected String[] initCustomFields() {
-//		String field1 = CustomerOrder.CUSTOMER;
+		String field1 = CustomerOrder.CUSTOMER;
 		String field2 = CustomerOrder.PK;
-//		String field3 = CustomerOrder.DATE;
-		String fields[] = {
-//				field1, 
-				field2
-//				, field3
-				};
+		String field3 = CustomerOrder.DATE;
+		String fields[] = { field1, field2, field3};
 		return fields;
 	}
 
