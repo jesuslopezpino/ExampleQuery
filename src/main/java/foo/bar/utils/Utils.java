@@ -21,42 +21,29 @@ public class Utils {
 
 	private static Logger LOGGER = Logger.getLogger(Utils.class);
 
-	/**
-	 * Obtener valor string.
-	 *
-	 * @param <T>
-	 *            the generic type
-	 * @param objeto
-	 *            the objeto
-	 * @param field
-	 *            the field
-	 * @param returnStringValue
-	 *            the return string value
-	 * @return the object
-	 */
-	public static <T> Object getFieldValue(T objeto, String field) {
-		final String[] fieldSplit = field.split("\\.");
-		final List<String> campos = new ArrayList<>();
+	public static <T> Object getFieldValue(T objeto, String fieldName) {
+		final String[] fieldSplit = fieldName.split("\\.");
+		final List<String> fields = new ArrayList<>();
 		if (fieldSplit.length == 0) {
-			campos.add(field);
+			fields.add(fieldName);
 		} else {
 			for (int i = 0; i < fieldSplit.length; i++) {
 				final String string = fieldSplit[i];
-				campos.add(string);
+				fields.add(string);
 			}
 		}
 
 		Object invokedValue = null;
-		for (int i = 0; i < campos.size(); i++) {
-			final String methodName = Utils.getGetterOfField(campos.get(i));
+		for (int i = 0; i < fields.size(); i++) {
+			final String methodName = Utils.getGetterOfField(fields.get(i));
 			LOGGER.debug("methodName: " + methodName);
 			try {
-				if (i == campos.size() - 1) {
+				if (i == fields.size() - 1) {
 					// TODO: check at superclasses for the field
 					invokedValue = objeto.getClass().getMethod(methodName).invoke(objeto, null);
 				} else {
 					invokedValue = objeto.getClass().getMethod(methodName).invoke(objeto, (Object[]) null);
-					return getFieldValue(invokedValue, field.replaceAll(campos.get(i) + ".", ""));
+					return getFieldValue(invokedValue, fieldName.replaceAll(fields.get(i) + ".", ""));
 
 				}
 			} catch (IllegalAccessException e) {
@@ -70,7 +57,6 @@ public class Utils {
 			}
 
 		}
-		// return invokedValue == null ? "" : invokedValue;
 		return invokedValue;
 	}
 
@@ -123,10 +109,44 @@ public class Utils {
 	}
 
 	public static void setFieldValue(String field, Object value, Object objectClass) {
-		String methodName = getSetterOfField(field);
+		String[] fields = field.split("\\.");
+		String lastField = null;
+		boolean loop = false;
+		Object lastValue = null;
+		if(fields.length == 1){
+			lastField = field;
+			lastValue = value;
+		}else{
+			loop = true;
+			lastField = fields[fields.length - 1];
+			LOGGER.info("loop mode");
+		}
+		Object lastClass = objectClass;
 		try {
-			Method method = objectClass.getClass().getMethod(methodName, value.getClass());
-			method.invoke(objectClass, value);
+			for (int i = 0; loop && i < fields.length; i++) {
+				LOGGER.info("loop " + i);
+				if(i == fields.length -1){
+					LOGGER.info("exit loop at " + i);
+					break;
+				}
+				String getter = fields[i];
+				LOGGER.info("searching getter: " + getter);
+				lastValue = getFieldValue(lastClass, getter);
+				LOGGER.info("lastValue: " + lastValue);
+				if (lastValue == null) {
+					LOGGER.info("lastClass " + lastClass.getClass().getName());
+					Class<? extends Object> fieldType = lastClass.getClass().getField(getter).getType();
+					lastValue = fieldType.newInstance();
+					String setterToUse = getSetterOfField(getter);
+					Method setterMethod = lastClass.getClass().getMethod(setterToUse, lastValue.getClass());
+					setterMethod.invoke(lastClass, lastValue);
+				}
+				lastClass = lastValue;
+			}
+			String setterName = getSetterOfField(lastField);
+			Method setter = lastClass.getClass().getMethod(setterName, value.getClass());
+			LOGGER.info("setting field: " + lastField + " with value: " + value);
+			setter.invoke(lastClass, value);
 		} catch (NoSuchMethodException | SecurityException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -137,6 +157,12 @@ public class Utils {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (InvocationTargetException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (InstantiationException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (NoSuchFieldException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
