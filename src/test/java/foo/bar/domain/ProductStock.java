@@ -25,10 +25,10 @@ public class ProductStock extends BasicVO<Long> {
 
 	@ManyToOne
 	@JoinColumn(name = PRODUCT)
-	public Product product;
+	private Product product;
 
 	@Column(name = QUANTITY)
-	public Integer quantity;
+	private Integer quantity;
 
 	@Transient
 	@Reference(fieldName = MAX_QUANTITY, referenceFor = QUANTITY)

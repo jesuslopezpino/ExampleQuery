@@ -21,12 +21,12 @@ public class Order extends BasicVO<Long>{
 
 	@ManyToOne
 	@JoinColumn(name = CUSTOMER)
-	public Customer customer;
+	private Customer customer;
 	//TODO: cambiar
 	@Column(name = DATE)
 	private Date date;
 	
-	@OneToMany(mappedBy = PRODUCTS)
+	@OneToMany(mappedBy = ProductStock.PRODUCT)
 	private List<ProductStock> products;
 
 	public Order() {

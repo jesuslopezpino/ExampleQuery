@@ -36,40 +36,40 @@ public class Customer extends BasicVO<Long> {
 	public static final String ORDERS_PRODUCTS_NAME = "ordersProductsName";
 
 	@Column(name = NAME)
-	public String name;
+	private String name;
 
 	@Column(name = LAST_NAME)
-	public String lastName;
+	private String lastName;
 
 	@Column(name = DOCUMENT)
-	public String document;
+	private String document;
 
 	@Column(name = DOCUMENT_TYPE)
-	public String documentType;
+	private String documentType;
 
 //	@Range(startField = BIRTH_DATE_START, endField = BIRTH_DATE_END)
 	@Column(name = BIRTH_DATE)
-	public Date birthDate;
+	private Date birthDate;
 
 	@OneToMany(mappedBy = Order.CUSTOMER)
-	public List<Order> orders;
+	private List<Order> orders;
 
 	// TODO: if we don't include the transient annotation que query will not consider the Reference Annotation...
 	@Transient
 	@Reference(fieldName = ORDERS_PRODUCTS_NAME, referenceFor = Customer.ORDERS + "." + Order.PRODUCTS + "." + Product.NAME)
-	public String ordersProductsName;
+	private String ordersProductsName;
 
 	@Transient
 	@Reference(fieldName = DOCUMENT_TYPE_LIST, referenceFor = DOCUMENT_TYPE)
-	public List<String> documentTypeList;
+	private List<String> documentTypeList;
 
 	@Transient
 	@Reference(fieldName = BIRTH_DATE_START, referenceFor = BIRTH_DATE)
-	public Date birthDateStart;
+	private Date birthDateStart;
 
 	@Transient
 	@Reference(fieldName = BIRTH_DATE_END, referenceFor = BIRTH_DATE)
-	public Date birthDateEnd;
+	private Date birthDateEnd;
 
 	public Customer() {
 		super();
