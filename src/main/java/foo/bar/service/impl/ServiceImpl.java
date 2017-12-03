@@ -1,5 +1,6 @@
 package foo.bar.service.impl;
 
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.ParameterizedType;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -139,21 +140,29 @@ public abstract class ServiceImpl<VO extends BasicVO<?>> implements Service<VO> 
 		Map<String, Object> parameters = new HashMap<>();
 		String from = " from " + voClass.getName() + " tabla";
 		String where = " where 1=1";
-		for (Iterator<Entry<String, HqlConditions>> iterator = filter.entrySet().iterator(); iterator.hasNext();) {
-			Entry<String, HqlConditions> type = iterator.next();
-			HqlConditions condition = type.getValue();
-			String filterField = type.getKey();
-			String fieldForQuery = UtilsService.getFieldForQuery(example, filterField);
-			Object valueForQuery = Utils.getFieldValue(example, filterField);
-			boolean applyValue = UtilsService.hasToApplyConditionForQuery(condition, valueForQuery);
-			if (applyValue) {
-				String nameForParameter = UtilsService.getNameForParameter(filterField, condition);
-				where += UtilsService.getClauseCondition("tabla", fieldForQuery, condition, nameForParameter);
-				if (nameForParameter != null) {
-					Object fixedValueForQuery = UtilsService.fixValueForQuery(valueForQuery, condition);
-					parameters.put(nameForParameter, fixedValueForQuery);
+		try {
+			for (Iterator<Entry<String, HqlConditions>> iterator = filter.entrySet().iterator(); iterator.hasNext();) {
+				Entry<String, HqlConditions> type = iterator.next();
+				HqlConditions condition = type.getValue();
+				String filterField = type.getKey();
+				String fieldForQuery;
+				fieldForQuery = UtilsService.getFieldForQuery(example, filterField);
+				Object valueForQuery = Utils.getFieldValue(example, filterField);
+				boolean applyValue = UtilsService.hasToApplyConditionForQuery(condition, valueForQuery);
+				if (applyValue) {
+					String nameForParameter = UtilsService.getNameForParameter(filterField, condition);
+					where += UtilsService.getClauseCondition("tabla", fieldForQuery, condition, nameForParameter);
+					if (nameForParameter != null) {
+						Object fixedValueForQuery = UtilsService.fixValueForQuery(valueForQuery, condition);
+						parameters.put(nameForParameter, fixedValueForQuery);
+					}
 				}
 			}
+		} catch (NoSuchFieldException | SecurityException | IllegalAccessException | IllegalArgumentException
+				| InvocationTargetException | NoSuchMethodException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			throw new ExampleQueryException(e.getMessage());
 		}
 		String hqlString = select + from + where;
 		LOGGER.info("ExampleQuery: " + hqlString);

@@ -1,5 +1,6 @@
 package foo.bar.domain;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -25,7 +26,13 @@ public abstract class BasicVO<PK> {
 		super();
 		for (Iterator<Entry<String, Object>> iterator = mapValues.entrySet().iterator(); iterator.hasNext();) {
 			Entry<String, Object> entry = iterator.next();
-			Utils.setFieldValue(entry.getKey(), entry.getValue(), this);
+			try {
+				Utils.setFieldValue(entry.getKey(), entry.getValue(), this);
+			} catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException
+					| InvocationTargetException | NoSuchFieldException | InstantiationException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 	}
 

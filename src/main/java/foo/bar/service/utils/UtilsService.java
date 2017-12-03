@@ -4,7 +4,7 @@ import foo.bar.utils.Utils;
 
 public class UtilsService {
 
-	public static String getFieldForQuery(Object example, String filterField) {
+	public static String getFieldForQuery(Object example, String filterField) throws NoSuchFieldException, SecurityException {
 		String fieldForQuery;
 		// first check if the field is transient or not
 		boolean isTransient = Utils.isTransientField(filterField, example);

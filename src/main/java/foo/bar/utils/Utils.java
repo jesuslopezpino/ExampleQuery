@@ -20,7 +20,7 @@ public class Utils {
 
 	private static Logger LOGGER = Logger.getLogger(Utils.class);
 
-	public static <T> Object getFieldValue(T object, String fieldName) {
+	public static <T> Object getFieldValue(T object, String fieldName) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException {
 		final String[] fieldSplit = fieldName.split("\\.");
 		final List<String> fields = new ArrayList<>();
 		if (fieldSplit.length == 0) {
@@ -36,23 +36,13 @@ public class Utils {
 		for (int i = 0; i < fields.size(); i++) {
 			final String methodName = fields.get(i);
 			LOGGER.debug("methodName: " + methodName);
-			try {
-				if (i == fields.size() - 1) {
-					// TODO: check at superclasses for the field
-					invokedValue = invokeGetter(methodName, object);
-				} else {
-					invokedValue = invokeGetter(methodName, object);
-					return getFieldValue(invokedValue, fieldName.replaceAll(methodName + ".", ""));
+			if (i == fields.size() - 1) {
+				// TODO: check at superclasses for the field
+				invokedValue = invokeGetter(methodName, object);
+			} else {
+				invokedValue = invokeGetter(methodName, object);
+				return getFieldValue(invokedValue, fieldName.replaceAll(methodName + ".", ""));
 
-				}
-			} catch (IllegalAccessException e) {
-				LOGGER.error(e.getMessage());
-			} catch (InvocationTargetException e) {
-				LOGGER.error(e.getMessage());
-			} catch (NoSuchMethodException e) {
-				LOGGER.error(e.getMessage());
-			} catch (SecurityException e) {
-				LOGGER.error(e.getMessage());
 			}
 
 		}
@@ -87,13 +77,15 @@ public class Utils {
 		return methodName;
 	}
 
-	public static void setFieldValue(String field, Object value, Object objectClass) {
-		String[] fields = field.split("\\.");
+	public static void setFieldValue(String fieldName, Object value, Object objectClass)
+			throws NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException,
+			InvocationTargetException, NoSuchFieldException, InstantiationException {
+		String[] fields = fieldName.split("\\.");
 		String lastField = null;
 		boolean loop = false;
 		Object lastValue = null;
 		if (fields.length == 1) {
-			lastField = field;
+			lastField = fieldName;
 			lastValue = value;
 		} else {
 			loop = true;
@@ -101,45 +93,25 @@ public class Utils {
 			LOGGER.info("loop mode");
 		}
 		Object lastClass = objectClass;
-		try {
-			for (int i = 0; loop && i < fields.length; i++) {
-				LOGGER.info("loop " + i);
-				if (i == fields.length - 1) {
-					LOGGER.info("exit loop at " + i);
-					break;
-				}
-				String getter = fields[i];
-				LOGGER.info("searching getter: " + getter);
-				lastValue = getFieldValue(lastClass, getter);
-				LOGGER.info("lastValue: " + lastValue);
-				if (lastValue == null) {
-					LOGGER.info("lastClass " + lastClass.getClass().getName());
-					Class<? extends Object> fieldType = lastClass.getClass().getField(getter).getType();
-					lastValue = fieldType.newInstance();
-					invokeSetter(getter, lastClass, lastValue);
-				}
-				lastClass = lastValue;
+		for (int i = 0; loop && i < fields.length; i++) {
+			LOGGER.info("loop " + i);
+			if (i == fields.length - 1) {
+				LOGGER.info("exit loop at " + i);
+				break;
 			}
-			invokeSetter(lastField, lastClass, value);
-		} catch (NoSuchMethodException | SecurityException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IllegalAccessException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IllegalArgumentException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (InvocationTargetException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (InstantiationException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (NoSuchFieldException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			String getter = fields[i];
+			LOGGER.info("searching getter: " + getter);
+			lastValue = getFieldValue(lastClass, getter);
+			LOGGER.info("lastValue: " + lastValue);
+			if (lastValue == null) {
+				LOGGER.info("lastClass " + lastClass.getClass().getName());
+				Class<? extends Object> fieldType = lastClass.getClass().getField(getter).getType();
+				lastValue = fieldType.newInstance();
+				invokeSetter(getter, lastClass, lastValue);
+			}
+			lastClass = lastValue;
 		}
+		invokeSetter(lastField, lastClass, value);
 	}
 
 	public static void invokeSetter(String fieldName, Object objectClass, Object value) throws NoSuchMethodException,
@@ -150,9 +122,8 @@ public class Utils {
 		setter.invoke(objectClass, value);
 	}
 
-	public static Object invokeGetter(String fieldName, Object objectClass)
-			throws IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException,
-			SecurityException {
+	public static Object invokeGetter(String fieldName, Object objectClass) throws IllegalAccessException,
+			IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException {
 		LOGGER.info("NEW INVOKE GETTER");
 		String getterName = getGetterOfField(fieldName);
 		Object invokedValue = objectClass.getClass().getMethod(getterName).invoke(objectClass, (Object[]) null);
@@ -173,20 +144,17 @@ public class Utils {
 		return result;
 	}
 
-	public static boolean isTransientField(String fieldName, Object object) {
+	public static boolean isTransientField(String fieldName, Object object)
+			throws NoSuchFieldException, SecurityException {
 		return hasAnnotation(fieldName, object, Transient.class);
 	}
 
-	public static boolean hasAnnotation(String fieldName, Object object, Class<? extends Annotation> annotation) {
+	public static boolean hasAnnotation(String fieldName, Object object, Class<? extends Annotation> annotation)
+			throws NoSuchFieldException, SecurityException {
 		boolean result = false;
 		Field field;
-		try {
-			field = object.getClass().getDeclaredField(fieldName);
-			result = field.isAnnotationPresent(annotation);
-		} catch (NoSuchFieldException | SecurityException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		field = object.getClass().getDeclaredField(fieldName);
+		result = field.isAnnotationPresent(annotation);
 		return result;
 	}
 
