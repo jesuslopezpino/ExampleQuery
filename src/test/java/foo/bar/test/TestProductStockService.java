@@ -11,6 +11,14 @@ import foo.bar.service.utils.HqlConditions;
 public class TestProductStockService extends TestCommon<ProductStockServiceImpl, ProductStock> {
 
 	@Override
+	protected Map<String, Object> initEntityFields() {
+		Map<String, Object> mapValues = new HashMap<>();
+		mapValues.put(ProductStock.PRODUCT_NAME, "LG");
+		mapValues.put(ProductStock.PRODUCT+ "." + Product.NAME, "Samsung");
+		return mapValues;
+	}
+	
+	@Override
 	protected Map<String, HqlConditions> initFilter() {
 		Map<String, HqlConditions> filter = new HashMap<>();
 		filter.put(ProductStock.PRODUCT, HqlConditions.NOT_IN);

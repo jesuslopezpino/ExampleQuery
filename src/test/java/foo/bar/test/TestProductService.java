@@ -3,13 +3,20 @@ package foo.bar.test;
 import java.util.HashMap;
 import java.util.Map;
 
-import foo.bar.domain.Order;
 import foo.bar.domain.Product;
 import foo.bar.service.impl.ProductServiceImpl;
 import foo.bar.service.utils.HqlConditions;
 
 public class TestProductService extends TestCommon<ProductServiceImpl, Product> {
 
+	@Override
+	protected Map<String, Object> initEntityFields() {
+		Map<String, Object> mapValues = new HashMap<>();
+		mapValues.put(Product.DESCRIPTION, "television");
+		mapValues.put(Product.NAME, "Samsung");
+		return mapValues;
+	}
+	
 	@Override
 	protected Map<String, HqlConditions> initFilter() {
 		Map<String, HqlConditions> filter = new HashMap<String, HqlConditions>();

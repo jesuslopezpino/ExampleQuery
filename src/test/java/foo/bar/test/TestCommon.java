@@ -4,6 +4,8 @@ import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.ParameterizedType;
 import java.util.List;
 import java.util.Map;
@@ -33,6 +35,8 @@ public abstract class TestCommon<ServiceVO extends ServiceImpl, VO extends Basic
 
 	protected ServiceImpl<VO> service;
 
+	protected Class voClass;
+
 	protected Class serviceVoClass;
 
 	protected Map<String, HqlConditions> filter;
@@ -40,9 +44,12 @@ public abstract class TestCommon<ServiceVO extends ServiceImpl, VO extends Basic
 	protected VO[] examples;
 
 	protected String[] customFields;
-	
+
 	public TestCommon() {
-		this.serviceVoClass = (Class<ServiceVO>) ((ParameterizedType) this.getClass().getGenericSuperclass()).getActualTypeArguments()[0];
+		this.serviceVoClass = (Class<ServiceVO>) ((ParameterizedType) this.getClass().getGenericSuperclass())
+				.getActualTypeArguments()[0];
+		this.voClass = (Class<ServiceVO>) ((ParameterizedType) this.getClass().getGenericSuperclass())
+				.getActualTypeArguments()[1];
 		LOGGER.info("Creating test for class: " + this.serviceVoClass.getName());
 		this.filter = this.initFilter();
 		this.examples = this.initExamples();
@@ -50,7 +57,7 @@ public abstract class TestCommon<ServiceVO extends ServiceImpl, VO extends Basic
 	}
 
 	protected abstract String[] initCustomFields();
-	
+
 	protected abstract VO[] initExamples();
 
 	protected abstract Map<String, HqlConditions> initFilter();
@@ -84,6 +91,16 @@ public abstract class TestCommon<ServiceVO extends ServiceImpl, VO extends Basic
 	}
 
 	@Test
+	public void testEntity() throws NoSuchMethodException, SecurityException, InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
+		Map<String, Object> mapValues = initEntityFields();
+		Constructor constructor = voClass.getDeclaredConstructor(Map.class);
+		Object entity = constructor.newInstance(mapValues);
+		assertTrue(entity != null);
+	}
+
+	protected abstract Map<String, Object> initEntityFields();
+
+	@Test
 	public void testFindByExample() throws ExampleQueryException {
 		LOGGER.info("testFindByExample at class: " + this.getClass().getName());
 		for (int i = 0; i < examples.length; i++) {
@@ -95,7 +112,7 @@ public abstract class TestCommon<ServiceVO extends ServiceImpl, VO extends Basic
 	}
 
 	@Test
-	public void findCustomByExample() throws ExampleQueryException{
+	public void findCustomByExample() throws ExampleQueryException {
 		LOGGER.info("findCustomByExample at class: " + this.getClass().getName());
 		for (int i = 0; i < examples.length; i++) {
 			LOGGER.info("-----------------------------------------------------------------------------");

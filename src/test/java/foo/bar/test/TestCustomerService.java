@@ -1,9 +1,12 @@
 package foo.bar.test;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import org.junit.Test;
 
 import foo.bar.domain.Customer;
 import foo.bar.service.impl.CustomerServiceImpl;
@@ -64,6 +67,14 @@ public class TestCustomerService extends TestCommon<CustomerServiceImpl, Custome
 		String field4 = Customer.LAST_NAME;
 		String[] fields = { field1, field2, field3, field4 };
 		return fields;
+	}
+
+	@Override
+	protected Map<String, Object> initEntityFields() {
+		Map<String, Object> mapValues = new HashMap<>();
+		mapValues.put(Customer.BIRTH_DATE, new Date());
+		mapValues.put(Customer.NAME, "Jesus");
+		return mapValues;
 	}
 
 }

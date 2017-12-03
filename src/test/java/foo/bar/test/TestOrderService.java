@@ -6,6 +6,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.junit.Test;
+
 import foo.bar.domain.Customer;
 import foo.bar.domain.Order;
 import foo.bar.domain.ProductStock;
@@ -13,6 +15,14 @@ import foo.bar.service.impl.OrderServiceImpl;
 import foo.bar.service.utils.HqlConditions;
 
 public class TestOrderService extends TestCommon<OrderServiceImpl, Order> {
+
+	@Override
+	protected Map<String, Object> initEntityFields() {
+		Map<String, Object> mapValues = new HashMap<>();
+		mapValues.put(Order.DATE, new Date());
+		mapValues.put(Order.CUSTOMER+"."+Customer.NAME, "Jesus");
+		return mapValues;
+	}
 
 	@Override
 	protected Map<String, HqlConditions> initFilter() {
