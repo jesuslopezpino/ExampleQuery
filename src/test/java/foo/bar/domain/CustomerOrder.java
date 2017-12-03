@@ -10,8 +10,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
-@Entity(name = "ORDER_TABLE")
-public class Order extends BasicVO<Long>{
+@Entity(name = "CUSTOMER_ORDER")
+public class CustomerOrder extends BasicVO<Long> {
 
 	public static final String CUSTOMER = "customer";
 
@@ -22,18 +22,19 @@ public class Order extends BasicVO<Long>{
 	@ManyToOne
 	@JoinColumn(name = CUSTOMER)
 	private Customer customer;
-	//TODO: cambiar
+
+	// TODO: cambiar
 	@Column(name = DATE)
 	private Date date;
-	
+
 	@OneToMany(mappedBy = ProductStock.PRODUCT, targetEntity = ProductStock.class)
 	private List<ProductStock> productsStock;
 
-	public Order() {
+	public CustomerOrder() {
 		super();
 	}
-	
-	public Order(Map<String, Object> mapValues) {
+
+	public CustomerOrder(Map<String, Object> mapValues) {
 		super(mapValues);
 	}
 
@@ -61,6 +62,4 @@ public class Order extends BasicVO<Long>{
 		this.productsStock = productsStock;
 	}
 
-	
-	
 }

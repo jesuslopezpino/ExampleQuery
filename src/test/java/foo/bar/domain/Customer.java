@@ -31,7 +31,7 @@ public class Customer extends BasicVO<Long> {
 
 	public static final String BIRTH_DATE_END = "birthDateEnd";
 
-	public static final String ORDERS = "orders";
+	public static final String CUSTOMER_ORDERS = "customerOrders";
 
 	public static final String ORDERS_PRODUCTS_NAME = "ordersProductsName";
 
@@ -51,13 +51,13 @@ public class Customer extends BasicVO<Long> {
 	@Column(name = BIRTH_DATE)
 	private Date birthDate;
 
-	@OneToMany(mappedBy = Order.CUSTOMER, targetEntity = Order.class)
-	private List<Order> orders;
+	@OneToMany(mappedBy = CustomerOrder.CUSTOMER, targetEntity = CustomerOrder.class)
+	private List<CustomerOrder> customerOrders;
 
 	// TODO: if we don't include the transient annotation que query will not
 	// consider the Reference Annotation...
 	@Transient
-	@Reference(fieldName = ORDERS_PRODUCTS_NAME, referenceFor = Customer.ORDERS + "." + Order.PRODUCTS_STOCK + "."
+	@Reference(fieldName = ORDERS_PRODUCTS_NAME, referenceFor = Customer.CUSTOMER_ORDERS + "." + CustomerOrder.PRODUCTS_STOCK + "."
 			+ ProductStock.PRODUCT + "." + Product.NAME)
 	private String ordersProductsName;
 
@@ -153,12 +153,12 @@ public class Customer extends BasicVO<Long> {
 		this.ordersProductsName = ordersProductsName;
 	}
 
-	public List<Order> getOrders() {
-		return orders;
+	public List<CustomerOrder> getOrders() {
+		return customerOrders;
 	}
 
-	public void setOrders(List<Order> orders) {
-		this.orders = orders;
+	public void setOrders(List<CustomerOrder> customerOrders) {
+		this.customerOrders = customerOrders;
 	}
 
 }
