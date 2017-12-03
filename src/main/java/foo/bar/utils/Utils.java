@@ -14,14 +14,13 @@ import javax.persistence.Transient;
 
 import org.apache.log4j.Logger;
 
-import foo.bar.annotations.Reference;
 import foo.bar.annotations.readers.ReferenceReader;
 
 public class Utils {
 
 	private static Logger LOGGER = Logger.getLogger(Utils.class);
 
-	public static <T> Object getFieldValue(T objeto, String fieldName) {
+	public static <T> Object getFieldValue(T object, String fieldName) {
 		final String[] fieldSplit = fieldName.split("\\.");
 		final List<String> fields = new ArrayList<>();
 		if (fieldSplit.length == 0) {
@@ -35,15 +34,15 @@ public class Utils {
 
 		Object invokedValue = null;
 		for (int i = 0; i < fields.size(); i++) {
-			final String methodName = Utils.getGetterOfField(fields.get(i));
+			final String methodName = fields.get(i);
 			LOGGER.debug("methodName: " + methodName);
 			try {
 				if (i == fields.size() - 1) {
 					// TODO: check at superclasses for the field
-					invokedValue = objeto.getClass().getMethod(methodName).invoke(objeto, null);
+					invokedValue = invokeGetter(methodName, object);
 				} else {
-					invokedValue = objeto.getClass().getMethod(methodName).invoke(objeto, (Object[]) null);
-					return getFieldValue(invokedValue, fieldName.replaceAll(fields.get(i) + ".", ""));
+					invokedValue = invokeGetter(methodName, object);
+					return getFieldValue(invokedValue, fieldName.replaceAll(methodName + ".", ""));
 
 				}
 			} catch (IllegalAccessException e) {
@@ -78,31 +77,11 @@ public class Utils {
 		return result;
 	}
 
-	public static boolean isSuperClassField(String campo) {
-		// TODO: change the method to return the SuperClass class to avoid
-		// herence problems
-		return false;
-	}
-
-	/**
-	 * Gets the getter of field.
-	 *
-	 * @param field
-	 *
-	 * @return the getter of field
-	 */
 	public static String getGetterOfField(String field) {
 		final String methodName = "get" + field.substring(0, 1).toUpperCase() + field.substring(1);
 		return methodName;
 	}
 
-	/**
-	 * Gets the setter of field.
-	 *
-	 * @param field
-	 *
-	 * @return the getter of field
-	 */
 	public static String getSetterOfField(String field) {
 		final String methodName = "set" + field.substring(0, 1).toUpperCase() + field.substring(1);
 		return methodName;
@@ -113,10 +92,10 @@ public class Utils {
 		String lastField = null;
 		boolean loop = false;
 		Object lastValue = null;
-		if(fields.length == 1){
+		if (fields.length == 1) {
 			lastField = field;
 			lastValue = value;
-		}else{
+		} else {
 			loop = true;
 			lastField = fields[fields.length - 1];
 			LOGGER.info("loop mode");
@@ -125,7 +104,7 @@ public class Utils {
 		try {
 			for (int i = 0; loop && i < fields.length; i++) {
 				LOGGER.info("loop " + i);
-				if(i == fields.length -1){
+				if (i == fields.length - 1) {
 					LOGGER.info("exit loop at " + i);
 					break;
 				}
@@ -137,16 +116,11 @@ public class Utils {
 					LOGGER.info("lastClass " + lastClass.getClass().getName());
 					Class<? extends Object> fieldType = lastClass.getClass().getField(getter).getType();
 					lastValue = fieldType.newInstance();
-					String setterToUse = getSetterOfField(getter);
-					Method setterMethod = lastClass.getClass().getMethod(setterToUse, lastValue.getClass());
-					setterMethod.invoke(lastClass, lastValue);
+					invokeSetter(getter, lastClass, lastValue);
 				}
 				lastClass = lastValue;
 			}
-			String setterName = getSetterOfField(lastField);
-			Method setter = lastClass.getClass().getMethod(setterName, value.getClass());
-			LOGGER.info("setting field: " + lastField + " with value: " + value);
-			setter.invoke(lastClass, value);
+			invokeSetter(lastField, lastClass, value);
 		} catch (NoSuchMethodException | SecurityException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -166,6 +140,24 @@ public class Utils {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+	}
+
+	public static void invokeSetter(String fieldName, Object objectClass, Object value) throws NoSuchMethodException,
+			SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
+		String setterName = getSetterOfField(fieldName);
+		Method setter = objectClass.getClass().getMethod(setterName, value.getClass());
+		LOGGER.info("NEW setting field: " + fieldName + " with value: " + value);
+		setter.invoke(objectClass, value);
+	}
+
+	public static Object invokeGetter(String fieldName, Object objectClass)
+			throws IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException,
+			SecurityException {
+		LOGGER.info("NEW INVOKE GETTER");
+		String getterName = getGetterOfField(fieldName);
+		Object invokedValue = objectClass.getClass().getMethod(getterName).invoke(objectClass, (Object[]) null);
+		return invokedValue;
+
 	}
 
 	public static Date getDate(String date, String format) {
