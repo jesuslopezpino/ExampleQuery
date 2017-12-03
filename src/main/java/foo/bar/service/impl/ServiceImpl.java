@@ -167,6 +167,11 @@ public abstract class ServiceImpl<VO extends BasicVO<?>> implements Service<VO> 
 		String hqlString = select + from + where;
 		LOGGER.info("ExampleQuery: " + hqlString);
 		Query query = this.entityManager.createQuery(hqlString);
+		setQueryParams(query, parameters);
+		return query;
+	}
+
+	private void setQueryParams(Query query, Map<String, Object> parameters) {
 		for (Iterator<Entry<String, Object>> iterator = parameters.entrySet().iterator(); iterator.hasNext();) {
 			Entry<String, Object> parameter = iterator.next();
 			String parameterKey = parameter.getKey();
@@ -174,7 +179,6 @@ public abstract class ServiceImpl<VO extends BasicVO<?>> implements Service<VO> 
 			LOGGER.info("parameter: \"" + parameterKey + "\"\tvalue: \"" + parameterValue + "\"");
 			query.setParameter(parameterKey, parameterValue);
 		}
-		return query;
 	}
 
 }
