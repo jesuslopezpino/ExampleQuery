@@ -55,7 +55,8 @@ public abstract class ServiceImpl<VO extends BasicVO<?>> implements Service<VO> 
 	}
 
 	public List<VO> findByExample(VO example, Map<String, HqlConditions> filter) throws ExampleQueryException {
-		String select = "select tabla";
+		String tableAlias = example.getClass().getSimpleName();
+		String select = "select " + tableAlias;
 		Query query = createQueryForExample(example, filter, select);
 		return query.getResultList();
 	}
@@ -118,13 +119,16 @@ public abstract class ServiceImpl<VO extends BasicVO<?>> implements Service<VO> 
 		// }
 		// select += ")";
 		// return select;
-		String select = "select new " + voClass.getName() + " ( ";
+		String select = "select new map ( ";
 		int fieldsLength = fields.length;
 		int lastField = fieldsLength - 1;
 		// TODO: detect duplicated fields to avoid problems
 		for (int i = 0; i < fieldsLength; i++) {
 			String field = fields[i];
-			select += field + " as '" + field + "'";
+			String entityField = getLastField(field);
+			String tableAlias = getTableAliasForClass(voClass);
+			String entityAlias = getLastTableAlias(tableAlias, field);
+			select += entityAlias + "." + entityField + " as " + field + "";
 			if (i != lastField) {
 				select += ", ";
 			}
@@ -134,11 +138,32 @@ public abstract class ServiceImpl<VO extends BasicVO<?>> implements Service<VO> 
 		return select;
 	}
 
+	public static String getFromForField(String from, String table, String fieldForQuery) {
+		System.out.println("getFromForField");
+		System.out.println("table: " + table);
+		System.out.println("fieldForquery: " + fieldForQuery);
+		String lastTable = table;
+		String[] fields = fieldForQuery.split("\\.");
+		String nextJoin = "";
+		for (int i = 0; i < fields.length - 1; i++) {
+			String field = fields[i];
+			nextJoin = " join " + lastTable + "." + field + " " + field + " ";
+			LOGGER.info("nextJoin =" + nextJoin);
+			if (!from.contains(nextJoin)) {
+				from += nextJoin;
+			}
+			lastTable = field;
+		}
+		System.out.println("FROOOM: " + from);
+		return from;
+	}
+
 	private Query createQueryForExample(VO example, Map<String, HqlConditions> filter, String select)
 			throws ExampleQueryException {
 
 		Map<String, Object> parameters = new HashMap<>();
-		String from = " from " + voClass.getName() + " tabla";
+		String tableAlias = getTableAliasForClass(voClass);
+		String from = " from " + voClass.getName() + " " + tableAlias;
 		String where = " where 1=1";
 		try {
 			for (Iterator<Entry<String, HqlConditions>> iterator = filter.entrySet().iterator(); iterator.hasNext();) {
@@ -151,24 +176,53 @@ public abstract class ServiceImpl<VO extends BasicVO<?>> implements Service<VO> 
 				boolean applyValue = UtilsService.hasToApplyConditionForQuery(condition, valueForQuery);
 				if (applyValue) {
 					String nameForParameter = UtilsService.getNameForParameter(filterField, condition);
-					where += UtilsService.getClauseCondition("tabla", fieldForQuery, condition, nameForParameter);
+					String lastTableAlias = getLastTableAlias(tableAlias, fieldForQuery);
+					if (lastTableAlias != tableAlias) {
+						from = getFromForField(from, tableAlias, fieldForQuery);
+						fieldForQuery = getLastField(fieldForQuery);
+					}
+					System.out.println("FROM: " + from);
+					where += UtilsService.getClauseCondition(lastTableAlias, fieldForQuery, condition,
+							nameForParameter);
 					if (nameForParameter != null) {
 						Object fixedValueForQuery = UtilsService.fixValueForQuery(valueForQuery, condition);
 						parameters.put(nameForParameter, fixedValueForQuery);
 					}
 				}
 			}
+			String hqlString = select + from + where;
+			LOGGER.info("ExampleQuery: " + hqlString);
+			Query query = this.entityManager.createQuery(hqlString);
+			setQueryParams(query, parameters);
+			return query;
 		} catch (NoSuchFieldException | SecurityException | IllegalAccessException | IllegalArgumentException
 				| InvocationTargetException | NoSuchMethodException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+			System.err.println("QUERY " + select + from + where);
 			throw new ExampleQueryException(e.getMessage());
 		}
-		String hqlString = select + from + where;
-		LOGGER.info("ExampleQuery: " + hqlString);
-		Query query = this.entityManager.createQuery(hqlString);
-		setQueryParams(query, parameters);
-		return query;
+
+	}
+
+	private String getLastField(String fieldForQuery) {
+		return fieldForQuery.substring(fieldForQuery.lastIndexOf(".") + 1);
+	}
+
+	private String getTableAliasForClass(Class<VO> entity) {
+		return entity.getSimpleName().substring(0, 1).toLowerCase() + entity.getSimpleName().substring(1);
+	}
+
+	private String getLastTableAlias(String currentTableAlias, String fieldForQuery) {
+		String result = currentTableAlias;
+		String[] split = fieldForQuery.split("\\.");
+		if (split.length > 1) {
+			result = split[split.length - 2];
+		} else {
+			result = currentTableAlias;
+		}
+		LOGGER.info("LAST TABLE ALIAS: of " + fieldForQuery + " is " + result);
+		return result;
 	}
 
 	private void setQueryParams(Query query, Map<String, Object> parameters) {
