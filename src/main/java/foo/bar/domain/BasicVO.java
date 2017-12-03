@@ -7,11 +7,13 @@ import java.util.Map.Entry;
 
 import javax.persistence.Column;
 import javax.persistence.Id;
+import javax.persistence.MappedSuperclass;
 
 import org.apache.log4j.Logger;
 
 import foo.bar.utils.Utils;
 
+@MappedSuperclass
 public abstract class BasicVO<PK> {
 
 	public static final String PK = "id";
@@ -38,7 +40,7 @@ public abstract class BasicVO<PK> {
 
 	@Id
 	@Column(name = BasicVO.PK)
-	public PK pk;
+	private PK pk;
 	
 	public PK getPk() {
 		return pk;
