@@ -1,5 +1,7 @@
 package foo.bar.domain;
 
+import java.util.Map;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
@@ -12,9 +14,9 @@ import foo.bar.annotations.Reference;
 public class ProductStock extends BasicVO<Long> {
 
 	public static final String PRODUCT = "product";
-	
+
 	public static final String PRODUCT_NAME = "productName";
-	
+
 	public static final String QUANTITY = "quantity";
 
 	public static final String MAX_QUANTITY = "maxQuantity";
@@ -35,11 +37,19 @@ public class ProductStock extends BasicVO<Long> {
 	@Transient
 	@Reference(fieldName = MIN_QUANTITY, referenceFor = QUANTITY)
 	public Integer minQuantity;
-	
+
 	@Transient
 	@Reference(fieldName = PRODUCT_NAME, referenceFor = PRODUCT + "." + Product.NAME)
 	public String productName;
-	
+
+	public ProductStock() {
+
+	}
+
+	public ProductStock(Map<String, Object> mapValues) {
+		super(mapValues);
+	}
+
 	public Product getProduct() {
 		return product;
 	}
@@ -79,5 +89,5 @@ public class ProductStock extends BasicVO<Long> {
 	public void setMinQuantity(Integer minQuantity) {
 		this.minQuantity = minQuantity;
 	}
-	
+
 }

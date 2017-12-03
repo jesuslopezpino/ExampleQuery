@@ -2,6 +2,7 @@ package foo.bar.domain;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -69,6 +70,14 @@ public class Customer extends BasicVO<Long> {
 	@Transient
 	@Reference(fieldName = BIRTH_DATE_END, referenceFor = BIRTH_DATE)
 	public Date birthDateEnd;
+
+	public Customer() {
+		super();
+	}
+	
+	public Customer(Map<String, Object> mapValues) {
+		super(mapValues);
+	}
 
 	public String getName() {
 		return name;

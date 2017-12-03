@@ -1,5 +1,7 @@
 package foo.bar.domain;
 
+import java.util.Map;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 
@@ -10,6 +12,13 @@ public class Product extends BasicVO<Long> {
 
 	public static final String DESCRIPTION = "description";
 
+	public Product() {
+	}
+
+	public Product(Map<String, Object> mapValues) {
+		super(mapValues);
+	}
+	
 	@Column(name = NAME)
 	private String name;
 

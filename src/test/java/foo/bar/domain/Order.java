@@ -2,6 +2,7 @@ package foo.bar.domain;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -20,13 +21,21 @@ public class Order extends BasicVO<Long>{
 
 	@ManyToOne
 	@JoinColumn(name = CUSTOMER)
-	private Customer customer;
-	
+	public Customer customer;
+	//TODO: cambiar
 	@Column(name = DATE)
 	private Date date;
 	
 	@OneToMany(mappedBy = PRODUCTS)
 	private List<ProductStock> products;
+
+	public Order() {
+		super();
+	}
+	
+	public Order(Map<String, Object> mapValues) {
+		super(mapValues);
+	}
 
 	public Customer getCustomer() {
 		return customer;
