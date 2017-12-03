@@ -18,8 +18,6 @@ public abstract class BasicVO<PK> {
 
 	public static final String PK = "id";
 	
-	Logger LOG = Logger.getLogger(BasicVO.class);
-
 	public BasicVO(){
 		super();
 	}
