@@ -118,14 +118,14 @@ public class Utils {
 			SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
 		String setterName = getSetterOfField(fieldName);
 		Method setter = objectClass.getClass().getMethod(setterName, value.getClass());
-		LOGGER.info("NEW setting field: " + fieldName + " with value: " + value);
+		LOGGER.debug("NEW setting field: " + fieldName + " with value: " + value);
 		setter.invoke(objectClass, value);
 	}
 
 	public static Object invokeGetter(String fieldName, Object objectClass) throws IllegalAccessException,
 			IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException {
-		LOGGER.info("NEW INVOKE GETTER");
 		String getterName = getGetterOfField(fieldName);
+		LOGGER.debug("invokeGetter getterName \"" + getterName + "");
 		Object invokedValue = objectClass.getClass().getMethod(getterName).invoke(objectClass, (Object[]) null);
 		return invokedValue;
 
