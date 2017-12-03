@@ -121,7 +121,7 @@ public abstract class ServiceImpl<VO extends BasicVO<?>> implements Service<VO> 
 		// return select;
 		String select = "select new map ( ";
 		int fieldsLength = fields.length;
-		int lastField = fieldsLength - 1;
+		int lastField = fieldsLength;
 		// TODO: detect duplicated fields to avoid problems
 		for (int i = 0; i < fieldsLength; i++) {
 			String field = fields[i];
@@ -129,7 +129,7 @@ public abstract class ServiceImpl<VO extends BasicVO<?>> implements Service<VO> 
 			String tableAlias = getTableAliasForClass(voClass);
 			String entityAlias = getLastTableAlias(tableAlias, field);
 			select += entityAlias + "." + entityField + " as " + field + "";
-			if (i != lastField) {
+			if (i != lastField - 1) {
 				select += ", ";
 			}
 		}
