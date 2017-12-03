@@ -14,7 +14,7 @@ public class TestProductStockService extends TestCommon<ProductStockServiceImpl,
 	protected Map<String, Object> initEntityFields() {
 		Map<String, Object> mapValues = new HashMap<>();
 		mapValues.put(ProductStock.PRODUCT_NAME, "LG");
-		mapValues.put(ProductStock.PRODUCT+ "." + Product.NAME, "Samsung");
+//		mapValues.put(ProductStock.PRODUCT+ "." + Product.NAME, "Samsung");
 		return mapValues;
 	}
 	
