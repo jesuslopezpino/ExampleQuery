@@ -78,10 +78,12 @@ public class UtilsService {
 			result = getClauseIsNullOrNotNull(tableName, filterField, condition);
 			break;
 		// case HqlConditions.BETWEEN:
+		case IN:
+			result = getClauseIn(tableName, filterField, condition, nameForParameter);
+			break;
 		case EQUALS:
 		case GREATER_EQUALS:
 		case GREATER_THAN:
-		case IN:
 		case LOWER_EQUALS:
 		case LOWER_THAN:
 		case NOT_EQUALS:
@@ -94,6 +96,10 @@ public class UtilsService {
 		// break;
 		}
 		return result;
+	}
+
+	private static String getClauseIn(String tableName, String filterField, HqlConditions condition, String nameForParameter) {
+		return " and (" + tableName + "." + filterField + " " + condition + "(:" + nameForParameter + "))";
 	}
 
 	public static String getClauseIsNullOrNotNull(String tableName, String filterField, HqlConditions condition) {
