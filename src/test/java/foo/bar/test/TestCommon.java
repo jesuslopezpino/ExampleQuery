@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.Map;
 
 import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 
 import org.apache.log4j.Logger;
@@ -19,7 +20,11 @@ import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.mockito.Mockito;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.transaction.annotation.Transactional;
 
 import foo.bar.domain.BasicVO;
 import foo.bar.domain.Customer;
@@ -27,10 +32,14 @@ import foo.bar.exceptions.ExampleQueryException;
 import foo.bar.service.impl.ServiceImpl;
 import foo.bar.service.utils.HqlConditions;
 
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration(locations ={"classpath:applicationContext.xml"})
+@Transactional
 public abstract class TestCommon<ServiceVO extends ServiceImpl, VO extends BasicVO<?>> {
 
 	protected static Logger LOGGER = Logger.getLogger(TestCommon.class);
 
+	@PersistenceContext
 	protected EntityManager entityManager;
 
 	protected ServiceImpl<VO> service;
@@ -74,11 +83,11 @@ public abstract class TestCommon<ServiceVO extends ServiceImpl, VO extends Basic
 	public void setUp() {
 		try {
 			service = (ServiceImpl<VO>) serviceVoClass.newInstance();
-			entityManager = mock(EntityManager.class);
+//			entityManager = mock(EntityManager.class);
 			service.setEntityManager(entityManager);
 
-			TypedQuery<Customer> query = mock(TypedQuery.class);
-			when(entityManager.createQuery(Mockito.anyString())).thenReturn(query);
+//			TypedQuery<Customer> query = mock(TypedQuery.class);
+//			when(entityManager.createQuery(Mockito.anyString())).thenReturn(query);
 
 		} catch (InstantiationException | IllegalAccessException e) {
 			// TODO Auto-generated catch block
