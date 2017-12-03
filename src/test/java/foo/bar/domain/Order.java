@@ -10,14 +10,14 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
-@Entity
+@Entity(name = "ORDER_TABLE")
 public class Order extends BasicVO<Long>{
 
 	public static final String CUSTOMER = "customer";
 
 	public static final String DATE = "date";
 
-	public static final String PRODUCTS = "products";
+	public static final String PRODUCTS_STOCK = "productsStock";
 
 	@ManyToOne
 	@JoinColumn(name = CUSTOMER)
@@ -26,8 +26,8 @@ public class Order extends BasicVO<Long>{
 	@Column(name = DATE)
 	private Date date;
 	
-	@OneToMany(mappedBy = ProductStock.PRODUCT)
-	private List<ProductStock> products;
+	@OneToMany(mappedBy = ProductStock.PRODUCT, targetEntity = ProductStock.class)
+	private List<ProductStock> productsStock;
 
 	public Order() {
 		super();
@@ -53,13 +53,14 @@ public class Order extends BasicVO<Long>{
 		this.date = date;
 	}
 
-	public List<ProductStock> getProducts() {
-		return products;
+	public List<ProductStock> getProductsStock() {
+		return productsStock;
 	}
 
-	public void setProducts(List<ProductStock> products) {
-		this.products = products;
+	public void setProductsStock(List<ProductStock> productsStock) {
+		this.productsStock = productsStock;
 	}
+
 	
 	
 }

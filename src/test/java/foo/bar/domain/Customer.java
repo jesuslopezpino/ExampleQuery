@@ -47,16 +47,18 @@ public class Customer extends BasicVO<Long> {
 	@Column(name = DOCUMENT_TYPE)
 	private String documentType;
 
-//	@Range(startField = BIRTH_DATE_START, endField = BIRTH_DATE_END)
+	// @Range(startField = BIRTH_DATE_START, endField = BIRTH_DATE_END)
 	@Column(name = BIRTH_DATE)
 	private Date birthDate;
 
-	@OneToMany(mappedBy = Order.CUSTOMER)
+	@OneToMany(mappedBy = Order.CUSTOMER, targetEntity = Order.class)
 	private List<Order> orders;
 
-	// TODO: if we don't include the transient annotation que query will not consider the Reference Annotation...
+	// TODO: if we don't include the transient annotation que query will not
+	// consider the Reference Annotation...
 	@Transient
-	@Reference(fieldName = ORDERS_PRODUCTS_NAME, referenceFor = Customer.ORDERS + "." + Order.PRODUCTS + "." + Product.NAME)
+	@Reference(fieldName = ORDERS_PRODUCTS_NAME, referenceFor = Customer.ORDERS + "." + Order.PRODUCTS_STOCK + "."
+			+ ProductStock.PRODUCT + "." + Product.NAME)
 	private String ordersProductsName;
 
 	@Transient
@@ -74,7 +76,7 @@ public class Customer extends BasicVO<Long> {
 	public Customer() {
 		super();
 	}
-	
+
 	public Customer(Map<String, Object> mapValues) {
 		super(mapValues);
 	}
