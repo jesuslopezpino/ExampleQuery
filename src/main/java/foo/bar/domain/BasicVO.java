@@ -17,11 +17,11 @@ import foo.bar.utils.Utils;
 public abstract class BasicVO<PK> {
 
 	public static final String PK = "id";
-	
-	public BasicVO(){
+
+	public BasicVO() {
 		super();
 	}
-	
+
 	public BasicVO(Map<String, Object> mapValues) {
 		super();
 		for (Iterator<Entry<String, Object>> iterator = mapValues.entrySet().iterator(); iterator.hasNext();) {
@@ -39,7 +39,7 @@ public abstract class BasicVO<PK> {
 	@Id
 	@Column(name = BasicVO.PK)
 	private PK pk;
-	
+
 	public PK getPk() {
 		return pk;
 	}
@@ -47,4 +47,21 @@ public abstract class BasicVO<PK> {
 	public void setPk(PK pk) {
 		this.pk = pk;
 	}
+
+	@Override
+	public String toString() {
+		return "'" + pk + "'";
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (obj != null && obj instanceof BasicVO) {
+			BasicVO other = (BasicVO) obj;
+			if (other.getPk().equals(this.getPk())) {
+				return true;
+			}
+		}
+		return super.equals(obj);
+	}
+
 }
