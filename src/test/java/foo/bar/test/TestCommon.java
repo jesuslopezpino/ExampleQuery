@@ -42,17 +42,17 @@ public abstract class TestCommon<ServiceVO extends ServiceImpl<VO>, VO extends B
 	@PersistenceContext
 	protected EntityManager entityManager;
 
-	protected ServiceImpl<VO> service;
+	private ServiceImpl<VO> service;
 
-	protected Class voClass;
+	private Class voClass;
 
-	protected Class serviceVoClass;
+	private Class serviceVoClass;
 
-	protected Map<String, HqlConditions> filter;
+	private Map<String, HqlConditions> filter;
 
-	protected VO[] examples;
+	private VO[] examples;
 
-	protected String[] customFields;
+	private String[] customFields;
 
 	public TestCommon() {
 		this.serviceVoClass = (Class<ServiceVO>) ((ParameterizedType) this.getClass().getGenericSuperclass())
@@ -70,6 +70,8 @@ public abstract class TestCommon<ServiceVO extends ServiceImpl<VO>, VO extends B
 	protected abstract VO[] initExamples();
 
 	protected abstract Map<String, HqlConditions> initFilter();
+
+	protected abstract Map<String, Object> initEntityFields();
 
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
@@ -98,8 +100,6 @@ public abstract class TestCommon<ServiceVO extends ServiceImpl<VO>, VO extends B
 		assertTrue(entity != null);
 	}
 
-	protected abstract Map<String, Object> initEntityFields();
-
 	@Test
 	public void testFindByExample() throws ExampleQueryException {
 		LOGGER.info("testFindByExample at class: " + this.getClass().getName());
@@ -108,24 +108,31 @@ public abstract class TestCommon<ServiceVO extends ServiceImpl<VO>, VO extends B
 			VO example = examples[i];
 			List<VO> result = service.findByExample(example, filter);
 			assertTrue(!result.isEmpty());
-			if (result.isEmpty()) {
-				LOGGER.error("FAIL AT SAMPLE: +" + i);
-				break;
-			}
+			showResult(example, result, i);
 		}
 	}
 
 	@Test
-	public void findCustomByExample() throws ExampleQueryException {
+	public void findCustomByExample() throws ExampleQueryException, NoSuchMethodException, SecurityException,
+			InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
 		LOGGER.info("findCustomByExample at class: " + this.getClass().getName());
 		for (int i = 0; i < examples.length; i++) {
 			LOGGER.info("-----------------------------------------------------------------------------");
 			VO example = examples[i];
 			List<VO> result = service.findCustomByExample(example, customFields, filter);
 			assertTrue(!result.isEmpty());
-			if (result.isEmpty()) {
-				LOGGER.error("FAIL AT SAMPLE: +" + i);
-				break;
+			showResult(example, result, i);
+		}
+	}
+
+	private void showResult(VO example, List<VO> result, int exampleIndex) {
+		if (result.isEmpty()) {
+			LOGGER.error("FAIL AT SAMPLE: +" + exampleIndex);
+		} else {
+			LOGGER.info("Example object: " + example.toString());
+			LOGGER.info("Returns " + result.size() + " items");
+			for (VO vo : result) {
+				LOGGER.info("item[" + exampleIndex + "]: " + vo.toString());
 			}
 		}
 	}
