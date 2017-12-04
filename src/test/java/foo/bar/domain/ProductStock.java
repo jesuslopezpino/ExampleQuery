@@ -23,6 +23,12 @@ public class ProductStock extends BasicVO<Long> {
 
 	public static final String MIN_QUANTITY = "minQuantity";
 
+	public static final String CUSTOMER_ORDER = "customerOrder";
+
+	@ManyToOne
+	@JoinColumn(name = CUSTOMER_ORDER, referencedColumnName = ProductStock.PK)
+	private CustomerOrder customerOrder;
+
 	@ManyToOne
 	@JoinColumn(name = PRODUCT)
 	private Product product;
@@ -88,6 +94,14 @@ public class ProductStock extends BasicVO<Long> {
 
 	public void setMinQuantity(Integer minQuantity) {
 		this.minQuantity = minQuantity;
+	}
+
+	public CustomerOrder getCustomerOrder() {
+		return customerOrder;
+	}
+
+	public void setCustomerOrder(CustomerOrder customerOrder) {
+		this.customerOrder = customerOrder;
 	}
 
 }
