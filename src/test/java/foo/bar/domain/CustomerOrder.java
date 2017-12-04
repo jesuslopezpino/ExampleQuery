@@ -25,7 +25,7 @@ public class CustomerOrder extends BasicVO<Long> {
 	public static final String PRODUCTS_STOCK_IDS = "productsStockIds";
 
 	@ManyToOne
-	@JoinColumn(name = CUSTOMER)
+	@JoinColumn(name = CUSTOMER, referencedColumnName = CustomerOrder.PK)
 	private Customer customer;
 
 	// TODO: cambiar
