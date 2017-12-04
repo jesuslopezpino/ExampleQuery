@@ -35,6 +35,10 @@ public abstract class TestCommon<ServiceVO extends ServiceImpl<VO>, VO extends B
 
 	protected static Logger LOGGER = Logger.getLogger(TestCommon.class);
 
+	protected static final String TIME_FORMAT = "DD/MM/YYYY HH:mm:SS";
+
+	protected static final String DATE_FORMAT = "DD/MM/YYYY";
+
 	@PersistenceContext
 	protected EntityManager entityManager;
 
@@ -105,8 +109,8 @@ public abstract class TestCommon<ServiceVO extends ServiceImpl<VO>, VO extends B
 			List<VO> result;
 			try {
 				result = service.findByExample(example, filter);
-				assertTrue(!result.isEmpty());
 				showResult(example, result, i, filter);
+				assertTrue(!result.isEmpty());
 			} catch (ExampleQueryException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -123,8 +127,8 @@ public abstract class TestCommon<ServiceVO extends ServiceImpl<VO>, VO extends B
 			List<VO> result;
 			try {
 				result = service.findCustomByExample(example, customFields, filter);
-				assertTrue(!result.isEmpty());
 				showResult(example, result, i, filter);
+				assertTrue(!result.isEmpty());
 			} catch (NoSuchMethodException | SecurityException | InstantiationException | IllegalAccessException
 					| IllegalArgumentException | InvocationTargetException | ExampleQueryException e) {
 				// TODO Auto-generated catch block
@@ -135,7 +139,7 @@ public abstract class TestCommon<ServiceVO extends ServiceImpl<VO>, VO extends B
 
 	private void showResult(VO example, List<VO> result, int exampleIndex, Map<String, HqlConditions> filters) {
 		if (result.isEmpty()) {
-			LOGGER.error("FAIL AT SAMPLE: +" + exampleIndex);
+			LOGGER.error("FAIL AT SAMPLE: " + (exampleIndex + 1));
 		} else {
 			LOGGER.info("Example object: " + example.toString());
 			LOGGER.info("With filters: " + filters);

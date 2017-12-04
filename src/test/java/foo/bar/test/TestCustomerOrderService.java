@@ -27,7 +27,7 @@ public class TestCustomerOrderService extends TestCommon<CustomerOrderServiceImp
 			ProductStock productsStock = Given.givenAProductStock(1L, product, 100, entityManager);
 			List<ProductStock> productsStockList = new ArrayList<>();
 			productsStockList.add(productsStock);
-			Date dateOrder = Utils.getDate("01/01/2017", "DD/MM/YYYY");
+			Date dateOrder = Utils.getDate("01/01/2017", DATE_FORMAT);
 			CustomerOrder customerOrder = Given.givenACustomerOrder(1L, customer, dateOrder, productsStockList, entityManager);
 		} catch (UniqueException e) {
 			// TODO Auto-generated catch block

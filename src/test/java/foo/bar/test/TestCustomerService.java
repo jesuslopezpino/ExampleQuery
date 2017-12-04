@@ -17,9 +17,9 @@ public class TestCustomerService extends TestCommon<CustomerServiceImpl, Custome
 	@Override
 	public void setUp() throws InstantiationException, IllegalAccessException {
 		super.setUp();
-		Date date = Utils.getDate("10/12/1983 12:00:00", "DD/MM/YYYY HH:mm:SS");
 		try {
-			Customer entity = Given.givenACustomer(1L, "Jesus", "Lopez", date, "30973837J", "DNI", entityManager);
+			Customer entity = Given.givenACustomer(1L, "Jesus", "Lopez",
+					Utils.getDate("10/12/1983 12:00:00", TIME_FORMAT), "30973837J", "DNI", entityManager);
 		} catch (UniqueException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -48,12 +48,12 @@ public class TestCustomerService extends TestCommon<CustomerServiceImpl, Custome
 		example1.setDocument("30973837J");
 
 		Customer example2 = new Customer();
-		example2.setBirthDateStart(Utils.getDate("01/01/1983 00:00:00", "DD/MM/YYYY HH:mm:SS"));
-		example2.setBirthDateEnd(Utils.getDate("01/01/1983 23:59:59", "DD/MM/YYYY HH:mm:SS"));
+		example2.setBirthDateStart(Utils.getDate("01/01/1983 00:00:00", TIME_FORMAT));
+		example2.setBirthDateEnd(Utils.getDate("12/12/1983 23:59:59", TIME_FORMAT));
 
 		Customer example3 = new Customer();
 		example3.setLastName("Lopez");
-		example3.setBirthDateEnd(Utils.getDate("01/01/1983 00:00:00", "dd/MM/yyyy hh:mm:ss"));
+		example3.setBirthDateEnd(Utils.getDate("12/12/1983 23:59:59", TIME_FORMAT));
 		example3.setOrdersProductsName("Pizza");
 
 		List<String> documentTypeListExample = new ArrayList<>();
