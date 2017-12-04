@@ -5,6 +5,8 @@ import java.util.List;
 
 import javax.persistence.EntityManager;
 
+import org.apache.log4j.Logger;
+
 import foo.bar.domain.Customer;
 import foo.bar.domain.CustomerOrder;
 import foo.bar.domain.Product;
@@ -17,6 +19,8 @@ import foo.bar.service.impl.ProductStockServiceImpl;
 
 public class Given {
 
+	private static Logger LOGGER = Logger.getLogger(Given.class);
+
 	public static ProductStock givenAProductStock(Long pk, Product product, Integer quantity,
 			EntityManager entityManager) throws UniqueException {
 		ProductStock result = new ProductStock();
@@ -26,6 +30,7 @@ public class Given {
 		ProductStockServiceImpl service = new ProductStockServiceImpl();
 		service.setEntityManager(entityManager);
 		service.save(result);
+		LOGGER.info("Given " + result);
 		return result;
 	}
 
@@ -38,6 +43,7 @@ public class Given {
 		ProductServiceImpl service = new ProductServiceImpl();
 		service.setEntityManager(entityManager);
 		service.save(result);
+		LOGGER.info("Given " + result);
 		return result;
 	}
 
@@ -53,10 +59,12 @@ public class Given {
 		CustomerServiceImpl service = new CustomerServiceImpl();
 		service.setEntityManager(entityManager);
 		service.save(result);
+		LOGGER.info("Given " + result);
 		return result;
 	}
 
-	public static CustomerOrder givenACustomerOrder(Long pk, Customer customer, Date date, List<ProductStock> productsStock, EntityManager entityManager) throws UniqueException {
+	public static CustomerOrder givenACustomerOrder(Long pk, Customer customer, Date date,
+			List<ProductStock> productsStock, EntityManager entityManager) throws UniqueException {
 		CustomerOrder result = new CustomerOrder();
 		result.setCustomer(customer);
 		result.setDate(date);
@@ -65,6 +73,7 @@ public class Given {
 		CustomerOrderServiceImpl service = new CustomerOrderServiceImpl();
 		service.setEntityManager(entityManager);
 		service.save(result);
+		LOGGER.info("Given " + result);
 		return result;
 	}
 
