@@ -6,9 +6,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.junit.Test;
-
 import foo.bar.domain.Customer;
+import foo.bar.exceptions.UniqueException;
 import foo.bar.service.impl.CustomerServiceImpl;
 import foo.bar.service.utils.HqlConditions;
 import foo.bar.utils.Utils;
@@ -16,16 +15,28 @@ import foo.bar.utils.Utils;
 public class TestCustomerService extends TestCommon<CustomerServiceImpl, Customer> {
 
 	@Override
+	public void setUp() throws InstantiationException, IllegalAccessException {
+		super.setUp();
+		Date date = Utils.getDate("10/12/1983 12:00:00", "DD/MM/YYYY HH:mm:SS");
+		try {
+			Customer entity = Given.givenACustomer(1L, "Jesus", "Lopez", date, "30973837J", "DNI", entityManager);
+		} catch (UniqueException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
+	@Override
 	protected Map<String, HqlConditions> initFilter() {
 		Map<String, HqlConditions> filter = new HashMap<>();
 		filter.put(Customer.NAME, HqlConditions.LIKE_IGNORE_CASE);
 		filter.put(Customer.LAST_NAME, HqlConditions.EQUALS);
-		// filter.put(Customer.BIRTH_DATE, HqlConditions.BETWEEN);
 		filter.put(Customer.BIRTH_DATE_START, HqlConditions.GREATER_EQUALS);
 		filter.put(Customer.BIRTH_DATE_END, HqlConditions.LOWER_EQUALS);
 		filter.put(Customer.DOCUMENT, HqlConditions.EQUALS);
-		filter.put(Customer.DOCUMENT_TYPE_LIST, HqlConditions.IN);
-		filter.put(Customer.ORDERS_PRODUCTS_NAME, HqlConditions.LIKE_IGNORE_CASE);
+		// filter.put(Customer.DOCUMENT_TYPE_LIST, HqlConditions.IN);
+		// filter.put(Customer.ORDERS_PRODUCTS_NAME,
+		// HqlConditions.LIKE_IGNORE_CASE);
 		return filter;
 	}
 
@@ -35,13 +46,10 @@ public class TestCustomerService extends TestCommon<CustomerServiceImpl, Custome
 		example1.setName("Jesus");
 		example1.setLastName("Lopez");
 		example1.setDocument("30973837J");
-		example1.setBirthDateStart(Utils.getDate("01/01/1983 00:00:00", "dd/MM/yyyy hh:mm:ss"));
-		example1.setBirthDateEnd(Utils.getDate("01/01/1983 00:00:00", "dd/MM/yyyy hh:mm:ss"));
 
 		Customer example2 = new Customer();
-		example2.setName("Jesus");
-		example2.setDocument("30973837J");
-		example2.setBirthDateStart(Utils.getDate("01/01/1983 00:00:00", "dd/MM/yyyy hh:mm:ss"));
+		example2.setBirthDateStart(Utils.getDate("01/01/1983 00:00:00", "DD/MM/YYYY HH:mm:SS"));
+		example2.setBirthDateEnd(Utils.getDate("01/01/1983 23:59:59", "DD/MM/YYYY HH:mm:SS"));
 
 		Customer example3 = new Customer();
 		example3.setLastName("Lopez");

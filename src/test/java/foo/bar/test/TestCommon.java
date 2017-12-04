@@ -33,9 +33,9 @@ import foo.bar.service.impl.ServiceImpl;
 import foo.bar.service.utils.HqlConditions;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations ={"classpath:applicationContext.xml"})
+@ContextConfiguration(locations = { "classpath:applicationContext.xml" })
 @Transactional
-public abstract class TestCommon<ServiceVO extends ServiceImpl, VO extends BasicVO<?>> {
+public abstract class TestCommon<ServiceVO extends ServiceImpl<VO>, VO extends BasicVO<?>> {
 
 	protected static Logger LOGGER = Logger.getLogger(TestCommon.class);
 
@@ -80,19 +80,9 @@ public abstract class TestCommon<ServiceVO extends ServiceImpl, VO extends Basic
 	}
 
 	@Before
-	public void setUp() {
-		try {
-			service = (ServiceImpl<VO>) serviceVoClass.newInstance();
-//			entityManager = mock(EntityManager.class);
-			service.setEntityManager(entityManager);
-
-//			TypedQuery<Customer> query = mock(TypedQuery.class);
-//			when(entityManager.createQuery(Mockito.anyString())).thenReturn(query);
-
-		} catch (InstantiationException | IllegalAccessException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+	public void setUp() throws InstantiationException, IllegalAccessException {
+		service = (ServiceImpl<VO>) serviceVoClass.newInstance();
+		service.setEntityManager(entityManager);
 	}
 
 	@After
@@ -100,7 +90,8 @@ public abstract class TestCommon<ServiceVO extends ServiceImpl, VO extends Basic
 	}
 
 	@Test
-	public void testEntity() throws NoSuchMethodException, SecurityException, InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
+	public void testEntity() throws NoSuchMethodException, SecurityException, InstantiationException,
+			IllegalAccessException, IllegalArgumentException, InvocationTargetException {
 		Map<String, Object> mapValues = initEntityFields();
 		Constructor constructor = voClass.getDeclaredConstructor(Map.class);
 		Object entity = constructor.newInstance(mapValues);
@@ -116,7 +107,11 @@ public abstract class TestCommon<ServiceVO extends ServiceImpl, VO extends Basic
 			LOGGER.info("-----------------------------------------------------------------------------");
 			VO example = examples[i];
 			List<VO> result = service.findByExample(example, filter);
-			assertTrue(result.isEmpty());
+			assertTrue(!result.isEmpty());
+			if (result.isEmpty()) {
+				LOGGER.error("FAIL AT SAMPLE: +" + i);
+				break;
+			}
 		}
 	}
 
@@ -127,7 +122,11 @@ public abstract class TestCommon<ServiceVO extends ServiceImpl, VO extends Basic
 			LOGGER.info("-----------------------------------------------------------------------------");
 			VO example = examples[i];
 			List<VO> result = service.findCustomByExample(example, customFields, filter);
-			assertTrue(result.isEmpty());
+			assertTrue(!result.isEmpty());
+			if (result.isEmpty()) {
+				LOGGER.error("FAIL AT SAMPLE: +" + i);
+				break;
+			}
 		}
 	}
 }
