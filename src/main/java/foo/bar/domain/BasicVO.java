@@ -38,7 +38,7 @@ public abstract class BasicVO<PK> {
 
 	@Id
 	@Column(name = BasicVO.PK)
-	private PK pk;
+	protected PK pk;
 
 	public PK getPk() {
 		return pk;
@@ -50,7 +50,7 @@ public abstract class BasicVO<PK> {
 
 	@Override
 	public String toString() {
-		return "'" + pk + "'";
+		return "BasicVO [pk=" + pk + "]";
 	}
 
 	@Override
