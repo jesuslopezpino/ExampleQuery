@@ -1,7 +1,9 @@
 package foo.bar.service.impl;
 
+import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.ParameterizedType;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -62,10 +64,18 @@ public abstract class ServiceImpl<VO extends BasicVO<?>> implements Service<VO> 
 	}
 
 	public List<VO> findCustomByExample(VO example, String[] fields, Map<String, HqlConditions> filter)
-			throws ExampleQueryException {
+			throws ExampleQueryException, NoSuchMethodException, SecurityException, InstantiationException,
+			IllegalAccessException, IllegalArgumentException, InvocationTargetException {
 		String select = this.createCustomSelect(fields);
 		Query query = createQueryForExample(example, filter, select);
-		return query.getResultList();
+		List<Map<String, Object>> list = query.getResultList();
+		List<VO> result = new ArrayList<>();
+		for (Map<String, Object> mapValues : list) {
+			Constructor constructor = voClass.getDeclaredConstructor(Map.class);
+			Object entity = constructor.newInstance(mapValues);
+			result.add((VO) entity);
+		}
+		return result;
 	}
 
 	public boolean delete(VO entity) {
