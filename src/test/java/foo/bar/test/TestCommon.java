@@ -1,18 +1,16 @@
 package foo.bar.test;
 
 import static org.junit.Assert.assertTrue;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.ParameterizedType;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.persistence.TypedQuery;
 
 import org.apache.log4j.Logger;
 import org.junit.After;
@@ -21,13 +19,11 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.Mockito;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
 import foo.bar.domain.BasicVO;
-import foo.bar.domain.Customer;
 import foo.bar.exceptions.ExampleQueryException;
 import foo.bar.service.impl.ServiceImpl;
 import foo.bar.service.utils.HqlConditions;
@@ -95,41 +91,54 @@ public abstract class TestCommon<ServiceVO extends ServiceImpl<VO>, VO extends B
 	public void testEntity() throws NoSuchMethodException, SecurityException, InstantiationException,
 			IllegalAccessException, IllegalArgumentException, InvocationTargetException {
 		Map<String, Object> mapValues = initEntityFields();
-		Constructor constructor = voClass.getDeclaredConstructor(Map.class);
-		Object entity = constructor.newInstance(mapValues);
+		Constructor constructor = voClass.getConstructor(HashMap.class);
+		VO entity = (VO) constructor.newInstance((Map) mapValues);
 		assertTrue(entity != null);
 	}
 
 	@Test
-	public void testFindByExample() throws ExampleQueryException {
+	public void testFindByExample() {
 		LOGGER.info("testFindByExample at class: " + this.getClass().getName());
 		for (int i = 0; i < examples.length; i++) {
 			LOGGER.info("-----------------------------------------------------------------------------");
 			VO example = examples[i];
-			List<VO> result = service.findByExample(example, filter);
-			assertTrue(!result.isEmpty());
-			showResult(example, result, i);
+			List<VO> result;
+			try {
+				result = service.findByExample(example, filter);
+				assertTrue(!result.isEmpty());
+				showResult(example, result, i, filter);
+			} catch (ExampleQueryException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 	}
 
 	@Test
-	public void findCustomByExample() throws ExampleQueryException, NoSuchMethodException, SecurityException,
-			InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
+	public void findCustomByExample() {
 		LOGGER.info("findCustomByExample at class: " + this.getClass().getName());
 		for (int i = 0; i < examples.length; i++) {
 			LOGGER.info("-----------------------------------------------------------------------------");
 			VO example = examples[i];
-			List<VO> result = service.findCustomByExample(example, customFields, filter);
-			assertTrue(!result.isEmpty());
-			showResult(example, result, i);
+			List<VO> result;
+			try {
+				result = service.findCustomByExample(example, customFields, filter);
+				assertTrue(!result.isEmpty());
+				showResult(example, result, i, filter);
+			} catch (NoSuchMethodException | SecurityException | InstantiationException | IllegalAccessException
+					| IllegalArgumentException | InvocationTargetException | ExampleQueryException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 	}
 
-	private void showResult(VO example, List<VO> result, int exampleIndex) {
+	private void showResult(VO example, List<VO> result, int exampleIndex, Map<String, HqlConditions> filters) {
 		if (result.isEmpty()) {
 			LOGGER.error("FAIL AT SAMPLE: +" + exampleIndex);
 		} else {
 			LOGGER.info("Example object: " + example.toString());
+			LOGGER.info("With filters: " + filters);
 			LOGGER.info("Returns " + result.size() + " items");
 			for (VO vo : result) {
 				LOGGER.info("item[" + exampleIndex + "]: " + vo.toString());
