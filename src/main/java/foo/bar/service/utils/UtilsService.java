@@ -65,10 +65,10 @@ public class UtilsService {
 
 	public static String getClauseCondition(String tableName, String filterField, HqlConditions condition,
 			String nameForParameter) {
-		LOGGER.info("tableName: " + tableName);
-		LOGGER.info("filterField: " + filterField);
-		LOGGER.info("condition: " + condition);
-		LOGGER.info("nameForParameter: " + nameForParameter);
+		LOGGER.debug("tableName: " + tableName);
+		LOGGER.debug("filterField: " + filterField);
+		LOGGER.debug("condition: " + condition);
+		LOGGER.debug("nameForParameter: " + nameForParameter);
 		String result = null;
 		switch (condition) {
 		case LIKE:
