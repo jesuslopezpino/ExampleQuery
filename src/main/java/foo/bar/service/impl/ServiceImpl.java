@@ -71,9 +71,9 @@ public abstract class ServiceImpl<VO extends BasicVO<?>> implements Service<VO> 
 		List<Map<String, Object>> list = query.getResultList();
 		List<VO> result = new ArrayList<>();
 		for (Map<String, Object> mapValues : list) {
-			Constructor constructor = voClass.getDeclaredConstructor(Map.class);
-			Object entity = constructor.newInstance(mapValues);
-			result.add((VO) entity);
+			Constructor constructor = voClass.getConstructor(HashMap.class);
+			VO entity = (VO) constructor.newInstance(mapValues);
+			result.add(entity);
 		}
 		return result;
 	}
@@ -150,9 +150,9 @@ public abstract class ServiceImpl<VO extends BasicVO<?>> implements Service<VO> 
 	}
 
 	public static String getFromForField(String from, String table, String fieldForQuery) {
-		System.out.println("getFromForField");
-		System.out.println("table: " + table);
-		System.out.println("fieldForquery: " + fieldForQuery);
+		LOGGER.debug("getFromForField");
+		LOGGER.debug("table: " + table);
+		LOGGER.debug("fieldForquery: " + fieldForQuery);
 		String lastTable = table;
 		String[] fields = fieldForQuery.split("\\.");
 		String nextJoin = "";
@@ -165,7 +165,7 @@ public abstract class ServiceImpl<VO extends BasicVO<?>> implements Service<VO> 
 			}
 			lastTable = field;
 		}
-		System.out.println("FROOOM: " + from);
+		LOGGER.debug("FROOOM: " + from);
 		return from;
 	}
 
@@ -192,7 +192,7 @@ public abstract class ServiceImpl<VO extends BasicVO<?>> implements Service<VO> 
 						from = getFromForField(from, tableAlias, fieldForQuery);
 					}
 					fieldForQuery = getLastField(fieldForQuery);
-					System.out.println("FROM: " + from);
+					LOGGER.debug("FROM: " + from);
 					where += UtilsService.getClauseCondition(lastTableAlias, fieldForQuery, condition,
 							nameForParameter);
 					if (nameForParameter != null) {
@@ -232,7 +232,7 @@ public abstract class ServiceImpl<VO extends BasicVO<?>> implements Service<VO> 
 		} else {
 			result = currentTableAlias;
 		}
-		LOGGER.info("LAST TABLE ALIAS: of " + fieldForQuery + " is " + result);
+		LOGGER.debug("LAST TABLE ALIAS: of " + fieldForQuery + " is " + result);
 		return result;
 	}
 
@@ -241,7 +241,7 @@ public abstract class ServiceImpl<VO extends BasicVO<?>> implements Service<VO> 
 			Entry<String, Object> parameter = iterator.next();
 			String parameterKey = parameter.getKey();
 			Object parameterValue = parameter.getValue();
-			LOGGER.info("parameter: \"" + parameterKey + "\"\tvalue: \"" + parameterValue + "\"");
+			LOGGER.debug("parameter: \"" + parameterKey + "\"\tvalue: \"" + parameterValue + "\"");
 			query.setParameter(parameterKey, parameterValue);
 		}
 	}
