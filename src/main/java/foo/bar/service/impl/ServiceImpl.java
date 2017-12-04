@@ -55,7 +55,7 @@ public abstract class ServiceImpl<VO extends BasicVO<?>> implements Service<VO> 
 	}
 
 	public List<VO> findByExample(VO example, Map<String, HqlConditions> filter) throws ExampleQueryException {
-		String tableAlias = example.getClass().getSimpleName();
+		String tableAlias = getTableAliasForClass(voClass);
 		String select = "select " + tableAlias;
 		Query query = createQueryForExample(example, filter, select);
 		return query.getResultList();
@@ -179,8 +179,8 @@ public abstract class ServiceImpl<VO extends BasicVO<?>> implements Service<VO> 
 					String lastTableAlias = getLastTableAlias(tableAlias, fieldForQuery);
 					if (lastTableAlias != tableAlias) {
 						from = getFromForField(from, tableAlias, fieldForQuery);
-						fieldForQuery = getLastField(fieldForQuery);
 					}
+					fieldForQuery = getLastField(fieldForQuery);
 					System.out.println("FROM: " + from);
 					where += UtilsService.getClauseCondition(lastTableAlias, fieldForQuery, condition,
 							nameForParameter);
