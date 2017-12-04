@@ -14,6 +14,7 @@ import foo.bar.exceptions.UniqueException;
 import foo.bar.service.impl.CustomerOrderServiceImpl;
 import foo.bar.service.utils.HqlConditions;
 import foo.bar.service.utils.UtilsService;
+import foo.bar.utils.Utils;
 
 public class TestCustomerOrderService extends TestCommon<CustomerOrderServiceImpl, CustomerOrder> {
 
@@ -22,12 +23,12 @@ public class TestCustomerOrderService extends TestCommon<CustomerOrderServiceImp
 		super.setUp();
 		try {
 			Customer customer = Given.givenACustomer(1L,"Jesus", entityManager);
-			Product product = Given.givenAProduct(1L, "Cocacola", "Lata", entityManager);
+			Product product = Given.givenAProduct(1L, "CocaCola", "Lata", entityManager);
 			ProductStock productsStock = Given.givenAProductStock(1L, product, 100, entityManager);
 			List<ProductStock> productsStockList = new ArrayList<>();
 			productsStockList.add(productsStock);
-			Date date = new Date();
-			CustomerOrder customerOrder = Given.givenACustomerOrder(1L, customer, date, productsStockList, entityManager);
+			Date dateOrder = Utils.getDate("01/01/2017", "DD/MM/YYYY");
+			CustomerOrder customerOrder = Given.givenACustomerOrder(1L, customer, dateOrder, productsStockList, entityManager);
 		} catch (UniqueException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -45,7 +46,7 @@ public class TestCustomerOrderService extends TestCommon<CustomerOrderServiceImp
 	@Override
 	protected Map<String, HqlConditions> initFilter() {
 		Map<String, HqlConditions> filter = new HashMap<String, HqlConditions>();
-//		filter.put(CustomerOrder.DATE, HqlConditions.LOWER_THAN);
+		filter.put(CustomerOrder.DATE, HqlConditions.LOWER_EQUALS);
 		filter.put(CustomerOrder.PRODUCTS_STOCK_IDS, HqlConditions.IN);
 //		filter.put(CustomerOrder.CUSTOMER, HqlConditions.NOT_EQUALS);
 		return filter;
@@ -70,7 +71,8 @@ public class TestCustomerOrderService extends TestCommon<CustomerOrderServiceImp
 		example3.setProductsStockIds(products);
 		CustomerOrder[] examples = {
 				example1
-//				, example2,
+				, example2
+//				,
 //				example3
 				};
 		return examples;
