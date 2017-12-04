@@ -13,6 +13,7 @@ public class Product extends BasicVO<Long> {
 	public static final String DESCRIPTION = "description";
 
 	public Product() {
+		super();
 	}
 
 	public Product(Map<String, Object> mapValues) {
