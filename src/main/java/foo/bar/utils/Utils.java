@@ -16,6 +16,7 @@ import javax.persistence.Transient;
 import org.apache.log4j.Logger;
 
 import foo.bar.annotations.readers.ReferenceReader;
+import foo.bar.domain.BasicVO;
 
 public class Utils {
 
@@ -117,8 +118,9 @@ public class Utils {
 		invokeSetter(lastField, lastClass, value);
 	}
 
-	public static void invokeSetter(String fieldName, Object objectClass, Object value) throws NoSuchMethodException,
-			SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
+	public static void invokeSetter(String fieldName, Object objectClass, Object value)
+			throws NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException,
+			InvocationTargetException, NoSuchFieldException {
 		String setterName = getSetterOfField(fieldName);
 		// Dates... Database will return Timestamp that we usually implements
 		// with java.util.Date, so we have to check it and fix it
@@ -128,8 +130,33 @@ public class Utils {
 			setter = objectClass.getClass().getMethod(setterName, Date.class);
 			setter.invoke(objectClass, dateValue);
 		} else {
-			setter = objectClass.getClass().getMethod(setterName, value.getClass());
-			setter.invoke(objectClass, value);
+			if (isClassField(fieldName, objectClass)) {
+				setter = objectClass.getClass().getMethod(setterName, value.getClass());
+				setter.invoke(objectClass, value);
+			} else {
+				// TODO: we are only covering one herence...
+				if(!isPkField(fieldName)){
+					setter = objectClass.getClass().getSuperclass().getMethod(setterName, value.getClass());
+				}else{
+					// Maybe I can use that case allways...?
+					setter = objectClass.getClass().getSuperclass().getMethod(setterName, Object.class);
+				}
+				setter.invoke(objectClass, value);
+
+			}
+		}
+	}
+
+	private static boolean isPkField(String fieldName) {
+		return fieldName.equals(BasicVO.PK);
+	}
+
+	private static boolean isClassField(String fieldName, Object objectClass) {
+		try {
+			objectClass.getClass().getDeclaredField(fieldName);
+			return true;
+		} catch (NoSuchFieldException | SecurityException e) {
+			return false;
 		}
 	}
 
