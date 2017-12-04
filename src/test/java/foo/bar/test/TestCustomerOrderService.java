@@ -13,6 +13,7 @@ import foo.bar.domain.ProductStock;
 import foo.bar.exceptions.UniqueException;
 import foo.bar.service.impl.CustomerOrderServiceImpl;
 import foo.bar.service.utils.HqlConditions;
+import foo.bar.service.utils.UtilsService;
 
 public class TestCustomerOrderService extends TestCommon<CustomerOrderServiceImpl, CustomerOrder> {
 
@@ -20,8 +21,13 @@ public class TestCustomerOrderService extends TestCommon<CustomerOrderServiceImp
 	public void setUp() throws InstantiationException, IllegalAccessException {
 		super.setUp();
 		try {
+			Customer customer = Given.givenACustomer(1L,"Jesus", entityManager);
 			Product product = Given.givenAProduct(1L, "Cocacola", "Lata", entityManager);
 			ProductStock productsStock = Given.givenAProductStock(1L, product, 100, entityManager);
+			List<ProductStock> productsStockList = new ArrayList<>();
+			productsStockList.add(productsStock);
+			Date date = new Date();
+			CustomerOrder customerOrder = Given.givenACustomerOrder(1L, customer, date, productsStockList, entityManager);
 		} catch (UniqueException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -63,8 +69,10 @@ public class TestCustomerOrderService extends TestCommon<CustomerOrderServiceImp
 		products.add(3L);
 		example3.setProductsStockIds(products);
 		CustomerOrder[] examples = {
-				example1, example2,
-				example3 };
+				example1
+//				, example2,
+//				example3
+				};
 		return examples;
 	}
 

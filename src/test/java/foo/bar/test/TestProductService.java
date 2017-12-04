@@ -4,10 +4,25 @@ import java.util.HashMap;
 import java.util.Map;
 
 import foo.bar.domain.Product;
+import foo.bar.exceptions.UniqueException;
 import foo.bar.service.impl.ProductServiceImpl;
 import foo.bar.service.utils.HqlConditions;
 
 public class TestProductService extends TestCommon<ProductServiceImpl, Product> {
+
+	@Override
+	public void setUp() {
+		try {
+			super.setUp();
+			Given.givenAProduct(1L, "Samsung", "television", entityManager);
+		} catch (InstantiationException | IllegalAccessException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (UniqueException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
 
 	@Override
 	protected Map<String, Object> initEntityFields() {
@@ -16,12 +31,12 @@ public class TestProductService extends TestCommon<ProductServiceImpl, Product> 
 		mapValues.put(Product.NAME, "Samsung");
 		return mapValues;
 	}
-	
+
 	@Override
 	protected Map<String, HqlConditions> initFilter() {
 		Map<String, HqlConditions> filter = new HashMap<String, HqlConditions>();
-//		filter.put(Product.DESCRIPTION, HqlConditions.LIKE_IGNORE_CASE);
-//		filter.put(Product.NAME, HqlConditions.LIKE_IGNORE_CASE);
+		// filter.put(Product.DESCRIPTION, HqlConditions.LIKE_IGNORE_CASE);
+		// filter.put(Product.NAME, HqlConditions.LIKE_IGNORE_CASE);
 		return filter;
 	}
 
@@ -40,7 +55,7 @@ public class TestProductService extends TestCommon<ProductServiceImpl, Product> 
 		String field1 = Product.PK;
 		String field2 = Product.NAME;
 		String field3 = Product.DESCRIPTION;
-		String fields[] = {field1, field2, field3};
+		String fields[] = { field1, field2, field3 };
 		return fields;
 	}
 
