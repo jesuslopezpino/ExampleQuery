@@ -4,6 +4,7 @@ import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -119,9 +120,25 @@ public class Utils {
 	public static void invokeSetter(String fieldName, Object objectClass, Object value) throws NoSuchMethodException,
 			SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
 		String setterName = getSetterOfField(fieldName);
-		Method setter = objectClass.getClass().getMethod(setterName, value.getClass());
-		LOGGER.info("NEW setting field: " + fieldName + " with value: " + value);
-		setter.invoke(objectClass, value);
+		// Dates... Database will return Timestamp that we usually implements
+		// with java.util.Date, so we have to check it and fix it
+		Method setter = null;
+		if (isTimestamp(value)) {
+			Date dateValue = timestampToDate((Timestamp) value);
+			setter = objectClass.getClass().getMethod(setterName, Date.class);
+			setter.invoke(objectClass, dateValue);
+		} else {
+			setter = objectClass.getClass().getMethod(setterName, value.getClass());
+			setter.invoke(objectClass, value);
+		}
+	}
+
+	private static Date timestampToDate(Timestamp value) {
+		return new Date(value.getTime());
+	}
+
+	private static boolean isTimestamp(Object value) {
+		return value instanceof Timestamp;
 	}
 
 	public static Object invokeGetter(String fieldName, Object objectClass) throws IllegalAccessException,
