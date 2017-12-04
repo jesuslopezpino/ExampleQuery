@@ -20,7 +20,8 @@ public class Utils {
 
 	private static Logger LOGGER = Logger.getLogger(Utils.class);
 
-	public static <T> Object getFieldValue(T object, String fieldName) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException {
+	public static <T> Object getFieldValue(T object, String fieldName) throws IllegalAccessException,
+			IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException {
 		final String[] fieldSplit = fieldName.split("\\.");
 		final List<String> fields = new ArrayList<>();
 		if (fieldSplit.length == 0) {
@@ -105,8 +106,9 @@ public class Utils {
 			LOGGER.info("lastValue: " + lastValue);
 			if (lastValue == null) {
 				LOGGER.info("lastClass " + lastClass.getClass().getName());
-				Class<? extends Object> fieldType = lastClass.getClass().getField(getter).getType();
+				Class<? extends Object> fieldType = lastClass.getClass().getDeclaredField(getter).getType();
 				lastValue = fieldType.newInstance();
+				LOGGER.info("NEW LAST VALUE: " + lastValue);
 				invokeSetter(getter, lastClass, lastValue);
 			}
 			lastClass = lastValue;
@@ -118,7 +120,7 @@ public class Utils {
 			SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
 		String setterName = getSetterOfField(fieldName);
 		Method setter = objectClass.getClass().getMethod(setterName, value.getClass());
-		LOGGER.debug("NEW setting field: " + fieldName + " with value: " + value);
+		LOGGER.info("NEW setting field: " + fieldName + " with value: " + value);
 		setter.invoke(objectClass, value);
 	}
 
