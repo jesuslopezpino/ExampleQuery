@@ -82,6 +82,7 @@ public abstract class ServiceImpl<VO extends BasicVO<?>> implements Service<VO> 
 	public VO save(VO entity) throws UniqueException {
 		try {
 			this.entityManager.persist(entity);
+			this.entityManager.flush();
 		} catch (Exception e) {
 			// TODO: implement
 		}
