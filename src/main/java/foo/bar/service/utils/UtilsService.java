@@ -1,5 +1,8 @@
 package foo.bar.service.utils;
 
+import java.util.Collection;
+import java.util.List;
+
 import org.apache.log4j.Logger;
 
 import foo.bar.utils.Utils;
@@ -44,6 +47,9 @@ public class UtilsService {
 		case NOT_EQUALS:
 		case NOT_IN:
 			if (value != null) {
+				if (value instanceof Collection) {
+					result = ((Collection) value).size() > 0;
+				}
 				result = true;
 			}
 			break;
@@ -79,6 +85,7 @@ public class UtilsService {
 			break;
 		// case HqlConditions.BETWEEN:
 		case IN:
+		case NOT_IN:
 			result = getClauseIn(tableName, filterField, condition, nameForParameter);
 			break;
 		case EQUALS:
@@ -87,7 +94,6 @@ public class UtilsService {
 		case LOWER_EQUALS:
 		case LOWER_THAN:
 		case NOT_EQUALS:
-		case NOT_IN:
 			result = getClauseConditionCase(tableName, filterField, condition, nameForParameter);
 			break;
 		// case HqlConditions.MEMBER_OF:
@@ -98,8 +104,9 @@ public class UtilsService {
 		return result;
 	}
 
-	private static String getClauseIn(String tableName, String filterField, HqlConditions condition, String nameForParameter) {
-		return " and (" + tableName + "." + filterField + " " + condition + "(:" + nameForParameter + "))";
+	private static String getClauseIn(String tableName, String filterField, HqlConditions condition,
+			String nameForParameter) {
+		return " and (" + tableName + "." + filterField + " " + condition + " (:" + nameForParameter + "))";
 	}
 
 	public static String getClauseIsNullOrNotNull(String tableName, String filterField, HqlConditions condition) {
@@ -140,6 +147,27 @@ public class UtilsService {
 		Object result = null;
 		String stringValue = null;
 		switch (condition) {
+		case IN:
+		case NOT_IN:
+			if (valueForQuery instanceof List) {
+				List listValue = (List) valueForQuery;
+				if (listValue != null && listValue.get(0) != null && listValue.get(0) instanceof String) {
+					result = "";
+					for (int i = 0; i < listValue.size(); i++) {
+						stringValue = (String) listValue.get(i);
+						if (i != 0) {
+							result += ", '" + stringValue + "'";
+						} else {
+							result = "'" + stringValue + "'";
+						}
+					}
+				} else {
+					result = valueForQuery;
+				}
+			} else {
+				result = valueForQuery;
+			}
+			break;
 		case LIKE:
 			stringValue = (String) valueForQuery;
 			result = "%" + stringValue + "%";
