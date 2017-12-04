@@ -9,6 +9,9 @@ import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.Transient;
+
+import foo.bar.annotations.Reference;
 
 @Entity(name = "CUSTOMER_ORDER")
 public class CustomerOrder extends BasicVO<Long> {
@@ -19,6 +22,8 @@ public class CustomerOrder extends BasicVO<Long> {
 
 	public static final String PRODUCTS_STOCK = "productsStock";
 
+	public static final String PRODUCTS_STOCK_IDS = "productsStockIds";
+
 	@ManyToOne
 	@JoinColumn(name = CUSTOMER)
 	private Customer customer;
@@ -27,9 +32,14 @@ public class CustomerOrder extends BasicVO<Long> {
 	@Column(name = DATE)
 	private Date date;
 
-	@OneToMany(mappedBy = ProductStock.PRODUCT, targetEntity = ProductStock.class)
+	@OneToMany(mappedBy = ProductStock.CUSTOMER_ORDER, targetEntity = ProductStock.class)
 	private List<ProductStock> productsStock;
 
+	@Transient
+	@Reference(fieldName = ProductStock.PK, referenceFor = PRODUCTS_STOCK + "." + ProductStock.PK)
+	private List<Long> productsStockIds;
+	
+	
 	public CustomerOrder() {
 		super();
 	}
@@ -60,6 +70,14 @@ public class CustomerOrder extends BasicVO<Long> {
 
 	public void setProductsStock(List<ProductStock> productsStock) {
 		this.productsStock = productsStock;
+	}
+
+	public List<Long> getProductsStockIds() {
+		return productsStockIds;
+	}
+
+	public void setProductsStockIds(List<Long> productsStockIds) {
+		this.productsStockIds = productsStockIds;
 	}
 
 }
