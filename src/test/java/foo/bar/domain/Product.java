@@ -1,6 +1,6 @@
 package foo.bar.domain;
 
-import java.util.Map;
+import java.util.HashMap;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -16,7 +16,7 @@ public class Product extends BasicVO<Long> {
 		super();
 	}
 
-	public Product(Map<String, Object> mapValues) {
+	public Product(HashMap<String, Object> mapValues) {
 		super(mapValues);
 	}
 

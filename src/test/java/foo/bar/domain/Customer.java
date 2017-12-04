@@ -1,8 +1,8 @@
 package foo.bar.domain;
 
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -10,7 +10,6 @@ import javax.persistence.OneToMany;
 import javax.persistence.Transient;
 
 import foo.bar.annotations.Reference;
-import foo.bar.annotations.readers.Range;
 
 @Entity
 public class Customer extends BasicVO<Long> {
@@ -77,7 +76,7 @@ public class Customer extends BasicVO<Long> {
 		super();
 	}
 
-	public Customer(Map<String, Object> mapValues) {
+	public Customer(HashMap<String, Object> mapValues) {
 		super(mapValues);
 	}
 
