@@ -9,14 +9,12 @@ import javax.persistence.Column;
 import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
 
-import org.apache.log4j.Logger;
-
 import foo.bar.utils.Utils;
 
 @MappedSuperclass
 public abstract class BasicVO<PK> {
 
-	public static final String PK = "id";
+	public static final String PK = "pk";
 
 	public BasicVO() {
 		super();
