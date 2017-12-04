@@ -19,7 +19,7 @@ public class Product extends BasicVO<Long> {
 	public Product(Map<String, Object> mapValues) {
 		super(mapValues);
 	}
-	
+
 	@Column(name = NAME)
 	private String name;
 
@@ -41,6 +41,11 @@ public class Product extends BasicVO<Long> {
 	public void setDescription(String description) {
 		this.description = description;
 	}
-	
+
+	@Override
+	public String toString() {
+		return "Product [pk=" + pk + ", name=" + name + ", description=" + description + "]";
+	}
+
 	
 }

@@ -38,8 +38,7 @@ public class CustomerOrder extends BasicVO<Long> {
 	@Transient
 	@Reference(fieldName = ProductStock.PK, referenceFor = PRODUCTS_STOCK + "." + ProductStock.PK)
 	private List<Long> productsStockIds;
-	
-	
+
 	public CustomerOrder() {
 		super();
 	}
@@ -80,4 +79,11 @@ public class CustomerOrder extends BasicVO<Long> {
 		this.productsStockIds = productsStockIds;
 	}
 
+	@Override
+	public String toString() {
+		return "CustomerOrder [pk=" + pk + ", date=" + date + ", customer=" + customer + ", productsStock="
+				+ productsStock + "]";
+	}
+
+	
 }

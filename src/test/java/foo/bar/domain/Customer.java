@@ -57,8 +57,8 @@ public class Customer extends BasicVO<Long> {
 	// TODO: if we don't include the transient annotation que query will not
 	// consider the Reference Annotation...
 	@Transient
-	@Reference(fieldName = ORDERS_PRODUCTS_NAME, referenceFor = Customer.CUSTOMER_ORDERS + "." + CustomerOrder.PRODUCTS_STOCK + "."
-			+ ProductStock.PRODUCT + "." + Product.NAME)
+	@Reference(fieldName = ORDERS_PRODUCTS_NAME, referenceFor = Customer.CUSTOMER_ORDERS + "."
+			+ CustomerOrder.PRODUCTS_STOCK + "." + ProductStock.PRODUCT + "." + Product.NAME)
 	private String ordersProductsName;
 
 	@Transient
@@ -161,4 +161,12 @@ public class Customer extends BasicVO<Long> {
 		this.customerOrders = customerOrders;
 	}
 
+	@Override
+	public String toString() {
+		return "Customer [pk=" + pk + ", name=" + name + ", lastName=" + lastName + ", document=" + document
+				+ ", documentType=" + documentType + ", birthDate=" + birthDate + ", customerOrders=" + customerOrders
+				+ "]";
+	}
+
+	
 }

@@ -104,4 +104,10 @@ public class ProductStock extends BasicVO<Long> {
 		this.customerOrder = customerOrder;
 	}
 
+	@Override
+	public String toString() {
+		return "ProductStock [pk=" + pk + ", customerOrder=" + customerOrder + ", product=" + product + ", quantity="
+				+ quantity + "]";
+	}
+
 }
