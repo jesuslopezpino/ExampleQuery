@@ -26,8 +26,7 @@ public class TestCustomerOrderService extends TestCommon<CustomerOrderServiceImp
 	protected Map<String, HqlConditions> initFilter() {
 		Map<String, HqlConditions> filter = new HashMap<String, HqlConditions>();
 		filter.put(CustomerOrder.DATE, HqlConditions.LOWER_THAN);
-		// TODO
-		// filter.put(CustomerOrder.PRODUCTS_STOCK, HqlConditions.IN);
+		filter.put(CustomerOrder.PRODUCTS_STOCK_IDS, HqlConditions.IN);
 		filter.put(CustomerOrder.CUSTOMER, HqlConditions.NOT_EQUALS);
 		return filter;
 	}
@@ -44,16 +43,14 @@ public class TestCustomerOrderService extends TestCommon<CustomerOrderServiceImp
 		example2.setDate(new Date());
 
 		CustomerOrder example3 = new CustomerOrder();
-		List<ProductStock> products = new ArrayList<>();
-		ProductStock product1 = new ProductStock();
-		product1.setPk(1L);
-		products.add(product1);
-
-		ProductStock product2 = new ProductStock();
-		product2.setPk(2L);
-		products.add(product2);
-		example3.setProductsStock(products);
-		CustomerOrder[] examples = { example1, example2, example3 };
+		List<Long> products = new ArrayList<>();
+		products.add(1L);
+		products.add(2L);
+		products.add(3L);
+		example3.setProductsStockIds(products);
+		CustomerOrder[] examples = { 
+//				example1, example2, 
+				example3 };
 		return examples;
 	}
 
@@ -62,7 +59,7 @@ public class TestCustomerOrderService extends TestCommon<CustomerOrderServiceImp
 		String field1 = CustomerOrder.CUSTOMER;
 		String field2 = CustomerOrder.PK;
 		String field3 = CustomerOrder.DATE;
-		String fields[] = { field1, field2, field3};
+		String fields[] = { field1, field2, field3 };
 		return fields;
 	}
 
