@@ -11,6 +11,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Transient;
+import javax.validation.constraints.NotNull;
 
 import foo.bar.annotations.Reference;
 
@@ -25,11 +26,12 @@ public class CustomerOrder extends BasicVO<Long> {
 
 	public static final String PRODUCTS_STOCK_IDS = "productsStockIds";
 
+	@NotNull
 	@ManyToOne
 	@JoinColumn(name = CUSTOMER, referencedColumnName = CustomerOrder.PK)
 	private Customer customer;
 
-	// TODO: cambiar
+	@NotNull
 	@Column(name = DATE)
 	private Date date;
 

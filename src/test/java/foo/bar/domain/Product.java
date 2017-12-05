@@ -4,6 +4,9 @@ import java.util.HashMap;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.validation.constraints.NotNull;
+
+import org.hibernate.validator.constraints.NotBlank;
 
 @Entity
 public class Product extends BasicVO<Long> {
@@ -20,9 +23,11 @@ public class Product extends BasicVO<Long> {
 		super(mapValues);
 	}
 
+	@NotBlank
 	@Column(name = NAME)
 	private String name;
 
+	@NotBlank
 	@Column(name = DESCRIPTION)
 	private String description;
 
