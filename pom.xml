@@ -5,6 +5,9 @@
 	<artifactId>ExampleQuery</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 
+	<properties>
+		<hibernate.version>4.2.21.Final</hibernate.version>
+	</properties>
 	<build>
 		<resources>
 			<resource>
@@ -83,13 +86,13 @@
 		<dependency>
 			<groupId>org.hibernate</groupId>
 			<artifactId>hibernate-core</artifactId>
-			<version>4.2.0.Final</version>
+			<version>${hibernate.version}</version>
 		</dependency>
 
 		<dependency>
 			<groupId>org.hibernate</groupId>
 			<artifactId>hibernate-entitymanager</artifactId>
-			<version>4.2.0.Final</version>
+			<version>${hibernate.version}</version>
 		</dependency>
 
 		<dependency>
