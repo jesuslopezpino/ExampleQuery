@@ -196,8 +196,8 @@ public abstract class ServiceImpl<VO extends BasicVO<?>> implements Service<VO> 
 					where += UtilsService.getClauseCondition(lastTableAlias, fieldForQuery, condition,
 							nameForParameter);
 					if (nameForParameter != null) {
-						Object fixedValueForQuery = UtilsService.fixValueForQuery(valueForQuery, condition);
-						parameters.put(nameForParameter, fixedValueForQuery);
+//						Object fixedValueForQuery = UtilsService.fixValueForQuery(valueForQuery, condition);
+						parameters.put(nameForParameter, valueForQuery);
 					}
 				}
 			}
