@@ -102,9 +102,20 @@ public abstract class ServiceImpl<VO extends BasicVO<?>> implements Service<VO> 
 		boolean result = false;
 		try {
 			this.entityManager.remove(entity);
+			this.entityManager.flush();
 			result = true;
 		} catch (Exception e) {
 			// TODO: implement
+		}
+		return result;
+	}
+
+	public List<VO> saveList(List<VO> list) throws UniqueException {
+		List<VO> result = new ArrayList<>();
+		for (Iterator iterator = list.iterator(); iterator.hasNext();) {
+			VO vo = (VO) iterator.next();
+			vo = this.save(vo);
+			result.add(vo);
 		}
 		return result;
 	}
@@ -114,9 +125,19 @@ public abstract class ServiceImpl<VO extends BasicVO<?>> implements Service<VO> 
 			this.entityManager.persist(entity);
 			this.entityManager.flush();
 		} catch (Exception e) {
-			// TODO: implement
+			if (isUniqueException(e)) {
+				// TODO: unique reader for parameter
+				throw new UniqueException(entity.getClass(), "uk");
+			} else {
+				throw e;
+			}
 		}
 		return entity;
+	}
+
+	private boolean isUniqueException(Exception e) {
+		// TODO Auto-generated method stub
+		return false;
 	}
 
 	public VO update(VO entity) {

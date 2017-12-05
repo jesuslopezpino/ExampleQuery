@@ -11,15 +11,17 @@ import foo.bar.service.utils.HqlConditions;
 
 public interface Service<VO extends BasicVO<?>> {
 
-	public List<VO> findAll() throws InstantiationException, IllegalAccessException, ExampleQueryException;
 	public int countAll() throws InstantiationException, IllegalAccessException, ExampleQueryException;
+
+	public List<VO> findAll() throws InstantiationException, IllegalAccessException, ExampleQueryException;
 
 	public VO findByPk(Object primaryKey);
 
 	public VO findCustomByPk(Object primaryKey, String[] fields);
 
-	public List<VO> findByExample(VO example, Map<String, HqlConditions> filter) throws ExampleQueryException;
 	public int countByExample(VO example, Map<String, HqlConditions> filter) throws ExampleQueryException;
+
+	public List<VO> findByExample(VO example, Map<String, HqlConditions> filter) throws ExampleQueryException;
 
 	public List<VO> findCustomByExample(VO example, String[] fields, Map<String, HqlConditions> filter)
 			throws ExampleQueryException, NoSuchMethodException, SecurityException, InstantiationException,
@@ -30,5 +32,7 @@ public interface Service<VO extends BasicVO<?>> {
 	public VO save(VO element) throws UniqueException;
 
 	public VO update(VO element);
+
+	public List<VO> saveList(List<VO> list) throws UniqueException;
 
 }
