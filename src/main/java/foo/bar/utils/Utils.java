@@ -135,9 +135,9 @@ public class Utils {
 				setter.invoke(objectClass, value);
 			} else {
 				// TODO: we are only covering one herence...
-				if(!isPkField(fieldName)){
+				if (!isPkField(fieldName)) {
 					setter = objectClass.getClass().getSuperclass().getMethod(setterName, value.getClass());
-				}else{
+				} else {
 					// Maybe I can use that case allways...?
 					setter = objectClass.getClass().getSuperclass().getMethod(setterName, Object.class);
 				}
@@ -192,18 +192,18 @@ public class Utils {
 
 	public static boolean isTransientField(String fieldName, Object object)
 			throws NoSuchFieldException, SecurityException {
-		if(isClassField(fieldName, object)){
-			return hasAnnotation(fieldName, object, Transient.class);
-		}else{
-			return hasAnnotation(fieldName, object.getClass().getSuperclass().getClass(), Transient.class);
+		if (isClassField(fieldName, object)) {
+			return hasAnnotation(fieldName, object.getClass(), Transient.class);
+		} else {
+			return hasAnnotation(fieldName, object.getClass().getSuperclass(), Transient.class);
 		}
 	}
 
-	public static boolean hasAnnotation(String fieldName, Object object, Class<? extends Annotation> annotation)
+	public static boolean hasAnnotation(String fieldName, Class objectClass, Class<? extends Annotation> annotation)
 			throws NoSuchFieldException, SecurityException {
 		boolean result = false;
 		Field field;
-		field = object.getClass().getDeclaredField(fieldName);
+		field = objectClass.getDeclaredField(fieldName);
 		result = field.isAnnotationPresent(annotation);
 		return result;
 	}
