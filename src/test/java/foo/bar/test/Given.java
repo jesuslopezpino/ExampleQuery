@@ -79,6 +79,14 @@ public class Given {
 		CustomerOrderServiceImpl service = new CustomerOrderServiceImpl();
 		service.setEntityManager(entityManager);
 		service.save(result);
+		if (productsStock.size() > 0) {
+			ProductStockServiceImpl productStockServiceImpl = new ProductStockServiceImpl();
+			productStockServiceImpl.setEntityManager(entityManager);
+			for (ProductStock productStock : productsStock) {
+				productStock.setCustomerOrder(result);
+				productStockServiceImpl.update(productStock);
+			}
+		}
 		LOGGER.info("Given " + result);
 		return result;
 	}
