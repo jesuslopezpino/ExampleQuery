@@ -24,15 +24,21 @@ public class Given {
 
 	public static ProductStock givenAProductStock(Long pk, Product product, Integer quantity,
 			CustomerOrder customerOrder, EntityManager entityManager) throws UniqueException {
+		ProductStock result = givenObjectProductStock(pk, product, quantity, customerOrder);
+		ProductStockServiceImpl service = new ProductStockServiceImpl();
+		service.setEntityManager(entityManager);
+		service.save(result);
+		LOGGER.info("Given " + productStockToString(result));
+		return result;
+	}
+
+	public static ProductStock givenObjectProductStock(Long pk, Product product, Integer quantity,
+			CustomerOrder customerOrder) {
 		ProductStock result = new ProductStock();
 		result.setPk(pk);
 		result.setProduct(product);
 		result.setQuantity(quantity);
 		result.setCustomerOrder(customerOrder);
-		ProductStockServiceImpl service = new ProductStockServiceImpl();
-		service.setEntityManager(entityManager);
-		service.save(result);
-		LOGGER.info("Given " + productStockToString(result));
 		return result;
 	}
 
@@ -43,14 +49,19 @@ public class Given {
 
 	public static Product givenAProduct(Long pk, String name, String description, EntityManager entityManager)
 			throws UniqueException {
-		Product result = new Product();
-		result.setPk(pk);
-		result.setName(name);
-		result.setDescription(description);
+		Product result = givenObjectProduct(pk, name, description);
 		ProductServiceImpl service = new ProductServiceImpl();
 		service.setEntityManager(entityManager);
 		service.save(result);
 		LOGGER.info("Given " + productToString(result));
+		return result;
+	}
+
+	public static Product givenObjectProduct(Long pk, String name, String description) {
+		Product result = new Product();
+		result.setPk(pk);
+		result.setName(name);
+		result.setDescription(description);
 		return result;
 	}
 
@@ -66,6 +77,16 @@ public class Given {
 
 	public static Customer givenACustomer(Long pk, String name, String lastName, Date birthDate, String document,
 			String documentType, EntityManager entityManager) throws UniqueException {
+		Customer result = givenObjectCustomer(pk, name, lastName, birthDate, document, documentType);
+		CustomerServiceImpl service = new CustomerServiceImpl();
+		service.setEntityManager(entityManager);
+		service.save(result);
+		LOGGER.info("Given " + customerToString(result));
+		return result;
+	}
+
+	public static Customer givenObjectCustomer(Long pk, String name, String lastName, Date birthDate, String document,
+			String documentType) {
 		Customer result = new Customer();
 		result.setPk(pk);
 		result.setName(name);
@@ -73,10 +94,6 @@ public class Given {
 		result.setBirthDate(birthDate);
 		result.setDocument(document);
 		result.setDocumentType(documentType);
-		CustomerServiceImpl service = new CustomerServiceImpl();
-		service.setEntityManager(entityManager);
-		service.save(result);
-		LOGGER.info("Given " + customerToString(result));
 		return result;
 	}
 
@@ -89,23 +106,30 @@ public class Given {
 
 	public static CustomerOrder givenACustomerOrder(Long pk, Customer customer, Date date,
 			List<ProductStock> productsStock, EntityManager entityManager) throws UniqueException {
-		CustomerOrder result = new CustomerOrder();
-		result.setCustomer(customer);
-		result.setDate(date);
-		result.setPk(pk);
-		result.setProductsStock(productsStock);
+		CustomerOrder result = givenObjectCustomerOrder(pk, customer, date, productsStock);
 		CustomerOrderServiceImpl service = new CustomerOrderServiceImpl();
 		service.setEntityManager(entityManager);
 		service.save(result);
 		if (productsStock.size() > 0) {
 			ProductStockServiceImpl productStockServiceImpl = new ProductStockServiceImpl();
 			productStockServiceImpl.setEntityManager(entityManager);
+			// TODO: change for list save
 			for (ProductStock productStock : productsStock) {
 				productStock.setCustomerOrder(result);
 				productStockServiceImpl.update(productStock);
 			}
 		}
 		LOGGER.info("Given " + customerOrderToString(result));
+		return result;
+	}
+
+	public static CustomerOrder givenObjectCustomerOrder(Long pk, Customer customer, Date date,
+			List<ProductStock> productsStock) {
+		CustomerOrder result = new CustomerOrder();
+		result.setCustomer(customer);
+		result.setDate(date);
+		result.setPk(pk);
+		result.setProductsStock(productsStock);
 		return result;
 	}
 
