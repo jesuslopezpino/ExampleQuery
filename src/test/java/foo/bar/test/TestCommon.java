@@ -92,6 +92,12 @@ public abstract class TestCommon<ServiceVO extends ServiceImpl<VO>, VO extends B
 	}
 
 	@Test
+	public void testAll() throws InstantiationException, IllegalAccessException, ExampleQueryException {
+		List<VO> result = service.findAll();
+		assertTrue(!result.isEmpty());
+	}
+
+	@Test
 	public void testEntity() throws NoSuchMethodException, SecurityException, InstantiationException,
 			IllegalAccessException, IllegalArgumentException, InvocationTargetException {
 		Map<String, Object> mapValues = initEntityFields();

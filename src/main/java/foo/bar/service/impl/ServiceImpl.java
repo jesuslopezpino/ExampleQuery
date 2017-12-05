@@ -40,6 +40,11 @@ public abstract class ServiceImpl<VO extends BasicVO<?>> implements Service<VO> 
 		LOGGER.debug("Creating service for class: " + this.voClass.getName());
 	}
 
+	public List<VO> findAll() throws InstantiationException, IllegalAccessException, ExampleQueryException {
+		VO example = voClass.newInstance();
+		return this.findByExample(example, null);
+	}
+
 	public VO findByPk(Object primaryKey) {
 		return (VO) entityManager.find(voClass, primaryKey);
 	}
@@ -177,27 +182,32 @@ public abstract class ServiceImpl<VO extends BasicVO<?>> implements Service<VO> 
 		String from = " from " + voClass.getName() + " " + tableAlias;
 		String where = " where 1=1";
 		try {
-			for (Iterator<Entry<String, HqlConditions>> iterator = filter.entrySet().iterator(); iterator.hasNext();) {
-				Entry<String, HqlConditions> type = iterator.next();
-				HqlConditions condition = type.getValue();
-				String filterField = type.getKey();
-				String fieldForQuery;
-				fieldForQuery = UtilsService.getFieldForQuery(example, filterField);
-				Object valueForQuery = Utils.getFieldValue(example, filterField);
-				boolean applyValue = UtilsService.hasToApplyConditionForQuery(condition, valueForQuery);
-				if (applyValue) {
-					String nameForParameter = UtilsService.getNameForParameter(filterField, condition);
-					String lastTableAlias = getLastTableAlias(tableAlias, fieldForQuery);
-					if (lastTableAlias != tableAlias) {
-						from = getFromForField(from, tableAlias, fieldForQuery);
-					}
-					fieldForQuery = getLastField(fieldForQuery);
-					LOGGER.debug("FROM: " + from);
-					where += UtilsService.getClauseCondition(lastTableAlias, fieldForQuery, condition,
-							nameForParameter);
-					if (nameForParameter != null) {
-//						Object fixedValueForQuery = UtilsService.fixValueForQuery(valueForQuery, condition);
-						parameters.put(nameForParameter, valueForQuery);
+			if (filter != null) {
+				for (Iterator<Entry<String, HqlConditions>> iterator = filter.entrySet().iterator(); iterator
+						.hasNext();) {
+					Entry<String, HqlConditions> type = iterator.next();
+					HqlConditions condition = type.getValue();
+					String filterField = type.getKey();
+					String fieldForQuery;
+					fieldForQuery = UtilsService.getFieldForQuery(example, filterField);
+					Object valueForQuery = Utils.getFieldValue(example, filterField);
+					boolean applyValue = UtilsService.hasToApplyConditionForQuery(condition, valueForQuery);
+					if (applyValue) {
+						String nameForParameter = UtilsService.getNameForParameter(filterField, condition);
+						String lastTableAlias = getLastTableAlias(tableAlias, fieldForQuery);
+						if (lastTableAlias != tableAlias) {
+							from = getFromForField(from, tableAlias, fieldForQuery);
+						}
+						fieldForQuery = getLastField(fieldForQuery);
+						LOGGER.debug("FROM: " + from);
+						where += UtilsService.getClauseCondition(lastTableAlias, fieldForQuery, condition,
+								nameForParameter);
+						if (nameForParameter != null) {
+							// Object fixedValueForQuery =
+							// UtilsService.fixValueForQuery(valueForQuery,
+							// condition);
+							parameters.put(nameForParameter, valueForQuery);
+						}
 					}
 				}
 			}
