@@ -47,6 +47,10 @@ public class TestCustomerOrderService extends TestCommon<CustomerOrderServiceImp
 	@Override
 	protected Map<String, HqlConditions> initFilter() {
 		Map<String, HqlConditions> filter = new HashMap<String, HqlConditions>();
+
+		// all examples
+		filter.put(CustomerOrder.PRODUCTS_STOCK, HqlConditions.IS_NOT_EMPTY);
+
 		// example 1
 		filter.put(CustomerOrder.CUSTOMER, HqlConditions.NOT_EQUALS);
 		// example 2
