@@ -175,8 +175,8 @@ public class Customer extends BasicVO<Long> {
 				+ ", birthDateStart=" + birthDateStart + ", birthDateEnd=" + birthDateEnd + "]";
 	}
 
-	@Override
-	public String toString() {
+//	@Override
+	public String toStringNormal() {
 		return "Customer [pk=" + pk + ", name=" + name + ", lastName=" + lastName + ", document=" + document
 				+ ", documentType=" + documentType + ", birthDate=" + birthDate + ", customerOrders=" + customerOrders
 				+ "]";
