@@ -36,13 +36,17 @@ public class TestCustomerService extends TestCommon<CustomerServiceImpl, Custome
 	@Override
 	protected Map<String, HqlConditions> initFilter() {
 		Map<String, HqlConditions> filter = new HashMap<>();
+		// example 1
 		filter.put(Customer.NAME, HqlConditions.LIKE_IGNORE_CASE);
 		filter.put(Customer.LAST_NAME, HqlConditions.EQUALS);
+		filter.put(Customer.DOCUMENT, HqlConditions.EQUALS);
+		// example 2
 		filter.put(Customer.BIRTH_DATE_START, HqlConditions.GREATER_EQUALS);
 		filter.put(Customer.BIRTH_DATE_END, HqlConditions.LOWER_EQUALS);
-		filter.put(Customer.DOCUMENT, HqlConditions.EQUALS);
-		filter.put(Customer.DOCUMENT_TYPE_LIST, HqlConditions.IN);
+		// example 3
 		filter.put(Customer.ORDERS_PRODUCTS_NAME, HqlConditions.LIKE_IGNORE_CASE);
+		//example 4
+		filter.put(Customer.DOCUMENT_TYPE_LIST, HqlConditions.IN);
 		return filter;
 	}
 
@@ -58,8 +62,6 @@ public class TestCustomerService extends TestCommon<CustomerServiceImpl, Custome
 		example2.setBirthDateEnd(Utils.getDate("12/12/1983 23:59:59", TIME_FORMAT));
 
 		Customer example3 = new Customer();
-		example3.setLastName("Lopez");
-		example3.setBirthDateEnd(Utils.getDate("12/12/1983 23:59:59", TIME_FORMAT));
 		example3.setOrdersProductsName("Pizza");
 
 		List<String> documentTypeListExample = new ArrayList<>();
