@@ -120,6 +120,25 @@ public abstract class ServiceImpl<VO extends BasicVO<?>> implements Service<VO> 
 		return result;
 	}
 
+	public List<VO> updateList(List<VO> list) throws UniqueException {
+		List<VO> result = new ArrayList<>();
+		for (Iterator iterator = list.iterator(); iterator.hasNext();) {
+			VO vo = (VO) iterator.next();
+			vo = this.update(vo);
+			result.add(vo);
+		}
+		return result;
+	}
+
+	public boolean deleteList(List<VO> list) {
+		boolean result = true;
+		for (Iterator iterator = list.iterator(); iterator.hasNext();) {
+			VO vo = (VO) iterator.next();
+			result &= this.delete(vo);
+		}
+		return result;
+	}
+
 	public VO save(VO entity) throws UniqueException {
 		try {
 			this.entityManager.persist(entity);
