@@ -23,11 +23,12 @@ public class Given {
 	private static Logger LOGGER = Logger.getLogger(Given.class);
 
 	public static ProductStock givenAProductStock(Long pk, Product product, Integer quantity,
-			EntityManager entityManager) throws UniqueException {
+			CustomerOrder customerOrder, EntityManager entityManager) throws UniqueException {
 		ProductStock result = new ProductStock();
 		result.setPk(pk);
 		result.setProduct(product);
 		result.setQuantity(quantity);
+		result.setCustomerOrder(customerOrder);
 		ProductStockServiceImpl service = new ProductStockServiceImpl();
 		service.setEntityManager(entityManager);
 		service.save(result);

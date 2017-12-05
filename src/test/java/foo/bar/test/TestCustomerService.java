@@ -23,7 +23,7 @@ public class TestCustomerService extends TestCommon<CustomerServiceImpl, Custome
 			Customer customer = Given.givenADefaultCustomer(entityManager);
 			List<ProductStock> productsStock = new ArrayList<>();
 			Product product = Given.givenAProduct(1L, "Pizza", "Pizza", entityManager);
-			ProductStock productStock = Given.givenAProductStock(1L, product, 7, entityManager);
+			ProductStock productStock = Given.givenAProductStock(1L, product, 7, null, entityManager);
 			productsStock.add(productStock);
 			Given.givenACustomerOrder(1L, customer, Utils.getDate("01/01/2017 00:00:00", TIME_FORMAT), productsStock,
 					entityManager);

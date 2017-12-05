@@ -17,7 +17,7 @@ public class TestProductStockService extends TestCommon<ProductStockServiceImpl,
 		Product product;
 		try {
 			product = Given.givenAProduct(1L, "Samsung", "tv", entityManager);
-			ProductStock productStock = Given.givenAProductStock(1L, product, 6, entityManager);
+			ProductStock productStock = Given.givenAProductStock(1L, product, 6, null, entityManager);
 		} catch (UniqueException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -45,7 +45,7 @@ public class TestProductStockService extends TestCommon<ProductStockServiceImpl,
 		
 		// example 3
 		filter.put(ProductStock.PK, HqlConditions.NOT_EQUALS);
-		
+		filter.put(ProductStock.CUSTOMER_ORDER, HqlConditions.IS_NULL);
 		return filter;
 	}
 

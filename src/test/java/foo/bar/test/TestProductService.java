@@ -48,10 +48,13 @@ public class TestProductService extends TestCommon<ProductServiceImpl, Product> 
 
 	@Override
 	protected Product[] initExamples() {
+
 		Product example1 = new Product();
 		example1.setName("Apple");
+
 		Product example2 = new Product();
 		example2.setDescription("fruit");
+
 		Product[] examples = { example1, example2 };
 		return examples;
 	}

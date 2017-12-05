@@ -25,7 +25,7 @@ public class TestCustomerOrderService extends TestCommon<CustomerOrderServiceImp
 			Customer customer = Given.givenADefaultCustomer(entityManager);
 			Product product = Given.givenAProduct(1L, "CocaCola", "Lata", entityManager);
 			Date dateOrder = Utils.getDate("01/01/2017 00:00:00", TIME_FORMAT);
-			ProductStock productsStock = Given.givenAProductStock(1L, product, 100, entityManager);
+			ProductStock productsStock = Given.givenAProductStock(1L, product, 100, null, entityManager);
 			List<ProductStock> productsStockList = new ArrayList<>();
 			productsStockList.add(productsStock);
 			CustomerOrder customerOrder = Given.givenACustomerOrder(1L, customer, dateOrder, productsStockList,
