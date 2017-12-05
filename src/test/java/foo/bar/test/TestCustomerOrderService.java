@@ -46,7 +46,7 @@ public class TestCustomerOrderService extends TestCommon<CustomerOrderServiceImp
 	@Override
 	protected Map<String, HqlConditions> initFilter() {
 		Map<String, HqlConditions> filter = new HashMap<String, HqlConditions>();
-//		filter.put(CustomerOrder.DATE, HqlConditions.LOWER_EQUALS);
+		filter.put(CustomerOrder.DATE, HqlConditions.LOWER_EQUALS);
 		filter.put(CustomerOrder.PRODUCTS_STOCK_IDS, HqlConditions.IN);
 //		filter.put(CustomerOrder.CUSTOMER, HqlConditions.NOT_EQUALS);
 		return filter;
