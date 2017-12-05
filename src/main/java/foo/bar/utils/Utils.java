@@ -93,24 +93,24 @@ public class Utils {
 		} else {
 			loop = true;
 			lastField = fields[fields.length - 1];
-			LOGGER.info("loop mode");
+			LOGGER.debug("loop mode");
 		}
 		Object lastClass = objectClass;
 		for (int i = 0; loop && i < fields.length; i++) {
-			LOGGER.info("loop " + i);
+			LOGGER.debug("loop " + i);
 			if (i == fields.length - 1) {
-				LOGGER.info("exit loop at " + i);
+				LOGGER.debug("exit loop at " + i);
 				break;
 			}
 			String getter = fields[i];
-			LOGGER.info("searching getter: " + getter);
+			LOGGER.debug("searching getter: " + getter);
 			lastValue = getFieldValue(lastClass, getter);
-			LOGGER.info("lastValue: " + lastValue);
+			LOGGER.debug("lastValue: " + lastValue);
 			if (lastValue == null) {
-				LOGGER.info("lastClass " + lastClass.getClass().getName());
+				LOGGER.debug("lastClass " + lastClass.getClass().getName());
 				Class<? extends Object> fieldType = lastClass.getClass().getDeclaredField(getter).getType();
 				lastValue = fieldType.newInstance();
-				LOGGER.info("NEW LAST VALUE: " + lastValue);
+				LOGGER.debug("NEW LAST VALUE: " + lastValue);
 				invokeSetter(getter, lastClass, lastValue);
 			}
 			lastClass = lastValue;
