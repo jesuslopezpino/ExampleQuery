@@ -136,13 +136,14 @@ public abstract class ServiceImpl<VO extends BasicVO<?>> implements Service<VO> 
 	}
 
 	private boolean isUniqueException(Exception e) {
-		// TODO Auto-generated method stub
+		// TODO Implement!!
 		return false;
 	}
 
 	public VO update(VO entity) {
 		try {
 			this.entityManager.merge(entity);
+			this.entityManager.flush();
 		} catch (Exception e) {
 			// TODO: implement
 		}
