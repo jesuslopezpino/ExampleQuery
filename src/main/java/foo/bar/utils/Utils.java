@@ -192,7 +192,11 @@ public class Utils {
 
 	public static boolean isTransientField(String fieldName, Object object)
 			throws NoSuchFieldException, SecurityException {
-		return hasAnnotation(fieldName, object, Transient.class);
+		if(isClassField(fieldName, object)){
+			return hasAnnotation(fieldName, object, Transient.class);
+		}else{
+			return hasAnnotation(fieldName, object.getClass().getSuperclass().getClass(), Transient.class);
+		}
 	}
 
 	public static boolean hasAnnotation(String fieldName, Object object, Class<? extends Annotation> annotation)
