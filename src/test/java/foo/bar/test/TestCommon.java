@@ -140,8 +140,10 @@ public abstract class TestCommon<ServiceVO extends ServiceImpl<VO>, VO extends B
 	private void showResult(VO example, List<VO> result, int exampleIndex, Map<String, HqlConditions> filters) {
 		if (result.isEmpty()) {
 			LOGGER.error("FAIL AT SAMPLE: " + (exampleIndex + 1));
+			LOGGER.error("Example object: " + example.toStringDebug());
+			LOGGER.error("With filters: " + filters);
 		} else {
-			LOGGER.info("Example object: " + example.toString());
+			LOGGER.info("Example object: " + example.toStringDebug());
 			LOGGER.info("With filters: " + filters);
 			LOGGER.info("Returns " + result.size() + " items");
 			for (VO vo : result) {
