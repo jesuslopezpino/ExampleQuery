@@ -99,4 +99,14 @@ public class TestCustomerOrderService extends TestCommon<CustomerOrderServiceImp
 		return result;
 	}
 
+	@Override
+	protected String initUpdateField() {
+		return CustomerOrder.DATE;
+	}
+
+	@Override
+	protected Object initUpdateValue() {
+		return new Date();
+	}
+
 }

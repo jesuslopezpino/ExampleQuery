@@ -81,4 +81,14 @@ public class TestProductStockService extends TestCommon<ProductStockServiceImpl,
 		ProductStock result = Given.givenObjectProductStock(44L, product, 20, null);
 		return result;
 	}
+
+	@Override
+	protected String initUpdateField() {
+		return ProductStock.QUANTITY;
+	}
+
+	@Override
+	protected Object initUpdateValue() {
+		return 500;
+	}
 }

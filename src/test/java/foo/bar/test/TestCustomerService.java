@@ -106,4 +106,14 @@ public class TestCustomerService extends TestCommon<CustomerServiceImpl, Custome
 		return Given.givenObjectCustomer(8754L, "test name", "test last name", new Date(), "1234", "DNI");
 	}
 
+	@Override
+	protected String initUpdateField() {
+		return Customer.LAST_NAME;
+	}
+
+	@Override
+	protected Object initUpdateValue() {
+		return "Gamero";
+	}
+
 }

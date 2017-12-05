@@ -85,4 +85,14 @@ public class TestProductService extends TestCommon<ProductServiceImpl, Product> 
 		return Given.givenObjectProduct(111L, "P NAME", "P DESC");
 	}
 
+	@Override
+	protected String initUpdateField() {
+		return Product.DESCRIPTION;
+	}
+
+	@Override
+	protected Object initUpdateValue() {
+		return "new description";
+	}
+
 }

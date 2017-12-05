@@ -28,6 +28,7 @@ import foo.bar.exceptions.ExampleQueryException;
 import foo.bar.exceptions.UniqueException;
 import foo.bar.service.impl.ServiceImpl;
 import foo.bar.service.utils.HqlConditions;
+import foo.bar.utils.Utils;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = { "classpath:applicationContext.xml" })
@@ -76,6 +77,10 @@ public abstract class TestCommon<ServiceVO extends ServiceImpl<VO>, VO extends B
 
 	protected abstract Map<String, Object> initEntityFields();
 
+	protected abstract String initUpdateField();
+
+	protected abstract Object initUpdateValue();
+
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
 	}
@@ -95,10 +100,27 @@ public abstract class TestCommon<ServiceVO extends ServiceImpl<VO>, VO extends B
 	}
 
 	@Test
-	public void testSaveAndDelete() throws UniqueException {
-		LOGGER.info("testSaveAndDelete");
+	public void testSaveUpdateAndDelete()
+			throws UniqueException, NoSuchMethodException, SecurityException, IllegalAccessException,
+			IllegalArgumentException, InvocationTargetException, NoSuchFieldException, InstantiationException {
+		LOGGER.info("testSaveUpdateAndDelete");
 		VO entity = this.testSave();
+		entity = this.testUpdate(entity);
 		this.testDelete(entity);
+	}
+
+	private VO testUpdate(VO entity) throws NoSuchMethodException, SecurityException, IllegalAccessException,
+			IllegalArgumentException, InvocationTargetException, NoSuchFieldException, InstantiationException {
+		LOGGER.info("testUpdate");
+		String field = this.initUpdateField();
+		Object newValue = this.initUpdateValue();
+		Object originalValue = Utils.getFieldValue(entity, field);
+		Utils.setFieldValue(field, newValue, entity);
+		VO updatedEntity = this.service.update(entity);
+		boolean updated = !originalValue.equals(newValue);
+		assertTrue("Entity updated: Field \"" + field + "\" (" + originalValue + ") => (" + newValue + ")", updated);
+		return updatedEntity;
+
 	}
 
 	public VO testSave() throws UniqueException {
@@ -123,7 +145,7 @@ public abstract class TestCommon<ServiceVO extends ServiceImpl<VO>, VO extends B
 	// TODO: test for unique exception
 
 	@Test
-	public void testAll() throws InstantiationException, IllegalAccessException, ExampleQueryException {
+	public void testFindAll() throws InstantiationException, IllegalAccessException, ExampleQueryException {
 		List<VO> result = service.findAll();
 		assertTrue(!result.isEmpty());
 	}
@@ -135,7 +157,7 @@ public abstract class TestCommon<ServiceVO extends ServiceImpl<VO>, VO extends B
 	}
 
 	@Test
-	public void testEntity() throws NoSuchMethodException, SecurityException, InstantiationException,
+	public void testEntityConstructor() throws NoSuchMethodException, SecurityException, InstantiationException,
 			IllegalAccessException, IllegalArgumentException, InvocationTargetException {
 		Map<String, Object> mapValues = initEntityFields();
 		Constructor constructor = voClass.getConstructor(HashMap.class);
