@@ -8,6 +8,9 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
 import javax.persistence.Transient;
+import javax.validation.constraints.NotNull;
+
+import org.hibernate.validator.constraints.NotBlank;
 
 import foo.bar.annotations.Reference;
 
@@ -34,19 +37,23 @@ public class Customer extends BasicVO<Long> {
 
 	public static final String ORDERS_PRODUCTS_NAME = "ordersProductsName";
 
+	@NotBlank
 	@Column(name = NAME)
 	private String name;
 
+	@NotBlank
 	@Column(name = LAST_NAME)
 	private String lastName;
 
+	@NotBlank
 	@Column(name = DOCUMENT)
 	private String document;
 
+	@NotBlank
 	@Column(name = DOCUMENT_TYPE)
 	private String documentType;
 
-	// @Range(startField = BIRTH_DATE_START, endField = BIRTH_DATE_END)
+	@NotNull
 	@Column(name = BIRTH_DATE)
 	private Date birthDate;
 
@@ -158,6 +165,14 @@ public class Customer extends BasicVO<Long> {
 
 	public void setOrders(List<CustomerOrder> customerOrders) {
 		this.customerOrders = customerOrders;
+	}
+
+	@Override
+	public String toStringDebug() {
+		return "Customer [pk=" + pk + ", name=" + name + ", lastName=" + lastName + ", document=" + document
+				+ ", documentType=" + documentType + ", birthDate=" + birthDate + ", customerOrders=" + customerOrders
+				+ ", ordersProductsName=" + ordersProductsName + ", documentTypeList=" + documentTypeList
+				+ ", birthDateStart=" + birthDateStart + ", birthDateEnd=" + birthDateEnd + "]";
 	}
 
 	@Override

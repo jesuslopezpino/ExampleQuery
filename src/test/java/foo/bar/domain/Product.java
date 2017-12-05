@@ -43,6 +43,11 @@ public class Product extends BasicVO<Long> {
 	}
 
 	@Override
+	public String toStringDebug() {
+		return "Product [pk=" + pk + ", name=" + name + ", description=" + description + "]";
+	}
+
+	@Override
 	public String toString() {
 		return "Product [pk=" + pk + ", name=" + name + ", description=" + description + "]";
 	}

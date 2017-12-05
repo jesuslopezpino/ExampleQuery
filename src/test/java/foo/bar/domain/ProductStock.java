@@ -25,6 +25,8 @@ public class ProductStock extends BasicVO<Long> {
 
 	public static final String CUSTOMER_ORDER = "customerOrder";
 
+	public static final String PRODUCT_STOCK_IDS = "productsStockIds";
+
 	@ManyToOne
 	@JoinColumn(name = CUSTOMER_ORDER, referencedColumnName = ProductStock.PK)
 	private CustomerOrder customerOrder;
@@ -105,9 +107,18 @@ public class ProductStock extends BasicVO<Long> {
 	}
 
 	@Override
+	public String toStringDebug() {
+		return "ProductStock [pk=" + pk + ", customerOrder=" + customerOrder + ", product=" + product + ", quantity="
+				+ quantity + ", maxQuantity=" + maxQuantity + ", minQuantity=" + minQuantity + ", productName="
+				+ productName + "]";
+	}
+
+	@Override
 	public String toString() {
 		return "ProductStock [pk=" + pk + ", customerOrder=" + customerOrder + ", product=" + product + ", quantity="
 				+ quantity + "]";
 	}
+	
+	
 
 }

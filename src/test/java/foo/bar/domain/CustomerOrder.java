@@ -4,6 +4,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
@@ -36,7 +37,7 @@ public class CustomerOrder extends BasicVO<Long> {
 	private List<ProductStock> productsStock;
 
 	@Transient
-	@Reference(fieldName = ProductStock.PK, referenceFor = PRODUCTS_STOCK + "." + ProductStock.PK)
+	@Reference(fieldName = ProductStock.PRODUCT_STOCK_IDS, referenceFor = PRODUCTS_STOCK + "." + ProductStock.PK)
 	private List<Long> productsStockIds;
 
 	public CustomerOrder() {
@@ -80,10 +81,15 @@ public class CustomerOrder extends BasicVO<Long> {
 	}
 
 	@Override
+	public String toStringDebug() {
+		return "CustomerOrder [pk=" + pk + ", customer=" + customer + ", date=" + date + ", productsStock="
+				+ productsStock + ", productsStockIds=" + productsStockIds + "]";
+	}
+
+	@Override
 	public String toString() {
 		return "CustomerOrder [pk=" + pk + ", date=" + date + ", customer=" + customer + ", productsStock="
 				+ productsStock + "]";
 	}
 
-	
 }
