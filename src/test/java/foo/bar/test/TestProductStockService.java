@@ -17,7 +17,7 @@ public class TestProductStockService extends TestCommon<ProductStockServiceImpl,
 		Product product;
 		try {
 			product = Given.givenAProduct(1L, "Samsung", "tv", entityManager);
-			ProductStock productStock = Given.givenAProductStock(1L, product, 200, entityManager);
+			ProductStock productStock = Given.givenAProductStock(1L, product, 6, entityManager);
 		} catch (UniqueException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -47,7 +47,7 @@ public class TestProductStockService extends TestCommon<ProductStockServiceImpl,
 	protected ProductStock[] initExamples() {
 		
 		ProductStock example1 = new ProductStock();
-		example1.setProductName("o");
+		example1.setProductName("Samsung");
 		ProductStock example2 = new ProductStock();
 		example2.setMaxQuantity(10);
 		example2.setMinQuantity(3);

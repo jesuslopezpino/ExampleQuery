@@ -115,12 +115,12 @@ public class UtilsService {
 
 	public static String getClauseLike(String tableName, String filterField, final HqlConditions condition,
 			String nameForParameter) {
-		return " and (" + tableName + "." + filterField + " " + condition + " '%:" + nameForParameter + "%')";
+		return " and (" + tableName + "." + filterField + " " + condition + " :" + nameForParameter + ")";
 	}
 
 	public static String getClauseLikeIgnoreCase(String tableName, String filterField, final HqlConditions condition,
 			String nameForParameter) {
-		return " and (UPPER(" + tableName + "." + filterField + ")" + condition + "UPPER('%:" + nameForParameter + "%'))";
+		return " and (UPPER(" + tableName + "." + filterField + ")" + condition + "UPPER(:" + nameForParameter + "))";
 	}
 
 	private static String getClauseConditionCase(String tableName, String filterField, final HqlConditions condition,
@@ -143,20 +143,24 @@ public class UtilsService {
 		return result;
 	}
 
-//	public static Object fixValueForQuery(Object valueForQuery, HqlConditions condition) {
-//		Object result = null;
-//		String stringValue = null;
-//		switch (condition) {
-//		case LIKE_IGNORE_CASE:
-//			stringValue = (String) valueForQuery;
-//			result = stringValue.toUpperCase();
-//			break;
-//		default:
-//			// TODO: consider date formats here!!!
-//			result = valueForQuery;
-//			break;
-//		}
-//		return result;
-//	}
+	public static Object fixValueForQuery(Object valueForQuery, HqlConditions condition) {
+		Object result = null;
+		String stringValue = null;
+		switch (condition) {
+		case LIKE:
+			stringValue = (String) valueForQuery;
+			result = "%" + stringValue + "%";
+			break;
+		case LIKE_IGNORE_CASE:
+			stringValue = (String) valueForQuery;
+			result = "%" + stringValue.toUpperCase() + "%";
+			break;
+		default:
+			// TODO: consider date formats here!!!
+			result = valueForQuery;
+			break;
+		}
+		return result;
+	}
 
 }
