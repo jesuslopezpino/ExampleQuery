@@ -39,7 +39,7 @@ public class CustomerOrder extends BasicVO<Long> {
 	private List<ProductStock> productsStock;
 
 	@Transient
-	@Reference(fieldName = ProductStock.PRODUCT_STOCK_IDS, referenceFor = PRODUCTS_STOCK + "." + ProductStock.PK)
+	@Reference(fieldName = PRODUCTS_STOCK_IDS, referenceFor = PRODUCTS_STOCK + "." + ProductStock.PK)
 	private List<Long> productsStockIds;
 
 	public CustomerOrder() {
