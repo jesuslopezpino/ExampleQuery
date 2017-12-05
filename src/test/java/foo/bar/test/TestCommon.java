@@ -98,6 +98,12 @@ public abstract class TestCommon<ServiceVO extends ServiceImpl<VO>, VO extends B
 	}
 
 	@Test
+	public void testCountAll() throws InstantiationException, IllegalAccessException, ExampleQueryException {
+		int result = service.countAll();
+		assertTrue("Count all returns more than zero: " + result, result > 0);
+	}
+
+	@Test
 	public void testEntity() throws NoSuchMethodException, SecurityException, InstantiationException,
 			IllegalAccessException, IllegalArgumentException, InvocationTargetException {
 		Map<String, Object> mapValues = initEntityFields();

@@ -12,6 +12,7 @@ import foo.bar.service.utils.HqlConditions;
 public interface Service<VO extends BasicVO<?>> {
 
 	public List<VO> findAll() throws InstantiationException, IllegalAccessException, ExampleQueryException;
+	public int countAll() throws InstantiationException, IllegalAccessException, ExampleQueryException;
 
 	public VO findByPk(Object primaryKey);
 

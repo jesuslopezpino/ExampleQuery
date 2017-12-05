@@ -45,6 +45,14 @@ public abstract class ServiceImpl<VO extends BasicVO<?>> implements Service<VO> 
 		return this.findByExample(example, null);
 	}
 
+	public int countAll() throws InstantiationException, IllegalAccessException, ExampleQueryException {
+		String select = "select count(*) ";
+		String from = " from " + voClass.getName();
+		String hqlString = select + from;
+		Long result = (Long) entityManager.createQuery(hqlString).getSingleResult();
+		return result.intValue();
+	}
+
 	public VO findByPk(Object primaryKey) {
 		return (VO) entityManager.find(voClass, primaryKey);
 	}
