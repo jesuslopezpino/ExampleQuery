@@ -16,6 +16,7 @@ import foo.bar.service.impl.CustomerOrderServiceImpl;
 import foo.bar.service.impl.CustomerServiceImpl;
 import foo.bar.service.impl.ProductServiceImpl;
 import foo.bar.service.impl.ProductStockServiceImpl;
+import foo.bar.utils.Utils;
 
 public class Given {
 
@@ -47,6 +48,11 @@ public class Given {
 		return result;
 	}
 
+	public static Customer givenADefaultCustomer(EntityManager entityManager) throws UniqueException {
+		return givenACustomer(1L, "Jesus", "Lopez", Utils.getDate("10/12/1983 12:00:00", TestCommon.TIME_FORMAT),
+				"XXXXXXX", "DNI", entityManager);
+	}
+
 	public static Customer givenACustomer(Long pk, String name, String lastName, Date birthDate, String document,
 			String documentType, EntityManager entityManager) throws UniqueException {
 		Customer result = new Customer();
@@ -75,10 +81,6 @@ public class Given {
 		service.save(result);
 		LOGGER.info("Given " + result);
 		return result;
-	}
-
-	public static Customer givenACustomer(Long pk, String name, EntityManager entityManager) throws UniqueException {
-		return givenACustomer(pk, name, null, null, null, null, entityManager);
 	}
 
 }
