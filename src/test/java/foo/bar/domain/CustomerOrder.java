@@ -88,10 +88,4 @@ public class CustomerOrder extends BasicVO<Long> {
 				+ productsStock + ", productsStockIds=" + productsStockIds + "]";
 	}
 
-//	@Override
-	public String toStringNormal() {
-		return "CustomerOrder [pk=" + pk + ", date=" + date + ", customer=" + customer + ", productsStock="
-				+ productsStock + "]";
-	}
-
 }

@@ -111,12 +111,4 @@ public class ProductStock extends BasicVO<Long> {
 				+ productName + "]";
 	}
 
-//	@Override
-	public String toStringNormal() {
-		return "ProductStock [pk=" + pk + ", customerOrder=" + customerOrder + ", product=" + product + ", quantity="
-				+ quantity + "]";
-	}
-	
-	
-
 }

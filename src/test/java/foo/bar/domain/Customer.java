@@ -159,11 +159,11 @@ public class Customer extends BasicVO<Long> {
 		this.ordersProductsName = ordersProductsName;
 	}
 
-	public List<CustomerOrder> getOrders() {
+	public List<CustomerOrder> getCustomerOrders() {
 		return customerOrders;
 	}
 
-	public void setOrders(List<CustomerOrder> customerOrders) {
+	public void setCustomerOrders(List<CustomerOrder> customerOrders) {
 		this.customerOrders = customerOrders;
 	}
 
@@ -175,12 +175,4 @@ public class Customer extends BasicVO<Long> {
 				+ ", birthDateStart=" + birthDateStart + ", birthDateEnd=" + birthDateEnd + "]";
 	}
 
-//	@Override
-	public String toStringNormal() {
-		return "Customer [pk=" + pk + ", name=" + name + ", lastName=" + lastName + ", document=" + document
-				+ ", documentType=" + documentType + ", birthDate=" + birthDate + ", customerOrders=" + customerOrders
-				+ "]";
-	}
-
-	
 }

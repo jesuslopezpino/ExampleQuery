@@ -52,10 +52,4 @@ public class Product extends BasicVO<Long> {
 		return "Product [pk=" + pk + ", name=" + name + ", description=" + description + "]";
 	}
 
-//	@Override
-	public String toStringNormal() {
-		return "Product [pk=" + pk + ", name=" + name + ", description=" + description + "]";
-	}
-
-	
 }

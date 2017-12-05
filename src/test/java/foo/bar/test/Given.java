@@ -31,8 +31,13 @@ public class Given {
 		ProductStockServiceImpl service = new ProductStockServiceImpl();
 		service.setEntityManager(entityManager);
 		service.save(result);
-		LOGGER.info("Given " + result.toStringNormal());
+		LOGGER.info("Given " + productStockToString(result));
 		return result;
+	}
+
+	public static String productStockToString(ProductStock productStock) {
+		return "ProductStock [pk=" + productStock.getPk() + ", customerOrder=" + productStock.getCustomerOrder()
+				+ ", product=" + productStock.getProduct() + ", quantity=" + productStock.getQuantity() + "]";
 	}
 
 	public static Product givenAProduct(Long pk, String name, String description, EntityManager entityManager)
@@ -44,8 +49,13 @@ public class Given {
 		ProductServiceImpl service = new ProductServiceImpl();
 		service.setEntityManager(entityManager);
 		service.save(result);
-		LOGGER.info("Given " + result.toStringNormal());
+		LOGGER.info("Given " + productToString(result));
 		return result;
+	}
+
+	public static String productToString(Product product) {
+		return "Product [pk=" + product.getPk() + ", name=" + product.getName() + ", description="
+				+ product.getDescription() + "]";
 	}
 
 	public static Customer givenADefaultCustomer(EntityManager entityManager) throws UniqueException {
@@ -65,8 +75,15 @@ public class Given {
 		CustomerServiceImpl service = new CustomerServiceImpl();
 		service.setEntityManager(entityManager);
 		service.save(result);
-		LOGGER.info("Given " + result.toStringNormal());
+		LOGGER.info("Given " + customerToString(result));
 		return result;
+	}
+
+	public static String customerToString(Customer customer) {
+		return "Customer [pk=" + customer.getPk() + ", name=" + customer.getName() + ", lastName="
+				+ customer.getLastName() + ", document=" + customer.getDocument() + ", documentType="
+				+ customer.getDocumentType() + ", birthDate=" + customer.getBirthDate() + ", customerOrders="
+				+ customer.getCustomerOrders() + "]";
 	}
 
 	public static CustomerOrder givenACustomerOrder(Long pk, Customer customer, Date date,
@@ -87,8 +104,12 @@ public class Given {
 				productStockServiceImpl.update(productStock);
 			}
 		}
-		LOGGER.info("Given " + result.toStringNormal());
+		LOGGER.info("Given " + customerOrderToString(result));
 		return result;
 	}
 
+	public static String customerOrderToString(CustomerOrder customerOrder) {
+		return "CustomerOrder [pk=" + customerOrder.getPk() + ", date=" + customerOrder.getDate() + ", customer="
+				+ customerOrder.getCustomer() + ", productsStock=" + customerOrder.getProductsStock() + "]";
+	}
 }
