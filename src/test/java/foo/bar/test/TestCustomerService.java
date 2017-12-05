@@ -18,8 +18,7 @@ public class TestCustomerService extends TestCommon<CustomerServiceImpl, Custome
 	public void setUp() throws InstantiationException, IllegalAccessException {
 		super.setUp();
 		try {
-			Customer entity = Given.givenACustomer(1L, "Jesus", "Lopez",
-					Utils.getDate("10/12/1983 12:00:00", TIME_FORMAT), "30973837J", "DNI", entityManager);
+			Customer entity = Given.givenADefaultCustomer(entityManager);
 		} catch (UniqueException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -45,7 +44,7 @@ public class TestCustomerService extends TestCommon<CustomerServiceImpl, Custome
 		Customer example1 = new Customer();
 		example1.setName("Jesus");
 		example1.setLastName("Lopez");
-		example1.setDocument("30973837J");
+		example1.setDocument("XXXXXXX");
 
 		Customer example2 = new Customer();
 		example2.setBirthDateStart(Utils.getDate("01/01/1983 00:00:00", TIME_FORMAT));
