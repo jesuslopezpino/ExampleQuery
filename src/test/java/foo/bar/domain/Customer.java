@@ -37,6 +37,8 @@ public class Customer extends BasicVO<Long> {
 
 	public static final String ORDERS_PRODUCTS_NAME = "ordersProductsName";
 
+	public static final String NOTES = "notes";
+
 	@NotBlank
 	@Column(name = NAME)
 	private String name;
@@ -59,7 +61,10 @@ public class Customer extends BasicVO<Long> {
 
 	@OneToMany(mappedBy = CustomerOrder.CUSTOMER, targetEntity = CustomerOrder.class)
 	private List<CustomerOrder> customerOrders;
-
+	
+	@OneToMany(mappedBy = Note.CUSTOMER, targetEntity = Note.class)
+	private List<Note> notes;
+	
 	// TODO: if we don't include the transient annotation que query will not
 	// consider the Reference Annotation...
 	@Transient
