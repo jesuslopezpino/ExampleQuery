@@ -28,7 +28,8 @@ public class TestCustomerOrderService extends TestCommon<CustomerOrderServiceImp
 			ProductStock productsStock = Given.givenAProductStock(1L, product, 100, entityManager);
 			List<ProductStock> productsStockList = new ArrayList<>();
 			productsStockList.add(productsStock);
-			CustomerOrder customerOrder = Given.givenACustomerOrder(1L, customer, dateOrder, productsStockList, entityManager);
+			CustomerOrder customerOrder = Given.givenACustomerOrder(1L, customer, dateOrder, productsStockList,
+					entityManager);
 		} catch (UniqueException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -46,16 +47,20 @@ public class TestCustomerOrderService extends TestCommon<CustomerOrderServiceImp
 	@Override
 	protected Map<String, HqlConditions> initFilter() {
 		Map<String, HqlConditions> filter = new HashMap<String, HqlConditions>();
+		// example 1
+		filter.put(CustomerOrder.CUSTOMER, HqlConditions.NOT_EQUALS);
+		// example 2
 		filter.put(CustomerOrder.DATE, HqlConditions.LOWER_EQUALS);
+
+		// example 3
 		filter.put(CustomerOrder.PRODUCTS_STOCK_IDS, HqlConditions.IN);
-//		filter.put(CustomerOrder.CUSTOMER, HqlConditions.NOT_EQUALS);
 		return filter;
 	}
 
 	@Override
 	protected CustomerOrder[] initExamples() {
 		Customer customer = new Customer();
-		customer.setPk(1L);
+		customer.setPk(100L);
 
 		CustomerOrder example1 = new CustomerOrder();
 		example1.setCustomer(customer);
@@ -66,15 +71,10 @@ public class TestCustomerOrderService extends TestCommon<CustomerOrderServiceImp
 		CustomerOrder example3 = new CustomerOrder();
 		List<Long> products = new ArrayList<>();
 		products.add(1L);
-//		products.add(2L);
-//		products.add(3L);
+		products.add(2L);
+		products.add(3L);
 		example3.setProductsStockIds(products);
-		CustomerOrder[] examples = {
-//				example1
-//				, example2
-//				,
-				example3
-				};
+		CustomerOrder[] examples = { example1, example2, example3 };
 		return examples;
 	}
 

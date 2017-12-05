@@ -36,8 +36,13 @@ public class TestProductService extends TestCommon<ProductServiceImpl, Product> 
 	@Override
 	protected Map<String, HqlConditions> initFilter() {
 		Map<String, HqlConditions> filter = new HashMap<String, HqlConditions>();
-		filter.put(Product.DESCRIPTION, HqlConditions.LIKE_IGNORE_CASE);
+
+		// example 1
 		filter.put(Product.NAME, HqlConditions.LIKE_IGNORE_CASE);
+
+		// example 2
+		filter.put(Product.DESCRIPTION, HqlConditions.LIKE_IGNORE_CASE);
+
 		return filter;
 	}
 
