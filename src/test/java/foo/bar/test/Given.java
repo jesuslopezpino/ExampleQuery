@@ -31,7 +31,7 @@ public class Given {
 		ProductStockServiceImpl service = new ProductStockServiceImpl();
 		service.setEntityManager(entityManager);
 		service.save(result);
-		LOGGER.info("Given " + result);
+		LOGGER.info("Given " + result.toStringNormal());
 		return result;
 	}
 
@@ -44,7 +44,7 @@ public class Given {
 		ProductServiceImpl service = new ProductServiceImpl();
 		service.setEntityManager(entityManager);
 		service.save(result);
-		LOGGER.info("Given " + result);
+		LOGGER.info("Given " + result.toStringNormal());
 		return result;
 	}
 
@@ -65,7 +65,7 @@ public class Given {
 		CustomerServiceImpl service = new CustomerServiceImpl();
 		service.setEntityManager(entityManager);
 		service.save(result);
-		LOGGER.info("Given " + result);
+		LOGGER.info("Given " + result.toStringNormal());
 		return result;
 	}
 
@@ -87,7 +87,7 @@ public class Given {
 				productStockServiceImpl.update(productStock);
 			}
 		}
-		LOGGER.info("Given " + result);
+		LOGGER.info("Given " + result.toStringNormal());
 		return result;
 	}
 
