@@ -22,12 +22,12 @@ public class TestCustomerOrderService extends TestCommon<CustomerOrderServiceImp
 	public void setUp() throws InstantiationException, IllegalAccessException {
 		super.setUp();
 		try {
-			Customer customer = Given.givenACustomer(1L,"Jesus", entityManager);
+			Customer customer = Given.givenADefaultCustomer(entityManager);
 			Product product = Given.givenAProduct(1L, "CocaCola", "Lata", entityManager);
+			Date dateOrder = Utils.getDate("01/01/2017 00:00:00", TIME_FORMAT);
 			ProductStock productsStock = Given.givenAProductStock(1L, product, 100, entityManager);
 			List<ProductStock> productsStockList = new ArrayList<>();
 			productsStockList.add(productsStock);
-			Date dateOrder = Utils.getDate("01/01/2017", DATE_FORMAT);
 			CustomerOrder customerOrder = Given.givenACustomerOrder(1L, customer, dateOrder, productsStockList, entityManager);
 		} catch (UniqueException e) {
 			// TODO Auto-generated catch block
@@ -46,7 +46,7 @@ public class TestCustomerOrderService extends TestCommon<CustomerOrderServiceImp
 	@Override
 	protected Map<String, HqlConditions> initFilter() {
 		Map<String, HqlConditions> filter = new HashMap<String, HqlConditions>();
-		filter.put(CustomerOrder.DATE, HqlConditions.LOWER_EQUALS);
+//		filter.put(CustomerOrder.DATE, HqlConditions.LOWER_EQUALS);
 		filter.put(CustomerOrder.PRODUCTS_STOCK_IDS, HqlConditions.IN);
 //		filter.put(CustomerOrder.CUSTOMER, HqlConditions.NOT_EQUALS);
 		return filter;
@@ -66,14 +66,14 @@ public class TestCustomerOrderService extends TestCommon<CustomerOrderServiceImp
 		CustomerOrder example3 = new CustomerOrder();
 		List<Long> products = new ArrayList<>();
 		products.add(1L);
-		products.add(2L);
-		products.add(3L);
+//		products.add(2L);
+//		products.add(3L);
 		example3.setProductsStockIds(products);
 		CustomerOrder[] examples = {
-				example1
-				, example2
+//				example1
+//				, example2
 //				,
-//				example3
+				example3
 				};
 		return examples;
 	}
