@@ -36,8 +36,8 @@ public abstract class ServiceImpl<VO extends BasicVO<?>> implements Service<VO> 
 		super();
 		this.voClass = (Class<VO>) ((ParameterizedType) this.getClass().getGenericSuperclass())
 				.getActualTypeArguments()[0];
-		LOGGER.info("****************************************************************************");
-		LOGGER.info("Creating service for class: " + this.voClass.getName());
+		LOGGER.debug("****************************************************************************");
+		LOGGER.debug("Creating service for class: " + this.voClass.getName());
 	}
 
 	public VO findByPk(Object primaryKey) {
@@ -159,7 +159,7 @@ public abstract class ServiceImpl<VO extends BasicVO<?>> implements Service<VO> 
 		for (int i = 0; i < fields.length - 1; i++) {
 			String field = fields[i];
 			nextJoin = " join " + lastTable + "." + field + " " + field + " ";
-			LOGGER.info("nextJoin =" + nextJoin);
+			LOGGER.debug("nextJoin =" + nextJoin);
 			if (!from.contains(nextJoin)) {
 				from += nextJoin;
 			}
