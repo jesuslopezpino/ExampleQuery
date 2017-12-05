@@ -15,6 +15,7 @@ public class TestProductService extends TestCommon<ProductServiceImpl, Product> 
 		try {
 			super.setUp();
 			Given.givenAProduct(1L, "Samsung", "television", entityManager);
+			Given.givenAProduct(2L, "Apple", "fruit", entityManager);
 		} catch (InstantiationException | IllegalAccessException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -35,8 +36,8 @@ public class TestProductService extends TestCommon<ProductServiceImpl, Product> 
 	@Override
 	protected Map<String, HqlConditions> initFilter() {
 		Map<String, HqlConditions> filter = new HashMap<String, HqlConditions>();
-		// filter.put(Product.DESCRIPTION, HqlConditions.LIKE_IGNORE_CASE);
-		// filter.put(Product.NAME, HqlConditions.LIKE_IGNORE_CASE);
+		filter.put(Product.DESCRIPTION, HqlConditions.LIKE_IGNORE_CASE);
+		filter.put(Product.NAME, HqlConditions.LIKE_IGNORE_CASE);
 		return filter;
 	}
 
