@@ -27,7 +27,7 @@ public class TestProductStockService extends TestCommon<ProductStockServiceImpl,
 	protected Map<String, Object> initEntityFields() {
 		Map<String, Object> mapValues = new HashMap<>();
 		mapValues.put(ProductStock.PRODUCT_NAME, "LG");
-//		mapValues.put(ProductStock.PRODUCT+ "." + Product.NAME, "Samsung");
+		mapValues.put(ProductStock.PRODUCT+ "." + Product.NAME, "Samsung");
 		return mapValues;
 	}
 	
@@ -37,8 +37,9 @@ public class TestProductStockService extends TestCommon<ProductStockServiceImpl,
 //		filter.put(ProductStock.PRODUCT, HqlConditions.NOT_IN);
 ////		filter.put(ProductStock.QUANTITY, HqlConditions.BETWEEN);
 //		filter.put(ProductStock.PRODUCT_NAME, HqlConditions.LIKE);
-//		filter.put(ProductStock.MAX_QUANTITY, HqlConditions.LOWER_EQUALS);
-//		filter.put(ProductStock.MIN_QUANTITY, HqlConditions.GREATER_THAN);
+		filter.put(ProductStock.PRODUCT_NAME, HqlConditions.LIKE_IGNORE_CASE);
+		filter.put(ProductStock.MAX_QUANTITY, HqlConditions.LOWER_EQUALS);
+		filter.put(ProductStock.MIN_QUANTITY, HqlConditions.GREATER_THAN);
 		return filter;
 	}
 
@@ -46,7 +47,7 @@ public class TestProductStockService extends TestCommon<ProductStockServiceImpl,
 	protected ProductStock[] initExamples() {
 		
 		ProductStock example1 = new ProductStock();
-		example1.setProductName("Cookies");
+		example1.setProductName("o");
 		ProductStock example2 = new ProductStock();
 		example2.setMaxQuantity(10);
 		example2.setMinQuantity(3);
