@@ -76,6 +76,13 @@ public abstract class ServiceImpl<VO extends BasicVO<?>> implements Service<VO> 
 		return query.getResultList();
 	}
 
+	public int countByExample(VO example, Map<String, HqlConditions> filter) throws ExampleQueryException {
+		String select = "select count(*) ";
+		Query query = createQueryForExample(example, filter, select);
+		Long result = (Long) query.getSingleResult();
+		return result.intValue();
+	}
+
 	public List<VO> findCustomByExample(VO example, String[] fields, Map<String, HqlConditions> filter)
 			throws ExampleQueryException, NoSuchMethodException, SecurityException, InstantiationException,
 			IllegalAccessException, IllegalArgumentException, InvocationTargetException {

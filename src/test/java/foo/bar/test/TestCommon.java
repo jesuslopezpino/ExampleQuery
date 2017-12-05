@@ -131,6 +131,24 @@ public abstract class TestCommon<ServiceVO extends ServiceImpl<VO>, VO extends B
 	}
 
 	@Test
+	public void testCountByExample() {
+		LOGGER.info("testCountByExample at class: " + this.getClass().getName());
+		for (int i = 0; i < examples.length; i++) {
+			LOGGER.info("-----------------------------------------------------------------------------");
+			VO example = examples[i];
+			Integer result;
+			try {
+				result = service.countByExample(example, filter);
+				// showResult(example, result, i, filter);
+				assertTrue("Count by example returns more than zero: " + result, result > 0);
+			} catch (ExampleQueryException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+	}
+
+	@Test
 	public void findCustomByExample() {
 		LOGGER.info("findCustomByExample at class: " + this.getClass().getName());
 		for (int i = 0; i < examples.length; i++) {
