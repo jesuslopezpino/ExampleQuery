@@ -33,7 +33,7 @@ public class TestCustomerService extends TestCommon<CustomerServiceImpl, Custome
 		filter.put(Customer.BIRTH_DATE_START, HqlConditions.GREATER_EQUALS);
 		filter.put(Customer.BIRTH_DATE_END, HqlConditions.LOWER_EQUALS);
 		filter.put(Customer.DOCUMENT, HqlConditions.EQUALS);
-		// filter.put(Customer.DOCUMENT_TYPE_LIST, HqlConditions.IN);
+		filter.put(Customer.DOCUMENT_TYPE_LIST, HqlConditions.IN);
 		// filter.put(Customer.ORDERS_PRODUCTS_NAME,
 		// HqlConditions.LIKE_IGNORE_CASE);
 		return filter;
