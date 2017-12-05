@@ -74,4 +74,11 @@ public class TestProductStockService extends TestCommon<ProductStockServiceImpl,
 		String fields[] = { field1, field2, field3 };
 		return fields;
 	}
+
+	@Override
+	protected ProductStock initSaveEntity() throws UniqueException {
+		Product product = Given.givenAProduct(45L, "XBOX", "Video Game", entityManager);
+		ProductStock result = Given.givenObjectProductStock(44L, product, 20, null);
+		return result;
+	}
 }

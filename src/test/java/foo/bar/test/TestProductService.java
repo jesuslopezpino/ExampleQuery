@@ -80,4 +80,9 @@ public class TestProductService extends TestCommon<ProductServiceImpl, Product> 
 		return fields;
 	}
 
+	@Override
+	protected Product initSaveEntity() throws UniqueException {
+		return Given.givenObjectProduct(111L, "P NAME", "P DESC");
+	}
+
 }

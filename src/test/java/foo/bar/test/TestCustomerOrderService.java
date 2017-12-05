@@ -91,4 +91,12 @@ public class TestCustomerOrderService extends TestCommon<CustomerOrderServiceImp
 		return fields;
 	}
 
+	@Override
+	protected CustomerOrder initSaveEntity() throws UniqueException {
+		Customer customer = null;
+		customer = Given.givenACustomer(33L, "User", "Saved", new Date(), "LKKJHK", "DNI", entityManager);
+		CustomerOrder result = Given.givenObjectCustomerOrder(67L, customer, new Date(), null);
+		return result;
+	}
+
 }

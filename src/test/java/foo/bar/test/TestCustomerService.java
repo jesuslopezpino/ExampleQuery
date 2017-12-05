@@ -101,4 +101,9 @@ public class TestCustomerService extends TestCommon<CustomerServiceImpl, Custome
 		return mapValues;
 	}
 
+	@Override
+	protected Customer initSaveEntity() throws UniqueException {
+		return Given.givenObjectCustomer(8754L, "test name", "test last name", new Date(), "1234", "DNI");
+	}
+
 }

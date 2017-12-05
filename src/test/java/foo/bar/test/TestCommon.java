@@ -25,6 +25,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import foo.bar.domain.BasicVO;
 import foo.bar.exceptions.ExampleQueryException;
+import foo.bar.exceptions.UniqueException;
 import foo.bar.service.impl.ServiceImpl;
 import foo.bar.service.utils.HqlConditions;
 
@@ -69,6 +70,8 @@ public abstract class TestCommon<ServiceVO extends ServiceImpl<VO>, VO extends B
 
 	protected abstract VO[] initExamples();
 
+	protected abstract VO initSaveEntity() throws UniqueException;
+
 	protected abstract Map<String, HqlConditions> initFilter();
 
 	protected abstract Map<String, Object> initEntityFields();
@@ -89,6 +92,13 @@ public abstract class TestCommon<ServiceVO extends ServiceImpl<VO>, VO extends B
 
 	@After
 	public void tearDown() throws Exception {
+	}
+
+	@Test
+	public void testSave() throws UniqueException {
+		VO entity = this.initSaveEntity();
+		entity = service.save(entity);
+		assertTrue("Save successfull", entity != null && entity.getPk() != null);
 	}
 
 	@Test
