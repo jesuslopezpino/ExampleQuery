@@ -95,11 +95,32 @@ public abstract class TestCommon<ServiceVO extends ServiceImpl<VO>, VO extends B
 	}
 
 	@Test
-	public void testSave() throws UniqueException {
+	public void testSaveAndDelete() throws UniqueException {
+		LOGGER.info("testSaveAndDelete");
+		VO entity = this.testSave();
+		this.testDelete(entity);
+	}
+
+	public VO testSave() throws UniqueException {
+		LOGGER.info("testSave");
 		VO entity = this.initSaveEntity();
 		entity = service.save(entity);
 		assertTrue("Save successfull", entity != null && entity.getPk() != null);
+		return entity;
 	}
+
+	public void testDelete(VO entity) {
+		LOGGER.info("testDelete");
+		if (entity != null) {
+			boolean result = service.delete(entity);
+			assertTrue("Delete successfull", result);
+		} else {
+			assertTrue("Can't test delete", false);
+		}
+	}
+
+	// TODO: test for saveList
+	// TODO: test for unique exception
 
 	@Test
 	public void testAll() throws InstantiationException, IllegalAccessException, ExampleQueryException {
