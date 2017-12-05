@@ -147,27 +147,6 @@ public class UtilsService {
 		Object result = null;
 		String stringValue = null;
 		switch (condition) {
-		case IN:
-		case NOT_IN:
-			if (valueForQuery instanceof List) {
-				List listValue = (List) valueForQuery;
-				if (listValue != null && listValue.get(0) != null && listValue.get(0) instanceof String) {
-					result = "";
-					for (int i = 0; i < listValue.size(); i++) {
-						stringValue = (String) listValue.get(i);
-						if (i != 0) {
-							result += ", '" + stringValue + "'";
-						} else {
-							result = "'" + stringValue + "'";
-						}
-					}
-				} else {
-					result = valueForQuery;
-				}
-			} else {
-				result = valueForQuery;
-			}
-			break;
 		case LIKE:
 			stringValue = (String) valueForQuery;
 			result = "%" + stringValue + "%";
