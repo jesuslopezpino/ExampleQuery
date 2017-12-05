@@ -12,7 +12,7 @@ import foo.bar.service.utils.HqlConditions;
 public class TestProductStockService extends TestCommon<ProductStockServiceImpl, ProductStock> {
 
 	@Override
-	public void setUp() throws InstantiationException, IllegalAccessException{
+	public void setUp() throws InstantiationException, IllegalAccessException {
 		super.setUp();
 		Product product;
 		try {
@@ -23,20 +23,19 @@ public class TestProductStockService extends TestCommon<ProductStockServiceImpl,
 			e.printStackTrace();
 		}
 	}
+
 	@Override
 	protected Map<String, Object> initEntityFields() {
 		Map<String, Object> mapValues = new HashMap<>();
 		mapValues.put(ProductStock.PRODUCT_NAME, "LG");
-		mapValues.put(ProductStock.PRODUCT+ "." + Product.NAME, "Samsung");
+		mapValues.put(ProductStock.PRODUCT + "." + Product.NAME, "Samsung");
 		return mapValues;
 	}
-	
+
 	@Override
 	protected Map<String, HqlConditions> initFilter() {
 		Map<String, HqlConditions> filter = new HashMap<>();
-//		filter.put(ProductStock.PRODUCT, HqlConditions.NOT_IN);
-////		filter.put(ProductStock.QUANTITY, HqlConditions.BETWEEN);
-//		filter.put(ProductStock.PRODUCT_NAME, HqlConditions.LIKE);
+		filter.put(ProductStock.PK, HqlConditions.NOT_EQUALS);
 		filter.put(ProductStock.PRODUCT_NAME, HqlConditions.LIKE_IGNORE_CASE);
 		filter.put(ProductStock.MAX_QUANTITY, HqlConditions.LOWER_EQUALS);
 		filter.put(ProductStock.MIN_QUANTITY, HqlConditions.GREATER_THAN);
@@ -45,13 +44,15 @@ public class TestProductStockService extends TestCommon<ProductStockServiceImpl,
 
 	@Override
 	protected ProductStock[] initExamples() {
-		
+
 		ProductStock example1 = new ProductStock();
 		example1.setProductName("Samsung");
 		ProductStock example2 = new ProductStock();
 		example2.setMaxQuantity(10);
 		example2.setMinQuantity(3);
-		ProductStock[] examples = { example1, example2 };
+		ProductStock example3 = new ProductStock();
+		example3.setPk(7L);
+		ProductStock[] examples = { example1, example2, example3 };
 		return examples;
 	}
 
@@ -60,7 +61,7 @@ public class TestProductStockService extends TestCommon<ProductStockServiceImpl,
 		String field1 = ProductStock.PK;
 		String field2 = ProductStock.PRODUCT;
 		String field3 = ProductStock.QUANTITY;
-		String fields[] = {field1, field2, field3};
+		String fields[] = { field1, field2, field3 };
 		return fields;
 	}
 }
