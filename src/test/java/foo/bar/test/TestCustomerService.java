@@ -37,6 +37,9 @@ public class TestCustomerService extends TestCommon<CustomerServiceImpl, Custome
 	protected Map<String, HqlConditions> initFilter() {
 		Map<String, HqlConditions> filter = new HashMap<>();
 		
+		// all examples... IS_NULL, IS_NOT_NULL, IS_EMPTY and IS_NOT_EMPTY
+		filter.put(Customer.BIRTH_DATE, HqlConditions.IS_NOT_NULL);
+		
 		// example 1
 		filter.put(Customer.NAME, HqlConditions.LIKE_IGNORE_CASE);
 		filter.put(Customer.LAST_NAME, HqlConditions.EQUALS);
