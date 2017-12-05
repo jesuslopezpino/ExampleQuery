@@ -7,6 +7,8 @@ import java.util.List;
 import java.util.Map;
 
 import foo.bar.domain.Customer;
+import foo.bar.domain.Product;
+import foo.bar.domain.ProductStock;
 import foo.bar.exceptions.UniqueException;
 import foo.bar.service.impl.CustomerServiceImpl;
 import foo.bar.service.utils.HqlConditions;
@@ -18,7 +20,13 @@ public class TestCustomerService extends TestCommon<CustomerServiceImpl, Custome
 	public void setUp() throws InstantiationException, IllegalAccessException {
 		super.setUp();
 		try {
-			Customer entity = Given.givenADefaultCustomer(entityManager);
+			Customer customer = Given.givenADefaultCustomer(entityManager);
+			List<ProductStock> productsStock = new ArrayList<>();
+			Product product = Given.givenAProduct(1L, "Pizza", "Pizza", entityManager);
+			ProductStock productStock = Given.givenAProductStock(1L, product, 7, entityManager);
+			productsStock.add(productStock);
+			Given.givenACustomerOrder(1L, customer, Utils.getDate("01/01/2017 00:00:00", TIME_FORMAT), productsStock,
+					entityManager);
 		} catch (UniqueException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -34,8 +42,7 @@ public class TestCustomerService extends TestCommon<CustomerServiceImpl, Custome
 		filter.put(Customer.BIRTH_DATE_END, HqlConditions.LOWER_EQUALS);
 		filter.put(Customer.DOCUMENT, HqlConditions.EQUALS);
 		filter.put(Customer.DOCUMENT_TYPE_LIST, HqlConditions.IN);
-		// filter.put(Customer.ORDERS_PRODUCTS_NAME,
-		// HqlConditions.LIKE_IGNORE_CASE);
+		filter.put(Customer.ORDERS_PRODUCTS_NAME, HqlConditions.LIKE_IGNORE_CASE);
 		return filter;
 	}
 
