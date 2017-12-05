@@ -1,12 +1,15 @@
 package foo.bar.domain;
 
 import java.util.HashMap;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.validation.constraints.NotNull;
+import javax.persistence.Transient;
 
 import org.hibernate.validator.constraints.NotBlank;
+
+import foo.bar.annotations.Reference;
 
 @Entity
 public class Product extends BasicVO<Long> {
@@ -15,6 +18,8 @@ public class Product extends BasicVO<Long> {
 
 	public static final String DESCRIPTION = "description";
 
+	public static final String PK_LIST = "pkList";
+
 	public Product() {
 		super();
 	}
@@ -22,6 +27,10 @@ public class Product extends BasicVO<Long> {
 	public Product(HashMap<String, Object> mapValues) {
 		super(mapValues);
 	}
+
+	@Transient
+	@Reference(fieldName = PK_LIST, referenceFor = Product.PK)
+	private List<Long> pkList;
 
 	@NotBlank
 	@Column(name = NAME)
@@ -47,9 +56,17 @@ public class Product extends BasicVO<Long> {
 		this.description = description;
 	}
 
+	public List<Long> getPkList() {
+		return pkList;
+	}
+
+	public void setPkList(List<Long> pkList) {
+		this.pkList = pkList;
+	}
+
 	@Override
 	public String toStringDebug() {
-		return "Product [pk=" + pk + ", name=" + name + ", description=" + description + "]";
+		return "Product [pk=" + pk + ", name=" + name + ", description=" + description + ", pkList=" + pkList + "]";
 	}
 
 }

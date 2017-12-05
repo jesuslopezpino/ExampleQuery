@@ -1,6 +1,8 @@
 package foo.bar.test;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import foo.bar.domain.Product;
@@ -43,6 +45,9 @@ public class TestProductService extends TestCommon<ProductServiceImpl, Product> 
 		// example 2
 		filter.put(Product.DESCRIPTION, HqlConditions.LIKE_IGNORE_CASE);
 
+		// example 3
+		filter.put(Product.PK_LIST, HqlConditions.NOT_IN);
+
 		return filter;
 	}
 
@@ -55,7 +60,14 @@ public class TestProductService extends TestCommon<ProductServiceImpl, Product> 
 		Product example2 = new Product();
 		example2.setDescription("fruit");
 
-		Product[] examples = { example1, example2 };
+		Product example3 = new Product();
+		List<Long> notList = new ArrayList<>();
+		notList.add(9L);
+		notList.add(99L);
+		notList.add(999L);
+		example3.setPkList(notList);
+
+		Product[] examples = { example1, example2, example3 };
 		return examples;
 	}
 
