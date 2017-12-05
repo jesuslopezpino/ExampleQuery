@@ -61,10 +61,10 @@ public class Customer extends BasicVO<Long> {
 
 	@OneToMany(mappedBy = CustomerOrder.CUSTOMER, targetEntity = CustomerOrder.class)
 	private List<CustomerOrder> customerOrders;
-	
+
 	@OneToMany(mappedBy = Note.CUSTOMER, targetEntity = Note.class)
 	private List<Note> notes;
-	
+
 	// TODO: if we don't include the transient annotation que query will not
 	// consider the Reference Annotation...
 	@Transient
@@ -172,12 +172,20 @@ public class Customer extends BasicVO<Long> {
 		this.customerOrders = customerOrders;
 	}
 
+	public List<Note> getNotes() {
+		return notes;
+	}
+
+	public void setNotes(List<Note> notes) {
+		this.notes = notes;
+	}
+
 	@Override
 	public String toStringDebug() {
 		return "Customer [pk=" + pk + ", name=" + name + ", lastName=" + lastName + ", document=" + document
 				+ ", documentType=" + documentType + ", birthDate=" + birthDate + ", customerOrders=" + customerOrders
 				+ ", ordersProductsName=" + ordersProductsName + ", documentTypeList=" + documentTypeList
-				+ ", birthDateStart=" + birthDateStart + ", birthDateEnd=" + birthDateEnd + "]";
+				+ ", birthDateStart=" + birthDateStart + ", birthDateEnd=" + birthDateEnd + ", notes=" + notes + "]";
 	}
 
 }
