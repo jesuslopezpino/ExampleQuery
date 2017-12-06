@@ -30,7 +30,7 @@ public class Given {
 		ProductStockServiceImpl service = new ProductStockServiceImpl();
 		service.setEntityManager(entityManager);
 		service.save(result);
-		LOGGER.info("Given " + productStockToString(result));
+		LOGGER.info("Given instance persisted " + productStockToString(result));
 		return result;
 	}
 
@@ -41,6 +41,7 @@ public class Given {
 		result.setProduct(product);
 		result.setQuantity(quantity);
 		result.setCustomerOrder(customerOrder);
+		LOGGER.info("Given class instance " + productStockToString(result));
 		return result;
 	}
 
@@ -55,7 +56,7 @@ public class Given {
 		ProductServiceImpl service = new ProductServiceImpl();
 		service.setEntityManager(entityManager);
 		service.save(result);
-		LOGGER.info("Given " + productToString(result));
+		LOGGER.info("Given instance persisted " + productToString(result));
 		return result;
 	}
 
@@ -64,6 +65,7 @@ public class Given {
 		result.setPk(pk);
 		result.setName(name);
 		result.setDescription(description);
+		LOGGER.info("Given class instance " + productToString(result));
 		return result;
 	}
 
@@ -83,7 +85,7 @@ public class Given {
 		CustomerServiceImpl service = new CustomerServiceImpl();
 		service.setEntityManager(entityManager);
 		service.save(result);
-		LOGGER.info("Given " + customerToString(result));
+		LOGGER.info("Given instance persisted " + customerToString(result));
 		return result;
 	}
 
@@ -96,6 +98,7 @@ public class Given {
 		result.setBirthDate(birthDate);
 		result.setDocument(document);
 		result.setDocumentType(documentType);
+		LOGGER.info("Given class instance " + customerToString(result));
 		return result;
 	}
 
@@ -121,7 +124,7 @@ public class Given {
 				productStockServiceImpl.update(productStock);
 			}
 		}
-		LOGGER.info("Given " + customerOrderToString(result));
+		LOGGER.info("Given instance persisted " + customerOrderToString(result));
 		return result;
 	}
 
@@ -132,6 +135,7 @@ public class Given {
 		result.setDate(date);
 		result.setPk(pk);
 		result.setProductsStock(productsStock);
+		LOGGER.info("Given class instance " + customerOrderToString(result));
 		return result;
 	}
 
@@ -151,7 +155,7 @@ public class Given {
 		NoteServiceImpl service = new NoteServiceImpl();
 		service.setEntityManager(entityManager);
 		result = service.save(result);
-		LOGGER.info("Given " + noteToString(result));
+		LOGGER.info("Given instance persisted " + noteToString(result));
 		return result;
 	}
 
@@ -161,6 +165,8 @@ public class Given {
 		result.setDate(date);
 		result.setCustomer(customer);
 		result.setNote(note);
+		LOGGER.info("Given class instance " + noteToString(result));
 		return result;
 	}
+
 }
