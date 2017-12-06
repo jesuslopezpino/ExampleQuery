@@ -38,15 +38,15 @@ public class ProductStock extends BasicVO<Long> {
 
 	@Transient
 	@Reference(fieldName = MAX_QUANTITY, referenceFor = QUANTITY)
-	public Integer maxQuantity;
+	private Integer maxQuantity;
 
 	@Transient
 	@Reference(fieldName = MIN_QUANTITY, referenceFor = QUANTITY)
-	public Integer minQuantity;
+	private Integer minQuantity;
 
 	@Transient
 	@Reference(fieldName = PRODUCT_NAME, referenceFor = PRODUCT + "." + Product.NAME)
-	public String productName;
+	private String productName;
 
 	public ProductStock() {
 
