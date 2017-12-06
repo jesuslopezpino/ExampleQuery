@@ -9,11 +9,13 @@ import org.apache.log4j.Logger;
 
 import foo.bar.domain.Customer;
 import foo.bar.domain.CustomerOrder;
+import foo.bar.domain.Note;
 import foo.bar.domain.Product;
 import foo.bar.domain.ProductStock;
 import foo.bar.exceptions.UniqueException;
 import foo.bar.service.impl.CustomerOrderServiceImpl;
 import foo.bar.service.impl.CustomerServiceImpl;
+import foo.bar.service.impl.NoteServiceImpl;
 import foo.bar.service.impl.ProductServiceImpl;
 import foo.bar.service.impl.ProductStockServiceImpl;
 import foo.bar.utils.Utils;
@@ -136,5 +138,29 @@ public class Given {
 	public static String customerOrderToString(CustomerOrder customerOrder) {
 		return "CustomerOrder [pk=" + customerOrder.getPk() + ", date=" + customerOrder.getDate() + ", customer="
 				+ customerOrder.getCustomer() + ", productsStock=" + customerOrder.getProductsStock() + "]";
+	}
+
+	public static String noteToString(Note note) {
+		return "Note [pk=" + note.getPk() + ", date=" + note.getDate() + ", note=" + note.getNote() + ", customer="
+				+ note.getCustomer() + "]";
+	}
+
+	public static Note givenANote(Long pk, Date date, Customer customer, String note, EntityManager entityManager)
+			throws UniqueException {
+		Note result = givenObjectNote(pk, date, customer, note);
+		NoteServiceImpl service = new NoteServiceImpl();
+		service.setEntityManager(entityManager);
+		result = service.save(result);
+		LOGGER.info("Given " + noteToString(result));
+		return result;
+	}
+
+	public static Note givenObjectNote(Long pk, Date date, Customer customer, String note) {
+		Note result = new Note();
+		result.setPk(pk);
+		result.setDate(date);
+		result.setCustomer(customer);
+		result.setNote(note);
+		return result;
 	}
 }
