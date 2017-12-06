@@ -32,7 +32,6 @@ public class ReferenceReader {
 	public static boolean isReferenceField(String fieldName, Object object)
 			throws NoSuchFieldException, SecurityException {
 		boolean result = false;
-		LOG.info("isReferenceField: " + fieldName + " from class: " + object.getClass());
 		Field field = Utils.getField(fieldName, object);
 		final Reference reference = field.getDeclaredAnnotation(Reference.class);
 		result = reference != null;
