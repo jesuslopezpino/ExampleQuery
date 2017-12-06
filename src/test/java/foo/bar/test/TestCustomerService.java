@@ -26,6 +26,9 @@ public class TestCustomerService extends TestCommon<CustomerServiceImpl, Custome
 			productsStock.add(productStock);
 			Given.givenACustomerOrder(1L, customer, Utils.getDate("01/01/2017 00:00:00", TIME_FORMAT), productsStock,
 					entityManager);
+			Customer customer2 = Given.givenACustomer(432L, "Another", "Customer", new Date(), "DNIXXX", "TYPE", entityManager);
+			Customer customer3 = Given.givenACustomer(232L, "Invented", "Customer", new Date(), "DNIXXX", "TYPE", entityManager);
+			Customer customer4 = Given.givenACustomer(499L, "More", "Customer", new Date(), "DNIXXX", "TYPE", entityManager);
 		} catch (UniqueException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
