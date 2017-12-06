@@ -53,7 +53,6 @@ public class Utils {
 		return invokedValue;
 	}
 
-
 	public static String getGetterOfField(String field) {
 		final String methodName = "get" + field.substring(0, 1).toUpperCase() + field.substring(1);
 		return methodName;
@@ -62,39 +61,6 @@ public class Utils {
 	public static String getSetterOfField(String field) {
 		final String methodName = "set" + field.substring(0, 1).toUpperCase() + field.substring(1);
 		return methodName;
-	}
-
-	public static Field getField(String fieldName, Object object) 
-	//throws NoSuchFieldException 
-	{
-		return FieldUtils.getField(object.getClass(), fieldName, true);
-//		Field result = null;
-//		for (Field field : object.getClass().getDeclaredFields()) {
-//			if (field.getName().equals(fieldName)) {
-//				result = field;
-//				break;
-//			}
-//		}
-//		if (result == null) {
-//			for (Field field : object.getClass().getFields()) {
-//				if (field.getName().equals(fieldName)) {
-//					result = field;
-//					break;
-//				}
-//			}
-//		}
-//		if (result == null) {
-//			if (object.getClass().equals(Object.class) && object.getClass().getSuperclass() != null) {
-//				LOGGER.error("No field: " + fieldName + " at class: " + object.getClass().getName() + " trying at "
-//						+ object.getClass().getSuperclass());
-//				Object superClassObject = object.getClass().getSuperclass().cast(object);
-//				return getField(fieldName, superClassObject);
-//			} else {
-//				LOGGER.error("No field: " + fieldName + " at class: " + object.getClass().getName());
-//				throw new NoSuchFieldException("No field: " + fieldName + " at class: " + object.getClass().getName());
-//			}
-//		}
-//		return result;
 	}
 
 	public static void setFieldValue(String fieldName, Object value, Object objectClass)
@@ -139,9 +105,9 @@ public class Utils {
 			throws NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException,
 			InvocationTargetException, NoSuchFieldException {
 		String setterName = getSetterOfField(fieldName);
+		Method setter = null;
 		// Dates... Database will return Timestamp that we usually implements
 		// with java.util.Date, so we have to check it and fix it
-		Method setter = null;
 		if (isTimestamp(value)) {
 			Date dateValue = timestampToDate((Timestamp) value);
 			setter = objectClass.getClass().getMethod(setterName, Date.class);
