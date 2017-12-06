@@ -13,6 +13,7 @@ import foo.bar.service.utils.HqlConditions;
 public class TestProductService extends TestCommon<ProductServiceImpl, Product> {
 
 	protected void givenExamplesEnviroment() {
+		super.logGivenEnviromentStart();
 		try {
 			Given.givenAProduct(1L, "Samsung", "television", entityManager);
 			Given.givenAProduct(2L, "Apple", "fruit", entityManager);
@@ -20,6 +21,7 @@ public class TestProductService extends TestCommon<ProductServiceImpl, Product> 
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		super.logGivenEnviromentEnd();
 	}
 
 	@Override

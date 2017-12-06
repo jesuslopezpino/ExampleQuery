@@ -17,6 +17,7 @@ import foo.bar.utils.Utils;
 public class TestCustomerService extends TestCommon<CustomerServiceImpl, Customer> {
 
 	protected void givenExamplesEnviroment() {
+		super.logGivenEnviromentStart();
 		try {
 			Customer customer = Given.givenADefaultCustomer(entityManager);
 			List<ProductStock> productsStock = new ArrayList<>();
@@ -29,6 +30,7 @@ public class TestCustomerService extends TestCommon<CustomerServiceImpl, Custome
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		super.logGivenEnviromentEnd();
 	}
 
 	@Override

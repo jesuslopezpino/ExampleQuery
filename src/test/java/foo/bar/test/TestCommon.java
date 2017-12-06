@@ -195,11 +195,13 @@ public abstract class TestCommon<ServiceVO extends ServiceImpl<VO>, VO extends B
 	}
 
 	@Test
-	public void findCustomByExample() throws NoSuchMethodException, SecurityException, InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, ExampleQueryException {
-		LOGGER.info("findCustomByExample at class: " + this.getClass().getName());
+	public void findCustomByExample() throws NoSuchMethodException, SecurityException, InstantiationException,
+			IllegalAccessException, IllegalArgumentException, InvocationTargetException, ExampleQueryException {
+		LOGGER.info("FIND CUSTOM BY EXAMPLE " + this.getClass().getName());
 		for (int i = 0; i < examples.length; i++) {
-			LOGGER.info("-----------------------------------------------------------------------------");
+			logGivenEnviromentSubLine();
 			VO example = examples[i];
+			LOGGER.info("example: " + example);
 			List<VO> result;
 			result = service.findCustomByExample(example, customFields, filter);
 			showResult(example, result, i, filter);
@@ -220,5 +222,30 @@ public abstract class TestCommon<ServiceVO extends ServiceImpl<VO>, VO extends B
 				LOGGER.info("item[" + exampleIndex + "]: " + vo.toString());
 			}
 		}
+	}
+
+	protected void logGivenEnviromentLine() {
+		LOGGER.info("*************************************************"
+				+ "***************************************************"
+				+ "***************************************************"
+				+ "***************************************************");
+	}
+
+	protected void logGivenEnviromentSubLine() {
+		LOGGER.info("-------------------------------------------------"
+				+ "---------------------------------------------------"
+				+ "---------------------------------------------------"
+				+ "---------------------------------------------------");
+	}
+
+	protected void logGivenEnviromentEnd() {
+		LOGGER.info("*\tGIVEN ENVIROMENT FOR " + this.getClass().getName() + " END");
+		logGivenEnviromentLine();
+	}
+
+	protected void logGivenEnviromentStart() {
+		logGivenEnviromentLine();
+		LOGGER.info("*\tGIVEN ENVIROMENT FOR " + this.getClass().getName());
+		logGivenEnviromentSubLine();
 	}
 }

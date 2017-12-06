@@ -19,8 +19,7 @@ import foo.bar.utils.Utils;
 public class TestCustomerOrderService extends TestCommon<CustomerOrderServiceImpl, CustomerOrder> {
 
 	protected void givenExamplesEnviroment() {
-		LOGGER.info("****************************************************************************************************");
-		LOGGER.info("given enviroment for " + this.getClass().getName());
+		super.logGivenEnviromentStart();
 		try {
 			Customer customer = Given.givenADefaultCustomer(entityManager);
 			Product product = Given.givenAProduct(1L, "CocaCola", "Lata", entityManager);
@@ -34,7 +33,7 @@ public class TestCustomerOrderService extends TestCommon<CustomerOrderServiceImp
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		LOGGER.info("****************************************************************************************************");
+		super.logGivenEnviromentEnd();
 	}
 
 	@Override

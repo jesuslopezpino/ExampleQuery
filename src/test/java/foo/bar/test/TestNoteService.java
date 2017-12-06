@@ -52,6 +52,7 @@ public class TestNoteService extends TestCommon<NoteServiceImpl, Note> {
 	}
 
 	protected void givenExamplesEnviroment() {
+		super.logGivenEnviromentStart();
 		Customer realCustomer;
 		Customer realCustomer2;
 		try {
@@ -65,6 +66,7 @@ public class TestNoteService extends TestCommon<NoteServiceImpl, Note> {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		super.logGivenEnviromentEnd();
 	}
 
 	@Override
