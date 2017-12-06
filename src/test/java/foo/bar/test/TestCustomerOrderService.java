@@ -82,10 +82,12 @@ public class TestCustomerOrderService extends TestCommon<CustomerOrderServiceImp
 
 	@Override
 	protected String[] initCustomFields() {
-		String field1 = CustomerOrder.CUSTOMER;
-		String field2 = CustomerOrder.PK;
-		String field3 = CustomerOrder.DATE;
-		String fields[] = { field1, field2, field3 };
+		String field1 = CustomerOrder.PK;
+		String field2 = CustomerOrder.DATE;
+		String field3 = CustomerOrder.CUSTOMER + "." +Customer.PK;
+		String field4 = CustomerOrder.CUSTOMER + "." +Customer.NAME;
+		String field5 = CustomerOrder.CUSTOMER + "." +Customer.LAST_NAME;
+		String fields[] = { field1, field2, field3, field4, field5 };
 		return fields;
 	}
 
