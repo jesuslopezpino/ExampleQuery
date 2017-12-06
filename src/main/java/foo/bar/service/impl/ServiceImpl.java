@@ -36,8 +36,6 @@ public abstract class ServiceImpl<VO extends BasicVO<?>> implements Service<VO> 
 		super();
 		this.voClass = (Class<VO>) ((ParameterizedType) this.getClass().getGenericSuperclass())
 				.getActualTypeArguments()[0];
-		LOGGER.debug("****************************************************************************");
-		LOGGER.debug("Creating service for class: " + this.voClass.getName());
 	}
 
 	public List<VO> findAll() throws InstantiationException, IllegalAccessException, ExampleQueryException {
@@ -259,10 +257,8 @@ public abstract class ServiceImpl<VO extends BasicVO<?>> implements Service<VO> 
 						where += UtilsService.getClauseCondition(lastTableAlias, fieldForQuery, condition,
 								nameForParameter);
 						if (nameForParameter != null) {
-							// Object fixedValueForQuery =
-							// UtilsService.fixValueForQuery(valueForQuery,
-							// condition);
-							parameters.put(nameForParameter, valueForQuery);
+							Object fixedValueForQuery = UtilsService.fixValueForQuery(valueForQuery, condition);
+							parameters.put(nameForParameter, fixedValueForQuery);
 						}
 					}
 				}
@@ -307,7 +303,7 @@ public abstract class ServiceImpl<VO extends BasicVO<?>> implements Service<VO> 
 			Entry<String, Object> parameter = iterator.next();
 			String parameterKey = parameter.getKey();
 			Object parameterValue = parameter.getValue();
-			LOGGER.debug("parameter: \"" + parameterKey + "\"\tvalue: \"" + parameterValue + "\"");
+			LOGGER.info("parameter: \"" + parameterKey + "\"\tvalue: \"" + parameterValue + "\"");
 			query.setParameter(parameterKey, parameterValue);
 		}
 	}
