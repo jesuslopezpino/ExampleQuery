@@ -62,7 +62,7 @@ public abstract class ServiceImpl<VO extends BasicVO<?>> implements Service<VO> 
 		String from = createCustomFrom(fields);
 		String where = " where " + BasicVO.PK + " = :" + BasicVO.PK;
 		String hqlString = select + from + where;
-		LOGGER.info("hqlString: " + hqlString);
+		LOGGER.debug("hqlString: " + hqlString);
 		TypedQuery<VO> query = entityManager.createQuery(hqlString, voClass);
 		query.setParameter(BasicVO.PK, primaryKey);
 		VO result = (VO) query.getSingleResult();
@@ -78,7 +78,7 @@ public abstract class ServiceImpl<VO extends BasicVO<?>> implements Service<VO> 
 			String field = fields[i];
 			String fromForField = getFromForField(tableAlias, tableAlias + "." + field);
 			if (!from.contains(fromForField)) {
-				LOGGER.info("From does not contains: " + fromForField);
+				LOGGER.debug("From does not contains: " + fromForField);
 				from += fromForField;
 			}
 		}
@@ -224,20 +224,20 @@ public abstract class ServiceImpl<VO extends BasicVO<?>> implements Service<VO> 
 	public static String getFromForField(
 			// String from,
 			String table, String fieldForQuery) {
-		LOGGER.info("getFromForField");
-		LOGGER.info("table: " + table);
-		LOGGER.info("fieldForquery: " + fieldForQuery);
+		LOGGER.debug("getFromForField");
+		LOGGER.debug("table: " + table);
+		LOGGER.debug("fieldForquery: " + fieldForQuery);
 		String lastTable = table;
 		String[] fields = fieldForQuery.split("\\.");
 		String from = "";
 		for (int i = 1; i < fields.length - 1; i++) {
 			String field = fields[i];
 			String nextJoin = " join " + lastTable + "." + field + " " + field + " ";
-			LOGGER.info("nextJoin =" + nextJoin);
+			LOGGER.debug("nextJoin =" + nextJoin);
 			from += nextJoin;
 			lastTable = field;
 		}
-		LOGGER.info("FROM FOR FIELD: " + from);
+		LOGGER.debug("FROM FOR FIELD: " + from);
 		return from;
 	}
 
@@ -272,7 +272,7 @@ public abstract class ServiceImpl<VO extends BasicVO<?>> implements Service<VO> 
 							fromForField = getFromForField(tableAlias, tableAlias + "." + filterField);
 						}
 						if (!from.contains(fromForField)) {
-							LOGGER.info("From does not contains: " + fromForField);
+							LOGGER.debug("From does not contains: " + fromForField);
 							from += fromForField;
 						}
 						fieldForQuery = getLastField(fieldForQuery);
@@ -287,7 +287,7 @@ public abstract class ServiceImpl<VO extends BasicVO<?>> implements Service<VO> 
 				}
 			}
 			String hqlString = select + from + where;
-			LOGGER.info("ExampleQuery: " + hqlString);
+			LOGGER.debug("ExampleQuery: " + hqlString);
 			Query query = this.entityManager.createQuery(hqlString);
 			setQueryParams(query, parameters);
 			return query;
@@ -326,7 +326,7 @@ public abstract class ServiceImpl<VO extends BasicVO<?>> implements Service<VO> 
 			Entry<String, Object> parameter = iterator.next();
 			String parameterKey = parameter.getKey();
 			Object parameterValue = parameter.getValue();
-			LOGGER.info("parameter: \"" + parameterKey + "\"\tvalue: \"" + parameterValue + "\"");
+			LOGGER.debug("parameter: \"" + parameterKey + "\"\tvalue: \"" + parameterValue + "\"");
 			query.setParameter(parameterKey, parameterValue);
 		}
 	}
