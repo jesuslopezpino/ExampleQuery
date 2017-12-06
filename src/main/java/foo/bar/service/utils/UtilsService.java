@@ -1,10 +1,10 @@
 package foo.bar.service.utils;
 
 import java.util.Collection;
-import java.util.List;
 
 import org.apache.log4j.Logger;
 
+import foo.bar.annotations.readers.ReferenceReader;
 import foo.bar.utils.Utils;
 
 public class UtilsService {
@@ -18,7 +18,7 @@ public class UtilsService {
 		boolean isTransient = Utils.isTransientField(filterField, example);
 		if (isTransient) {
 			// field for query = the referenced field
-			fieldForQuery = Utils.getReferencedField(example, filterField);
+			fieldForQuery = ReferenceReader.getReferenceForField(filterField, example);
 		} else {
 			// field for query = the current field name
 			fieldForQuery = filterField;
@@ -163,4 +163,11 @@ public class UtilsService {
 		return result;
 	}
 
+	public static String getAliasForField(String field) {
+		return field.replaceAll("\\.", "_");
+	}
+
+	public static String getFieldFromAlias(String alias){
+		return alias.replaceAll("_", "\\.");
+	}
 }
