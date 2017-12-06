@@ -169,57 +169,41 @@ public abstract class TestCommon<ServiceVO extends ServiceImpl<VO>, VO extends B
 	}
 
 	@Test
-	public void testFindByExample() {
+	public void testFindByExample() throws InstantiationException, ExampleQueryException {
 		LOGGER.info("testFindByExample at class: " + this.getClass().getName());
 		for (int i = 0; i < examples.length; i++) {
 			LOGGER.info("-----------------------------------------------------------------------------");
 			VO example = examples[i];
 			List<VO> result;
-			try {
-				result = service.findByExample(example, filter);
-				showResult(example, result, i, filter);
-				assertTrue(!result.isEmpty());
-			} catch (ExampleQueryException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+			result = service.findByExample(example, filter);
+			showResult(example, result, i, filter);
+			assertTrue(!result.isEmpty());
 		}
 	}
 
 	@Test
-	public void testCountByExample() {
+	public void testCountByExample() throws InstantiationException, ExampleQueryException {
 		LOGGER.info("testCountByExample at class: " + this.getClass().getName());
 		for (int i = 0; i < examples.length; i++) {
 			LOGGER.info("-----------------------------------------------------------------------------");
 			VO example = examples[i];
 			Integer result;
-			try {
-				result = service.countByExample(example, filter);
-				// showResult(example, result, i, filter);
-				assertTrue("Count by example returns more than zero: " + result, result > 0);
-			} catch (ExampleQueryException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+			result = service.countByExample(example, filter);
+			// showResult(example, result, i, filter);
+			assertTrue("Count by example returns more than zero: " + result, result > 0);
 		}
 	}
 
 	@Test
-	public void findCustomByExample() {
+	public void findCustomByExample() throws NoSuchMethodException, SecurityException, InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, ExampleQueryException {
 		LOGGER.info("findCustomByExample at class: " + this.getClass().getName());
 		for (int i = 0; i < examples.length; i++) {
 			LOGGER.info("-----------------------------------------------------------------------------");
 			VO example = examples[i];
 			List<VO> result;
-			try {
-				result = service.findCustomByExample(example, customFields, filter);
-				showResult(example, result, i, filter);
-				assertTrue(!result.isEmpty());
-			} catch (NoSuchMethodException | SecurityException | InstantiationException | IllegalAccessException
-					| IllegalArgumentException | InvocationTargetException | ExampleQueryException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+			result = service.findCustomByExample(example, customFields, filter);
+			showResult(example, result, i, filter);
+			assertTrue(!result.isEmpty());
 		}
 	}
 
