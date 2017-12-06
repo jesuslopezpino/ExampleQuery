@@ -92,16 +92,24 @@ public abstract class TestCommon<ServiceVO extends ServiceImpl<VO>, VO extends B
 	public void setUp() throws InstantiationException, IllegalAccessException {
 		service = (ServiceImpl<VO>) serviceVoClass.newInstance();
 		service.setEntityManager(entityManager);
-		
+
 		this.givenExamplesEnviroment();
 		this.filter = this.initFilter();
 		this.examples = this.initExamples();
 		this.customFields = this.initCustomFields();
 	}
 
-
 	@After
 	public void tearDown() throws Exception {
+	}
+
+	@Test
+	public void testEntityConstructor() throws NoSuchMethodException, SecurityException, InstantiationException,
+			IllegalAccessException, IllegalArgumentException, InvocationTargetException {
+		Map<String, Object> mapValues = initEntityFields();
+		Constructor constructor = voClass.getConstructor(HashMap.class);
+		VO entity = (VO) constructor.newInstance((Map) mapValues);
+		assertTrue(entity != null);
 	}
 
 	@Test
@@ -112,6 +120,14 @@ public abstract class TestCommon<ServiceVO extends ServiceImpl<VO>, VO extends B
 		VO entity = this.testSave();
 		entity = this.testUpdate(entity);
 		this.testDelete(entity);
+	}
+
+	public VO testSave() throws UniqueException {
+		LOGGER.info("testSave");
+		VO entity = this.initSaveEntity();
+		entity = service.save(entity);
+		assertTrue("Save successfull", entity != null && entity.getPk() != null);
+		return entity;
 	}
 
 	private VO testUpdate(VO entity) throws NoSuchMethodException, SecurityException, IllegalAccessException,
@@ -128,14 +144,6 @@ public abstract class TestCommon<ServiceVO extends ServiceImpl<VO>, VO extends B
 
 	}
 
-	public VO testSave() throws UniqueException {
-		LOGGER.info("testSave");
-		VO entity = this.initSaveEntity();
-		entity = service.save(entity);
-		assertTrue("Save successfull", entity != null && entity.getPk() != null);
-		return entity;
-	}
-
 	public void testDelete(VO entity) {
 		LOGGER.info("testDelete");
 		if (entity != null) {
@@ -146,7 +154,6 @@ public abstract class TestCommon<ServiceVO extends ServiceImpl<VO>, VO extends B
 		}
 	}
 
-	// TODO: test for saveList
 	// TODO: test for unique exception
 
 	@Test
@@ -159,15 +166,6 @@ public abstract class TestCommon<ServiceVO extends ServiceImpl<VO>, VO extends B
 	public void testCountAll() throws InstantiationException, IllegalAccessException, ExampleQueryException {
 		int result = service.countAll();
 		assertTrue("Count all returns more than zero: " + result, result > 0);
-	}
-
-	@Test
-	public void testEntityConstructor() throws NoSuchMethodException, SecurityException, InstantiationException,
-			IllegalAccessException, IllegalArgumentException, InvocationTargetException {
-		Map<String, Object> mapValues = initEntityFields();
-		Constructor constructor = voClass.getConstructor(HashMap.class);
-		VO entity = (VO) constructor.newInstance((Map) mapValues);
-		assertTrue(entity != null);
 	}
 
 	@Test
