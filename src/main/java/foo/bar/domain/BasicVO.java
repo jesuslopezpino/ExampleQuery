@@ -9,6 +9,7 @@ import javax.persistence.Column;
 import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
 
+import foo.bar.service.utils.UtilsService;
 import foo.bar.utils.Utils;
 
 @MappedSuperclass
@@ -25,7 +26,8 @@ public abstract class BasicVO<PK> {
 		for (Iterator<Entry<String, Object>> iterator = mapValues.entrySet().iterator(); iterator.hasNext();) {
 			Entry<String, Object> entry = iterator.next();
 			try {
-				Utils.setFieldValue(entry.getKey(), entry.getValue(), this);
+				String fieldName = UtilsService.getFieldFromAlias(entry.getKey());
+				Utils.setFieldValue(fieldName, entry.getValue(), this);
 			} catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException
 					| InvocationTargetException | NoSuchFieldException | InstantiationException e) {
 				// TODO Auto-generated catch block
