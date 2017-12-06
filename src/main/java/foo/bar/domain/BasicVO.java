@@ -17,6 +17,10 @@ public abstract class BasicVO<PK> {
 
 	public static final String PK = "pk";
 
+	@Id
+	@Column(name = BasicVO.PK)
+	protected PK pk;
+
 	public BasicVO() {
 		super();
 	}
@@ -36,10 +40,6 @@ public abstract class BasicVO<PK> {
 		}
 	}
 
-	@Id
-	@Column(name = BasicVO.PK)
-	public PK pk;
-
 	public PK getPk() {
 		return pk;
 	}
@@ -54,7 +54,7 @@ public abstract class BasicVO<PK> {
 	}
 
 	public abstract String toStringDebug();
-	
+
 	@Override
 	public boolean equals(Object obj) {
 		if (obj != null && obj instanceof BasicVO) {

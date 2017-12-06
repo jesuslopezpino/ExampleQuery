@@ -13,6 +13,7 @@ import java.util.List;
 
 import javax.persistence.Transient;
 
+import org.apache.commons.lang3.reflect.FieldUtils;
 import org.apache.log4j.Logger;
 
 import foo.bar.annotations.readers.ReferenceReader;
@@ -63,34 +64,37 @@ public class Utils {
 		return methodName;
 	}
 
-	public static Field getField(String fieldName, Object object) throws NoSuchFieldException {
-		Field result = null;
-		for (Field field : object.getClass().getDeclaredFields()) {
-			if (field.getName().equals(fieldName)) {
-				result = field;
-				break;
-			}
-		}
-		if (result == null) {
-			for (Field field : object.getClass().getFields()) {
-				if (field.getName().equals(fieldName)) {
-					result = field;
-					break;
-				}
-			}
-		}
-		if (result == null) {
-			if (object.getClass().equals(Object.class) && object.getClass().getSuperclass() != null) {
-				LOGGER.error("No field: " + fieldName + " at class: " + object.getClass().getName() + " trying at "
-						+ object.getClass().getSuperclass());
-				Object superClassObject = object.getClass().getSuperclass().cast(object);
-				return getField(fieldName, superClassObject);
-			} else {
-				LOGGER.error("No field: " + fieldName + " at class: " + object.getClass().getName());
-				throw new NoSuchFieldException("No field: " + fieldName + " at class: " + object.getClass().getName());
-			}
-		}
-		return result;
+	public static Field getField(String fieldName, Object object) 
+	//throws NoSuchFieldException 
+	{
+		return FieldUtils.getField(object.getClass(), fieldName, true);
+//		Field result = null;
+//		for (Field field : object.getClass().getDeclaredFields()) {
+//			if (field.getName().equals(fieldName)) {
+//				result = field;
+//				break;
+//			}
+//		}
+//		if (result == null) {
+//			for (Field field : object.getClass().getFields()) {
+//				if (field.getName().equals(fieldName)) {
+//					result = field;
+//					break;
+//				}
+//			}
+//		}
+//		if (result == null) {
+//			if (object.getClass().equals(Object.class) && object.getClass().getSuperclass() != null) {
+//				LOGGER.error("No field: " + fieldName + " at class: " + object.getClass().getName() + " trying at "
+//						+ object.getClass().getSuperclass());
+//				Object superClassObject = object.getClass().getSuperclass().cast(object);
+//				return getField(fieldName, superClassObject);
+//			} else {
+//				LOGGER.error("No field: " + fieldName + " at class: " + object.getClass().getName());
+//				throw new NoSuchFieldException("No field: " + fieldName + " at class: " + object.getClass().getName());
+//			}
+//		}
+//		return result;
 	}
 
 	public static void setFieldValue(String fieldName, Object value, Object objectClass)
