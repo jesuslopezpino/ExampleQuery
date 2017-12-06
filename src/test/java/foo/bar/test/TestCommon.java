@@ -116,22 +116,30 @@ public abstract class TestCommon<ServiceVO extends ServiceImpl<VO>, VO extends B
 	public void testSaveUpdateAndDelete()
 			throws UniqueException, NoSuchMethodException, SecurityException, IllegalAccessException,
 			IllegalArgumentException, InvocationTargetException, NoSuchFieldException, InstantiationException {
+		this.logGivenEnviromentSubLine();
 		LOGGER.info("testSaveUpdateAndDelete");
 		VO entity = this.testSave();
 		entity = this.testUpdate(entity);
-		this.testDelete(entity);
+		boolean testCompleted = this.testDelete(entity);
+		LOGGER.info("testSaveUpdateAndDelete completed " + testCompleted);
+		assertTrue("testSaveUpdateAndDelete completed ", testCompleted);
+		this.logGivenEnviromentSubLine();
 	}
 
 	public VO testSave() throws UniqueException {
+		this.logGivenEnviromentSubLine();
 		LOGGER.info("testSave");
 		VO entity = this.initSaveEntity();
 		entity = service.save(entity);
+		LOGGER.info("Save successfull is " + (entity != null && entity.getPk() != null));
 		assertTrue("Save successfull", entity != null && entity.getPk() != null);
+		this.logGivenEnviromentSubLine();
 		return entity;
 	}
 
 	private VO testUpdate(VO entity) throws NoSuchMethodException, SecurityException, IllegalAccessException,
 			IllegalArgumentException, InvocationTargetException, NoSuchFieldException, InstantiationException {
+		this.logGivenEnviromentSubLine();
 		LOGGER.info("testUpdate");
 		String field = this.initUpdateField();
 		Object newValue = this.initUpdateValue();
@@ -139,59 +147,78 @@ public abstract class TestCommon<ServiceVO extends ServiceImpl<VO>, VO extends B
 		Utils.setFieldValue(field, newValue, entity);
 		VO updatedEntity = this.service.update(entity);
 		boolean updated = !originalValue.equals(newValue);
+		LOGGER.info(
+				"Entity updated: Field \"" + field + "\" (" + originalValue + ") => (" + newValue + ") is " + updated);
 		assertTrue("Entity updated: Field \"" + field + "\" (" + originalValue + ") => (" + newValue + ")", updated);
+		this.logGivenEnviromentSubLine();
 		return updatedEntity;
 
 	}
 
-	public void testDelete(VO entity) {
-		LOGGER.info("testDelete");
+	public boolean testDelete(VO entity) {
+		boolean result = false;
+		this.logGivenEnviromentSubLine();
+		LOGGER.info("testDelete at class: " + this.getClass().getName());
 		if (entity != null) {
-			boolean result = service.delete(entity);
+			result = service.delete(entity);
 			assertTrue("Delete successfull", result);
 		} else {
 			assertTrue("Can't test delete", false);
 		}
+		this.logGivenEnviromentSubLine();
+		return result;
 	}
 
 	// TODO: test for unique exception
 
 	@Test
 	public void testFindAll() throws InstantiationException, IllegalAccessException, ExampleQueryException {
+		this.logGivenEnviromentSubLine();
+		LOGGER.info("testFindAll at class: " + this.getClass().getName());
 		List<VO> result = service.findAll();
-		assertTrue(!result.isEmpty());
+		LOGGER.info("Test findAll returns more than zero: " + result.size());
+		assertTrue("Test findAll returns more than zero: ", !result.isEmpty());
+		this.logGivenEnviromentSubLine();
 	}
 
 	@Test
 	public void testCountAll() throws InstantiationException, IllegalAccessException, ExampleQueryException {
+		this.logGivenEnviromentSubLine();
+		LOGGER.info("testCountAll at class: " + this.getClass().getName());
 		int result = service.countAll();
+		LOGGER.info("Count all returns more than zero: " + result);
 		assertTrue("Count all returns more than zero: " + result, result > 0);
+		this.logGivenEnviromentSubLine();
 	}
 
 	@Test
 	public void testFindByExample() throws InstantiationException, ExampleQueryException {
+		this.logGivenEnviromentSubLine();
 		LOGGER.info("testFindByExample at class: " + this.getClass().getName());
 		for (int i = 0; i < examples.length; i++) {
-			LOGGER.info("-----------------------------------------------------------------------------");
 			VO example = examples[i];
 			List<VO> result;
 			result = service.findByExample(example, filter);
 			showResult(example, result, i, filter);
-			assertTrue(!result.isEmpty());
+			LOGGER.info("findByExample returns more than zero: " + result.size());
+			assertTrue("findByExample returns more than zero: ", !result.isEmpty());
 		}
+		this.logGivenEnviromentSubLine();
 	}
 
 	@Test
 	public void testCountByExample() throws InstantiationException, ExampleQueryException {
+		this.logGivenEnviromentSubLine();
 		LOGGER.info("testCountByExample at class: " + this.getClass().getName());
 		for (int i = 0; i < examples.length; i++) {
-			LOGGER.info("-----------------------------------------------------------------------------");
 			VO example = examples[i];
 			Integer result;
 			result = service.countByExample(example, filter);
 			// showResult(example, result, i, filter);
+			LOGGER.info("Count by example returns more than zero: " + result);
 			assertTrue("Count by example returns more than zero: " + result, result > 0);
 		}
+		this.logGivenEnviromentSubLine();
 	}
 
 	@Test
@@ -205,7 +232,8 @@ public abstract class TestCommon<ServiceVO extends ServiceImpl<VO>, VO extends B
 			List<VO> result;
 			result = service.findCustomByExample(example, customFields, filter);
 			showResult(example, result, i, filter);
-			assertTrue(!result.isEmpty());
+			LOGGER.info("findCustomByExample returns more than zero: " + result.size());
+			assertTrue("findCustomByExample returns more than zero: " + result, !result.isEmpty());
 		}
 	}
 
