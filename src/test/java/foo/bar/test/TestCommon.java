@@ -93,8 +93,7 @@ public abstract class TestCommon<ServiceVO extends ServiceImpl<VO>, VO extends B
 		service = (ServiceImpl<VO>) serviceVoClass.newInstance();
 		service.setEntityManager(entityManager);
 		
-		givenExamplesEnviroment();
-		
+		this.givenExamplesEnviroment();
 		this.filter = this.initFilter();
 		this.examples = this.initExamples();
 		this.customFields = this.initCustomFields();
