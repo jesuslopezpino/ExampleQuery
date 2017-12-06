@@ -16,9 +16,7 @@ import foo.bar.utils.Utils;
 
 public class TestCustomerService extends TestCommon<CustomerServiceImpl, Customer> {
 
-	@Override
-	public void setUp() throws InstantiationException, IllegalAccessException {
-		super.setUp();
+	protected void givenExamplesEnviroment() {
 		try {
 			Customer customer = Given.givenADefaultCustomer(entityManager);
 			List<ProductStock> productsStock = new ArrayList<>();

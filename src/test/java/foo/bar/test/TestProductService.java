@@ -12,15 +12,10 @@ import foo.bar.service.utils.HqlConditions;
 
 public class TestProductService extends TestCommon<ProductServiceImpl, Product> {
 
-	@Override
-	public void setUp() {
+	protected void givenExamplesEnviroment() {
 		try {
-			super.setUp();
 			Given.givenAProduct(1L, "Samsung", "television", entityManager);
 			Given.givenAProduct(2L, "Apple", "fruit", entityManager);
-		} catch (InstantiationException | IllegalAccessException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
 		} catch (UniqueException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

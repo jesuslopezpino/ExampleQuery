@@ -11,9 +11,7 @@ import foo.bar.service.utils.HqlConditions;
 
 public class TestProductStockService extends TestCommon<ProductStockServiceImpl, ProductStock> {
 
-	@Override
-	public void setUp() throws InstantiationException, IllegalAccessException {
-		super.setUp();
+	protected void givenExamplesEnviroment() {
 		Product product;
 		try {
 			product = Given.givenAProduct(1L, "Samsung", "tv", entityManager);
@@ -35,14 +33,14 @@ public class TestProductStockService extends TestCommon<ProductStockServiceImpl,
 	@Override
 	protected Map<String, HqlConditions> initFilter() {
 		Map<String, HqlConditions> filter = new HashMap<>();
-		
+
 		// example 1
 		filter.put(ProductStock.PRODUCT_NAME, HqlConditions.LIKE_IGNORE_CASE);
-		
+
 		// example 2
 		filter.put(ProductStock.MAX_QUANTITY, HqlConditions.LOWER_EQUALS);
 		filter.put(ProductStock.MIN_QUANTITY, HqlConditions.GREATER_THAN);
-		
+
 		// example 3
 		filter.put(ProductStock.PK, HqlConditions.NOT_EQUALS);
 		filter.put(ProductStock.CUSTOMER_ORDER, HqlConditions.IS_NULL);
