@@ -19,6 +19,8 @@ import foo.bar.utils.Utils;
 public class TestCustomerOrderService extends TestCommon<CustomerOrderServiceImpl, CustomerOrder> {
 
 	protected void givenExamplesEnviroment() {
+		LOGGER.info("****************************************************************************************************");
+		LOGGER.info("given enviroment for " + this.getClass().getName());
 		try {
 			Customer customer = Given.givenADefaultCustomer(entityManager);
 			Product product = Given.givenAProduct(1L, "CocaCola", "Lata", entityManager);
@@ -32,6 +34,7 @@ public class TestCustomerOrderService extends TestCommon<CustomerOrderServiceImp
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		LOGGER.info("****************************************************************************************************");
 	}
 
 	@Override
@@ -84,9 +87,9 @@ public class TestCustomerOrderService extends TestCommon<CustomerOrderServiceImp
 	protected String[] initCustomFields() {
 		String field1 = CustomerOrder.PK;
 		String field2 = CustomerOrder.DATE;
-		String field3 = CustomerOrder.CUSTOMER + "." +Customer.PK;
-		String field4 = CustomerOrder.CUSTOMER + "." +Customer.NAME;
-		String field5 = CustomerOrder.CUSTOMER + "." +Customer.LAST_NAME;
+		String field3 = CustomerOrder.CUSTOMER + "." + Customer.PK;
+		String field4 = CustomerOrder.CUSTOMER + "." + Customer.NAME;
+		String field5 = CustomerOrder.CUSTOMER + "." + Customer.LAST_NAME;
 		String fields[] = { field1, field2, field3, field4, field5 };
 		return fields;
 	}
