@@ -20,14 +20,6 @@ public class Product extends BasicVO<Long> {
 
 	public static final String PK_LIST = "pkList";
 
-	public Product() {
-		super();
-	}
-
-	public Product(HashMap<String, Object> mapValues) {
-		super(mapValues);
-	}
-
 	@Transient
 	@Reference(fieldName = PK_LIST, referenceFor = Product.PK)
 	private List<Long> pkList;
@@ -39,6 +31,14 @@ public class Product extends BasicVO<Long> {
 	@NotBlank
 	@Column(name = DESCRIPTION)
 	private String description;
+
+	public Product() {
+		super();
+	}
+
+	public Product(HashMap<String, Object> mapValues) {
+		super(mapValues);
+	}
 
 	public String getName() {
 		return name;
