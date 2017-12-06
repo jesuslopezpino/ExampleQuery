@@ -36,7 +36,7 @@ public abstract class BasicVO<PK> {
 
 	@Id
 	@Column(name = BasicVO.PK)
-	protected PK pk;
+	public PK pk;
 
 	public PK getPk() {
 		return pk;
