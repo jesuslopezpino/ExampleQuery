@@ -27,7 +27,6 @@ public class Note extends BasicVO<Long> {
 	@Column(name = NOTE)
 	private String note;
 
-	@NotNull
 	@ManyToOne(targetEntity = Customer.class)
 	private Customer customer;
 
@@ -39,10 +38,33 @@ public class Note extends BasicVO<Long> {
 		super(mapValues);
 	}
 
+	public Date getDate() {
+		return date;
+	}
+
+	public void setDate(Date date) {
+		this.date = date;
+	}
+
+	public String getNote() {
+		return note;
+	}
+
+	public void setNote(String note) {
+		this.note = note;
+	}
+
+	public Customer getCustomer() {
+		return customer;
+	}
+
+	public void setCustomer(Customer customer) {
+		this.customer = customer;
+	}
+
 	@Override
 	public String toStringDebug() {
-		// TODO Auto-generated method stub
-		return null;
+		return "Note [pk=" + pk + ", date=" + date + ", note=" + note + ", customer=" + customer + "]";
 	}
 
 }
