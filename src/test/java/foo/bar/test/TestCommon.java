@@ -62,9 +62,6 @@ public abstract class TestCommon<ServiceVO extends ServiceImpl<VO>, VO extends B
 		this.voClass = (Class<ServiceVO>) ((ParameterizedType) this.getClass().getGenericSuperclass())
 				.getActualTypeArguments()[1];
 		LOGGER.info("Creating test for class: " + this.serviceVoClass.getName());
-		this.filter = this.initFilter();
-		this.examples = this.initExamples();
-		this.customFields = this.initCustomFields();
 	}
 
 	protected abstract String[] initCustomFields();
@@ -81,6 +78,8 @@ public abstract class TestCommon<ServiceVO extends ServiceImpl<VO>, VO extends B
 
 	protected abstract Object initUpdateValue();
 
+	protected abstract void givenExamplesEnviroment();
+
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
 	}
@@ -93,7 +92,14 @@ public abstract class TestCommon<ServiceVO extends ServiceImpl<VO>, VO extends B
 	public void setUp() throws InstantiationException, IllegalAccessException {
 		service = (ServiceImpl<VO>) serviceVoClass.newInstance();
 		service.setEntityManager(entityManager);
+		
+		givenExamplesEnviroment();
+		
+		this.filter = this.initFilter();
+		this.examples = this.initExamples();
+		this.customFields = this.initCustomFields();
 	}
+
 
 	@After
 	public void tearDown() throws Exception {
