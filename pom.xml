@@ -5,6 +5,38 @@
 	<artifactId>ExampleQuery</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 
+	<name>Example Query by Jesus Maria Lopez Pino</name>
+	<description>Example Query by Jesus Maria Lopez Pino</description>
+	<url>https://github.com/jesuslopezpino/ExampleQuery</url>
+
+	<developers>
+		<developer>
+			<name>Jesus Maria Lopez Pino</name>
+			<url>https://www.linkedin.com/in/jesus-lopez-pino</url>
+			<email>jesus_lopez_pino@hotmail.com</email>
+		</developer>
+	</developers>
+
+	<scm>
+		<connection>scm:git:git://github.com/jesuslopezpino/ExampleQuery.git</connection>
+		<developerConnection>scm:git:git@github.com:jesuslopezpino/ExampleQuery.git</developerConnection>
+		<url>http://github.com/jesuslopezpino/ExampleQuery/</url>
+		<tag>HEAD</tag>
+	</scm>
+
+	<issueManagement>
+		<system>github</system>
+		<url>https://github.com/jesuslopezpino/ExampleQuery/issues#issue/</url>
+	</issueManagement>
+
+	<licenses>
+		<license>
+			<name>Apache License 2.0</name>
+			<url>http://www.apache.org/licenses/LICENSE-2.0.html</url>
+			<distribution>repo</distribution>
+		</license>
+	</licenses>
+
 	<properties>
 		<hibernate.version>4.2.21.Final</hibernate.version>
 	</properties>
@@ -131,4 +163,5 @@
 		</dependency>
 
 	</dependencies>
+
 </project>
