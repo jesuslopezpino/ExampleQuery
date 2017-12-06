@@ -16,6 +16,7 @@ import javax.persistence.TypedQuery;
 
 import org.apache.log4j.Logger;
 
+import foo.bar.annotations.readers.ReferenceReader;
 import foo.bar.domain.BasicVO;
 import foo.bar.exceptions.ExampleQueryException;
 import foo.bar.exceptions.UniqueException;
@@ -45,7 +46,8 @@ public abstract class ServiceImpl<VO extends BasicVO<?>> implements Service<VO> 
 
 	public int countAll() throws InstantiationException, IllegalAccessException, ExampleQueryException {
 		String select = "select count(*) ";
-		String from = " from " + voClass.getName();
+		String tableAlias = getTableAliasForClass(voClass);
+		String from = " from " + voClass.getName() + " " + tableAlias;
 		String hqlString = select + from;
 		Long result = (Long) entityManager.createQuery(hqlString).getSingleResult();
 		return result.intValue();
@@ -57,7 +59,7 @@ public abstract class ServiceImpl<VO extends BasicVO<?>> implements Service<VO> 
 
 	public VO findCustomByPk(Object primaryKey, String[] fields) {
 		String select = createCustomSelect(fields);
-		String from = " from " + voClass.getName();
+		String from = createCustomFrom(fields);
 		String where = " where " + BasicVO.PK + " = :" + BasicVO.PK;
 		String hqlString = select + from + where;
 		LOGGER.info("hqlString: " + hqlString);
@@ -67,16 +69,38 @@ public abstract class ServiceImpl<VO extends BasicVO<?>> implements Service<VO> 
 		return result;
 	}
 
-	public List<VO> findByExample(VO example, Map<String, HqlConditions> filter) throws ExampleQueryException {
+	private String createCustomFrom(String[] fields) {
+		String tableAlias = getTableAliasForClass(voClass);
+		String from = " from " + voClass.getName() + " " + tableAlias;
+		int fieldsLength = fields.length;
+		// TODO: detect duplicated fields to avoid problems
+		for (int i = 0; i < fieldsLength; i++) {
+			String field = fields[i];
+			String fromForField = getFromForField(tableAlias, tableAlias + "." + field);
+			if (!from.contains(fromForField)) {
+				LOGGER.info("From does not contains: " + fromForField);
+				from += fromForField;
+			}
+		}
+		LOGGER.debug("createCustomFromt: " + from);
+		return from;
+	}
+
+	public List<VO> findByExample(VO example, Map<String, HqlConditions> filter)
+			throws ExampleQueryException, InstantiationException {
 		String tableAlias = getTableAliasForClass(voClass);
 		String select = "select " + tableAlias;
-		Query query = createQueryForExample(example, filter, select);
+		String from = " from " + voClass.getName() + " " + tableAlias;
+		Query query = createQueryForExample(example, filter, select, from);
 		return query.getResultList();
 	}
 
-	public int countByExample(VO example, Map<String, HqlConditions> filter) throws ExampleQueryException {
+	public int countByExample(VO example, Map<String, HqlConditions> filter)
+			throws ExampleQueryException, InstantiationException {
 		String select = "select count(*) ";
-		Query query = createQueryForExample(example, filter, select);
+		String tableAlias = getTableAliasForClass(voClass);
+		String from = " from " + voClass.getName() + " " + tableAlias;
+		Query query = createQueryForExample(example, filter, select, from);
 		Long result = (Long) query.getSingleResult();
 		return result.intValue();
 	}
@@ -85,7 +109,8 @@ public abstract class ServiceImpl<VO extends BasicVO<?>> implements Service<VO> 
 			throws ExampleQueryException, NoSuchMethodException, SecurityException, InstantiationException,
 			IllegalAccessException, IllegalArgumentException, InvocationTargetException {
 		String select = this.createCustomSelect(fields);
-		Query query = createQueryForExample(example, filter, select);
+		String from = createCustomFrom(fields);
+		Query query = createQueryForExample(example, filter, select, from);
 		List<Map<String, Object>> list = query.getResultList();
 		List<VO> result = new ArrayList<>();
 		for (Map<String, Object> mapValues : list) {
@@ -176,19 +201,6 @@ public abstract class ServiceImpl<VO extends BasicVO<?>> implements Service<VO> 
 	}
 
 	private String createCustomSelect(String[] fields) {
-		// String select = "select new " + voClass.getName() + " ( ";
-		// int fieldsLength = fields.length;
-		// int lastField = fieldsLength - 1;
-		// for (int i = 0; i < fieldsLength; i++) {
-		// String field = fields[i];
-		// if (i != lastField) {
-		// select += field + ", ";
-		// } else {
-		// select += field;
-		// }
-		// }
-		// select += ")";
-		// return select;
 		String select = "select new map ( ";
 		int fieldsLength = fields.length;
 		int lastField = fieldsLength;
@@ -198,7 +210,8 @@ public abstract class ServiceImpl<VO extends BasicVO<?>> implements Service<VO> 
 			String entityField = getLastField(field);
 			String tableAlias = getTableAliasForClass(voClass);
 			String entityAlias = getLastTableAlias(tableAlias, field);
-			select += entityAlias + "." + entityField + " as " + field + "";
+			String fieldAlias = UtilsService.getAliasForField(field);
+			select += entityAlias + "." + entityField + " as " + fieldAlias + "";
 			if (i != lastField - 1) {
 				select += ", ";
 			}
@@ -208,33 +221,33 @@ public abstract class ServiceImpl<VO extends BasicVO<?>> implements Service<VO> 
 		return select;
 	}
 
-	public static String getFromForField(String from, String table, String fieldForQuery) {
-		LOGGER.debug("getFromForField");
-		LOGGER.debug("table: " + table);
-		LOGGER.debug("fieldForquery: " + fieldForQuery);
+	public static String getFromForField(
+			// String from,
+			String table, String fieldForQuery) {
+		LOGGER.info("getFromForField");
+		LOGGER.info("table: " + table);
+		LOGGER.info("fieldForquery: " + fieldForQuery);
 		String lastTable = table;
 		String[] fields = fieldForQuery.split("\\.");
-		String nextJoin = "";
-		for (int i = 0; i < fields.length - 1; i++) {
+		String from = "";
+		for (int i = 1; i < fields.length - 1; i++) {
 			String field = fields[i];
-			nextJoin = " join " + lastTable + "." + field + " " + field + " ";
-			LOGGER.debug("nextJoin =" + nextJoin);
-			if (!from.contains(nextJoin)) {
-				from += nextJoin;
-			}
+			String nextJoin = " join " + lastTable + "." + field + " " + field + " ";
+			LOGGER.info("nextJoin =" + nextJoin);
+			from += nextJoin;
 			lastTable = field;
 		}
-		LOGGER.debug("FROOOM: " + from);
+		LOGGER.info("FROM FOR FIELD: " + from);
 		return from;
 	}
 
-	private Query createQueryForExample(VO example, Map<String, HqlConditions> filter, String select)
-			throws ExampleQueryException {
+	private Query createQueryForExample(VO example, Map<String, HqlConditions> filter, String select, String from)
+			throws ExampleQueryException, InstantiationException {
 
 		Map<String, Object> parameters = new HashMap<>();
 		String tableAlias = getTableAliasForClass(voClass);
-		String from = " from " + voClass.getName() + " " + tableAlias;
-		String where = " where 1=1";
+		// String from = " from " + voClass.getName() + " " + tableAlias;
+		String where = " where 1=1 ";
 		try {
 			if (filter != null) {
 				for (Iterator<Entry<String, HqlConditions>> iterator = filter.entrySet().iterator(); iterator
@@ -249,8 +262,18 @@ public abstract class ServiceImpl<VO extends BasicVO<?>> implements Service<VO> 
 					if (applyValue) {
 						String nameForParameter = UtilsService.getNameForParameter(filterField, condition);
 						String lastTableAlias = getLastTableAlias(tableAlias, fieldForQuery);
-						if (lastTableAlias != tableAlias) {
-							from = getFromForField(from, tableAlias, fieldForQuery);
+						String fromForField = null;
+						VO voInstance = voClass.newInstance();
+						// TODO: improve new instance
+						if (ReferenceReader.isReferenceField(filterField, voInstance)) {
+							String referencedField = ReferenceReader.getReferenceForField(filterField, voInstance);
+							fromForField = getFromForField(tableAlias, tableAlias + "." + referencedField);
+						} else {
+							fromForField = getFromForField(tableAlias, tableAlias + "." + filterField);
+						}
+						if (!from.contains(fromForField)) {
+							LOGGER.info("From does not contains: " + fromForField);
+							from += fromForField;
 						}
 						fieldForQuery = getLastField(fieldForQuery);
 						LOGGER.debug("FROM: " + from);
