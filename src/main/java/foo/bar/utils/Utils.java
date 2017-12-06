@@ -52,23 +52,6 @@ public class Utils {
 		return invokedValue;
 	}
 
-	public static boolean isDateField(String fieldName, Object object) throws NoSuchFieldException {
-		return object.getClass().getDeclaredField(fieldName).getType().equals(Date.class);
-	}
-
-	public static boolean isListField(String fieldName, Object object) {
-		boolean result = false;
-		try {
-			result = object.getClass().getDeclaredField(fieldName).getType().equals(List.class);
-		} catch (NoSuchFieldException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (SecurityException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return result;
-	}
 
 	public static String getGetterOfField(String field) {
 		final String methodName = "get" + field.substring(0, 1).toUpperCase() + field.substring(1);
@@ -78,6 +61,36 @@ public class Utils {
 	public static String getSetterOfField(String field) {
 		final String methodName = "set" + field.substring(0, 1).toUpperCase() + field.substring(1);
 		return methodName;
+	}
+
+	public static Field getField(String fieldName, Object object) throws NoSuchFieldException {
+		Field result = null;
+		for (Field field : object.getClass().getDeclaredFields()) {
+			if (field.getName().equals(fieldName)) {
+				result = field;
+				break;
+			}
+		}
+		if (result == null) {
+			for (Field field : object.getClass().getFields()) {
+				if (field.getName().equals(fieldName)) {
+					result = field;
+					break;
+				}
+			}
+		}
+		if (result == null) {
+			if (object.getClass().equals(Object.class) && object.getClass().getSuperclass() != null) {
+				LOGGER.error("No field: " + fieldName + " at class: " + object.getClass().getName() + " trying at "
+						+ object.getClass().getSuperclass());
+				Object superClassObject = object.getClass().getSuperclass().cast(object);
+				return getField(fieldName, superClassObject);
+			} else {
+				LOGGER.error("No field: " + fieldName + " at class: " + object.getClass().getName());
+				throw new NoSuchFieldException("No field: " + fieldName + " at class: " + object.getClass().getName());
+			}
+		}
+		return result;
 	}
 
 	public static void setFieldValue(String fieldName, Object value, Object objectClass)
@@ -206,10 +219,6 @@ public class Utils {
 		field = objectClass.getDeclaredField(fieldName);
 		result = field.isAnnotationPresent(annotation);
 		return result;
-	}
-
-	public static String getReferencedField(Object object, String fieldName) {
-		return ReferenceReader.getReferenceForField(fieldName, object);
 	}
 
 }
