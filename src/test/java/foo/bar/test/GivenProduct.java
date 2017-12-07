@@ -18,7 +18,7 @@ public class GivenProduct {
 		ProductServiceImpl service = new ProductServiceImpl();
 		service.setEntityManager(entityManager);
 		service.save(result);
-		LOGGER.info("GivenProductStock instance persisted " + GivenProduct.productToString(result));
+		LOGGER.info("GivenProduct instance persisted " + GivenProduct.productToString(result));
 		return result;
 	}
 
@@ -26,7 +26,7 @@ public class GivenProduct {
 		Product result = new Product();
 		result.setName(name);
 		result.setDescription(description);
-		LOGGER.info("GivenProductStock class instance " + GivenProduct.productToString(result));
+		LOGGER.info("GivenProduct class instance " + GivenProduct.productToString(result));
 		return result;
 	}
 

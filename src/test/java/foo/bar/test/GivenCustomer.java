@@ -26,7 +26,7 @@ public class GivenCustomer {
 		CustomerServiceImpl service = new CustomerServiceImpl();
 		service.setEntityManager(entityManager);
 		result = service.save(result);
-		LOGGER.info("GivenProductStock instance persisted " + customerToString(result));
+		LOGGER.info("GivenCustomer instance persisted " + customerToString(result));
 		return result;
 	}
 
@@ -38,7 +38,7 @@ public class GivenCustomer {
 		result.setBirthDate(birthDate);
 		result.setDocument(document);
 		result.setDocumentType(documentType);
-		LOGGER.info("GivenProductStock class instance " + customerToString(result));
+		LOGGER.info("GivenCustomer class instance " + customerToString(result));
 		return result;
 	}
 

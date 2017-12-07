@@ -38,7 +38,7 @@ public class GivenCustomerOrder {
 				productStockServiceImpl.update(productStock);
 			}
 		}
-		LOGGER.info("GivenProductStock instance persisted " + customerOrderToString(result));
+		LOGGER.info("GivenCustomerOrder instance persisted " + customerOrderToString(result));
 		return result;
 	}
 
@@ -48,7 +48,7 @@ public class GivenCustomerOrder {
 		result.setCustomer(customer);
 		result.setDate(date);
 		result.setProductsStock(productsStock);
-		LOGGER.info("GivenProductStock class instance " + customerOrderToString(result));
+		LOGGER.info("GivenCustomerOrder class instance " + customerOrderToString(result));
 		return result;
 	}
 
