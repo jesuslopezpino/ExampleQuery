@@ -9,6 +9,7 @@ import foo.bar.domain.Product;
 import foo.bar.exceptions.UniqueException;
 import foo.bar.service.impl.ProductServiceImpl;
 import foo.bar.service.utils.HqlConditions;
+import foo.bar.test.given.GivenProduct;
 
 public class TestProductService extends TestCommon<ProductServiceImpl, Product> {
 

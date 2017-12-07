@@ -1,4 +1,4 @@
-package foo.bar.test;
+package foo.bar.test.given;
 
 import java.util.Date;
 

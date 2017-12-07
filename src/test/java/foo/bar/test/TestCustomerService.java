@@ -12,6 +12,10 @@ import foo.bar.domain.ProductStock;
 import foo.bar.exceptions.UniqueException;
 import foo.bar.service.impl.CustomerServiceImpl;
 import foo.bar.service.utils.HqlConditions;
+import foo.bar.test.given.GivenCustomer;
+import foo.bar.test.given.GivenCustomerOrder;
+import foo.bar.test.given.GivenProduct;
+import foo.bar.test.given.GivenProductStock;
 import foo.bar.utils.Utils;
 
 public class TestCustomerService extends TestCommon<CustomerServiceImpl, Customer> {

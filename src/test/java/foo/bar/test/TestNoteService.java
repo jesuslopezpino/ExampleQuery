@@ -9,6 +9,8 @@ import foo.bar.domain.Note;
 import foo.bar.exceptions.UniqueException;
 import foo.bar.service.impl.NoteServiceImpl;
 import foo.bar.service.utils.HqlConditions;
+import foo.bar.test.given.GivenCustomer;
+import foo.bar.test.given.GivenNote;
 import foo.bar.utils.Utils;
 
 public class TestNoteService extends TestCommon<NoteServiceImpl, Note> {
