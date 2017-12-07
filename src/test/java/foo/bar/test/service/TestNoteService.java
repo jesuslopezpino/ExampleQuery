@@ -14,7 +14,7 @@ import foo.bar.test.given.GivenCustomer;
 import foo.bar.test.given.GivenNote;
 import foo.bar.utils.Utils;
 
-public class TestNoteService extends TestCommon<NoteServiceImpl, Note> {
+public class TestNoteService extends TestCommon<NoteServiceImpl, Note, GivenNote> {
 
 	@Override
 	protected String[] initCustomFields() {

@@ -12,7 +12,7 @@ import foo.bar.service.utils.HqlConditions;
 import foo.bar.test.TestCommon;
 import foo.bar.test.given.GivenProduct;
 
-public class TestProductService extends TestCommon<ProductServiceImpl, Product> {
+public class TestProductService extends TestCommon<ProductServiceImpl, Product, GivenProduct> {
 
 	protected void givenExamplesEnviroment() throws UniqueException {
 		super.logGivenEnviromentStart();

@@ -8,7 +8,7 @@ import foo.bar.domain.Product;
 import foo.bar.exceptions.UniqueException;
 import foo.bar.service.impl.ProductServiceImpl;
 
-public class GivenProduct {
+public class GivenProduct extends Given<Product, ProductServiceImpl>{
 
 	private static Logger LOGGER = Logger.getLogger(GivenProduct.class);
 
@@ -33,6 +33,12 @@ public class GivenProduct {
 	public static String productToString(Product product) {
 		return "Product [pk=" + product.getPk() + ", name=" + product.getName() + ", description="
 				+ product.getDescription() + "]";
+	}
+
+	@Override
+	public void givenExamplesEnviroment() {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

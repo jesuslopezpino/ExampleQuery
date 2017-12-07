@@ -11,7 +11,7 @@ import foo.bar.domain.Note;
 import foo.bar.exceptions.UniqueException;
 import foo.bar.service.impl.NoteServiceImpl;
 
-public class GivenNote {
+public class GivenNote extends Given<Note, NoteServiceImpl>{
 
 	private static Logger LOGGER = Logger.getLogger(GivenNote.class);
 
@@ -37,6 +37,12 @@ public class GivenNote {
 	public static String noteToString(Note note) {
 		return "Note [pk=" + note.getPk() + ", date=" + note.getDate() + ", note=" + note.getNote() + ", customer="
 				+ note.getCustomer() + "]";
+	}
+
+	@Override
+	public void givenExamplesEnviroment() {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

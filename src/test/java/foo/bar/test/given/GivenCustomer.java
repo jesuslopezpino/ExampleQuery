@@ -11,9 +11,13 @@ import foo.bar.exceptions.UniqueException;
 import foo.bar.service.impl.CustomerServiceImpl;
 import foo.bar.utils.Utils;
 
-public class GivenCustomer {
+public class GivenCustomer extends Given<Customer, CustomerServiceImpl> {
 
 	private static Logger LOGGER = Logger.getLogger(GivenCustomer.class);
+
+	public GivenCustomer() {
+		super();
+	}
 
 	public static Customer givenADefaultCustomer(EntityManager entityManager) throws UniqueException {
 		return givenACustomer("Jesus", "Lopez", Utils.getDateTime("10/12/1983 12:00:00"), "XXXXXXX", "DNI",
@@ -47,6 +51,12 @@ public class GivenCustomer {
 				+ customer.getLastName() + ", document=" + customer.getDocument() + ", documentType="
 				+ customer.getDocumentType() + ", birthDate=" + customer.getBirthDate() + ", customerOrders="
 				+ customer.getCustomerOrders() + "]";
+	}
+
+	@Override
+	public void givenExamplesEnviroment() {
+		// TODO Auto-generated method stub
+
 	}
 
 }

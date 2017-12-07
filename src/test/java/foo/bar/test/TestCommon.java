@@ -28,13 +28,14 @@ import foo.bar.exceptions.ExampleQueryException;
 import foo.bar.exceptions.UniqueException;
 import foo.bar.service.impl.ServiceImpl;
 import foo.bar.service.utils.HqlConditions;
+import foo.bar.test.given.Given;
 import foo.bar.utils.Utils;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = { "classpath:applicationContext.xml" })
 @Transactional
 // TODO: add DTO
-public abstract class TestCommon<ServiceVO extends ServiceImpl<VO>, VO extends BasicVO<?>> {
+public abstract class TestCommon<ServiceVO extends ServiceImpl<VO>, VO extends BasicVO<?>, GivenVO extends Given<VO, ServiceVO>> {
 
 	protected static Logger LOGGER = Logger.getLogger(TestCommon.class);
 
@@ -43,9 +44,13 @@ public abstract class TestCommon<ServiceVO extends ServiceImpl<VO>, VO extends B
 
 	private ServiceImpl<VO> service;
 
+	private GivenVO given;
+
 	private Class voClass;
 
 	private Class serviceVoClass;
+
+	private Class givenVoClass;
 
 	private Map<String, HqlConditions> filter;
 
@@ -59,9 +64,18 @@ public abstract class TestCommon<ServiceVO extends ServiceImpl<VO>, VO extends B
 				.getActualTypeArguments()[0];
 		this.voClass = (Class<ServiceVO>) ((ParameterizedType) this.getClass().getGenericSuperclass())
 				.getActualTypeArguments()[1];
+		this.givenVoClass = (Class<GivenVO>) ((ParameterizedType) this.getClass().getGenericSuperclass())
+				.getActualTypeArguments()[2];
 		LOGGER.info("Unit Test Class: " + this.getClass().getName());
 		LOGGER.info("Entity: " + this.voClass.getName());
 		LOGGER.info("Service: " + this.serviceVoClass.getName());
+		LOGGER.info("Service: " + this.serviceVoClass.getName());
+		try {
+			this.given = (GivenVO) givenVoClass.newInstance();
+		} catch (InstantiationException | IllegalAccessException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		logGivenEnviromentSubLine();
 	}
 

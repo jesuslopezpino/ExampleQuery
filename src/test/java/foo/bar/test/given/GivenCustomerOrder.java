@@ -14,7 +14,7 @@ import foo.bar.exceptions.UniqueException;
 import foo.bar.service.impl.CustomerOrderServiceImpl;
 import foo.bar.service.impl.ProductStockServiceImpl;
 
-public class GivenCustomerOrder {
+public class GivenCustomerOrder extends Given<CustomerOrder, CustomerOrderServiceImpl>{
 
 	private static Logger LOGGER = Logger.getLogger(GivenCustomerOrder.class);
 
@@ -50,6 +50,12 @@ public class GivenCustomerOrder {
 		result.setProductsStock(productsStock);
 		LOGGER.info("GivenCustomerOrder class instance " + customerOrderToString(result));
 		return result;
+	}
+
+	@Override
+	public void givenExamplesEnviroment() {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

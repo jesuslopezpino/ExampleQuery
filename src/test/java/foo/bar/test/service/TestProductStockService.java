@@ -12,7 +12,7 @@ import foo.bar.test.TestCommon;
 import foo.bar.test.given.GivenProduct;
 import foo.bar.test.given.GivenProductStock;
 
-public class TestProductStockService extends TestCommon<ProductStockServiceImpl, ProductStock> {
+public class TestProductStockService extends TestCommon<ProductStockServiceImpl, ProductStock, GivenProductStock> {
 
 	protected void givenExamplesEnviroment() throws UniqueException {
 		super.logGivenEnviromentStart();

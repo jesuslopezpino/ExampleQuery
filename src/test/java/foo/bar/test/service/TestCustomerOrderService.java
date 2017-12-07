@@ -20,7 +20,7 @@ import foo.bar.test.given.GivenProduct;
 import foo.bar.test.given.GivenProductStock;
 import foo.bar.utils.Utils;
 
-public class TestCustomerOrderService extends TestCommon<CustomerOrderServiceImpl, CustomerOrder> {
+public class TestCustomerOrderService extends TestCommon<CustomerOrderServiceImpl, CustomerOrder, GivenCustomerOrder> {
 
 	protected void givenExamplesEnviroment() throws UniqueException {
 		super.logGivenEnviromentStart();

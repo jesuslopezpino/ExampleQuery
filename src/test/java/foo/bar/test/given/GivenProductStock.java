@@ -10,7 +10,7 @@ import foo.bar.domain.ProductStock;
 import foo.bar.exceptions.UniqueException;
 import foo.bar.service.impl.ProductStockServiceImpl;
 
-public class GivenProductStock {
+public class GivenProductStock extends Given<ProductStock, ProductStockServiceImpl> {
 
 	private static Logger LOGGER = Logger.getLogger(GivenProductStock.class);
 
@@ -36,6 +36,11 @@ public class GivenProductStock {
 	public static String productStockToString(ProductStock productStock) {
 		return "ProductStock [pk=" + productStock.getPk() + ", customerOrder=" + productStock.getCustomerOrder()
 				+ ", product=" + productStock.getProduct() + ", quantity=" + productStock.getQuantity() + "]";
+	}
+
+	@Override
+	public void givenExamplesEnviroment() {
+		// TODO Auto-generated method stub
 	}
 
 }
