@@ -160,6 +160,18 @@ public class Utils {
 
 	}
 
+	public static final String TIME_FORMAT = "DD/MM/YYYY HH:mm:SS";
+
+	public static final String DATE_FORMAT = "DD/MM/YYYY";
+
+	public static Date getDate(String date) {
+		return getDate(date, DATE_FORMAT);
+	}
+
+	public static Date getDateTime(String date) {
+		return getDate(date, TIME_FORMAT);
+	}
+
 	public static Date getDate(String date, String format) {
 		// TODO: improve to don't make new always
 		SimpleDateFormat formatter = new SimpleDateFormat(format);
