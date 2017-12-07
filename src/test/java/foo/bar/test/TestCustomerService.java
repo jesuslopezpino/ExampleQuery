@@ -21,14 +21,13 @@ public class TestCustomerService extends TestCommon<CustomerServiceImpl, Custome
 		try {
 			Customer customer = Given.givenADefaultCustomer(entityManager);
 			List<ProductStock> productsStock = new ArrayList<>();
-			Product product = Given.givenAProduct(1L, "Pizza", "Pizza", entityManager);
-			ProductStock productStock = Given.givenAProductStock(1L, product, 7, null, entityManager);
+			Product product = Given.givenAProduct("Pizza", "Pizza", entityManager);
+			ProductStock productStock = Given.givenAProductStock(product, 7, null, entityManager);
 			productsStock.add(productStock);
-			Given.givenACustomerOrder(1L, customer, Utils.getDate("01/01/2017 00:00:00", TIME_FORMAT), productsStock,
-					entityManager);
-			Customer customer2 = Given.givenACustomer(432L, "Another", "Customer", new Date(), "DNIXXX", "TYPE", entityManager);
-			Customer customer3 = Given.givenACustomer(232L, "Invented", "Customer", new Date(), "DNIXXX", "TYPE", entityManager);
-			Customer customer4 = Given.givenACustomer(499L, "More", "Customer", new Date(), "DNIXXX", "TYPE", entityManager);
+			Given.givenACustomerOrder(customer, Utils.getDateTime("01/01/2017 00:00:00"), productsStock, entityManager);
+			Customer customer2 = Given.givenACustomer("One", "Customer", new Date(), "DNIXXX", "TYPE", entityManager);
+			Customer customer3 = Given.givenACustomer("Two", "Customer", new Date(), "DNIXXX", "TYPE", entityManager);
+			Customer customer4 = Given.givenACustomer("Three", "Customer", new Date(), "DNIXXX", "TYPE", entityManager);
 		} catch (UniqueException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -69,8 +68,8 @@ public class TestCustomerService extends TestCommon<CustomerServiceImpl, Custome
 		example1.setDocument("XXXXXXX");
 
 		Customer example2 = new Customer();
-		example2.setBirthDateStart(Utils.getDate("01/01/1983 00:00:00", TIME_FORMAT));
-		example2.setBirthDateEnd(Utils.getDate("12/12/1983 23:59:59", TIME_FORMAT));
+		example2.setBirthDateStart(Utils.getDateTime("01/01/1983 00:00:00"));
+		example2.setBirthDateEnd(Utils.getDateTime("12/12/1983 23:59:59"));
 
 		Customer example3 = new Customer();
 		example3.setOrdersProductsName("Pizza");
@@ -106,7 +105,7 @@ public class TestCustomerService extends TestCommon<CustomerServiceImpl, Custome
 
 	@Override
 	protected Customer initSaveEntity() throws UniqueException {
-		return Given.givenObjectCustomer(8754L, "test name", "test last name", new Date(), "1234", "DNI");
+		return Given.givenObjectCustomer("test name", "test last name", new Date(), "1234", "DNI");
 	}
 
 	@Override

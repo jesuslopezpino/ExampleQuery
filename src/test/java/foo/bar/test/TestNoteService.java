@@ -28,7 +28,7 @@ public class TestNoteService extends TestCommon<NoteServiceImpl, Note> {
 		filter.put(Note.NOTE, HqlConditions.LIKE_IGNORE_CASE);
 
 		// Example2
-//		filter.put(Note.CUSTOMER, HqlConditions.NOT_EQUALS);
+		// filter.put(Note.CUSTOMER, HqlConditions.NOT_EQUALS);
 
 		return filter;
 	}
@@ -56,12 +56,10 @@ public class TestNoteService extends TestCommon<NoteServiceImpl, Note> {
 		Customer realCustomer;
 		Customer realCustomer2;
 		try {
-			realCustomer = Given.givenACustomer(11123L, "Real", "Customer", new Date(), "REALDOC", "IDENTIFICATION",
-					entityManager);
-			realCustomer2 = Given.givenACustomer(24324L, "Real2", "Customer2", new Date(), "REALDOC2", "IDENTIFICATION2",
-					entityManager);
-			Given.givenANote(6541L, new Date(), realCustomer, "text note", entityManager);
-			Given.givenANote(25322L, new Date(), realCustomer2, "text note 2", entityManager);
+			realCustomer = Given.givenACustomer("Real", "Customer", new Date(), "REALDOC", "ID", entityManager);
+			realCustomer2 = Given.givenACustomer("Real2", "Customer2", new Date(), "REALDOC2", "ID", entityManager);
+			Given.givenANote(new Date(), realCustomer, "text note", entityManager);
+			Given.givenANote(new Date(), realCustomer2, "text note 2", entityManager);
 		} catch (UniqueException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -71,7 +69,7 @@ public class TestNoteService extends TestCommon<NoteServiceImpl, Note> {
 
 	@Override
 	protected Note initSaveEntity() throws UniqueException {
-		return Given.givenObjectNote(199L, Utils.getDate("01/01/2017 00:00:00", TIME_FORMAT), null, "First note");
+		return Given.givenObjectNote(Utils.getDateTime("01/01/2017 00:00:00"), null, "First note");
 	}
 
 	@Override
