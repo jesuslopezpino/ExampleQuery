@@ -17,10 +17,6 @@ public abstract class BasicVO<PK> {
 
 	public static final String PK = "pk";
 
-	@Id
-	@Column(name = BasicVO.PK)
-	protected PK pk;
-
 	public BasicVO() {
 		super();
 	}
@@ -40,17 +36,13 @@ public abstract class BasicVO<PK> {
 		}
 	}
 
-	public PK getPk() {
-		return pk;
-	}
+	public abstract PK getPk();
 
-	public void setPk(PK pk) {
-		this.pk = pk;
-	}
+	public abstract void setPk(PK pk);
 
 	@Override
 	public String toString() {
-		return "BasicVO [pk=" + pk + "]";
+		return "BasicVO [pk=" + this.getPk() + "]";
 	}
 
 	public abstract String toStringDebug();
