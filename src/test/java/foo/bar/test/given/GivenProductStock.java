@@ -57,4 +57,9 @@ public class GivenProductStock extends Given<ProductStock, ProductStockServiceIm
 		String fields[] = { field1, field2, field3 };
 		return fields;
 	}
+
+	@Override
+	public String initUpdateField() {
+		return ProductStock.QUANTITY;
+	}
 }

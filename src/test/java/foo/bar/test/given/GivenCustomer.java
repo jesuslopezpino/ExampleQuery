@@ -79,4 +79,9 @@ public class GivenCustomer extends Given<Customer, CustomerServiceImpl> {
 		String[] fields = { field1, field2, field3, field4 };
 		return fields;
 	}
+
+	@Override
+	public String initUpdateField() {
+		return Customer.LAST_NAME;
+	}
 }

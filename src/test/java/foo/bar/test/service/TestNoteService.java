@@ -59,10 +59,6 @@ public class TestNoteService extends TestCommon<NoteServiceImpl, Note, GivenNote
 		return initFields;
 	}
 
-	@Override
-	protected String initUpdateField() {
-		return Note.NOTE;
-	}
 
 	@Override
 	protected Object initUpdateValue() {

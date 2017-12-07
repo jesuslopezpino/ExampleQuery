@@ -64,11 +64,6 @@ public class TestProductStockService extends TestCommon<ProductStockServiceImpl,
 	}
 
 	@Override
-	protected String initUpdateField() {
-		return ProductStock.QUANTITY;
-	}
-
-	@Override
 	protected Object initUpdateValue() {
 		return 500;
 	}

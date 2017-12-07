@@ -52,4 +52,9 @@ public class GivenProduct extends Given<Product, ProductServiceImpl> {
 		String fields[] = { field1, field2, field3 };
 		return fields;
 	}
+
+	@Override
+	public String initUpdateField() {
+		return Product.DESCRIPTION;
+	}
 }

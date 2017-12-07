@@ -21,7 +21,9 @@ public abstract class Given<VO extends BasicVO<?>, ServiceVO extends ServiceImpl
 
 	public abstract String[] initCustomFields();
 
-//	public abstract VO givenMinimunClassInstance();
+	public abstract String initUpdateField();
+
+	// public abstract VO givenMinimunClassInstance();
 
 	public Given(EntityManager entityManager) throws InstantiationException, IllegalAccessException {
 		this.entityManager = entityManager;

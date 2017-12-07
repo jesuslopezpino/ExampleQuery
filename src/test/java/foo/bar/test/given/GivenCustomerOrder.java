@@ -83,4 +83,9 @@ public class GivenCustomerOrder extends Given<CustomerOrder, CustomerOrderServic
 		givenACustomerOrder(customer, dateOrder, productsStockList);
 	}
 
+	@Override
+	public String initUpdateField() {
+		return CustomerOrder.DATE;
+	}
+
 }

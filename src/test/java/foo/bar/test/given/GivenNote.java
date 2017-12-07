@@ -58,4 +58,10 @@ public class GivenNote extends Given<Note, NoteServiceImpl> {
 		String[] customFields = { Note.DATE, Note.NOTE };
 		return customFields;
 	}
+
+	@Override
+	public String initUpdateField() {
+		return Note.NOTE;
+	}
+
 }

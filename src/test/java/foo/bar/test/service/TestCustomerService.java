@@ -82,10 +82,7 @@ public class TestCustomerService extends TestCommon<CustomerServiceImpl, Custome
 		return givenCustomer.givenObjectCustomer("test name", "test last name", new Date(), "1234", "DNI");
 	}
 
-	@Override
-	protected String initUpdateField() {
-		return Customer.LAST_NAME;
-	}
+
 
 	@Override
 	protected Object initUpdateValue() {

@@ -81,8 +81,6 @@ public abstract class TestCommon<ServiceVO extends ServiceImpl<VO>, VO extends B
 
 	protected abstract Map<String, Object> initEntityFields();
 
-	protected abstract String initUpdateField();
-
 	protected abstract Object initUpdateValue();
 
 	@BeforeClass
@@ -161,7 +159,7 @@ public abstract class TestCommon<ServiceVO extends ServiceImpl<VO>, VO extends B
 			IllegalArgumentException, InvocationTargetException, NoSuchFieldException, InstantiationException {
 		logGivenEnviromentSubLine();
 		LOGGER.info("testUpdate");
-		String field = this.initUpdateField();
+		String field = this.given.initUpdateField();
 		Object newValue = this.initUpdateValue();
 		Object originalValue = Utils.getFieldValue(entity, field);
 		Utils.setFieldValue(field, newValue, entity);
