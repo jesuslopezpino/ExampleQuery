@@ -37,10 +37,6 @@ public abstract class TestCommon<ServiceVO extends ServiceImpl<VO>, VO extends B
 
 	protected static Logger LOGGER = Logger.getLogger(TestCommon.class);
 
-	protected static final String TIME_FORMAT = "DD/MM/YYYY HH:mm:SS";
-
-	protected static final String DATE_FORMAT = "DD/MM/YYYY";
-
 	@PersistenceContext
 	protected EntityManager entityManager;
 
@@ -66,7 +62,7 @@ public abstract class TestCommon<ServiceVO extends ServiceImpl<VO>, VO extends B
 
 	protected abstract String[] initCustomFields();
 
-	protected abstract VO[] initExamples();
+	protected abstract VO[] initExamples() throws UniqueException;
 
 	protected abstract VO initSaveEntity() throws UniqueException;
 
@@ -89,7 +85,7 @@ public abstract class TestCommon<ServiceVO extends ServiceImpl<VO>, VO extends B
 	}
 
 	@Before
-	public void setUp() throws InstantiationException, IllegalAccessException {
+	public void setUp() throws InstantiationException, IllegalAccessException, UniqueException {
 		service = (ServiceImpl<VO>) serviceVoClass.newInstance();
 		service.setEntityManager(entityManager);
 
@@ -192,11 +188,11 @@ public abstract class TestCommon<ServiceVO extends ServiceImpl<VO>, VO extends B
 	}
 
 	@Test
-	public void testFindByExample() throws InstantiationException, ExampleQueryException {
+	public void testFindByExample() throws InstantiationException, ExampleQueryException, UniqueException {
 		this.logGivenEnviromentSubLine();
 		LOGGER.info("testFindByExample at class: " + this.getClass().getName());
-		for (int i = 0; i < examples.length; i++) {
-			VO example = examples[i];
+		for (int i = 0; i < this.examples.length; i++) {
+			VO example = this.examples[i];
 			List<VO> result;
 			result = service.findByExample(example, filter);
 			showResult(example, result, i, filter);
@@ -207,11 +203,11 @@ public abstract class TestCommon<ServiceVO extends ServiceImpl<VO>, VO extends B
 	}
 
 	@Test
-	public void testCountByExample() throws InstantiationException, ExampleQueryException {
+	public void testCountByExample() throws InstantiationException, ExampleQueryException, UniqueException {
 		this.logGivenEnviromentSubLine();
 		LOGGER.info("testCountByExample at class: " + this.getClass().getName());
-		for (int i = 0; i < examples.length; i++) {
-			VO example = examples[i];
+		for (int i = 0; i < this.examples.length; i++) {
+			VO example = this.examples[i];
 			Integer result;
 			result = service.countByExample(example, filter);
 			// showResult(example, result, i, filter);
@@ -222,12 +218,13 @@ public abstract class TestCommon<ServiceVO extends ServiceImpl<VO>, VO extends B
 	}
 
 	@Test
-	public void findCustomByExample() throws NoSuchMethodException, SecurityException, InstantiationException,
-			IllegalAccessException, IllegalArgumentException, InvocationTargetException, ExampleQueryException {
+	public void findCustomByExample()
+			throws NoSuchMethodException, SecurityException, InstantiationException, IllegalAccessException,
+			IllegalArgumentException, InvocationTargetException, ExampleQueryException, UniqueException {
 		LOGGER.info("FIND CUSTOM BY EXAMPLE " + this.getClass().getName());
-		for (int i = 0; i < examples.length; i++) {
+		for (int i = 0; i < this.examples.length; i++) {
 			logGivenEnviromentSubLine();
-			VO example = examples[i];
+			VO example = this.examples[i];
 			LOGGER.info("example: " + example);
 			List<VO> result;
 			result = service.findCustomByExample(example, customFields, filter);
