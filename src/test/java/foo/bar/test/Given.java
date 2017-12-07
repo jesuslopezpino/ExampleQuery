@@ -24,9 +24,9 @@ public class Given {
 
 	private static Logger LOGGER = Logger.getLogger(Given.class);
 
-	public static ProductStock givenAProductStock(Long pk, Product product, Integer quantity,
-			CustomerOrder customerOrder, EntityManager entityManager) throws UniqueException {
-		ProductStock result = givenObjectProductStock(pk, product, quantity, customerOrder);
+	public static ProductStock givenAProductStock(Product product, Integer quantity, CustomerOrder customerOrder,
+			EntityManager entityManager) throws UniqueException {
+		ProductStock result = givenObjectProductStock(product, quantity, customerOrder);
 		ProductStockServiceImpl service = new ProductStockServiceImpl();
 		service.setEntityManager(entityManager);
 		service.save(result);
@@ -34,10 +34,8 @@ public class Given {
 		return result;
 	}
 
-	public static ProductStock givenObjectProductStock(Long pk, Product product, Integer quantity,
-			CustomerOrder customerOrder) {
+	public static ProductStock givenObjectProductStock(Product product, Integer quantity, CustomerOrder customerOrder) {
 		ProductStock result = new ProductStock();
-		result.setPk(pk);
 		result.setProduct(product);
 		result.setQuantity(quantity);
 		result.setCustomerOrder(customerOrder);
@@ -50,9 +48,9 @@ public class Given {
 				+ ", product=" + productStock.getProduct() + ", quantity=" + productStock.getQuantity() + "]";
 	}
 
-	public static Product givenAProduct(Long pk, String name, String description, EntityManager entityManager)
+	public static Product givenAProduct(String name, String description, EntityManager entityManager)
 			throws UniqueException {
-		Product result = givenObjectProduct(pk, name, description);
+		Product result = givenObjectProduct(name, description);
 		ProductServiceImpl service = new ProductServiceImpl();
 		service.setEntityManager(entityManager);
 		service.save(result);
@@ -60,9 +58,8 @@ public class Given {
 		return result;
 	}
 
-	public static Product givenObjectProduct(Long pk, String name, String description) {
+	public static Product givenObjectProduct(String name, String description) {
 		Product result = new Product();
-		result.setPk(pk);
 		result.setName(name);
 		result.setDescription(description);
 		LOGGER.info("Given class instance " + productToString(result));
@@ -75,24 +72,23 @@ public class Given {
 	}
 
 	public static Customer givenADefaultCustomer(EntityManager entityManager) throws UniqueException {
-		return givenACustomer(1L, "Jesus", "Lopez", Utils.getDate("10/12/1983 12:00:00", TestCommon.TIME_FORMAT),
-				"XXXXXXX", "DNI", entityManager);
+		return givenACustomer("Jesus", "Lopez", Utils.getDateTime("10/12/1983 12:00:00"), "XXXXXXX", "DNI",
+				entityManager);
 	}
 
-	public static Customer givenACustomer(Long pk, String name, String lastName, Date birthDate, String document,
+	public static Customer givenACustomer(String name, String lastName, Date birthDate, String document,
 			String documentType, EntityManager entityManager) throws UniqueException {
-		Customer result = givenObjectCustomer(pk, name, lastName, birthDate, document, documentType);
+		Customer result = givenObjectCustomer(name, lastName, birthDate, document, documentType);
 		CustomerServiceImpl service = new CustomerServiceImpl();
 		service.setEntityManager(entityManager);
-		service.save(result);
+		result = service.save(result);
 		LOGGER.info("Given instance persisted " + customerToString(result));
 		return result;
 	}
 
-	public static Customer givenObjectCustomer(Long pk, String name, String lastName, Date birthDate, String document,
+	public static Customer givenObjectCustomer(String name, String lastName, Date birthDate, String document,
 			String documentType) {
 		Customer result = new Customer();
-		result.setPk(pk);
 		result.setName(name);
 		result.setLastName(lastName);
 		result.setBirthDate(birthDate);
@@ -109,9 +105,9 @@ public class Given {
 				+ customer.getCustomerOrders() + "]";
 	}
 
-	public static CustomerOrder givenACustomerOrder(Long pk, Customer customer, Date date,
-			List<ProductStock> productsStock, EntityManager entityManager) throws UniqueException {
-		CustomerOrder result = givenObjectCustomerOrder(pk, customer, date, productsStock);
+	public static CustomerOrder givenACustomerOrder(Customer customer, Date date, List<ProductStock> productsStock,
+			EntityManager entityManager) throws UniqueException {
+		CustomerOrder result = givenObjectCustomerOrder(customer, date, productsStock);
 		CustomerOrderServiceImpl service = new CustomerOrderServiceImpl();
 		service.setEntityManager(entityManager);
 		service.save(result);
@@ -128,12 +124,11 @@ public class Given {
 		return result;
 	}
 
-	public static CustomerOrder givenObjectCustomerOrder(Long pk, Customer customer, Date date,
+	public static CustomerOrder givenObjectCustomerOrder(Customer customer, Date date,
 			List<ProductStock> productsStock) {
 		CustomerOrder result = new CustomerOrder();
 		result.setCustomer(customer);
 		result.setDate(date);
-		result.setPk(pk);
 		result.setProductsStock(productsStock);
 		LOGGER.info("Given class instance " + customerOrderToString(result));
 		return result;
@@ -149,9 +144,9 @@ public class Given {
 				+ note.getCustomer() + "]";
 	}
 
-	public static Note givenANote(Long pk, Date date, Customer customer, String note, EntityManager entityManager)
+	public static Note givenANote(Date date, Customer customer, String note, EntityManager entityManager)
 			throws UniqueException {
-		Note result = givenObjectNote(pk, date, customer, note);
+		Note result = givenObjectNote(date, customer, note);
 		NoteServiceImpl service = new NoteServiceImpl();
 		service.setEntityManager(entityManager);
 		result = service.save(result);
@@ -159,9 +154,8 @@ public class Given {
 		return result;
 	}
 
-	public static Note givenObjectNote(Long pk, Date date, Customer customer, String note) {
+	public static Note givenObjectNote(Date date, Customer customer, String note) {
 		Note result = new Note();
-		result.setPk(pk);
 		result.setDate(date);
 		result.setCustomer(customer);
 		result.setNote(note);
