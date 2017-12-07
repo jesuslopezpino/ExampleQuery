@@ -22,12 +22,12 @@ public class TestCustomerOrderService extends TestCommon<CustomerOrderServiceImp
 		super.logGivenEnviromentStart();
 		try {
 			Customer customer = Given.givenADefaultCustomer(entityManager);
-			Product product = Given.givenAProduct(1L, "CocaCola", "Lata", entityManager);
-			Date dateOrder = Utils.getDate("01/01/2017 00:00:00", TIME_FORMAT);
-			ProductStock productsStock = Given.givenAProductStock(1L, product, 100, null, entityManager);
+			Product product = Given.givenAProduct("CocaCola", "Lata", entityManager);
+			Date dateOrder = Utils.getDate("01/01/2017");
+			ProductStock productsStock = Given.givenAProductStock(product, 100, null, entityManager);
 			List<ProductStock> productsStockList = new ArrayList<>();
 			productsStockList.add(productsStock);
-			CustomerOrder customerOrder = Given.givenACustomerOrder(1L, customer, dateOrder, productsStockList,
+			CustomerOrder customerOrder = Given.givenACustomerOrder(customer, dateOrder, productsStockList,
 					entityManager);
 		} catch (UniqueException e) {
 			// TODO Auto-generated catch block
@@ -53,6 +53,7 @@ public class TestCustomerOrderService extends TestCommon<CustomerOrderServiceImp
 
 		// example 1
 		filter.put(CustomerOrder.CUSTOMER, HqlConditions.NOT_EQUALS);
+
 		// example 2
 		filter.put(CustomerOrder.DATE, HqlConditions.LOWER_EQUALS);
 
@@ -62,22 +63,26 @@ public class TestCustomerOrderService extends TestCommon<CustomerOrderServiceImp
 	}
 
 	@Override
-	protected CustomerOrder[] initExamples() {
-		Customer customer = new Customer();
-		customer.setPk(100L);
+	protected CustomerOrder[] initExamples() throws UniqueException {
+		Customer customerExample = new Customer();
+		customerExample.setPk(100L);
 
 		CustomerOrder example1 = new CustomerOrder();
-		example1.setCustomer(customer);
+		example1.setCustomer(customerExample);
 
 		CustomerOrder example2 = new CustomerOrder();
 		example2.setDate(new Date());
 
 		CustomerOrder example3 = new CustomerOrder();
-		List<Long> products = new ArrayList<>();
-		products.add(1L);
-		products.add(2L);
-		products.add(3L);
-		example3.setProductsStockIds(products);
+		Product product = Given.givenAProduct("Orange", "Color", entityManager);
+		List<Long> productStockIds = new ArrayList<>();
+		ProductStock productStock = Given.givenAProductStock(product , 10, null , entityManager);
+		productStockIds.add(productStock.getPk());
+		List<ProductStock> productsStockList = new ArrayList<>();
+		productsStockList.add(productStock);
+		Customer customer = Given.givenACustomer("Buyer", "cutomer", new Date(), "NO-ID", "DNI", entityManager);
+		CustomerOrder customerOrder = Given.givenACustomerOrder(customer , new Date(), productsStockList, entityManager);
+		example3.setProductsStockIds(productStockIds);
 		CustomerOrder[] examples = { example1, example2, example3 };
 		return examples;
 	}
@@ -96,8 +101,8 @@ public class TestCustomerOrderService extends TestCommon<CustomerOrderServiceImp
 	@Override
 	protected CustomerOrder initSaveEntity() throws UniqueException {
 		Customer customer = null;
-		customer = Given.givenACustomer(33L, "User", "Saved", new Date(), "LKKJHK", "DNI", entityManager);
-		CustomerOrder result = Given.givenObjectCustomerOrder(67L, customer, new Date(), null);
+		customer = Given.givenACustomer("User", "Saved", new Date(), "LKKJHK", "DNI", entityManager);
+		CustomerOrder result = Given.givenObjectCustomerOrder(customer, new Date(), null);
 		return result;
 	}
 
