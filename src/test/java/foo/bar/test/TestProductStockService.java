@@ -13,8 +13,8 @@ public class TestProductStockService extends TestCommon<ProductStockServiceImpl,
 
 	protected void givenExamplesEnviroment() throws UniqueException {
 		super.logGivenEnviromentStart();
-		Product product = Given.givenAProduct("Samsung", "tv", entityManager);
-		Given.givenAProductStock(product, 6, null, entityManager);
+		Product product = GivenProduct.givenAProduct("Samsung", "tv", entityManager);
+		GivenProductStock.givenAProductStock(product, 6, null, entityManager);
 	}
 
 	@Override
@@ -70,8 +70,8 @@ public class TestProductStockService extends TestCommon<ProductStockServiceImpl,
 
 	@Override
 	protected ProductStock initSaveEntity() throws UniqueException {
-		Product product = Given.givenAProduct("XBOX", "Video Game", entityManager);
-		return Given.givenObjectProductStock(product, 20, null);
+		Product product = GivenProduct.givenAProduct("XBOX", "Video Game", entityManager);
+		return GivenProductStock.givenObjectProductStock(product, 20, null);
 	}
 
 	@Override

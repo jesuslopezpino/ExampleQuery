@@ -39,7 +39,7 @@ public class TestNoteService extends TestCommon<NoteServiceImpl, Note> {
 		example1.setNote("e");
 
 		Note example2 = new Note();
-		Customer customer = Given.givenADefaultCustomer(entityManager);
+		Customer customer = GivenCustomer.givenADefaultCustomer(entityManager);
 		example2.setCustomer(customer);
 
 		Note[] examples = { example1, example2 };
@@ -47,17 +47,17 @@ public class TestNoteService extends TestCommon<NoteServiceImpl, Note> {
 	}
 
 	protected void givenExamplesEnviroment() throws UniqueException {
-		Customer customer = Given.givenACustomer("Real", "Customer", new Date(), "REALDOC", "ID", entityManager);
-		Customer customer2 = Given.givenACustomer("Real2", "Customer2", new Date(), "REALDOC2", "ID", entityManager);
-		Given.givenANote(new Date(), customer, "text note", entityManager);
-		Given.givenANote(new Date(), customer, "second user note", entityManager);
-		Given.givenANote(new Date(), customer, "another user note", entityManager);
-		Given.givenANote(new Date(), customer2, "text note customer 2", entityManager);
+		Customer customer = GivenCustomer.givenACustomer("Real", "Customer", new Date(), "REALDOC", "ID", entityManager);
+		Customer customer2 = GivenCustomer.givenACustomer("Real2", "Customer2", new Date(), "REALDOC2", "ID", entityManager);
+		GivenNote.givenANote(new Date(), customer, "text note", entityManager);
+		GivenNote.givenANote(new Date(), customer, "second user note", entityManager);
+		GivenNote.givenANote(new Date(), customer, "another user note", entityManager);
+		GivenNote.givenANote(new Date(), customer2, "text note customer 2", entityManager);
 	}
 
 	@Override
 	protected Note initSaveEntity() throws UniqueException {
-		return Given.givenObjectNote(Utils.getDateTime("01/01/2017 00:00:00"), null, "First note");
+		return GivenNote.givenObjectNote(Utils.getDateTime("01/01/2017 00:00:00"), null, "First note");
 	}
 
 	@Override

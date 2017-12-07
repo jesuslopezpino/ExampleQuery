@@ -18,15 +18,15 @@ public class TestCustomerService extends TestCommon<CustomerServiceImpl, Custome
 
 	protected void givenExamplesEnviroment() throws UniqueException {
 		super.logGivenEnviromentStart();
-		Customer customer = Given.givenADefaultCustomer(entityManager);
+		Customer customer = GivenCustomer.givenADefaultCustomer(entityManager);
 		List<ProductStock> productsStock = new ArrayList<>();
-		Product product = Given.givenAProduct("Pizza", "Pizza", entityManager);
-		ProductStock productStock = Given.givenAProductStock(product, 7, null, entityManager);
+		Product product = GivenProduct.givenAProduct("Pizza", "Pizza", entityManager);
+		ProductStock productStock = GivenProductStock.givenAProductStock(product, 7, null, entityManager);
 		productsStock.add(productStock);
-		Given.givenACustomerOrder(customer, Utils.getDateTime("01/01/2017 00:00:00"), productsStock, entityManager);
-		Given.givenACustomer("One", "Customer", new Date(), "DNIXXX", "TYPE", entityManager);
-		Given.givenACustomer("Two", "Customer", new Date(), "DNIXXX", "TYPE", entityManager);
-		Given.givenACustomer("Three", "Customer", new Date(), "DNIXXX", "TYPE", entityManager);
+		GivenCustomerOrder.givenACustomerOrder(customer, Utils.getDateTime("01/01/2017 00:00:00"), productsStock, entityManager);
+		GivenCustomer.givenACustomer("One", "Customer", new Date(), "DNIXXX", "TYPE", entityManager);
+		GivenCustomer.givenACustomer("Two", "Customer", new Date(), "DNIXXX", "TYPE", entityManager);
+		GivenCustomer.givenACustomer("Three", "Customer", new Date(), "DNIXXX", "TYPE", entityManager);
 	}
 
 	@Override
@@ -99,7 +99,7 @@ public class TestCustomerService extends TestCommon<CustomerServiceImpl, Custome
 
 	@Override
 	protected Customer initSaveEntity() throws UniqueException {
-		return Given.givenObjectCustomer("test name", "test last name", new Date(), "1234", "DNI");
+		return GivenCustomer.givenObjectCustomer("test name", "test last name", new Date(), "1234", "DNI");
 	}
 
 	@Override

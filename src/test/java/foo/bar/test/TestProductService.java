@@ -14,8 +14,8 @@ public class TestProductService extends TestCommon<ProductServiceImpl, Product> 
 
 	protected void givenExamplesEnviroment() throws UniqueException {
 		super.logGivenEnviromentStart();
-		Given.givenAProduct("Samsung", "television", entityManager);
-		Given.givenAProduct("Apple", "fruit", entityManager);
+		GivenProduct.givenAProduct("Samsung", "television", entityManager);
+		GivenProduct.givenAProduct("Apple", "fruit", entityManager);
 	}
 
 	@Override
@@ -73,7 +73,7 @@ public class TestProductService extends TestCommon<ProductServiceImpl, Product> 
 
 	@Override
 	protected Product initSaveEntity() throws UniqueException {
-		return Given.givenObjectProduct("P NAME", "P DESC");
+		return GivenProduct.givenObjectProduct("P NAME", "P DESC");
 	}
 
 	@Override
