@@ -51,19 +51,14 @@ public class TestNoteService extends TestCommon<NoteServiceImpl, Note> {
 		return null;
 	}
 
-	protected void givenExamplesEnviroment() {
+	protected void givenExamplesEnviroment() throws UniqueException {
 		super.logGivenEnviromentStart();
-		Customer realCustomer;
-		Customer realCustomer2;
-		try {
-			realCustomer = Given.givenACustomer("Real", "Customer", new Date(), "REALDOC", "ID", entityManager);
-			realCustomer2 = Given.givenACustomer("Real2", "Customer2", new Date(), "REALDOC2", "ID", entityManager);
-			Given.givenANote(new Date(), realCustomer, "text note", entityManager);
-			Given.givenANote(new Date(), realCustomer2, "text note 2", entityManager);
-		} catch (UniqueException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		Customer customer = Given.givenACustomer("Real", "Customer", new Date(), "REALDOC", "ID", entityManager);
+		Customer customer2 = Given.givenACustomer("Real2", "Customer2", new Date(), "REALDOC2", "ID", entityManager);
+		Given.givenANote(new Date(), customer, "text note", entityManager);
+		Given.givenANote(new Date(), customer, "second user note", entityManager);
+		Given.givenANote(new Date(), customer, "another user note", entityManager);
+		Given.givenANote(new Date(), customer2, "text note customer 2", entityManager);
 		super.logGivenEnviromentEnd();
 	}
 
