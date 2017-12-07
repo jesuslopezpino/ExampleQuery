@@ -64,7 +64,7 @@ public class GivenNote extends Given<Note, NoteServiceImpl> {
 	}
 
 	@Override
-	public String initUpdateField() {
+	public String initTestUpdateField() {
 		return Note.NOTE;
 	}
 
@@ -97,7 +97,7 @@ public class GivenNote extends Given<Note, NoteServiceImpl> {
 	}
 
 	@Override
-	public Note initSaveEntity() throws UniqueException {
+	public Note initTestSaveInstance() throws UniqueException {
 		return GivenNote.givenObjectNote(Utils.getDateTime("01/01/2017 00:00:00"), null, "First note");
 	}
 
@@ -112,7 +112,7 @@ public class GivenNote extends Given<Note, NoteServiceImpl> {
 	}
 
 	@Override
-	public Object initUpdateValue() {
+	public Object initTestUpdateValue() {
 		return "Updated note";
 	}
 

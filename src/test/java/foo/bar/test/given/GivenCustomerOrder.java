@@ -87,7 +87,7 @@ public class GivenCustomerOrder extends Given<CustomerOrder, CustomerOrderServic
 	}
 
 	@Override
-	public String initUpdateField() {
+	public String initTestUpdateField() {
 		return CustomerOrder.DATE;
 	}
 
@@ -148,7 +148,7 @@ public class GivenCustomerOrder extends Given<CustomerOrder, CustomerOrderServic
 	}
 
 	@Override
-	public CustomerOrder initSaveEntity() throws UniqueException, InstantiationException, IllegalAccessException {
+	public CustomerOrder initTestSaveInstance() throws UniqueException, InstantiationException, IllegalAccessException {
 		Customer customer = null;
 		GivenCustomer givenCustomer = new GivenCustomer(entityManager);
 		customer = givenCustomer.givenACustomer("User", "Saved", new Date(), "LKKJHK", "DNI");
@@ -157,7 +157,7 @@ public class GivenCustomerOrder extends Given<CustomerOrder, CustomerOrderServic
 	}
 
 	@Override
-	public Object initUpdateValue() {
+	public Object initTestUpdateValue() {
 		return new Date();
 	}
 }

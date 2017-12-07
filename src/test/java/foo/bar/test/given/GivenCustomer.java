@@ -84,7 +84,7 @@ public class GivenCustomer extends Given<Customer, CustomerServiceImpl> {
 	}
 
 	@Override
-	public String initUpdateField() {
+	public String initTestUpdateField() {
 		return Customer.LAST_NAME;
 	}
 
@@ -147,13 +147,13 @@ public class GivenCustomer extends Given<Customer, CustomerServiceImpl> {
 	}
 
 	@Override
-	public Customer initSaveEntity() throws UniqueException, InstantiationException, IllegalAccessException {
+	public Customer initTestSaveInstance() throws UniqueException, InstantiationException, IllegalAccessException {
 		GivenCustomer givenCustomer = new GivenCustomer(entityManager);
 		return givenCustomer.givenObjectCustomer("test name", "test last name", new Date(), "1234", "DNI");
 	}
 
 	@Override
-	public Object initUpdateValue() {
+	public Object initTestUpdateValue() {
 		return "Gamero";
 	}
 

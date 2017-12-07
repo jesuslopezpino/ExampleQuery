@@ -23,17 +23,17 @@ public abstract class Given<VO extends BasicVO<?>, ServiceVO extends ServiceImpl
 
 	public abstract String[] initCustomFields();
 
-	public abstract String initUpdateField();
+	public abstract String initTestUpdateField();
 
 	public abstract VO[] initExamples() throws UniqueException, InstantiationException, IllegalAccessException;
 
-	public abstract VO initSaveEntity() throws UniqueException, InstantiationException, IllegalAccessException;
+	public abstract VO initTestSaveInstance() throws UniqueException, InstantiationException, IllegalAccessException;
 
 	public abstract Map<String, HqlConditions> initFilter();
 
 	public abstract Map<String, Object> initEntityFields();
 
-	public abstract Object initUpdateValue();
+	public abstract Object initTestUpdateValue();
 
 	public Given(EntityManager entityManager) throws InstantiationException, IllegalAccessException {
 		this.entityManager = entityManager;

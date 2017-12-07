@@ -60,7 +60,7 @@ public class GivenProduct extends Given<Product, ProductServiceImpl> {
 	}
 
 	@Override
-	public String initUpdateField() {
+	public String initTestUpdateField() {
 		return Product.DESCRIPTION;
 	}
 
@@ -109,12 +109,12 @@ public class GivenProduct extends Given<Product, ProductServiceImpl> {
 	}
 
 	@Override
-	public Product initSaveEntity() throws UniqueException {
+	public Product initTestSaveInstance() throws UniqueException {
 		return GivenProduct.givenObjectProduct("P NAME", "P DESC");
 	}
 
 	@Override
-	public Object initUpdateValue() {
+	public Object initTestUpdateValue() {
 		return "new description";
 	}
 

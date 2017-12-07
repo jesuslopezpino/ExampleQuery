@@ -63,7 +63,7 @@ public class GivenProductStock extends Given<ProductStock, ProductStockServiceIm
 	}
 
 	@Override
-	public String initUpdateField() {
+	public String initTestUpdateField() {
 		return ProductStock.QUANTITY;
 	}
 
@@ -110,14 +110,14 @@ public class GivenProductStock extends Given<ProductStock, ProductStockServiceIm
 	}
 
 	@Override
-	public ProductStock initSaveEntity() throws UniqueException, InstantiationException, IllegalAccessException {
+	public ProductStock initTestSaveInstance() throws UniqueException, InstantiationException, IllegalAccessException {
 		GivenProduct givenProduct = new GivenProduct(entityManager);
 		Product product = givenProduct.givenAProduct("XBOX", "Video Game");
 		return GivenProductStock.givenObjectProductStock(product, 20, null);
 	}
 
 	@Override
-	public Object initUpdateValue() {
+	public Object initTestUpdateValue() {
 		return 500;
 	}
 }
