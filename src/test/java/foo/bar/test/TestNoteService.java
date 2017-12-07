@@ -47,7 +47,6 @@ public class TestNoteService extends TestCommon<NoteServiceImpl, Note> {
 	}
 
 	protected void givenExamplesEnviroment() throws UniqueException {
-		super.logGivenEnviromentStart();
 		Customer customer = Given.givenACustomer("Real", "Customer", new Date(), "REALDOC", "ID", entityManager);
 		Customer customer2 = Given.givenACustomer("Real2", "Customer2", new Date(), "REALDOC2", "ID", entityManager);
 		Given.givenANote(new Date(), customer, "text note", entityManager);
