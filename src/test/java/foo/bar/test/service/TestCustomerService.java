@@ -21,18 +21,22 @@ import foo.bar.utils.Utils;
 
 public class TestCustomerService extends TestCommon<CustomerServiceImpl, Customer, GivenCustomer> {
 
-	protected void givenExamplesEnviroment() throws UniqueException {
-		super.logGivenEnviromentStart();
-		Customer customer = GivenCustomer.givenADefaultCustomer(entityManager);
-		List<ProductStock> productsStock = new ArrayList<>();
-		Product product = GivenProduct.givenAProduct("Pizza", "Pizza", entityManager);
-		ProductStock productStock = GivenProductStock.givenAProductStock(product, 7, null, entityManager);
-		productsStock.add(productStock);
-		GivenCustomerOrder.givenACustomerOrder(customer, Utils.getDateTime("01/01/2017 00:00:00"), productsStock, entityManager);
-		GivenCustomer.givenACustomer("One", "Customer", new Date(), "DNIXXX", "TYPE", entityManager);
-		GivenCustomer.givenACustomer("Two", "Customer", new Date(), "DNIXXX", "TYPE", entityManager);
-		GivenCustomer.givenACustomer("Three", "Customer", new Date(), "DNIXXX", "TYPE", entityManager);
-	}
+//	protected void givenExamplesEnviroment() throws UniqueException, InstantiationException, IllegalAccessException {
+//		super.logGivenEnviromentStart();
+//		GivenCustomer givenCustomer = new GivenCustomer(entityManager);
+//		Customer customer = givenCustomer.givenADefaultCustomer(entityManager);
+//		List<ProductStock> productsStock = new ArrayList<>();
+//		GivenProduct givenProduct = new GivenProduct(entityManager);
+//		Product product = givenProduct.givenAProduct("Pizza", "Pizza");
+//		GivenProductStock givenProductStock = new GivenProductStock(entityManager);
+//		ProductStock productStock = givenProductStock.givenAProductStock(product, 7, null);
+//		productsStock.add(productStock);
+//		GivenCustomerOrder givenCustomerOrder = new GivenCustomerOrder(entityManager);
+//		givenCustomerOrder.givenACustomerOrder(customer, Utils.getDateTime("01/01/2017 00:00:00"), productsStock);
+//		givenCustomer.givenACustomer("One", "Customer", new Date(), "DNIXXX", "TYPE");
+//		givenCustomer.givenACustomer("Two", "Customer", new Date(), "DNIXXX", "TYPE");
+//		givenCustomer.givenACustomer("Three", "Customer", new Date(), "DNIXXX", "TYPE");
+//	}
 
 	@Override
 	protected Map<String, HqlConditions> initFilter() {
@@ -103,8 +107,9 @@ public class TestCustomerService extends TestCommon<CustomerServiceImpl, Custome
 	}
 
 	@Override
-	protected Customer initSaveEntity() throws UniqueException {
-		return GivenCustomer.givenObjectCustomer("test name", "test last name", new Date(), "1234", "DNI");
+	protected Customer initSaveEntity() throws UniqueException, InstantiationException, IllegalAccessException {
+		GivenCustomer givenCustomer = new GivenCustomer(entityManager);
+		return givenCustomer.givenObjectCustomer("test name", "test last name", new Date(), "1234", "DNI");
 	}
 
 	@Override

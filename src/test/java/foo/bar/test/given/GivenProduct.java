@@ -8,12 +8,16 @@ import foo.bar.domain.Product;
 import foo.bar.exceptions.UniqueException;
 import foo.bar.service.impl.ProductServiceImpl;
 
-public class GivenProduct extends Given<Product, ProductServiceImpl>{
+public class GivenProduct extends Given<Product, ProductServiceImpl> {
+
+	public GivenProduct(EntityManager entityManager) throws InstantiationException, IllegalAccessException {
+		super(entityManager);
+		// TODO Auto-generated constructor stub
+	}
 
 	private static Logger LOGGER = Logger.getLogger(GivenProduct.class);
 
-	public static Product givenAProduct(String name, String description, EntityManager entityManager)
-			throws UniqueException {
+	public Product givenAProduct(String name, String description) throws UniqueException {
 		Product result = GivenProduct.givenObjectProduct(name, description);
 		ProductServiceImpl service = new ProductServiceImpl();
 		service.setEntityManager(entityManager);
@@ -36,9 +40,9 @@ public class GivenProduct extends Given<Product, ProductServiceImpl>{
 	}
 
 	@Override
-	public void givenExamplesEnviroment() {
-		// TODO Auto-generated method stub
-		
+	public void givenExamplesEnviroment() throws UniqueException {
+		givenAProduct("Samsung", "television");
+		givenAProduct("Apple", "fruit");
 	}
 
 }

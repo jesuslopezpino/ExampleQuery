@@ -22,17 +22,6 @@ import foo.bar.utils.Utils;
 
 public class TestCustomerOrderService extends TestCommon<CustomerOrderServiceImpl, CustomerOrder, GivenCustomerOrder> {
 
-	protected void givenExamplesEnviroment() throws UniqueException {
-		super.logGivenEnviromentStart();
-		Customer customer = GivenCustomer.givenADefaultCustomer(entityManager);
-		Product product = GivenProduct.givenAProduct("CocaCola", "Lata", entityManager);
-		Date dateOrder = Utils.getDate("01/01/2017");
-		ProductStock productsStock = GivenProductStock.givenAProductStock(product, 100, null, entityManager);
-		List<ProductStock> productsStockList = new ArrayList<>();
-		productsStockList.add(productsStock);
-		GivenCustomerOrder.givenACustomerOrder(customer, dateOrder, productsStockList, entityManager);
-	}
-
 	@Override
 	protected Map<String, Object> initEntityFields() {
 		Map<String, Object> mapValues = new HashMap<>();
@@ -60,7 +49,7 @@ public class TestCustomerOrderService extends TestCommon<CustomerOrderServiceImp
 	}
 
 	@Override
-	protected CustomerOrder[] initExamples() throws UniqueException {
+	protected CustomerOrder[] initExamples() throws UniqueException, InstantiationException, IllegalAccessException {
 		Customer customerExample = new Customer();
 		customerExample.setPk(100L);
 
@@ -71,14 +60,18 @@ public class TestCustomerOrderService extends TestCommon<CustomerOrderServiceImp
 		example2.setDate(new Date());
 
 		CustomerOrder example3 = new CustomerOrder();
-		Product product = GivenProduct.givenAProduct("Orange", "Color", entityManager);
+		GivenProduct givenProduct = new GivenProduct(entityManager);
+		Product product = givenProduct.givenAProduct("Orange", "Color");
 		List<Long> productStockIds = new ArrayList<>();
-		ProductStock productStock = GivenProductStock.givenAProductStock(product, 10, null, entityManager);
+		GivenProductStock givenProductStock = new GivenProductStock(entityManager);
+		ProductStock productStock = givenProductStock.givenAProductStock(product, 10, null);
 		productStockIds.add(productStock.getPk());
 		List<ProductStock> productsStockList = new ArrayList<>();
 		productsStockList.add(productStock);
-		Customer customer = GivenCustomer.givenACustomer("Buyer", "cutomer", new Date(), "NO-ID", "DNI", entityManager);
-		GivenCustomerOrder.givenACustomerOrder(customer, new Date(), productsStockList, entityManager);
+		GivenCustomer givenCustomer = new GivenCustomer(entityManager);
+		Customer customer = givenCustomer.givenACustomer("Buyer", "cutomer", new Date(), "NO-ID", "DNI");
+		GivenCustomerOrder givenCustomerOrder = new GivenCustomerOrder(entityManager);
+		givenCustomerOrder.givenACustomerOrder(customer, new Date(), productsStockList);
 		example3.setProductsStockIds(productStockIds);
 
 		CustomerOrder[] examples = { example1, example2, example3 };
@@ -97,10 +90,12 @@ public class TestCustomerOrderService extends TestCommon<CustomerOrderServiceImp
 	}
 
 	@Override
-	protected CustomerOrder initSaveEntity() throws UniqueException {
+	protected CustomerOrder initSaveEntity() throws UniqueException, InstantiationException, IllegalAccessException {
 		Customer customer = null;
-		customer = GivenCustomer.givenACustomer("User", "Saved", new Date(), "LKKJHK", "DNI", entityManager);
-		return GivenCustomerOrder.givenObjectCustomerOrder(customer, new Date(), null);
+		GivenCustomer givenCustomer = new GivenCustomer(entityManager);
+		customer = givenCustomer.givenACustomer("User", "Saved", new Date(), "LKKJHK", "DNI");
+		GivenCustomerOrder givenCustomerOrder = new GivenCustomerOrder(entityManager);
+		return givenCustomerOrder.givenObjectCustomerOrder(customer, new Date(), null);
 	}
 
 	@Override

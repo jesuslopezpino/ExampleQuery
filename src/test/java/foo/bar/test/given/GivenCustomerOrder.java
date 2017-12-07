@@ -1,5 +1,6 @@
 package foo.bar.test.given;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -9,12 +10,18 @@ import org.apache.log4j.Logger;
 
 import foo.bar.domain.Customer;
 import foo.bar.domain.CustomerOrder;
+import foo.bar.domain.Product;
 import foo.bar.domain.ProductStock;
 import foo.bar.exceptions.UniqueException;
 import foo.bar.service.impl.CustomerOrderServiceImpl;
 import foo.bar.service.impl.ProductStockServiceImpl;
+import foo.bar.utils.Utils;
 
-public class GivenCustomerOrder extends Given<CustomerOrder, CustomerOrderServiceImpl>{
+public class GivenCustomerOrder extends Given<CustomerOrder, CustomerOrderServiceImpl> {
+
+	public GivenCustomerOrder(EntityManager entityManager) throws InstantiationException, IllegalAccessException {
+		super(entityManager);
+	}
 
 	private static Logger LOGGER = Logger.getLogger(GivenCustomerOrder.class);
 
@@ -23,9 +30,9 @@ public class GivenCustomerOrder extends Given<CustomerOrder, CustomerOrderServic
 				+ customerOrder.getCustomer() + ", productsStock=" + customerOrder.getProductsStock() + "]";
 	}
 
-	public static CustomerOrder givenACustomerOrder(Customer customer, Date date, List<ProductStock> productsStock,
-			EntityManager entityManager) throws UniqueException {
-		CustomerOrder result = GivenCustomerOrder.givenObjectCustomerOrder(customer, date, productsStock);
+	public CustomerOrder givenACustomerOrder(Customer customer, Date date, List<ProductStock> productsStock)
+			throws UniqueException {
+		CustomerOrder result = givenObjectCustomerOrder(customer, date, productsStock);
 		CustomerOrderServiceImpl service = new CustomerOrderServiceImpl();
 		service.setEntityManager(entityManager);
 		service.save(result);
@@ -42,8 +49,7 @@ public class GivenCustomerOrder extends Given<CustomerOrder, CustomerOrderServic
 		return result;
 	}
 
-	public static CustomerOrder givenObjectCustomerOrder(Customer customer, Date date,
-			List<ProductStock> productsStock) {
+	public CustomerOrder givenObjectCustomerOrder(Customer customer, Date date, List<ProductStock> productsStock) {
 		CustomerOrder result = new CustomerOrder();
 		result.setCustomer(customer);
 		result.setDate(date);
@@ -53,9 +59,18 @@ public class GivenCustomerOrder extends Given<CustomerOrder, CustomerOrderServic
 	}
 
 	@Override
-	public void givenExamplesEnviroment() {
-		// TODO Auto-generated method stub
-		
+	public void givenExamplesEnviroment() throws UniqueException, InstantiationException, IllegalAccessException {
+		GivenCustomer givenCustomer = new GivenCustomer(entityManager);
+		// super.logGivenEnviromentStart();
+		Customer customer = givenCustomer.givenADefaultCustomer(entityManager);
+		GivenProduct givenProduct = new GivenProduct(entityManager);
+		Product product = givenProduct.givenAProduct("CocaCola", "Lata");
+		Date dateOrder = Utils.getDate("01/01/2017");
+		GivenProductStock givenProductStock = new GivenProductStock(entityManager);
+		ProductStock productsStock = givenProductStock.givenAProductStock(product, 100, null);
+		List<ProductStock> productsStockList = new ArrayList<>();
+		productsStockList.add(productsStock);
+		givenACustomerOrder(customer, dateOrder, productsStockList);
 	}
 
 }

@@ -14,11 +14,11 @@ import foo.bar.test.given.GivenProductStock;
 
 public class TestProductStockService extends TestCommon<ProductStockServiceImpl, ProductStock, GivenProductStock> {
 
-	protected void givenExamplesEnviroment() throws UniqueException {
-		super.logGivenEnviromentStart();
-		Product product = GivenProduct.givenAProduct("Samsung", "tv", entityManager);
-		GivenProductStock.givenAProductStock(product, 6, null, entityManager);
-	}
+//	protected void givenExamplesEnviroment() throws UniqueException {
+//		super.logGivenEnviromentStart();
+//		Product product = GivenProduct.givenAProduct("Samsung", "tv", entityManager);
+//		GivenProductStock.givenAProductStock(product, 6, null, entityManager);
+//	}
 
 	@Override
 	protected Map<String, Object> initEntityFields() {
@@ -72,8 +72,9 @@ public class TestProductStockService extends TestCommon<ProductStockServiceImpl,
 	}
 
 	@Override
-	protected ProductStock initSaveEntity() throws UniqueException {
-		Product product = GivenProduct.givenAProduct("XBOX", "Video Game", entityManager);
+	protected ProductStock initSaveEntity() throws UniqueException, InstantiationException, IllegalAccessException {
+		GivenProduct givenProduct = new GivenProduct(entityManager);
+		Product product = givenProduct.givenAProduct("XBOX", "Video Game");
 		return GivenProductStock.givenObjectProductStock(product, 20, null);
 	}
 

@@ -14,11 +14,11 @@ import foo.bar.test.given.GivenProduct;
 
 public class TestProductService extends TestCommon<ProductServiceImpl, Product, GivenProduct> {
 
-	protected void givenExamplesEnviroment() throws UniqueException {
-		super.logGivenEnviromentStart();
-		GivenProduct.givenAProduct("Samsung", "television", entityManager);
-		GivenProduct.givenAProduct("Apple", "fruit", entityManager);
-	}
+//	protected void givenExamplesEnviroment() throws UniqueException {
+//		super.logGivenEnviromentStart();
+//		GivenProduct.givenAProduct("Samsung", "television", entityManager);
+//		GivenProduct.givenAProduct("Apple", "fruit", entityManager);
+//	}
 
 	@Override
 	protected Map<String, Object> initEntityFields() {

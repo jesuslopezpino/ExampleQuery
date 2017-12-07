@@ -12,10 +12,15 @@ import foo.bar.service.impl.ProductStockServiceImpl;
 
 public class GivenProductStock extends Given<ProductStock, ProductStockServiceImpl> {
 
+	public GivenProductStock(EntityManager entityManager) throws InstantiationException, IllegalAccessException {
+		super(entityManager);
+		// TODO Auto-generated constructor stub
+	}
+
 	private static Logger LOGGER = Logger.getLogger(GivenProductStock.class);
 
-	public static ProductStock givenAProductStock(Product product, Integer quantity, CustomerOrder customerOrder,
-			EntityManager entityManager) throws UniqueException {
+	public ProductStock givenAProductStock(Product product, Integer quantity, CustomerOrder customerOrder)
+			throws UniqueException {
 		ProductStock result = givenObjectProductStock(product, quantity, customerOrder);
 		ProductStockServiceImpl service = new ProductStockServiceImpl();
 		service.setEntityManager(entityManager);
@@ -39,8 +44,11 @@ public class GivenProductStock extends Given<ProductStock, ProductStockServiceIm
 	}
 
 	@Override
-	public void givenExamplesEnviroment() {
+	public void givenExamplesEnviroment() throws InstantiationException, IllegalAccessException, UniqueException {
 		// TODO Auto-generated method stub
+		GivenProduct givenProduct = new GivenProduct(entityManager);
+		Product product = givenProduct.givenAProduct("Samsung", "tv");
+		givenAProductStock(product, 6, null);
 	}
 
 }

@@ -37,26 +37,28 @@ public class TestNoteService extends TestCommon<NoteServiceImpl, Note, GivenNote
 	}
 
 	@Override
-	protected Note[] initExamples() throws UniqueException {
+	protected Note[] initExamples() throws UniqueException, InstantiationException, IllegalAccessException {
 		Note example1 = new Note();
 		example1.setNote("e");
 
 		Note example2 = new Note();
-		Customer customer = GivenCustomer.givenADefaultCustomer(entityManager);
+		GivenCustomer givenCustomer = new GivenCustomer(entityManager);
+		Customer customer = givenCustomer.givenADefaultCustomer(entityManager);
 		example2.setCustomer(customer);
 
 		Note[] examples = { example1, example2 };
 		return examples;
 	}
 
-	protected void givenExamplesEnviroment() throws UniqueException {
-		Customer customer = GivenCustomer.givenACustomer("Real", "Customer", new Date(), "REALDOC", "ID", entityManager);
-		Customer customer2 = GivenCustomer.givenACustomer("Real2", "Customer2", new Date(), "REALDOC2", "ID", entityManager);
-		GivenNote.givenANote(new Date(), customer, "text note", entityManager);
-		GivenNote.givenANote(new Date(), customer, "second user note", entityManager);
-		GivenNote.givenANote(new Date(), customer, "another user note", entityManager);
-		GivenNote.givenANote(new Date(), customer2, "text note customer 2", entityManager);
-	}
+//	protected void givenExamplesEnviroment() throws UniqueException, InstantiationException, IllegalAccessException {
+//		GivenCustomer givenCustomer = new GivenCustomer(entityManager);
+//		Customer customer = givenCustomer.givenACustomer("Real", "Customer", new Date(), "REALDOC", "ID");
+//		Customer customer2 = givenCustomer.givenACustomer("Real2", "Customer2", new Date(), "REALDOC2", "ID");
+//		given.givenANote(new Date(), customer, "text note");
+//		given.givenANote(new Date(), customer, "second user note");
+//		given.givenANote(new Date(), customer, "another user note");
+//		given.givenANote(new Date(), customer2, "text note customer 2");
+//	}
 
 	@Override
 	protected Note initSaveEntity() throws UniqueException {
