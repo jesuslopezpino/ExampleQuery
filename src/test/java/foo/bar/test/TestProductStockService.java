@@ -16,7 +16,7 @@ public class TestProductStockService extends TestCommon<ProductStockServiceImpl,
 		Product product;
 		try {
 			product = Given.givenAProduct("Samsung", "tv", entityManager);
-			ProductStock productStock = Given.givenAProductStock(product, 6, null, entityManager);
+			Given.givenAProductStock(product, 6, null, entityManager);
 		} catch (UniqueException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -78,8 +78,7 @@ public class TestProductStockService extends TestCommon<ProductStockServiceImpl,
 	@Override
 	protected ProductStock initSaveEntity() throws UniqueException {
 		Product product = Given.givenAProduct("XBOX", "Video Game", entityManager);
-		ProductStock result = Given.givenObjectProductStock(product, 20, null);
-		return result;
+		return Given.givenObjectProductStock(product, 20, null);
 	}
 
 	@Override
@@ -91,4 +90,5 @@ public class TestProductStockService extends TestCommon<ProductStockServiceImpl,
 	protected Object initUpdateValue() {
 		return 500;
 	}
+
 }

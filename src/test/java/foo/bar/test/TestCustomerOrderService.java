@@ -13,7 +13,6 @@ import foo.bar.domain.ProductStock;
 import foo.bar.exceptions.UniqueException;
 import foo.bar.service.impl.CustomerOrderServiceImpl;
 import foo.bar.service.utils.HqlConditions;
-import foo.bar.service.utils.UtilsService;
 import foo.bar.utils.Utils;
 
 public class TestCustomerOrderService extends TestCommon<CustomerOrderServiceImpl, CustomerOrder> {
@@ -27,8 +26,7 @@ public class TestCustomerOrderService extends TestCommon<CustomerOrderServiceImp
 			ProductStock productsStock = Given.givenAProductStock(product, 100, null, entityManager);
 			List<ProductStock> productsStockList = new ArrayList<>();
 			productsStockList.add(productsStock);
-			CustomerOrder customerOrder = Given.givenACustomerOrder(customer, dateOrder, productsStockList,
-					entityManager);
+			Given.givenACustomerOrder(customer, dateOrder, productsStockList, entityManager);
 		} catch (UniqueException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -76,13 +74,14 @@ public class TestCustomerOrderService extends TestCommon<CustomerOrderServiceImp
 		CustomerOrder example3 = new CustomerOrder();
 		Product product = Given.givenAProduct("Orange", "Color", entityManager);
 		List<Long> productStockIds = new ArrayList<>();
-		ProductStock productStock = Given.givenAProductStock(product , 10, null , entityManager);
+		ProductStock productStock = Given.givenAProductStock(product, 10, null, entityManager);
 		productStockIds.add(productStock.getPk());
 		List<ProductStock> productsStockList = new ArrayList<>();
 		productsStockList.add(productStock);
 		Customer customer = Given.givenACustomer("Buyer", "cutomer", new Date(), "NO-ID", "DNI", entityManager);
-		CustomerOrder customerOrder = Given.givenACustomerOrder(customer , new Date(), productsStockList, entityManager);
+		Given.givenACustomerOrder(customer, new Date(), productsStockList, entityManager);
 		example3.setProductsStockIds(productStockIds);
+
 		CustomerOrder[] examples = { example1, example2, example3 };
 		return examples;
 	}
@@ -102,8 +101,7 @@ public class TestCustomerOrderService extends TestCommon<CustomerOrderServiceImp
 	protected CustomerOrder initSaveEntity() throws UniqueException {
 		Customer customer = null;
 		customer = Given.givenACustomer("User", "Saved", new Date(), "LKKJHK", "DNI", entityManager);
-		CustomerOrder result = Given.givenObjectCustomerOrder(customer, new Date(), null);
-		return result;
+		return Given.givenObjectCustomerOrder(customer, new Date(), null);
 	}
 
 	@Override
