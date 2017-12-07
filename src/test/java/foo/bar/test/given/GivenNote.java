@@ -19,8 +19,7 @@ public class GivenNote extends Given<Note, NoteServiceImpl> {
 
 	private static Logger LOGGER = Logger.getLogger(GivenNote.class);
 
-	public Note givenANote(Date date, Customer customer, String note)
-			throws UniqueException {
+	public Note givenANote(Date date, Customer customer, String note) throws UniqueException {
 		Note result = GivenNote.givenObjectNote(date, customer, note);
 		NoteServiceImpl service = new NoteServiceImpl();
 		service.setEntityManager(this.entityManager);
@@ -54,4 +53,9 @@ public class GivenNote extends Given<Note, NoteServiceImpl> {
 		givenANote(new Date(), customer2, "text note customer 2");
 	}
 
+	@Override
+	public String[] initCustomFields() {
+		String[] customFields = { Note.DATE, Note.NOTE };
+		return customFields;
+	}
 }

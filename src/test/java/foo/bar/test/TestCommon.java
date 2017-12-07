@@ -73,8 +73,6 @@ public abstract class TestCommon<ServiceVO extends ServiceImpl<VO>, VO extends B
 		logGivenEnviromentSubLine();
 	}
 
-	protected abstract String[] initCustomFields();
-
 	protected abstract VO[] initExamples() throws UniqueException, InstantiationException, IllegalAccessException;
 
 	protected abstract VO initSaveEntity() throws UniqueException, InstantiationException, IllegalAccessException;
@@ -268,7 +266,7 @@ public abstract class TestCommon<ServiceVO extends ServiceImpl<VO>, VO extends B
 		logGivenEnviromentSubLine();
 		this.given.givenExamplesEnviroment();
 		this.filter = this.initFilter();
-		this.customFields = this.initCustomFields();
+		this.customFields = this.given.initCustomFields();
 		logGivenEnviromentSubLine();
 		this.examples = this.initExamples();
 		for (int i = 0; i < this.examples.length; i++) {

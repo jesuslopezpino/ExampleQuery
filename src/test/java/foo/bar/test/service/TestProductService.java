@@ -59,15 +59,6 @@ public class TestProductService extends TestCommon<ProductServiceImpl, Product, 
 	}
 
 	@Override
-	protected String[] initCustomFields() {
-		String field1 = Product.PK;
-		String field2 = Product.NAME;
-		String field3 = Product.DESCRIPTION;
-		String fields[] = { field1, field2, field3 };
-		return fields;
-	}
-
-	@Override
 	protected Product initSaveEntity() throws UniqueException {
 		return GivenProduct.givenObjectProduct("P NAME", "P DESC");
 	}

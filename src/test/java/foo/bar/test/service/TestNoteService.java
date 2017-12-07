@@ -17,12 +17,6 @@ import foo.bar.utils.Utils;
 public class TestNoteService extends TestCommon<NoteServiceImpl, Note, GivenNote> {
 
 	@Override
-	protected String[] initCustomFields() {
-		String[] customFields = { Note.DATE, Note.NOTE };
-		return customFields;
-	}
-
-	@Override
 	protected Map<String, HqlConditions> initFilter() {
 
 		Map<String, HqlConditions> filter = new HashMap<>();

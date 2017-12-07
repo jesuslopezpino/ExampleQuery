@@ -66,15 +66,7 @@ public class TestCustomerService extends TestCommon<CustomerServiceImpl, Custome
 		return examples;
 	}
 
-	@Override
-	protected String[] initCustomFields() {
-		String field1 = Customer.NAME;
-		String field2 = Customer.DOCUMENT;
-		String field3 = Customer.BIRTH_DATE;
-		String field4 = Customer.LAST_NAME;
-		String[] fields = { field1, field2, field3, field4 };
-		return fields;
-	}
+	
 
 	@Override
 	protected Map<String, Object> initEntityFields() {

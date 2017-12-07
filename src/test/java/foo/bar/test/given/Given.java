@@ -19,6 +19,10 @@ public abstract class Given<VO extends BasicVO<?>, ServiceVO extends ServiceImpl
 	public abstract void givenExamplesEnviroment()
 			throws UniqueException, InstantiationException, IllegalAccessException;
 
+	public abstract String[] initCustomFields();
+
+//	public abstract VO givenMinimunClassInstance();
+
 	public Given(EntityManager entityManager) throws InstantiationException, IllegalAccessException {
 		this.entityManager = entityManager;
 		this.serviceVoClass = (Class<ServiceVO>) ((ParameterizedType) this.getClass().getGenericSuperclass())

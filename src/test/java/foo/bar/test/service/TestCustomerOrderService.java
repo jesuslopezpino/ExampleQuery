@@ -78,16 +78,6 @@ public class TestCustomerOrderService extends TestCommon<CustomerOrderServiceImp
 		return examples;
 	}
 
-	@Override
-	protected String[] initCustomFields() {
-		String field1 = CustomerOrder.PK;
-		String field2 = CustomerOrder.DATE;
-		String field3 = CustomerOrder.CUSTOMER + "." + Customer.PK;
-		String field4 = CustomerOrder.CUSTOMER + "." + Customer.NAME;
-		String field5 = CustomerOrder.CUSTOMER + "." + Customer.LAST_NAME;
-		String fields[] = { field1, field2, field3, field4, field5 };
-		return fields;
-	}
 
 	@Override
 	protected CustomerOrder initSaveEntity() throws UniqueException, InstantiationException, IllegalAccessException {

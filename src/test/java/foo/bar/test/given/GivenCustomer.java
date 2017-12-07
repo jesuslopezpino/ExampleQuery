@@ -70,4 +70,13 @@ public class GivenCustomer extends Given<Customer, CustomerServiceImpl> {
 		givenACustomer("Three", "Customer", new Date(), "DNIXXX", "TYPE");
 	}
 
+	@Override
+	public String[] initCustomFields() {
+		String field1 = Customer.NAME;
+		String field2 = Customer.DOCUMENT;
+		String field3 = Customer.BIRTH_DATE;
+		String field4 = Customer.LAST_NAME;
+		String[] fields = { field1, field2, field3, field4 };
+		return fields;
+	}
 }

@@ -57,15 +57,6 @@ public class TestProductStockService extends TestCommon<ProductStockServiceImpl,
 	}
 
 	@Override
-	protected String[] initCustomFields() {
-		String field1 = ProductStock.PK;
-		String field2 = ProductStock.PRODUCT;
-		String field3 = ProductStock.QUANTITY;
-		String fields[] = { field1, field2, field3 };
-		return fields;
-	}
-
-	@Override
 	protected ProductStock initSaveEntity() throws UniqueException, InstantiationException, IllegalAccessException {
 		GivenProduct givenProduct = new GivenProduct(entityManager);
 		Product product = givenProduct.givenAProduct("XBOX", "Video Game");

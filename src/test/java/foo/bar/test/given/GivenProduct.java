@@ -44,4 +44,12 @@ public class GivenProduct extends Given<Product, ProductServiceImpl> {
 		givenAProduct("Apple", "fruit");
 	}
 
+	@Override
+	public String[] initCustomFields() {
+		String field1 = Product.PK;
+		String field2 = Product.NAME;
+		String field3 = Product.DESCRIPTION;
+		String fields[] = { field1, field2, field3 };
+		return fields;
+	}
 }

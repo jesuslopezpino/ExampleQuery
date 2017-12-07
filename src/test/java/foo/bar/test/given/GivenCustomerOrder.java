@@ -25,6 +25,17 @@ public class GivenCustomerOrder extends Given<CustomerOrder, CustomerOrderServic
 
 	private static Logger LOGGER = Logger.getLogger(GivenCustomerOrder.class);
 
+	@Override
+	public String[] initCustomFields() {
+		String field1 = CustomerOrder.PK;
+		String field2 = CustomerOrder.DATE;
+		String field3 = CustomerOrder.CUSTOMER + "." + Customer.PK;
+		String field4 = CustomerOrder.CUSTOMER + "." + Customer.NAME;
+		String field5 = CustomerOrder.CUSTOMER + "." + Customer.LAST_NAME;
+		String fields[] = { field1, field2, field3, field4, field5 };
+		return fields;
+	}
+	
 	public static String customerOrderToString(CustomerOrder customerOrder) {
 		return "CustomerOrder [pk=" + customerOrder.getPk() + ", date=" + customerOrder.getDate() + ", customer="
 				+ customerOrder.getCustomer() + ", productsStock=" + customerOrder.getProductsStock() + "]";

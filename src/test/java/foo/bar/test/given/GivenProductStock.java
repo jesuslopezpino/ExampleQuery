@@ -49,4 +49,12 @@ public class GivenProductStock extends Given<ProductStock, ProductStockServiceIm
 		givenAProductStock(product, 6, null);
 	}
 
+	@Override
+	public String[] initCustomFields() {
+		String field1 = ProductStock.PK;
+		String field2 = ProductStock.PRODUCT;
+		String field3 = ProductStock.QUANTITY;
+		String fields[] = { field1, field2, field3 };
+		return fields;
+	}
 }
