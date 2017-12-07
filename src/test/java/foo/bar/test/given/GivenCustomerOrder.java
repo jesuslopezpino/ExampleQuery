@@ -61,7 +61,7 @@ public class GivenCustomerOrder extends Given<CustomerOrder, CustomerOrderServic
 	@Override
 	public void givenExamplesEnviroment() throws UniqueException, InstantiationException, IllegalAccessException {
 		GivenCustomer givenCustomer = new GivenCustomer(entityManager);
-		Customer customer = givenCustomer.givenADefaultCustomer(entityManager);
+		Customer customer = givenCustomer.givenADefaultCustomer();
 		GivenProduct givenProduct = new GivenProduct(entityManager);
 		Product product = givenProduct.givenAProduct("CocaCola", "Lata");
 		Date dateOrder = Utils.getDate("01/01/2017");

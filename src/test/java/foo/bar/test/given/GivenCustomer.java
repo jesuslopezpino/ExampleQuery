@@ -23,7 +23,7 @@ public class GivenCustomer extends Given<Customer, CustomerServiceImpl> {
 
 	private static Logger LOGGER = Logger.getLogger(GivenCustomer.class);
 
-	public Customer givenADefaultCustomer(EntityManager entityManager) throws UniqueException {
+	public Customer givenADefaultCustomer() throws UniqueException {
 		return givenACustomer("Jesus", "Lopez", Utils.getDateTime("10/12/1983 12:00:00"), "XXXXXXX", "DNI");
 	}
 
@@ -56,8 +56,7 @@ public class GivenCustomer extends Given<Customer, CustomerServiceImpl> {
 
 	@Override
 	public void givenExamplesEnviroment() throws UniqueException, InstantiationException, IllegalAccessException {
-		// TODO Auto-generated method stub
-		Customer customer = givenADefaultCustomer(entityManager);
+		Customer customer = givenADefaultCustomer();
 		List<ProductStock> productsStock = new ArrayList<>();
 		GivenProduct givenProduct = new GivenProduct(entityManager);
 		Product product = givenProduct.givenAProduct("Pizza", "Pizza");

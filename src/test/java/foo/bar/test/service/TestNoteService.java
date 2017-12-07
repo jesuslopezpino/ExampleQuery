@@ -43,7 +43,7 @@ public class TestNoteService extends TestCommon<NoteServiceImpl, Note, GivenNote
 
 		Note example2 = new Note();
 		GivenCustomer givenCustomer = new GivenCustomer(entityManager);
-		Customer customer = givenCustomer.givenADefaultCustomer(entityManager);
+		Customer customer = givenCustomer.givenADefaultCustomer();
 		example2.setCustomer(customer);
 
 		Note[] examples = { example1, example2 };
