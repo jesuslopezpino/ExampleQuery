@@ -73,16 +73,6 @@ public abstract class TestCommon<ServiceVO extends ServiceImpl<VO>, VO extends B
 		logGivenEnviromentSubLine();
 	}
 
-	protected abstract VO[] initExamples() throws UniqueException, InstantiationException, IllegalAccessException;
-
-	protected abstract VO initSaveEntity() throws UniqueException, InstantiationException, IllegalAccessException;
-
-	protected abstract Map<String, HqlConditions> initFilter();
-
-	protected abstract Map<String, Object> initEntityFields();
-
-	protected abstract Object initUpdateValue();
-
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
 		logGivenEnviromentLine();
@@ -121,7 +111,7 @@ public abstract class TestCommon<ServiceVO extends ServiceImpl<VO>, VO extends B
 			IllegalAccessException, IllegalArgumentException, InvocationTargetException {
 		logGivenEnviromentSubLine();
 		LOGGER.info("testEntityConstructor");
-		Map<String, Object> mapValues = initEntityFields();
+		Map<String, Object> mapValues = this.given.initEntityFields();
 		Constructor constructor = voClass.getConstructor(HashMap.class);
 		VO entity = (VO) constructor.newInstance((Map) mapValues);
 		LOGGER.info("Instance has been created with map values: " + mapValues);
@@ -147,7 +137,7 @@ public abstract class TestCommon<ServiceVO extends ServiceImpl<VO>, VO extends B
 	public VO testSave() throws UniqueException, InstantiationException, IllegalAccessException {
 		logGivenEnviromentSubLine();
 		LOGGER.info("testSave");
-		VO entity = this.initSaveEntity();
+		VO entity = this.given.initSaveEntity();
 		entity = service.save(entity);
 		LOGGER.info("Save successfull is " + (entity != null && entity.getPk() != null));
 		assertTrue("Save successfull", entity != null && entity.getPk() != null);
@@ -160,7 +150,7 @@ public abstract class TestCommon<ServiceVO extends ServiceImpl<VO>, VO extends B
 		logGivenEnviromentSubLine();
 		LOGGER.info("testUpdate");
 		String field = this.given.initUpdateField();
-		Object newValue = this.initUpdateValue();
+		Object newValue = this.given.initUpdateValue();
 		Object originalValue = Utils.getFieldValue(entity, field);
 		Utils.setFieldValue(field, newValue, entity);
 		VO updatedEntity = this.service.update(entity);
@@ -224,9 +214,9 @@ public abstract class TestCommon<ServiceVO extends ServiceImpl<VO>, VO extends B
 		LOGGER.info("testFindByExample at class: " + this.getClass().getName());
 		logGivenEnviromentSubLine();
 		this.given.givenExamplesEnviroment();
-		this.filter = this.initFilter();
+		this.filter = this.given.initFilter();
 		logGivenEnviromentSubLine();
-		this.examples = this.initExamples();
+		this.examples = this.given.initExamples();
 		for (int i = 0; i < this.examples.length; i++) {
 			VO example = this.examples[i];
 			List<VO> result = service.findByExample(example, this.filter);
@@ -244,9 +234,9 @@ public abstract class TestCommon<ServiceVO extends ServiceImpl<VO>, VO extends B
 		LOGGER.info("testCountByExample at class: " + this.getClass().getName());
 		logGivenEnviromentSubLine();
 		this.given.givenExamplesEnviroment();
-		this.filter = this.initFilter();
+		this.filter = this.given.initFilter();
 		logGivenEnviromentSubLine();
-		this.examples = this.initExamples();
+		this.examples = this.given.initExamples();
 		for (int i = 0; i < this.examples.length; i++) {
 			VO example = this.examples[i];
 			Integer result = service.countByExample(example, this.filter);
@@ -263,10 +253,10 @@ public abstract class TestCommon<ServiceVO extends ServiceImpl<VO>, VO extends B
 		LOGGER.info("Find Custom by example " + this.getClass().getName());
 		logGivenEnviromentSubLine();
 		this.given.givenExamplesEnviroment();
-		this.filter = this.initFilter();
+		this.filter = this.given.initFilter();
 		this.customFields = this.given.initCustomFields();
 		logGivenEnviromentSubLine();
-		this.examples = this.initExamples();
+		this.examples = this.given.initExamples();
 		for (int i = 0; i < this.examples.length; i++) {
 			logGivenEnviromentSubLine();
 			VO example = this.examples[i];

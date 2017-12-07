@@ -1,12 +1,14 @@
 package foo.bar.test.given;
 
 import java.lang.reflect.ParameterizedType;
+import java.util.Map;
 
 import javax.persistence.EntityManager;
 
 import foo.bar.domain.BasicVO;
 import foo.bar.exceptions.UniqueException;
 import foo.bar.service.impl.ServiceImpl;
+import foo.bar.service.utils.HqlConditions;
 
 public abstract class Given<VO extends BasicVO<?>, ServiceVO extends ServiceImpl<VO>> {
 
@@ -23,7 +25,15 @@ public abstract class Given<VO extends BasicVO<?>, ServiceVO extends ServiceImpl
 
 	public abstract String initUpdateField();
 
-	// public abstract VO givenMinimunClassInstance();
+	public abstract VO[] initExamples() throws UniqueException, InstantiationException, IllegalAccessException;
+
+	public abstract VO initSaveEntity() throws UniqueException, InstantiationException, IllegalAccessException;
+
+	public abstract Map<String, HqlConditions> initFilter();
+
+	public abstract Map<String, Object> initEntityFields();
+
+	public abstract Object initUpdateValue();
 
 	public Given(EntityManager entityManager) throws InstantiationException, IllegalAccessException {
 		this.entityManager = entityManager;

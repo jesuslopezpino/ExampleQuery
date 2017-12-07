@@ -1,5 +1,10 @@
 package foo.bar.test.given;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import javax.persistence.EntityManager;
 
 import org.apache.log4j.Logger;
@@ -7,6 +12,7 @@ import org.apache.log4j.Logger;
 import foo.bar.domain.Product;
 import foo.bar.exceptions.UniqueException;
 import foo.bar.service.impl.ProductServiceImpl;
+import foo.bar.service.utils.HqlConditions;
 
 public class GivenProduct extends Given<Product, ProductServiceImpl> {
 
@@ -57,4 +63,59 @@ public class GivenProduct extends Given<Product, ProductServiceImpl> {
 	public String initUpdateField() {
 		return Product.DESCRIPTION;
 	}
+
+	@Override
+	public Map<String, Object> initEntityFields() {
+		Map<String, Object> mapValues = new HashMap<>();
+		mapValues.put(Product.DESCRIPTION, "television");
+		mapValues.put(Product.NAME, "Samsung");
+		return mapValues;
+	}
+
+	@Override
+	public Map<String, HqlConditions> initFilter() {
+		Map<String, HqlConditions> filter = new HashMap<String, HqlConditions>();
+
+		// example 1
+		filter.put(Product.NAME, HqlConditions.LIKE_IGNORE_CASE);
+
+		// example 2
+		filter.put(Product.DESCRIPTION, HqlConditions.LIKE_IGNORE_CASE);
+
+		// example 3
+		filter.put(Product.PK_LIST, HqlConditions.NOT_IN);
+
+		return filter;
+	}
+
+	@Override
+	public Product[] initExamples() {
+
+		Product example1 = new Product();
+		example1.setName("Apple");
+
+		Product example2 = new Product();
+		example2.setDescription("fruit");
+
+		Product example3 = new Product();
+		List<Long> notList = new ArrayList<>();
+		notList.add(9L);
+		notList.add(99L);
+		notList.add(999L);
+		example3.setPkList(notList);
+
+		Product[] examples = { example1, example2, example3 };
+		return examples;
+	}
+
+	@Override
+	public Product initSaveEntity() throws UniqueException {
+		return GivenProduct.givenObjectProduct("P NAME", "P DESC");
+	}
+
+	@Override
+	public Object initUpdateValue() {
+		return "new description";
+	}
+
 }
