@@ -12,7 +12,6 @@ public class GivenProduct extends Given<Product, ProductServiceImpl> {
 
 	public GivenProduct(EntityManager entityManager) throws InstantiationException, IllegalAccessException {
 		super(entityManager);
-		// TODO Auto-generated constructor stub
 	}
 
 	private static Logger LOGGER = Logger.getLogger(GivenProduct.class);

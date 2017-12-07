@@ -7,36 +7,14 @@ import java.util.List;
 import java.util.Map;
 
 import foo.bar.domain.Customer;
-import foo.bar.domain.Product;
-import foo.bar.domain.ProductStock;
 import foo.bar.exceptions.UniqueException;
 import foo.bar.service.impl.CustomerServiceImpl;
 import foo.bar.service.utils.HqlConditions;
 import foo.bar.test.TestCommon;
 import foo.bar.test.given.GivenCustomer;
-import foo.bar.test.given.GivenCustomerOrder;
-import foo.bar.test.given.GivenProduct;
-import foo.bar.test.given.GivenProductStock;
 import foo.bar.utils.Utils;
 
 public class TestCustomerService extends TestCommon<CustomerServiceImpl, Customer, GivenCustomer> {
-
-//	protected void givenExamplesEnviroment() throws UniqueException, InstantiationException, IllegalAccessException {
-//		super.logGivenEnviromentStart();
-//		GivenCustomer givenCustomer = new GivenCustomer(entityManager);
-//		Customer customer = givenCustomer.givenADefaultCustomer(entityManager);
-//		List<ProductStock> productsStock = new ArrayList<>();
-//		GivenProduct givenProduct = new GivenProduct(entityManager);
-//		Product product = givenProduct.givenAProduct("Pizza", "Pizza");
-//		GivenProductStock givenProductStock = new GivenProductStock(entityManager);
-//		ProductStock productStock = givenProductStock.givenAProductStock(product, 7, null);
-//		productsStock.add(productStock);
-//		GivenCustomerOrder givenCustomerOrder = new GivenCustomerOrder(entityManager);
-//		givenCustomerOrder.givenACustomerOrder(customer, Utils.getDateTime("01/01/2017 00:00:00"), productsStock);
-//		givenCustomer.givenACustomer("One", "Customer", new Date(), "DNIXXX", "TYPE");
-//		givenCustomer.givenACustomer("Two", "Customer", new Date(), "DNIXXX", "TYPE");
-//		givenCustomer.givenACustomer("Three", "Customer", new Date(), "DNIXXX", "TYPE");
-//	}
 
 	@Override
 	protected Map<String, HqlConditions> initFilter() {

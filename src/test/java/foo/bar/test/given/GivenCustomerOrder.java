@@ -61,7 +61,6 @@ public class GivenCustomerOrder extends Given<CustomerOrder, CustomerOrderServic
 	@Override
 	public void givenExamplesEnviroment() throws UniqueException, InstantiationException, IllegalAccessException {
 		GivenCustomer givenCustomer = new GivenCustomer(entityManager);
-		// super.logGivenEnviromentStart();
 		Customer customer = givenCustomer.givenADefaultCustomer(entityManager);
 		GivenProduct givenProduct = new GivenProduct(entityManager);
 		Product product = givenProduct.givenAProduct("CocaCola", "Lata");

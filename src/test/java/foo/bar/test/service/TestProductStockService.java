@@ -14,12 +14,6 @@ import foo.bar.test.given.GivenProductStock;
 
 public class TestProductStockService extends TestCommon<ProductStockServiceImpl, ProductStock, GivenProductStock> {
 
-//	protected void givenExamplesEnviroment() throws UniqueException {
-//		super.logGivenEnviromentStart();
-//		Product product = GivenProduct.givenAProduct("Samsung", "tv", entityManager);
-//		GivenProductStock.givenAProductStock(product, 6, null, entityManager);
-//	}
-
 	@Override
 	protected Map<String, Object> initEntityFields() {
 		Map<String, Object> mapValues = new HashMap<>();

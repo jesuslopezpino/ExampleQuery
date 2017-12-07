@@ -14,7 +14,6 @@ public class GivenProductStock extends Given<ProductStock, ProductStockServiceIm
 
 	public GivenProductStock(EntityManager entityManager) throws InstantiationException, IllegalAccessException {
 		super(entityManager);
-		// TODO Auto-generated constructor stub
 	}
 
 	private static Logger LOGGER = Logger.getLogger(GivenProductStock.class);
@@ -45,7 +44,6 @@ public class GivenProductStock extends Given<ProductStock, ProductStockServiceIm
 
 	@Override
 	public void givenExamplesEnviroment() throws InstantiationException, IllegalAccessException, UniqueException {
-		// TODO Auto-generated method stub
 		GivenProduct givenProduct = new GivenProduct(entityManager);
 		Product product = givenProduct.givenAProduct("Samsung", "tv");
 		givenAProductStock(product, 6, null);

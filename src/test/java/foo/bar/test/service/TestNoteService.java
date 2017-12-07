@@ -50,16 +50,6 @@ public class TestNoteService extends TestCommon<NoteServiceImpl, Note, GivenNote
 		return examples;
 	}
 
-//	protected void givenExamplesEnviroment() throws UniqueException, InstantiationException, IllegalAccessException {
-//		GivenCustomer givenCustomer = new GivenCustomer(entityManager);
-//		Customer customer = givenCustomer.givenACustomer("Real", "Customer", new Date(), "REALDOC", "ID");
-//		Customer customer2 = givenCustomer.givenACustomer("Real2", "Customer2", new Date(), "REALDOC2", "ID");
-//		given.givenANote(new Date(), customer, "text note");
-//		given.givenANote(new Date(), customer, "second user note");
-//		given.givenANote(new Date(), customer, "another user note");
-//		given.givenANote(new Date(), customer2, "text note customer 2");
-//	}
-
 	@Override
 	protected Note initSaveEntity() throws UniqueException {
 		return GivenNote.givenObjectNote(Utils.getDateTime("01/01/2017 00:00:00"), null, "First note");

@@ -15,7 +15,6 @@ public class GivenNote extends Given<Note, NoteServiceImpl> {
 
 	public GivenNote(EntityManager entityManager) throws InstantiationException, IllegalAccessException {
 		super(entityManager);
-		// TODO Auto-generated constructor stub
 	}
 
 	private static Logger LOGGER = Logger.getLogger(GivenNote.class);
