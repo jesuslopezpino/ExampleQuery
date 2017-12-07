@@ -7,9 +7,12 @@ import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 
@@ -26,6 +29,11 @@ public class CustomerOrder extends BasicVO<Long> {
 
 	public static final String PRODUCTS_STOCK_IDS = "productsStockIds";
 
+	@Id
+	@GeneratedValue(generator = "SQ_CUSTOMER_ORDER")
+	@SequenceGenerator(name = "SQ_CUSTOMER_ORDER", sequenceName = "SQ_CUSTOMER_ORDER")
+	private Long pk;
+	
 	@NotNull
 	@ManyToOne
 	@JoinColumn(name = CUSTOMER, referencedColumnName = CustomerOrder.PK)
@@ -50,6 +58,14 @@ public class CustomerOrder extends BasicVO<Long> {
 		super(mapValues);
 	}
 
+	public Long getPk() {
+		return pk;
+	}
+
+	public void setPk(Long pk) {
+		this.pk = pk;
+	}
+	
 	public Customer getCustomer() {
 		return customer;
 	}

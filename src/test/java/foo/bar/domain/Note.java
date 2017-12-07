@@ -5,12 +5,15 @@ import java.util.HashMap;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.SequenceGenerator;
 import javax.validation.constraints.NotNull;
 
 import org.hibernate.validator.constraints.NotEmpty;
 
-@Entity
+@Entity(name = "NOTE")
 public class Note extends BasicVO<Long> {
 
 	public static final String CUSTOMER = "customer";
@@ -19,6 +22,11 @@ public class Note extends BasicVO<Long> {
 
 	public static final String NOTE = "note";
 
+	@Id
+	@GeneratedValue(generator = "SQ_NOTE")
+	@SequenceGenerator(name = "SQ_NOTE", sequenceName = "SQ_NOTE")
+	private Long pk;
+	
 	@NotNull
 	@Column(name = DATE)
 	private Date date;
@@ -38,6 +46,14 @@ public class Note extends BasicVO<Long> {
 		super(mapValues);
 	}
 
+	public Long getPk() {
+		return pk;
+	}
+
+	public void setPk(Long pk) {
+		this.pk = pk;
+	}
+	
 	public Date getDate() {
 		return date;
 	}

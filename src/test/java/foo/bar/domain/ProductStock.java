@@ -4,13 +4,16 @@ import java.util.HashMap;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Transient;
 
 import foo.bar.annotations.Reference;
 
-@Entity
+@Entity(name = "PRODUCT_STOCK")
 public class ProductStock extends BasicVO<Long> {
 
 	public static final String PRODUCT = "product";
@@ -24,6 +27,11 @@ public class ProductStock extends BasicVO<Long> {
 	public static final String MIN_QUANTITY = "minQuantity";
 
 	public static final String CUSTOMER_ORDER = "customerOrder";
+
+	@Id
+	@GeneratedValue(generator = "SQ_PRODUCT_STOCK")
+	@SequenceGenerator(name = "SQ_PRODUCT_STOCK", sequenceName = "SQ_PRODUCT_STOCK")
+	private Long pk;
 
 	@ManyToOne
 	@JoinColumn(name = CUSTOMER_ORDER, referencedColumnName = ProductStock.PK)
@@ -49,11 +57,19 @@ public class ProductStock extends BasicVO<Long> {
 	private String productName;
 
 	public ProductStock() {
-
+		super();
 	}
 
 	public ProductStock(HashMap<String, Object> mapValues) {
 		super(mapValues);
+	}
+
+	public Long getPk() {
+		return pk;
+	}
+
+	public void setPk(Long pk) {
+		this.pk = pk;
 	}
 
 	public Product getProduct() {

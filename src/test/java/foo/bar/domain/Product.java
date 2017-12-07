@@ -5,13 +5,16 @@ import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Transient;
 
 import org.hibernate.validator.constraints.NotBlank;
 
 import foo.bar.annotations.Reference;
 
-@Entity
+@Entity(name = "PRODUCT")
 public class Product extends BasicVO<Long> {
 
 	public static final String NAME = "name";
@@ -20,9 +23,10 @@ public class Product extends BasicVO<Long> {
 
 	public static final String PK_LIST = "pkList";
 
-	@Transient
-	@Reference(fieldName = PK_LIST, referenceFor = Product.PK)
-	private List<Long> pkList;
+	@Id
+	@GeneratedValue(generator = "SQ_PRODUCT")
+	@SequenceGenerator(name = "SQ_PRODUCT", sequenceName = "SQ_PRODUCT")
+	private Long pk;
 
 	@NotBlank
 	@Column(name = NAME)
@@ -32,12 +36,24 @@ public class Product extends BasicVO<Long> {
 	@Column(name = DESCRIPTION)
 	private String description;
 
+	@Transient
+	@Reference(fieldName = PK_LIST, referenceFor = Product.PK)
+	private List<Long> pkList;
+
 	public Product() {
 		super();
 	}
 
 	public Product(HashMap<String, Object> mapValues) {
 		super(mapValues);
+	}
+
+	public Long getPk() {
+		return pk;
+	}
+
+	public void setPk(Long pk) {
+		this.pk = pk;
 	}
 
 	public String getName() {

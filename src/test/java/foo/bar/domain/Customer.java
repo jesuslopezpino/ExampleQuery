@@ -6,7 +6,10 @@ import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 
@@ -14,7 +17,7 @@ import org.hibernate.validator.constraints.NotBlank;
 
 import foo.bar.annotations.Reference;
 
-@Entity
+@Entity(name = "CUSTOMER")
 public class Customer extends BasicVO<Long> {
 
 	public static final String NAME = "name";
@@ -38,6 +41,11 @@ public class Customer extends BasicVO<Long> {
 	public static final String ORDERS_PRODUCTS_NAME = "ordersProductsName";
 
 	public static final String NOTES = "notes";
+
+	@Id
+	@GeneratedValue(generator = "SQ_CUSTOMER")
+	@SequenceGenerator(name = "SQ_CUSTOMER", sequenceName = "SQ_CUSTOMER")
+	private Long pk;
 
 	@NotBlank
 	@Column(name = NAME)
@@ -90,6 +98,14 @@ public class Customer extends BasicVO<Long> {
 
 	public Customer(HashMap<String, Object> mapValues) {
 		super(mapValues);
+	}
+
+	public Long getPk() {
+		return pk;
+	}
+
+	public void setPk(Long pk) {
+		this.pk = pk;
 	}
 
 	public String getName() {
