@@ -12,16 +12,10 @@ import foo.bar.service.utils.HqlConditions;
 
 public class TestProductService extends TestCommon<ProductServiceImpl, Product> {
 
-	protected void givenExamplesEnviroment() {
+	protected void givenExamplesEnviroment() throws UniqueException {
 		super.logGivenEnviromentStart();
-		try {
-			Given.givenAProduct("Samsung", "television", entityManager);
-			Given.givenAProduct("Apple", "fruit", entityManager);
-		} catch (UniqueException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		super.logGivenEnviromentEnd();
+		Given.givenAProduct("Samsung", "television", entityManager);
+		Given.givenAProduct("Apple", "fruit", entityManager);
 	}
 
 	@Override

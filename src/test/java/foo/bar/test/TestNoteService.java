@@ -34,21 +34,16 @@ public class TestNoteService extends TestCommon<NoteServiceImpl, Note> {
 	}
 
 	@Override
-	protected Note[] initExamples() {
-		try {
-			Note example1 = new Note();
-			example1.setNote("e");
+	protected Note[] initExamples() throws UniqueException {
+		Note example1 = new Note();
+		example1.setNote("e");
 
-			Note example2 = new Note();
-			Customer customer = Given.givenADefaultCustomer(entityManager);
-			example2.setCustomer(customer);
-			Note[] examples = { example1, example2 };
-			return examples;
-		} catch (UniqueException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return null;
+		Note example2 = new Note();
+		Customer customer = Given.givenADefaultCustomer(entityManager);
+		example2.setCustomer(customer);
+
+		Note[] examples = { example1, example2 };
+		return examples;
 	}
 
 	protected void givenExamplesEnviroment() throws UniqueException {
@@ -59,7 +54,6 @@ public class TestNoteService extends TestCommon<NoteServiceImpl, Note> {
 		Given.givenANote(new Date(), customer, "second user note", entityManager);
 		Given.givenANote(new Date(), customer, "another user note", entityManager);
 		Given.givenANote(new Date(), customer2, "text note customer 2", entityManager);
-		super.logGivenEnviromentEnd();
 	}
 
 	@Override

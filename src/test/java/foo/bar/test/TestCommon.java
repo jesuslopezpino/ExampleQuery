@@ -33,6 +33,7 @@ import foo.bar.utils.Utils;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = { "classpath:applicationContext.xml" })
 @Transactional
+// TODO: add DTO 
 public abstract class TestCommon<ServiceVO extends ServiceImpl<VO>, VO extends BasicVO<?>> {
 
 	protected static Logger LOGGER = Logger.getLogger(TestCommon.class);
@@ -58,7 +59,9 @@ public abstract class TestCommon<ServiceVO extends ServiceImpl<VO>, VO extends B
 				.getActualTypeArguments()[0];
 		this.voClass = (Class<ServiceVO>) ((ParameterizedType) this.getClass().getGenericSuperclass())
 				.getActualTypeArguments()[1];
-		LOGGER.info("Creating test for class: " + this.serviceVoClass.getName());
+		LOGGER.info("Unit Test Class: " + this.getClass().getName());
+		LOGGER.info("Entity: " + this.voClass.getName());
+		LOGGER.info("Service: " + this.serviceVoClass.getName());
 		logGivenEnviromentSubLine();
 	}
 
@@ -80,16 +83,16 @@ public abstract class TestCommon<ServiceVO extends ServiceImpl<VO>, VO extends B
 
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
-		logGivenEnviromentSubLine();
+		logGivenEnviromentLine();
 		LOGGER.info("setUpBeforeClass");
-		logGivenEnviromentSubLine();
+		logGivenEnviromentLine();;
 	}
 
 	@AfterClass
 	public static void tearDownAfterClass() throws Exception {
-		logGivenEnviromentSubLine();
+		logGivenEnviromentLine();
 		LOGGER.info("tearDownAfterClass");
-		logGivenEnviromentSubLine();
+		logGivenEnviromentLine();
 	}
 
 	@Before
@@ -122,6 +125,7 @@ public abstract class TestCommon<ServiceVO extends ServiceImpl<VO>, VO extends B
 		Constructor constructor = voClass.getConstructor(HashMap.class);
 		VO entity = (VO) constructor.newInstance((Map) mapValues);
 		LOGGER.info("Instance has been created with map values: " + mapValues);
+		LOGGER.info("Instance: " + entity.toStringDebug());
 		assertTrue("Instance has been created with map values: " + mapValues, entity != null);
 		logGivenEnviromentSubLine();
 	}
@@ -226,9 +230,7 @@ public abstract class TestCommon<ServiceVO extends ServiceImpl<VO>, VO extends B
 		LOGGER.info("testCountByExample at class: " + this.getClass().getName());
 		for (int i = 0; i < this.examples.length; i++) {
 			VO example = this.examples[i];
-			Integer result;
-			result = service.countByExample(example, filter);
-			// showResult(example, result, i, filter);
+			Integer result = service.countByExample(example, filter);
 			LOGGER.info("Count by example returns more than zero: " + result);
 			assertTrue("Count by example returns more than zero: " + result, result > 0);
 		}
@@ -243,13 +245,18 @@ public abstract class TestCommon<ServiceVO extends ServiceImpl<VO>, VO extends B
 		for (int i = 0; i < this.examples.length; i++) {
 			logGivenEnviromentSubLine();
 			VO example = this.examples[i];
-			LOGGER.info("example: " + example);
+			LOGGER.info("example: " + (i+1));
 			List<VO> result;
 			result = service.findCustomByExample(example, customFields, filter);
 			showResult(example, result, i, filter);
 			LOGGER.info("findCustomByExample returns more than zero: " + result.size());
+			logEmptyLine();
 			assertTrue("findCustomByExample returns more than zero: " + result, !result.isEmpty());
 		}
+	}
+
+	private void logEmptyLine() {
+		LOGGER.info("");
 	}
 
 	private void showResult(VO example, List<VO> result, int exampleIndex, Map<String, HqlConditions> filters) {
@@ -262,12 +269,12 @@ public abstract class TestCommon<ServiceVO extends ServiceImpl<VO>, VO extends B
 			LOGGER.info("With filters: " + filters);
 			LOGGER.info("Returns " + result.size() + " items");
 			for (VO vo : result) {
-				LOGGER.info("item[" + exampleIndex + "]: " + vo.toString());
+				LOGGER.info("item[" + exampleIndex + "]: " + vo.toStringDebug());
 			}
 		}
 	}
 
-	protected void logGivenEnviromentLine() {
+	protected static void logGivenEnviromentLine() {
 		LOGGER.info("*************************************************"
 				+ "***************************************************"
 				+ "***************************************************"
@@ -281,14 +288,9 @@ public abstract class TestCommon<ServiceVO extends ServiceImpl<VO>, VO extends B
 				+ "---------------------------------------------------");
 	}
 
-	protected void logGivenEnviromentEnd() {
-		LOGGER.info("*\tGIVEN ENVIROMENT FOR " + this.getClass().getName() + " END");
-		logGivenEnviromentLine();
-	}
-
 	protected void logGivenEnviromentStart() {
-		logGivenEnviromentLine();
-		LOGGER.info("*\tGIVEN ENVIROMENT FOR " + this.getClass().getName());
+		logGivenEnviromentSubLine();
+		LOGGER.info("Given enviroment for " + this.getClass().getName());
 		logGivenEnviromentSubLine();
 	}
 }

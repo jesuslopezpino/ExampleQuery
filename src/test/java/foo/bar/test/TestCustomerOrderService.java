@@ -17,21 +17,15 @@ import foo.bar.utils.Utils;
 
 public class TestCustomerOrderService extends TestCommon<CustomerOrderServiceImpl, CustomerOrder> {
 
-	protected void givenExamplesEnviroment() {
+	protected void givenExamplesEnviroment() throws UniqueException {
 		super.logGivenEnviromentStart();
-		try {
-			Customer customer = Given.givenADefaultCustomer(entityManager);
-			Product product = Given.givenAProduct("CocaCola", "Lata", entityManager);
-			Date dateOrder = Utils.getDate("01/01/2017");
-			ProductStock productsStock = Given.givenAProductStock(product, 100, null, entityManager);
-			List<ProductStock> productsStockList = new ArrayList<>();
-			productsStockList.add(productsStock);
-			Given.givenACustomerOrder(customer, dateOrder, productsStockList, entityManager);
-		} catch (UniqueException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		super.logGivenEnviromentEnd();
+		Customer customer = Given.givenADefaultCustomer(entityManager);
+		Product product = Given.givenAProduct("CocaCola", "Lata", entityManager);
+		Date dateOrder = Utils.getDate("01/01/2017");
+		ProductStock productsStock = Given.givenAProductStock(product, 100, null, entityManager);
+		List<ProductStock> productsStockList = new ArrayList<>();
+		productsStockList.add(productsStock);
+		Given.givenACustomerOrder(customer, dateOrder, productsStockList, entityManager);
 	}
 
 	@Override

@@ -16,23 +16,17 @@ import foo.bar.utils.Utils;
 
 public class TestCustomerService extends TestCommon<CustomerServiceImpl, Customer> {
 
-	protected void givenExamplesEnviroment() {
+	protected void givenExamplesEnviroment() throws UniqueException {
 		super.logGivenEnviromentStart();
-		try {
-			Customer customer = Given.givenADefaultCustomer(entityManager);
-			List<ProductStock> productsStock = new ArrayList<>();
-			Product product = Given.givenAProduct("Pizza", "Pizza", entityManager);
-			ProductStock productStock = Given.givenAProductStock(product, 7, null, entityManager);
-			productsStock.add(productStock);
-			Given.givenACustomerOrder(customer, Utils.getDateTime("01/01/2017 00:00:00"), productsStock, entityManager);
-			Given.givenACustomer("One", "Customer", new Date(), "DNIXXX", "TYPE", entityManager);
-			Given.givenACustomer("Two", "Customer", new Date(), "DNIXXX", "TYPE", entityManager);
-			Given.givenACustomer("Three", "Customer", new Date(), "DNIXXX", "TYPE", entityManager);
-		} catch (UniqueException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		super.logGivenEnviromentEnd();
+		Customer customer = Given.givenADefaultCustomer(entityManager);
+		List<ProductStock> productsStock = new ArrayList<>();
+		Product product = Given.givenAProduct("Pizza", "Pizza", entityManager);
+		ProductStock productStock = Given.givenAProductStock(product, 7, null, entityManager);
+		productsStock.add(productStock);
+		Given.givenACustomerOrder(customer, Utils.getDateTime("01/01/2017 00:00:00"), productsStock, entityManager);
+		Given.givenACustomer("One", "Customer", new Date(), "DNIXXX", "TYPE", entityManager);
+		Given.givenACustomer("Two", "Customer", new Date(), "DNIXXX", "TYPE", entityManager);
+		Given.givenACustomer("Three", "Customer", new Date(), "DNIXXX", "TYPE", entityManager);
 	}
 
 	@Override
