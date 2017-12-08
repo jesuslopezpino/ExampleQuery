@@ -45,7 +45,7 @@ public class GivenProduct extends Given<Product, ProductServiceImpl> {
 	}
 
 	@Override
-	public void givenExamplesEnviroment() throws UniqueException {
+	public void givenExamplesEnvironment() throws UniqueException {
 		givenAProduct("Samsung", "television");
 		givenAProduct("Apple", "fruit");
 	}

@@ -47,7 +47,7 @@ public class GivenNote extends Given<Note, NoteServiceImpl> {
 	}
 
 	@Override
-	public void givenExamplesEnviroment() throws UniqueException, InstantiationException, IllegalAccessException {
+	public void givenExamplesEnvironment() throws UniqueException, InstantiationException, IllegalAccessException {
 		GivenCustomer givenCustomer = new GivenCustomer(entityManager);
 		Customer customer = givenCustomer.givenACustomer("Real", "Customer", new Date(), "REALDOC", "ID");
 		Customer customer2 = givenCustomer.givenACustomer("Real2", "Customer2", new Date(), "REALDOC2", "ID");

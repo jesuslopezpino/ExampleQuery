@@ -58,7 +58,7 @@ public class GivenCustomer extends Given<Customer, CustomerServiceImpl> {
 	}
 
 	@Override
-	public void givenExamplesEnviroment() throws UniqueException, InstantiationException, IllegalAccessException {
+	public void givenExamplesEnvironment() throws UniqueException, InstantiationException, IllegalAccessException {
 		Customer customer = givenADefaultCustomer();
 		List<ProductStock> productsStock = new ArrayList<>();
 		GivenProduct givenProduct = new GivenProduct(entityManager);

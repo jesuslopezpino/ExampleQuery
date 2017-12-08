@@ -47,7 +47,7 @@ public class GivenProductStock extends Given<ProductStock, ProductStockServiceIm
 	}
 
 	@Override
-	public void givenExamplesEnviroment() throws InstantiationException, IllegalAccessException, UniqueException {
+	public void givenExamplesEnvironment() throws InstantiationException, IllegalAccessException, UniqueException {
 		GivenProduct givenProduct = new GivenProduct(entityManager);
 		Product product = givenProduct.givenAProduct("Samsung", "tv");
 		givenAProductStock(product, 6, null);
