@@ -16,6 +16,7 @@ import foo.bar.domain.ProductStock;
 import foo.bar.exceptions.UniqueException;
 import foo.bar.service.impl.CustomerServiceImpl;
 import foo.bar.service.utils.HqlConditions;
+import foo.bar.test.common.Given;
 import foo.bar.utils.Utils;
 
 public class GivenCustomer extends Given<Customer, CustomerServiceImpl> {

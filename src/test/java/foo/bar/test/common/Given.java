@@ -1,4 +1,4 @@
-package foo.bar.test.given;
+package foo.bar.test.common;
 
 import java.lang.reflect.ParameterizedType;
 import java.util.Map;

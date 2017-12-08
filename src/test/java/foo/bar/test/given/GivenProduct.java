@@ -13,6 +13,7 @@ import foo.bar.domain.Product;
 import foo.bar.exceptions.UniqueException;
 import foo.bar.service.impl.ProductServiceImpl;
 import foo.bar.service.utils.HqlConditions;
+import foo.bar.test.common.Given;
 
 public class GivenProduct extends Given<Product, ProductServiceImpl> {
 

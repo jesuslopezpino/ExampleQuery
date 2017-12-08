@@ -1,4 +1,4 @@
-package foo.bar.test;
+package foo.bar.test.common;
 
 import static org.junit.Assert.assertTrue;
 
@@ -30,7 +30,6 @@ import foo.bar.exceptions.ExampleQueryException;
 import foo.bar.exceptions.UniqueException;
 import foo.bar.service.impl.ServiceImpl;
 import foo.bar.service.utils.HqlConditions;
-import foo.bar.test.given.Given;
 import foo.bar.utils.Utils;
 
 @RunWith(SpringJUnit4ClassRunner.class)

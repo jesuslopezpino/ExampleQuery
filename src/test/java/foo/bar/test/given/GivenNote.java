@@ -13,6 +13,7 @@ import foo.bar.domain.Note;
 import foo.bar.exceptions.UniqueException;
 import foo.bar.service.impl.NoteServiceImpl;
 import foo.bar.service.utils.HqlConditions;
+import foo.bar.test.common.Given;
 import foo.bar.utils.Utils;
 
 public class GivenNote extends Given<Note, NoteServiceImpl> {
