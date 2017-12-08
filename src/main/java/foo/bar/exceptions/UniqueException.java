@@ -2,7 +2,10 @@ package foo.bar.exceptions;
 
 import java.lang.reflect.Field;
 
-import foo.bar.annotations.Unique;
+import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
+
+import foo.bar.domain.BasicVO;
 
 public class UniqueException extends Exception {
 
@@ -15,9 +18,14 @@ public class UniqueException extends Exception {
 
 	private String uk;
 
-	public UniqueException(Class clazz, String uk) {
+	private BasicVO entity;
+
+	private Table table;
+
+	public UniqueException(Class clazz, String uk, BasicVO entity) {
 		super();
 		this.clazz = clazz;
+		this.entity = entity;
 		this.uk = uk;
 	}
 
@@ -37,36 +45,20 @@ public class UniqueException extends Exception {
 		this.uk = uk;
 	}
 
-	public String getUniqueMessage() {
-		String result = "";
+	public UniqueConstraint getUniqueConstraint() {
+		UniqueConstraint result = null;
 		boolean found = false;
-		for (Field field : this.clazz.getDeclaredFields()) {
-			if (field.isAnnotationPresent(Unique.class)) {
-				Unique annotationValue = field.getAnnotation(Unique.class);
-				if (annotationValue.uk().equals(this.uk)) {
-					found = true;
-					result = annotationValue.message();
+		table = (Table) this.clazz.getAnnotation(Table.class);
+		if (table != null && table.uniqueConstraints().length > 0) {
+			for (int i = 0; i < table.uniqueConstraints().length; i++) {
+				UniqueConstraint uniqueConstraint = table.uniqueConstraints()[i];
+				if (uniqueConstraint.name().equals(this.uk)) {
+					result = uniqueConstraint;
 					break;
 				}
 			}
-		}
-		if (!found) {
-			result = "Unexpected Unique Annotation \"" + this.uk + "\" not found in class: " + this.clazz.getName();
 		}
 		return result;
 	}
 
-	public String[] getAffectedFields() {
-		String[] result = {};
-		for (Field field : this.clazz.getDeclaredFields()) {
-			if (field.isAnnotationPresent(Unique.class)) {
-				Unique annotationValue = field.getAnnotation(Unique.class);
-				if (annotationValue.uk().equals(this.uk)) {
-					result[result.length] = field.getName();
-					break;
-				}
-			}
-		}
-		return result;
-	}
 }

@@ -13,6 +13,8 @@ import java.util.Map.Entry;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
 
 import org.apache.log4j.Logger;
 import org.junit.After;
@@ -104,6 +106,29 @@ public abstract class TestCommon<ServiceVO extends ServiceImpl<VO>, VO extends B
 	public void tearDown() throws Exception {
 		logLine();
 		LOGGER.info("tearDown");
+		logLine();
+	}
+
+	@Test
+	public void testUniqueException() throws InstantiationException, IllegalAccessException {
+		logLine();
+		LOGGER.info("testUniqueException");
+		Table table = (Table) this.voClass.getAnnotation(Table.class);
+		UniqueConstraint[] uniqueConstraints = table.uniqueConstraints();
+		if (uniqueConstraints != null && uniqueConstraints.length > 0) {
+			try {
+				LOGGER.info("trying first save test");
+				this.testSave();
+				LOGGER.info("trying second save test");
+				this.testSave();
+			} catch (UniqueException e) {
+				LOGGER.info(this.service.getClass() + " returns UniqueException");
+				assertTrue(this.service.getClass() + " returns UniqueException", true);
+			}
+		} else {
+			LOGGER.info(voClass.getName() + " doesn't have unique constraints");
+			assertTrue(voClass.getName() + " doesn't have unique constraints", true);
+		}
 		logLine();
 	}
 
