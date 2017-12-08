@@ -63,16 +63,32 @@ To be able to use ExampleQuery service your entity classes must extends abstract
 public class Product extends BasicVO<Long> {
 	...
 	
-	public ProductStock() {
+	public Product() {
 		super();
 	}
 
-	public ProductStock(HashMap<String, Object> mapValues) {
+	public Product(HashMap<String, Object> mapValues) {
 		super(mapValues);
 	}
 	...
+	
+	@Id
+	@GeneratedValue(generator = "SQ_PRODUCT")
+	@SequenceGenerator(name = "SQ_PRODUCT", sequenceName = "SQ_PRODUCT")
+	private Long pk;
+	
 }
 ```
+
+Developer still have to implements two abstract methods from BasicVO:
+
+```
+public abstract PK getPk();
+
+public abstract void setPk(PK pk);
+```
+
+This is like that because we want that @Id annotation will be set in pk field that user must define in order to use sequence generator annotation instead of creating a field at abstract class.
 
 
 ## ServiceImpl
