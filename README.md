@@ -134,7 +134,7 @@ public class Customer extends BasicVO<Long> {
 	@Column(name = DOCUMENT)
 	private String document;
 	...
-
+}
 ```
 
 
