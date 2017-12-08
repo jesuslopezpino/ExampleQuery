@@ -63,7 +63,7 @@ public class GivenNote extends Given<Note, NoteServiceImpl> {
 		return customFields;
 	}
 
-	@Override
+	// @Override
 	public String initTestUpdateField() {
 		return Note.NOTE;
 	}
@@ -112,8 +112,9 @@ public class GivenNote extends Given<Note, NoteServiceImpl> {
 	}
 
 	@Override
-	public Object initTestUpdateValue() {
-		return "Updated note";
+	public Map<String, Object> initTestUpdateValues() {
+		Map<String, Object> result = new HashMap<>();
+		result.put(initTestUpdateField(), "Updated note");
+		return result;
 	}
-
 }

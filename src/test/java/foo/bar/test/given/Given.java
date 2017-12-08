@@ -53,13 +53,6 @@ public abstract class Given<VO extends BasicVO<?>, ServiceVO extends ServiceImpl
 	public abstract String[] initCustomFields();
 
 	/**
-	 * Returns the field name for testUpdate case
-	 *
-	 * @return the string
-	 */
-	public abstract String initTestUpdateField();
-
-	/**
 	 * Return the examples for find by example test cases.
 	 *
 	 * @return the vo[]
@@ -101,11 +94,11 @@ public abstract class Given<VO extends BasicVO<?>, ServiceVO extends ServiceImpl
 	public abstract Map<String, Object> initEntityFields();
 
 	/**
-	 * Returns the value for testUpdate case.
+	 * Returns the fields and values for testUpdate case.
 	 *
-	 * @return the object
+	 * @return the map
 	 */
-	public abstract Object initTestUpdateValue();
+	public abstract Map<String, Object> initTestUpdateValues();
 
 	/**
 	 * Instantiates a new given for VO.

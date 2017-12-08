@@ -87,11 +87,6 @@ public class GivenCustomerOrder extends Given<CustomerOrder, CustomerOrderServic
 	}
 
 	@Override
-	public String initTestUpdateField() {
-		return CustomerOrder.DATE;
-	}
-
-	@Override
 	public Map<String, Object> initEntityFields() {
 		Map<String, Object> mapValues = new HashMap<>();
 		mapValues.put(CustomerOrder.DATE, new Date());
@@ -157,7 +152,9 @@ public class GivenCustomerOrder extends Given<CustomerOrder, CustomerOrderServic
 	}
 
 	@Override
-	public Object initTestUpdateValue() {
-		return new Date();
+	public Map<String, Object> initTestUpdateValues() {
+		Map<String, Object> result = new HashMap<>();
+		result.put(CustomerOrder.DATE, new Date());
+		return result;
 	}
 }

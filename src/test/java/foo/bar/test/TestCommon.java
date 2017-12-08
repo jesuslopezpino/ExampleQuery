@@ -6,8 +6,10 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.ParameterizedType;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -149,15 +151,20 @@ public abstract class TestCommon<ServiceVO extends ServiceImpl<VO>, VO extends B
 			IllegalArgumentException, InvocationTargetException, NoSuchFieldException, InstantiationException {
 		logGivenEnvironmentSubLine();
 		LOGGER.info("testUpdate");
-		String field = this.given.initTestUpdateField();
-		Object newValue = this.given.initTestUpdateValue();
-		Object originalValue = Utils.getFieldValue(entity, field);
-		Utils.setFieldValue(field, newValue, entity);
+		boolean updated = false;
+		Map<String, Object> mapValues = this.given.initTestUpdateValues();
+		for (Iterator<Entry<String, Object>> iterator = mapValues.entrySet().iterator(); iterator.hasNext();) {
+			Entry<String, Object> entry = iterator.next();
+			String fieldName = entry.getKey();
+			Object newValue = entry.getValue();
+			Utils.setFieldValue(fieldName, newValue, entity);
+			Object originalValue = Utils.getFieldValue(entity, fieldName);
+			LOGGER.info("Entity updated: Field \"" + fieldName + "\" (" + originalValue + ") => (" + newValue + ")");
+			updated = true;
+		}
 		VO updatedEntity = this.service.update(entity);
-		boolean updated = !originalValue.equals(newValue);
-		LOGGER.info(
-				"Entity updated: Field \"" + field + "\" (" + originalValue + ") => (" + newValue + ") is " + updated);
-		assertTrue("Entity updated: Field \"" + field + "\" (" + originalValue + ") => (" + newValue + ")", updated);
+		LOGGER.info("Entity updated: is " + updated);
+		assertTrue("Entity updated", updated);
 		logGivenEnvironmentSubLine();
 		return updatedEntity;
 
@@ -263,7 +270,7 @@ public abstract class TestCommon<ServiceVO extends ServiceImpl<VO>, VO extends B
 		logGivenEnvironmentSubLine();
 
 		initSetupEnvironmentExamplesQuery();
-		
+
 		logGivenEnvironmentSubLine();
 		for (int i = 0; i < this.examples.length; i++) {
 			logGivenEnvironmentSubLine();

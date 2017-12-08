@@ -60,11 +60,6 @@ public class GivenProduct extends Given<Product, ProductServiceImpl> {
 	}
 
 	@Override
-	public String initTestUpdateField() {
-		return Product.DESCRIPTION;
-	}
-
-	@Override
 	public Map<String, Object> initEntityFields() {
 		Map<String, Object> mapValues = new HashMap<>();
 		mapValues.put(Product.DESCRIPTION, "television");
@@ -114,8 +109,9 @@ public class GivenProduct extends Given<Product, ProductServiceImpl> {
 	}
 
 	@Override
-	public Object initTestUpdateValue() {
-		return "new description";
+	public Map<String, Object> initTestUpdateValues() {
+		Map<String, Object> result = new HashMap<>();
+		result.put(Product.DESCRIPTION, "new description");
+		return result;
 	}
-
 }

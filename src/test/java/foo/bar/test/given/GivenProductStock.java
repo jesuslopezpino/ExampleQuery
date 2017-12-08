@@ -63,11 +63,6 @@ public class GivenProductStock extends Given<ProductStock, ProductStockServiceIm
 	}
 
 	@Override
-	public String initTestUpdateField() {
-		return ProductStock.QUANTITY;
-	}
-
-	@Override
 	public Map<String, Object> initEntityFields() {
 		Map<String, Object> mapValues = new HashMap<>();
 		mapValues.put(ProductStock.PRODUCT_NAME, "LG");
@@ -117,7 +112,9 @@ public class GivenProductStock extends Given<ProductStock, ProductStockServiceIm
 	}
 
 	@Override
-	public Object initTestUpdateValue() {
-		return 500;
+	public Map<String, Object> initTestUpdateValues() {
+		Map<String, Object> result = new HashMap<>();
+		result.put(ProductStock.QUANTITY, 500);
+		return result;
 	}
 }

@@ -84,11 +84,6 @@ public class GivenCustomer extends Given<Customer, CustomerServiceImpl> {
 	}
 
 	@Override
-	public String initTestUpdateField() {
-		return Customer.LAST_NAME;
-	}
-
-	@Override
 	public Map<String, HqlConditions> initFilter() {
 		Map<String, HqlConditions> filter = new HashMap<>();
 
@@ -153,8 +148,10 @@ public class GivenCustomer extends Given<Customer, CustomerServiceImpl> {
 	}
 
 	@Override
-	public Object initTestUpdateValue() {
-		return "Gamero";
+	public Map<String, Object> initTestUpdateValues() {
+		Map<String, Object> result = new HashMap<>();
+		result.put(Customer.LAST_NAME, "Gamero");
+		return result;
 	}
 
 }
