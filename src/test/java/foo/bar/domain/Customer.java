@@ -21,10 +21,8 @@ import foo.bar.annotations.Reference;
 
 @Entity
 @Table(name = "CUSTOMER", uniqueConstraints = {
-		@UniqueConstraint(name = Customer.DOCUMENT_UNIQUE_CONSTRAINT, columnNames = { Customer.DOCUMENT }) })
+		@UniqueConstraint(name = "DOCUMENT_UNIQUE_CONSTRAINT", columnNames = { Customer.DOCUMENT }) })
 public class Customer extends BasicVO<Long> {
-
-	public static final String DOCUMENT_UNIQUE_CONSTRAINT = "DOCUMENT_UNIQUE_CONSTRAINT";
 
 	public static final String NAME = "name";
 
