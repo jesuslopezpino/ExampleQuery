@@ -36,7 +36,43 @@ git clone https://github.com/jesuslopezpino/ExampleQuery.git
 mvn install
 ```
 
-## HqlConditions
+
+## Usage
+
+To use ExampleQuery in your project you need to include the dependency at your pom.xml file:
+
+```
+<dependencies>
+	...
+	<dependency>
+		<groupId>foo.bar</groupId>
+		<artifactId>ExampleQuery</artifactId>
+		<version>0.0.1-SNAPSHOT</version>
+	</dependency>
+	...
+</dependencies>
+```
+
+## Entities
+
+To be able to use ExampleQuery service your entity classes must extends abstract BasicVO.
+
+```
+
+```
+
+
+## ServiceImpl
+
+To create a ExampleQuery service instance you just need to create a class that extends the abstract class ServiceImp<VO extends BasicVO>
+
+
+## Filters
+
+Filters in ExampleQuery are very simple, it is the composition of a field name and a condition. In this case, a filter is represented by a Map<String, HqlCondition> where the key will be the field value (with dot annotation) and the condition that will be applied to the field. In that case, allowed conditions are represented by a java enum name HqlConditions
+
+
+### HqlConditions
 
 HqlConditions is an enum that contains the allowed filtering types to use with ExampleQuery. They are basically the most common jpql conditions clause.
 
@@ -82,22 +118,25 @@ public class Customer extends BasicVO<Long> {
 }
 ```
 
+## UniqueException
 
-## Usage
-
-To use ExampleQuery in your project you need to include the dependency at your pom.xml file:
+ExampleQuery returns UniqueException when a unique constraint is violated, this is because the rely on that should be part of database. A unique exception contains: the entity instance that violated the constraint, the class of the entity, the uniqueException annotation instance and a detailed message. ServiceImpl needs that the uk will be defined inside the annotation @Table unique constraints array.
 
 ```
-<dependencies>
+@Entity
+@Table(name = "CUSTOMER", uniqueConstraints = {
+		@UniqueConstraint(name = "DOCUMENT_UK", columnNames = { Customer.DOCUMENT }) })
+public class Customer extends BasicVO<Long> {
 	...
-	<dependency>
-		<groupId>foo.bar</groupId>
-		<artifactId>ExampleQuery</artifactId>
-		<version>0.0.1-SNAPSHOT</version>
-	</dependency>
+	public static final String DOCUMENT = "document";
 	...
-</dependencies>
+	@NotBlank
+	@Column(name = DOCUMENT)
+	private String document;
+	...
+
 ```
+
 
 ## Running the tests
 
