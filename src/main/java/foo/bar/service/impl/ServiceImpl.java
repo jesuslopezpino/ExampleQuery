@@ -194,7 +194,7 @@ public abstract class ServiceImpl<VO extends BasicVO<?>> implements Service<VO> 
 		if (table != null) {
 			for (int i = 0; i < table.uniqueConstraints().length; i++) {
 				UniqueConstraint uniqueConstraint = table.uniqueConstraints()[i];
-				if(uniqueConstraint.name().equals(uniqueConstraintViolation)){
+				if (uniqueConstraint.name().equals(uniqueConstraintViolation)) {
 					return true;
 				}
 			}
@@ -252,9 +252,7 @@ public abstract class ServiceImpl<VO extends BasicVO<?>> implements Service<VO> 
 		return select;
 	}
 
-	public static String getFromForField(
-			// String from,
-			String table, String fieldForQuery) {
+	public static String getFromForField(String table, String fieldForQuery) {
 		LOGGER.debug("getFromForField");
 		LOGGER.debug("table: " + table);
 		LOGGER.debug("fieldForquery: " + fieldForQuery);
@@ -277,7 +275,6 @@ public abstract class ServiceImpl<VO extends BasicVO<?>> implements Service<VO> 
 
 		Map<String, Object> parameters = new HashMap<>();
 		String tableAlias = getTableAliasForClass(voClass);
-		// String from = " from " + voClass.getName() + " " + tableAlias;
 		String where = " where 1=1 ";
 		try {
 			if (filter != null) {
