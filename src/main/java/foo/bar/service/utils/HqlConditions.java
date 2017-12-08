@@ -9,7 +9,6 @@ public enum HqlConditions {
 	LIKE(" like "), 
 	LIKE_IGNORE_CASE(" LIKE "), 
 	EQUALS(" = "), 
-//	NOT_EQUALS(" <> "), 
 	NOT_EQUALS(" != "), 
 	GREATER_THAN(" > "), 
 	GREATER_EQUALS(" >= "), 
@@ -17,9 +16,6 @@ public enum HqlConditions {
 	LOWER_EQUALS(" <= "),
 	IN(" in "), 
 	NOT_IN(" not in ");
-	// TODO: posible cases to configure?
-	//	MEMBER_OF(" member of "), 
-	//	NOT_MEMBER_OF(" not member of ");
 
 	private final String condition;
 
