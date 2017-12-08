@@ -38,7 +38,21 @@ mvn install
 
 ## Running the tests
 
-ExampleQuery includes a in-memory database to test all the ExampleQuery API. The basic examples includes a simple sample of database. That database includes a table system that represent a Customer - Order - Product.
+ExampleQuery includes a in-memory database to test all the ExampleQuery API. The basic examples includes a simple sample of database. That database includes a table system that represent a Note - Customer - CustomerOrder - ProductStock - Product. It is provided an test class for each entity that test the full service based on a Given<Entity> class instance. For example:
+
+```
+package foo.bar.test.service;
+
+import foo.bar.domain.Customer;
+import foo.bar.service.impl.CustomerServiceImpl;
+import foo.bar.test.common.TestCommon;
+import foo.bar.test.given.GivenCustomer;
+
+public class TestCustomerService extends TestCommon<CustomerServiceImpl, Customer, GivenCustomer> {
+
+}
+
+```
 
 
 In the root application folder execute:
