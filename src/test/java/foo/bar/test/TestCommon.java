@@ -71,22 +71,22 @@ public abstract class TestCommon<ServiceVO extends ServiceImpl<VO>, VO extends B
 		LOGGER.info("Unit Test Class: " + this.getClass().getName());
 		LOGGER.info("Entity: " + this.voClass.getName());
 		LOGGER.info("Service: " + this.serviceVoClass.getName());
-		LOGGER.info("Service: " + this.serviceVoClass.getName());
+		LOGGER.info("Given: " + this.givenVoClass.getName());
 		logLine();
 	}
 
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
-		logGivenEnvironmentLine();
+		logAsteriscLine();
 		LOGGER.info("setUpBeforeClass");
-		logGivenEnvironmentLine();
+		logAsteriscLine();
 	}
 
 	@AfterClass
 	public static void tearDownAfterClass() throws Exception {
-		logGivenEnvironmentLine();
+		logAsteriscLine();
 		LOGGER.info("tearDownAfterClass");
-		logGivenEnvironmentLine();
+		logAsteriscLine();
 	}
 
 	@Before
@@ -235,7 +235,9 @@ public abstract class TestCommon<ServiceVO extends ServiceImpl<VO>, VO extends B
 	}
 
 	private void initSetupEnvironmentExamples() throws InstantiationException, IllegalAccessException, UniqueException {
+		logGivenEnvironmentStart();
 		this.given.givenExamplesEnvironment();
+		LOGGER.info("Example environment ends");
 	}
 
 	protected void setupExamplesQueryEnvironment()
@@ -259,10 +261,11 @@ public abstract class TestCommon<ServiceVO extends ServiceImpl<VO>, VO extends B
 		LOGGER.info("testCountByExample at class: " + this.getClass().getName());
 		logLine();
 		setupExamplesQueryEnvironment();
+		LOGGER.info("Count by example filters: " + this.filter);
 		for (int i = 0; i < this.examples.length; i++) {
 			VO example = this.examples[i];
 			Integer result = service.countByExample(example, this.filter);
-			LOGGER.info("Count by example returns more than zero: " + result);
+			LOGGER.info("Count by example returns more than zero: " + result + " Example: " + example.toStringDebug());
 			assertTrue("Count by example returns more than zero: " + result, result > 0);
 		}
 		logLine();
@@ -309,21 +312,21 @@ public abstract class TestCommon<ServiceVO extends ServiceImpl<VO>, VO extends B
 		}
 	}
 
-	protected static void logGivenEnvironmentLine() {
+	private static void logAsteriscLine() {
 		LOGGER.info("*************************************************"
 				+ "***************************************************"
 				+ "***************************************************"
 				+ "***************************************************");
 	}
 
-	protected static void logLine() {
+	private static void logLine() {
 		LOGGER.info("-------------------------------------------------"
 				+ "---------------------------------------------------"
 				+ "---------------------------------------------------"
 				+ "---------------------------------------------------");
 	}
 
-	protected void logGivenEnvironmentStart() {
+	private void logGivenEnvironmentStart() {
 		logLine();
 		LOGGER.info("Given enviroment for " + this.getClass().getName());
 		logLine();
