@@ -223,7 +223,7 @@ public abstract class TestCommon<ServiceVO extends ServiceImpl<VO>, VO extends B
 			throws InstantiationException, ExampleQueryException, UniqueException, IllegalAccessException {
 		logGivenEnvironmentSubLine();
 		LOGGER.info("testFindByExample at class: " + this.getClass().getName());
-		initSetupEnvironmentExamplesQuery();
+		setupExamplesQueryEnvironment();
 		for (int i = 0; i < this.examples.length; i++) {
 			VO example = this.examples[i];
 			List<VO> result = service.findByExample(example, this.filter);
@@ -238,12 +238,18 @@ public abstract class TestCommon<ServiceVO extends ServiceImpl<VO>, VO extends B
 		this.given.givenExamplesEnvironment();
 	}
 
-	protected void initSetupEnvironmentExamplesQuery()
+	protected void setupExamplesQueryEnvironment()
 			throws UniqueException, InstantiationException, IllegalAccessException {
+		logGivenEnvironmentSubLine();
+		LOGGER.info("setupExamplesQueryEnvironment");
 		this.initSetupEnvironmentExamples();
-		this.examples = this.given.initExamples();
-		this.filter = this.given.initFilter();
 		this.customFields = this.given.initCustomFields();
+		assertTrue("Custom fields has been initializated", this.customFields != null && this.customFields.length > 0);
+		this.filter = this.given.initFilter();
+		assertTrue("Filters has been initializated", this.filter != null && this.filter.size() > 0);
+		this.examples = this.given.initExamples();
+		assertTrue("Examples has been initializated", this.examples != null && this.examples.length > 0);
+		logGivenEnvironmentSubLine();
 	}
 
 	@Test
@@ -252,7 +258,7 @@ public abstract class TestCommon<ServiceVO extends ServiceImpl<VO>, VO extends B
 		logGivenEnvironmentSubLine();
 		LOGGER.info("testCountByExample at class: " + this.getClass().getName());
 		logGivenEnvironmentSubLine();
-		initSetupEnvironmentExamplesQuery();
+		setupExamplesQueryEnvironment();
 		for (int i = 0; i < this.examples.length; i++) {
 			VO example = this.examples[i];
 			Integer result = service.countByExample(example, this.filter);
@@ -269,7 +275,7 @@ public abstract class TestCommon<ServiceVO extends ServiceImpl<VO>, VO extends B
 		LOGGER.info("Find Custom by example " + this.getClass().getName());
 		logGivenEnvironmentSubLine();
 
-		initSetupEnvironmentExamplesQuery();
+		setupExamplesQueryEnvironment();
 
 		logGivenEnvironmentSubLine();
 		for (int i = 0; i < this.examples.length; i++) {
