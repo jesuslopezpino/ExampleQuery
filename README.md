@@ -44,9 +44,21 @@ In the root application folder execute:
 	mvn test
 
 
-## Deployment
+## Usage
 
-Add additional notes about how to deploy this on a live system
+To use ExampleQuery in your project you need to include the dependency at your pom.xml file:
+
+```
+<dependencies>
+	...
+	<dependency>
+		<groupId>foo.bar</groupId>
+		<artifactId>ExampleQuery</artifactId>
+		<version>0.0.1-SNAPSHOT</version>
+	</dependency>
+	...
+</dependencies>
+```
 
 ## Built With
 
