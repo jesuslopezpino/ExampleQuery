@@ -29,6 +29,14 @@ public class UniqueException extends Exception {
 		this.uk = uk;
 	}
 
+	public BasicVO getEntity() {
+		return entity;
+	}
+
+	public void setEntity(BasicVO entity) {
+		this.entity = entity;
+	}
+
 	public Class getClazz() {
 		return clazz;
 	}
