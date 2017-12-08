@@ -55,7 +55,7 @@ To use ExampleQuery in your project you need to include the dependency at your p
 
 ## Entities
 
-To be able to use ExampleQuery service your entity classes must extends abstract BasicVO<PK>.
+To be able to use ExampleQuery service your entity classes must extends abstract `BasicVO<PK>.`
 
 ```
 @Entity
@@ -76,7 +76,7 @@ public class Product extends BasicVO<Long> {
 	@GeneratedValue(generator = "SQ_PRODUCT")
 	@SequenceGenerator(name = "SQ_PRODUCT", sequenceName = "SQ_PRODUCT")
 	private Long pk;
-	
+	...
 }
 ```
 
@@ -93,7 +93,7 @@ This is like that because we want that @Id annotation will be set in pk field th
 
 ## ServiceImpl
 
-To create a ExampleQuery service instance you just need to create a class that extends the abstract class ServiceImp<VO extends BasicVO>
+To create a ExampleQuery service instance you just need to create a class that extends the abstract class ServiceImpl<VO extends BasicVO>
 
 
 ## Filters
