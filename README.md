@@ -22,12 +22,8 @@ What things you need to install the software and how to install them:
 * Java 1.8
 * Maven 3.x
 
-
-```
-Give examples
-```
-
 ### Installing
+Install from source code
 ```
 mkdir exampleQuery
 cd exampleQuery
@@ -80,9 +76,9 @@ Add additional notes about how to deploy this on a live system
 
 ## Built With
 
-* [Dropwizard](http://www.dropwizard.io/1.0.2/docs/) - The web framework used
+* [Hibernate](http://hibernate.org/orm/documentation/4.2/) - The hibernate framework version used
 * [Maven](https://maven.apache.org/) - Dependency Management
-* [ROME](https://rometools.github.io/rome/) - Used to generate RSS Feeds
+* [Java SDK 1.8](http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html) - Java used version
 
 ## Authors
 
@@ -91,5 +87,5 @@ Add additional notes about how to deploy this on a live system
 
 ## License
 
-This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details
+This project is licensed under the Apache License 2.0 - see the [LICENSE.md](LICENSE.md) file for details
 
