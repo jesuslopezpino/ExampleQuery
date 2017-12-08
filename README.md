@@ -38,6 +38,8 @@ mvn install
 
 ## Usage
 
+### Setting up project
+
 To use ExampleQuery in your project you need to include the dependency at your pom.xml file:
 
 ```
@@ -52,7 +54,7 @@ To use ExampleQuery in your project you need to include the dependency at your p
 </dependencies>
 ```
 
-## Setting up entities
+### Setting up entities
 
 To be able to use ExampleQuery service your entity classes must extends abstract `BasicVO<PK>.`
 
@@ -90,7 +92,7 @@ public abstract void setPk(PK pk);
 This is like that because we want that `@Id` annotation will be set in pk field that user must define in order to use sequence generator annotation instead of creating a field at abstract class.
 
 
-## Setting up services
+### Setting up services
 
 To create a ExampleQuery service instance you just need to create a class that extends the abstract class `ServiceImpl<VO extends BasicVO>` with an entity class that extends `BasicVO` as type parameter.
 
@@ -107,12 +109,12 @@ public class ProductServiceImpl extends ServiceImpl<Product> {
 That's all you need to set up and service of an entity.
 
 
-## Filters
+### Filters
 
 Filters in ExampleQuery are very simple, it is the composition of a field name and a condition. In this case, a filter is represented by a `Map<String, HqlCondition>` where the key will be the field value (with dot annotation) and the condition that will be applied to the field. In that case, allowed conditions are represented by a java enum `HqlConditions`.
 
 
-### HqlConditions
+#### HqlConditions
 
 `HqlConditions` is an enum that contains the allowed filtering types to use with ExampleQuery. They are basically the most common jpql conditions clause.
 
@@ -137,6 +139,23 @@ Does require value in the example object to be applied
 * NOT_IN: the field is not in the list value of the example
 
 ## First usage
+
+```
+@Autowired
+ProductService service;
+
+Map<String, HqlConditions> filter = new HashMap<>();
+Product example = new Product();
+example.setName("Pizza");
+
+List<VO> result = service.findByExample(example, filter); 
+```
+
+Execution of that example will result in that hql query:
+
+```
+query
+```
 
 ## Annotation: @Reference
 
