@@ -122,20 +122,19 @@ public class Customer extends BasicVO<Long> {
 
 ExampleQuery returns UniqueException when a unique constraint is violated, this is because the rely on that should be part of database. A unique exception contains: the entity instance that violated the constraint, the class of the entity, the uniqueException annotation instance and a detailed message. ServiceImpl needs that the uk will be defined inside the annotation @Table unique constraints array.
 
-```
-@Entity
-@Table(name = "CUSTOMER", uniqueConstraints = {
-		@UniqueConstraint(name = "DOCUMENT_UK", columnNames = { Customer.DOCUMENT }) })
-public class Customer extends BasicVO<Long> {
-	...
-	public static final String DOCUMENT = "document";
-	...
-	@NotBlank
-	@Column(name = DOCUMENT)
-	private String document;
-	...
-}
-```
+	@Entity
+	@Table(name = "CUSTOMER", uniqueConstraints = {
+			@UniqueConstraint(name = "DOCUMENT_UK", columnNames = { Customer.DOCUMENT }) })
+	public class Customer extends BasicVO<Long> {
+		...
+		public static final String DOCUMENT = "document";
+		...
+		@NotBlank
+		@Column(name = DOCUMENT)
+		private String document;
+		...
+	}
+
 
 
 ## Running the tests
