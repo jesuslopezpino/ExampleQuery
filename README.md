@@ -66,6 +66,8 @@ public class TestCustomerService extends TestCommon<CustomerServiceImpl, Custome
 
 ```
 
+## Given abstract class
+
 Given is an abstract class that developer must extends to be able to test how the service deals with the entity. Developer has to fill the abstract methods with code that will represent the use of services in a real environment in order to prove that all works fine.
 
 ```
