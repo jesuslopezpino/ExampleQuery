@@ -6,14 +6,16 @@ Example Query is a library to easily query databases elements without spend time
 
 These instructions will get you a copy of the project up and running on your local machine for development and testing purposes. See deployment for notes on how to deploy the project on a live system.
 
-Find by Examples:
-	Example Query will use a combination of an example entity with a maps of filter values as main parameters that will be applied if it is necessary to the result query. 
-	
-Custom queries:
-	Example Query also provides manual field selection for query.
+Find by Examples
 
-Unique Exception Processing:
-	Returning controlled Unique Exceptions at persistence of entities
+Example Query will use a combination of an example entity with a maps of filter values as main parameters that will be applied if it is necessary to the result query. 
+	
+Custom queries.
+
+Example Query also provides manual field selection for query.
+
+Unique Exception Processing 
+Returning controlled Unique Exceptions at persistence of entities
 	
 ### Prerequisites
 
@@ -33,27 +35,11 @@ cd exampleQuery
 git clone https://github.com/jesuslopezpino/ExampleQuery.git
 mvn install
 ```
-A step by step series of examples that tell you have to get a development env running
-
-Say what the step will be
-
-```
-Give the example
-```
-
-And repeat
-
-```
-until finished
-```
-
-End with an example of getting some data out of the system or using it for a little demo
 
 ## Running the tests
 
-Explain how to run the automated tests for this system
 
-In the root application folder run:
+In the root application folder execute:
 
 	mvn test
 
