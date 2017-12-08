@@ -157,10 +157,10 @@ public abstract class TestCommon<ServiceVO extends ServiceImpl<VO>, VO extends B
 			Entry<String, Object> entry = iterator.next();
 			String fieldName = entry.getKey();
 			Object newValue = entry.getValue();
-			Utils.setFieldValue(fieldName, newValue, entity);
 			Object originalValue = Utils.getFieldValue(entity, fieldName);
+			Utils.setFieldValue(fieldName, newValue, entity);
 			LOGGER.info("Entity updated: Field \"" + fieldName + "\" (" + originalValue + ") => (" + newValue + ")");
-			updated = true;
+			updated |= (newValue != originalValue);
 		}
 		VO updatedEntity = this.service.update(entity);
 		LOGGER.info("Entity updated: is " + updated);
