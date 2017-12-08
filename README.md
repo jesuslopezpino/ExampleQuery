@@ -60,6 +60,17 @@ public class TestProductService extends TestCommon<ProductServiceImpl, Product, 
 }
 ```
 
+## Annotation: @Reference
+
+The main idea of ExampleQuery is to usage the same class that represent the entity has holder for the different values that we want to apply to the custom filters applied. But what happens if we want to use a filter that can't be set directly in the entity, like a filter for a value inside a list. For that purpose ExampleQuery includes the field annotation @Reference
+
+```
+@Transient
+@Reference(fieldName = ORDERS_PRODUCTS_NAME, referenceFor = Customer.CUSTOMER_ORDERS + "." + CustomerOrder.PRODUCTS_STOCK + "." + ProductStock.PRODUCT + "." + Product.NAME)
+private String ordersProductsName;
+```
+
+
 ## Usage
 
 To use ExampleQuery in your project you need to include the dependency at your pom.xml file:
