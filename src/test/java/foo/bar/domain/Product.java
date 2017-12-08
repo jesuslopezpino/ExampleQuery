@@ -8,14 +8,20 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
 import javax.persistence.Transient;
+import javax.persistence.UniqueConstraint;
 
 import org.hibernate.validator.constraints.NotBlank;
 
 import foo.bar.annotations.Reference;
 
-@Entity(name = "PRODUCT")
+@Entity
+@Table(name = "PRODUCT", uniqueConstraints = {
+		@UniqueConstraint(name = Product.PRODUCT_UK, columnNames = { Product.NAME }) })
 public class Product extends BasicVO<Long> {
+
+	public static final String PRODUCT_UK = "PRODUCT_UK";
 
 	public static final String NAME = "name";
 

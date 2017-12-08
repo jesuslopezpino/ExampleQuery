@@ -4,7 +4,6 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -13,12 +12,14 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
 import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 
 import foo.bar.annotations.Reference;
 
-@Entity(name = "CUSTOMER_ORDER")
+@Entity
+@Table(name = "CUSTOMER_ORDER")
 public class CustomerOrder extends BasicVO<Long> {
 
 	public static final String CUSTOMER = "customer";

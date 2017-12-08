@@ -9,11 +9,13 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
 import org.hibernate.validator.constraints.NotEmpty;
 
-@Entity(name = "NOTE")
+@Entity
+@Table(name = "NOTE")
 public class Note extends BasicVO<Long> {
 
 	public static final String CUSTOMER = "customer";

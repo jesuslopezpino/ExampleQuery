@@ -10,15 +10,21 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
 import javax.persistence.Transient;
+import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.NotNull;
 
 import org.hibernate.validator.constraints.NotBlank;
 
 import foo.bar.annotations.Reference;
 
-@Entity(name = "CUSTOMER")
+@Entity
+@Table(name = "CUSTOMER", uniqueConstraints = {
+		@UniqueConstraint(name = Customer.DOCUMENT_UNIQUE_CONSTRAINT, columnNames = { Customer.DOCUMENT }) })
 public class Customer extends BasicVO<Long> {
+
+	public static final String DOCUMENT_UNIQUE_CONSTRAINT = "DOCUMENT_UNIQUE_CONSTRAINT";
 
 	public static final String NAME = "name";
 

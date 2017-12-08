@@ -9,11 +9,13 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
 import javax.persistence.Transient;
 
 import foo.bar.annotations.Reference;
 
-@Entity(name = "PRODUCT_STOCK")
+@Entity
+@Table(name = "PRODUCT_STOCK")
 public class ProductStock extends BasicVO<Long> {
 
 	public static final String PRODUCT = "product";
