@@ -52,7 +52,7 @@ To use ExampleQuery in your project you need to include the dependency at your p
 </dependencies>
 ```
 
-## Entities
+## Setting up entities
 
 To be able to use ExampleQuery service your entity classes must extends abstract `BasicVO<PK>.`
 
@@ -90,9 +90,21 @@ public abstract void setPk(PK pk);
 This is like that because we want that @Id annotation will be set in pk field that user must define in order to use sequence generator annotation instead of creating a field at abstract class.
 
 
-## ServiceImpl
+## Setting up services
 
 To create a ExampleQuery service instance you just need to create a class that extends the abstract class `ServiceImpl<VO extends BasicVO>`
+
+```
+package foo.bar.service.impl;
+
+import foo.bar.domain.Product;
+
+public class ProductServiceImpl extends ServiceImpl<Product> {
+
+}
+```
+
+That's all you need to set up and service of an entity.
 
 
 ## Filters
