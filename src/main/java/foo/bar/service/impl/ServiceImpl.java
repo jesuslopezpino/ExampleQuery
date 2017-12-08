@@ -176,6 +176,7 @@ public abstract class ServiceImpl<VO extends BasicVO<?>> implements Service<VO> 
 			if (StringUtils.isNotBlank(uniqueConstraintViolation) && isUniqueConstraint(uniqueConstraintViolation)) {
 				UniqueException uniqueException = new UniqueException(voClass, uniqueConstraintViolation, entity);
 				LOGGER.error(uniqueException.getUniqueConstraint());
+				LOGGER.error(uniqueException.getEntity().toStringDebug());
 				throw uniqueException;
 			} else {
 				throw e;
