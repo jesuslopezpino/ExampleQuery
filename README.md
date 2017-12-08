@@ -27,6 +27,7 @@ Install from source code
 ```
 mkdir exampleQuery
 cd exampleQuery
+git clone https://github.com/jesuslopezpino/ExampleQuery.git
 mvn install
 ```
 A step by step series of examples that tell you have to get a development env running
