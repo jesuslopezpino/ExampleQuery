@@ -150,7 +150,10 @@ public class GivenCustomer extends Given<Customer, CustomerServiceImpl> {
 	@Override
 	public Map<String, Object> initTestUpdateValues() {
 		Map<String, Object> result = new HashMap<>();
-		result.put(Customer.LAST_NAME, "Gamero");
+		result.put(Customer.NAME, "Jose");
+		result.put(Customer.LAST_NAME, "Lopez Gamero");
+		result.put(Customer.BIRTH_DATE, Utils.getDateTime("27/11/1954 00:00:00"));
+		result.put(Customer.DOCUMENT, "ABCDEFG1");
 		return result;
 	}
 

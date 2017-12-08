@@ -111,7 +111,8 @@ public class GivenProduct extends Given<Product, ProductServiceImpl> {
 	@Override
 	public Map<String, Object> initTestUpdateValues() {
 		Map<String, Object> result = new HashMap<>();
-		result.put(Product.DESCRIPTION, "new description");
+		result.put(Product.NAME, "new name value");
+		result.put(Product.DESCRIPTION, "new description value");
 		return result;
 	}
 }

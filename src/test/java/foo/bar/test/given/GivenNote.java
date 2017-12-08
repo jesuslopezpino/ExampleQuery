@@ -63,11 +63,6 @@ public class GivenNote extends Given<Note, NoteServiceImpl> {
 		return customFields;
 	}
 
-	// @Override
-	public String initTestUpdateField() {
-		return Note.NOTE;
-	}
-
 	@Override
 	public Map<String, HqlConditions> initFilter() {
 
@@ -114,7 +109,9 @@ public class GivenNote extends Given<Note, NoteServiceImpl> {
 	@Override
 	public Map<String, Object> initTestUpdateValues() {
 		Map<String, Object> result = new HashMap<>();
-		result.put(initTestUpdateField(), "Updated note");
+		result.put(Note.NOTE, "Updated note");
+		result.put(Note.DATE, new Date());
+//		result.put(Note.NOTE, "Updated note");
 		return result;
 	}
 }
