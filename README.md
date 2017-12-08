@@ -38,7 +38,19 @@ mvn install
 
 ## Running the tests
 
-ExampleQuery includes a in-memory database to test all the ExampleQuery API. The basic examples includes a simple sample of database. That database includes a table system that represent a Note - Customer - CustomerOrder - ProductStock - Product. It is provided an test class for each entity that test the full service based on a Given<Entity> class instance. For example:
+ExampleQuery includes a in-memory database to test all the ExampleQuery API. The basic examples includes a simple sample of database. That database includes a table system that represent a Note - Customer - CustomerOrder - ProductStock - Product. It is provided a test class for each entity that test the full service based on a Given class instance. 
+
+To run the test, in the root application folder execute:
+
+```
+mvn test
+```
+
+To create an test class for an Entity and Service you will have to provide a Given Entity Class instance
+
+For example, to test Customer entity and CustomerServiceImpl we only need to provide the GivenCustomer class:
+
+Test class
 
 ```
 package foo.bar.test.service;
@@ -54,24 +66,45 @@ public class TestCustomerService extends TestCommon<CustomerServiceImpl, Custome
 
 ```
 
-
-In the root application folder execute:
-
-	mvn test
-
-The test of entities and services will be perform by a class that extends TestCommon class. The test are automatized so to create a test instance create a class like that.
+Given is an abstract class that developer must extends to be able to test how the service deals with the entity. Developer has to fill the abstract methods with code that will represent the use of services in a real environment in order to prove that all works fine.
 
 ```
-package foo.bar.test.service;
+	/**
+	 * It sets up an examples environment for find by example test cases.
+	 */
+	public abstract void givenExamplesEnvironment()
+			throws UniqueException, InstantiationException, IllegalAccessException;
 
-import foo.bar.domain.Product;
-import foo.bar.service.impl.ProductServiceImpl;
-import foo.bar.test.common.TestCommon;
-import foo.bar.test.given.GivenProduct;
+	/**
+	 * Return the select custom fields for custom select test cases
+	 */
+	public abstract String[] initCustomFields();
 
-public class TestProductService extends TestCommon<ProductServiceImpl, Product, GivenProduct> {
+	/**
+	 * Return the examples for find by example test cases.
+	 */
+	public abstract VO[] initExamples() throws UniqueException, InstantiationException, IllegalAccessException;
 
-}
+	/**
+	 * Returns the object for save-update-delete test case.
+	 */
+	public abstract VO initTestSaveInstance() throws UniqueException, InstantiationException, IllegalAccessException;
+
+	/**
+	 * Returns the filter for find by example test cases.
+	 */
+	public abstract Map<String, HqlConditions> initFilter();
+
+	/**
+	 * Return the fields that we want to use for entity creation with map of
+	 * string objects.
+	 */
+	public abstract Map<String, Object> initEntityFields();
+
+	/**
+	 * Returns the fields and values for testUpdate case.
+	 */
+	public abstract Map<String, Object> initTestUpdateValues();
 ```
 
 ## HqlConditions
