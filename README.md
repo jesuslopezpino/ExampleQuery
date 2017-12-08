@@ -62,7 +62,12 @@ To be able to use ExampleQuery service your entity classes must extends abstract
 @Entity
 @Table(name = "PRODUCT")
 public class Product extends BasicVO<Long> {
-	...
+
+	public static final String NAME = "name"; // Those constants aren't requiered at all, but I found it very usefull 
+											  // to define a constant that represent a field of the class because we
+											  // will use strings to refer to filter and select fields selection
+
+	public static final String DESCRIPTION = "description";
 	
 	public Product() {
 		super();
@@ -77,6 +82,14 @@ public class Product extends BasicVO<Long> {
 	@GeneratedValue(generator = "SQ_PRODUCT")
 	@SequenceGenerator(name = "SQ_PRODUCT", sequenceName = "SQ_PRODUCT")
 	private Long pk;
+	
+	@NotBlank
+	@Column(name = NAME)
+	private String name;
+
+	@NotBlank
+	@Column(name = DESCRIPTION)
+	private String description;
 	...
 }
 ```
