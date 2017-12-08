@@ -17,13 +17,16 @@ Unique Exception Processing:
 	
 ### Prerequisites
 
-What things you need to install the software and how to install them:
+To install ExampleQuery you will need:
 
+* Git
 * Java 1.8
 * Maven 3.x
 
 ### Installing
-Install from source code
+
+To install ExampleQuery from source code you need to clone repository and install it in local maven repository.
+
 ```
 mkdir exampleQuery
 cd exampleQuery
@@ -77,6 +80,7 @@ Add additional notes about how to deploy this on a live system
 
 ## Built With
 
+* [Git](https://git-scm.com/) Git for downloading source code
 * [Hibernate](http://hibernate.org/orm/documentation/4.2/) - The hibernate framework version used
 * [Maven](https://maven.apache.org/) - Dependency Management
 * [Java SDK 1.8](http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html) - Java used version
