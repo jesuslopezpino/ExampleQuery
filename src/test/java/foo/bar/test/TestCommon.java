@@ -123,20 +123,28 @@ public abstract class TestCommon<ServiceVO extends ServiceImpl<VO>, VO extends B
 	}
 
 	@Test
-	public void testSaveUpdateAndDelete()
+	public void testSaveUpdateFindByPkAndDelete()
 			throws UniqueException, NoSuchMethodException, SecurityException, IllegalAccessException,
 			IllegalArgumentException, InvocationTargetException, NoSuchFieldException, InstantiationException {
 		logLine();
-		LOGGER.info("testSaveUpdateAndDelete");
+		LOGGER.info("testSaveUpdateFindByPkAndDelete");
 		VO entity = this.testSave();
 		entity = this.testUpdate(entity);
-		boolean testCompleted = this.testDelete(entity);
-		LOGGER.info("testSaveUpdateAndDelete completed " + testCompleted);
-		assertTrue("testSaveUpdateAndDelete completed ", testCompleted);
+		VO findByPkEntity = this.testFindByPk(entity);
+		boolean testCompleted = this.testDelete(findByPkEntity);
+		LOGGER.info("testSaveUpdateFindByPkAndDelete completed " + testCompleted);
+		assertTrue("testSaveUpdateFindByPkAndDelete completed ", testCompleted);
 		logLine();
 	}
 
-	public VO testSave() throws UniqueException, InstantiationException, IllegalAccessException {
+	protected VO testFindByPk(VO entity) {
+		VO findByPkEntity = this.service.findByPk(entity.getPk());
+		LOGGER.info("Entity find by pk is found: " + findByPkEntity);
+		assertTrue("Entity find by pk is found", findByPkEntity != null);
+		return findByPkEntity;
+	}
+
+	protected VO testSave() throws UniqueException, InstantiationException, IllegalAccessException {
 		logLine();
 		LOGGER.info("testSave");
 		VO entity = this.given.initTestSaveInstance();
@@ -147,20 +155,17 @@ public abstract class TestCommon<ServiceVO extends ServiceImpl<VO>, VO extends B
 		return entity;
 	}
 
-	private VO testUpdate(VO entity) throws NoSuchMethodException, SecurityException, IllegalAccessException,
+	protected VO testUpdate(VO entity) throws NoSuchMethodException, SecurityException, IllegalAccessException,
 			IllegalArgumentException, InvocationTargetException, NoSuchFieldException, InstantiationException {
 		logLine();
 		LOGGER.info("testUpdate");
-		boolean updated = false;
+		boolean updated = true;
 		Map<String, Object> mapValues = this.given.initTestUpdateValues();
 		for (Iterator<Entry<String, Object>> iterator = mapValues.entrySet().iterator(); iterator.hasNext();) {
 			Entry<String, Object> entry = iterator.next();
 			String fieldName = entry.getKey();
 			Object newValue = entry.getValue();
-			Object originalValue = Utils.getFieldValue(entity, fieldName);
-			Utils.setFieldValue(fieldName, newValue, entity);
-			LOGGER.info("Entity updated: Field \"" + fieldName + "\" (" + originalValue + ") => (" + newValue + ")");
-			updated |= (newValue != originalValue);
+			updated &= updateFieldAtEntity(entity, fieldName, newValue);
 		}
 		VO updatedEntity = this.service.update(entity);
 		LOGGER.info("Entity updated: is " + updated);
@@ -170,7 +175,15 @@ public abstract class TestCommon<ServiceVO extends ServiceImpl<VO>, VO extends B
 
 	}
 
-	public boolean testDelete(VO entity) {
+	protected boolean updateFieldAtEntity(VO entity, String fieldName, Object newValue) throws IllegalAccessException,
+			InvocationTargetException, NoSuchMethodException, NoSuchFieldException, InstantiationException {
+		Object originalValue = Utils.getFieldValue(entity, fieldName);
+		Utils.setFieldValue(fieldName, newValue, entity);
+		LOGGER.info("Entity updated: Field \"" + fieldName + "\" (" + originalValue + ") => (" + newValue + ")");
+		return (newValue != originalValue);
+	}
+
+	protected boolean testDelete(VO entity) {
 		boolean result = false;
 		logLine();
 		LOGGER.info("testDelete at class: " + this.getClass().getName());
