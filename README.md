@@ -55,10 +55,23 @@ To use ExampleQuery in your project you need to include the dependency at your p
 
 ## Entities
 
-To be able to use ExampleQuery service your entity classes must extends abstract BasicVO.
+To be able to use ExampleQuery service your entity classes must extends abstract BasicVO<PK>.
 
 ```
+@Entity
+@Table(name = "PRODUCT")
+public class Product extends BasicVO<Long> {
+	...
+	
+	public ProductStock() {
+		super();
+	}
 
+	public ProductStock(HashMap<String, Object> mapValues) {
+		super(mapValues);
+	}
+	...
+}
 ```
 
 
