@@ -174,15 +174,19 @@ public abstract class ServiceImpl<VO extends BasicVO<?>> implements Service<VO> 
 		} catch (Exception e) {
 			String uniqueConstraintViolation = getConstraintNameViolation(e);
 			if (StringUtils.isNotBlank(uniqueConstraintViolation) && isUniqueConstraint(uniqueConstraintViolation)) {
-				UniqueException uniqueException = new UniqueException(voClass, uniqueConstraintViolation, entity);
-				LOGGER.error(uniqueException.getUniqueConstraint());
-				LOGGER.error(uniqueException.getEntity().toStringDebug());
-				throw uniqueException;
+				throwUniqueException(entity, uniqueConstraintViolation);
 			} else {
 				throw e;
 			}
 		}
 		return entity;
+	}
+
+	protected void throwUniqueException(VO entity, String uniqueConstraintViolation) throws UniqueException {
+		UniqueException uniqueException = new UniqueException(voClass, uniqueConstraintViolation, entity);
+		LOGGER.error(uniqueException.getUniqueConstraint());
+		LOGGER.error(uniqueException.getEntity().toStringDebug());
+		throw uniqueException;
 	}
 
 	private boolean isUniqueConstraint(String uniqueConstraintViolation) {
