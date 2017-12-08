@@ -1,10 +1,6 @@
 # ExampleQuery
 
-Example Query is a library to easily query databases elements without spend time creating sql or hql queries. 
-
-## Getting Started
-
-These instructions will get you a copy of the project up and running on your local machine for development and testing purposes. See deployment for notes on how to deploy the project on a live system.
+Example Query is a library to easily query databases elements without spend time creating sql or hql queries. You can built custom queries
 
 Find by Examples
 
@@ -16,6 +12,10 @@ Example Query also provides manual field selection for query.
 
 Unique Exception Processing 
 Returning controlled Unique Exceptions at persistence of entities
+
+## Getting Started
+
+These instructions will get you a copy of the project up and running on your local machine for development and testing purposes. See deployment for notes on how to deploy the project on a live system.
 	
 ### Prerequisites
 
@@ -35,7 +35,6 @@ cd exampleQuery
 git clone https://github.com/jesuslopezpino/ExampleQuery.git
 mvn install
 ```
-
 
 ## Usage
 
@@ -80,7 +79,7 @@ public class Product extends BasicVO<Long> {
 }
 ```
 
-Developer still have to implements two abstract methods from BasicVO:
+Developer still have to implements two abstract methods from `BasicVO`
 
 ```java
 public abstract PK getPk();
@@ -93,17 +92,17 @@ This is like that because we want that @Id annotation will be set in pk field th
 
 ## ServiceImpl
 
-To create a ExampleQuery service instance you just need to create a class that extends the abstract class ServiceImpl<VO extends BasicVO>
+To create a ExampleQuery service instance you just need to create a class that extends the abstract class `ServiceImpl<VO extends BasicVO>`
 
 
 ## Filters
 
-Filters in ExampleQuery are very simple, it is the composition of a field name and a condition. In this case, a filter is represented by a Map<String, HqlCondition> where the key will be the field value (with dot annotation) and the condition that will be applied to the field. In that case, allowed conditions are represented by a java enum name HqlConditions
+Filters in ExampleQuery are very simple, it is the composition of a field name and a condition. In this case, a filter is represented by a `Map<String, HqlCondition>` where the key will be the field value (with dot annotation) and the condition that will be applied to the field. In that case, allowed conditions are represented by a java enum `HqlConditions`
 
 
 ### HqlConditions
 
-HqlConditions is an enum that contains the allowed filtering types to use with ExampleQuery. They are basically the most common jpql conditions clause.
+`HqlConditions` is an enum that contains the allowed filtering types to use with ExampleQuery. They are basically the most common jpql conditions clause.
 
 Does NOT requires value in example to be applied
 
@@ -127,7 +126,7 @@ Does require value in the example object to be applied
 
 ## Annotation: @Reference
 
-The main idea of ExampleQuery is to usage the same class that represent the entity has holder for the different values that we want to apply to the custom filters applied. But what happens if we want to use a filter that can't be set directly in the entity, like a filter for a value inside a list. For that purpose ExampleQuery includes the field annotation @Reference
+The main idea of ExampleQuery is to usage the same class that represent the entity has holder for the different values that we want to apply to the custom filters applied. But what happens if we want to use a filter that can't be set directly in the entity, like a filter for a value inside a list. For that purpose ExampleQuery includes the field annotation `@Reference`
 
 ```java
 @Entity
@@ -149,7 +148,7 @@ public class Customer extends BasicVO<Long> {
 
 ## UniqueException
 
-ExampleQuery returns UniqueException when a unique constraint is violated, this is because the rely on that should be part of database. A unique exception contains: the entity instance that violated the constraint, the class of the entity, the uniqueException annotation instance and a detailed message. ServiceImpl needs that the uk will be defined inside the annotation @Table unique constraints array.
+ExampleQuery returns UniqueException when a unique constraint is violated, this is because the rely on that should be part of database. A unique exception contains: the entity instance that violated the constraint, the class of the entity, the `@UniqueException` annotation instance and a detailed message. `ServiceImpl` needs that the uk will be defined inside the annotation `@Table` unique constraints array.
 
 ```java
 @Entity
@@ -180,8 +179,6 @@ mvn test
 To create an test class for an Entity and Service you will have to provide a Given Entity Class instance
 
 For example, to test Customer entity and CustomerServiceImpl we only need to provide the GivenCustomer class:
-
-Test class
 
 ```java
 package foo.bar.test.service;
@@ -229,7 +226,7 @@ When the developer provides content to that methods the unit test can be run. Th
 
 ## Authors
 
-* **Jesús María López Pino**
+* **Jesús María López Pino** 2017
 
 
 ## License
