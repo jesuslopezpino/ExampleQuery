@@ -82,7 +82,7 @@ public class Product extends BasicVO<Long> {
 
 Developer still have to implements two abstract methods from BasicVO:
 
-```
+```java
 public abstract PK getPk();
 
 public abstract void setPk(PK pk);
@@ -129,7 +129,7 @@ Does require value in the example object to be applied
 
 The main idea of ExampleQuery is to usage the same class that represent the entity has holder for the different values that we want to apply to the custom filters applied. But what happens if we want to use a filter that can't be set directly in the entity, like a filter for a value inside a list. For that purpose ExampleQuery includes the field annotation @Reference
 
-```
+```java
 @Entity
 @Table(name = "CUSTOMER")
 public class Customer extends BasicVO<Long> {
@@ -151,19 +151,20 @@ public class Customer extends BasicVO<Long> {
 
 ExampleQuery returns UniqueException when a unique constraint is violated, this is because the rely on that should be part of database. A unique exception contains: the entity instance that violated the constraint, the class of the entity, the uniqueException annotation instance and a detailed message. ServiceImpl needs that the uk will be defined inside the annotation @Table unique constraints array.
 
-	@Entity
-	@Table(name = "CUSTOMER", uniqueConstraints = {
-			@UniqueConstraint(name = "DOCUMENT_UK", columnNames = { Customer.DOCUMENT }) })
-	public class Customer extends BasicVO<Long> {
-		...
-		public static final String DOCUMENT = "document";
-		...
-		@NotBlank
-		@Column(name = DOCUMENT)
-		private String document;
-		...
-	}
-
+```java
+@Entity
+@Table(name = "CUSTOMER", uniqueConstraints = {
+		@UniqueConstraint(name = "DOCUMENT_UK", columnNames = { Customer.DOCUMENT }) })
+public class Customer extends BasicVO<Long> {
+	...
+	public static final String DOCUMENT = "document";
+	...
+	@NotBlank
+	@Column(name = DOCUMENT)
+	private String document;
+	...
+}
+```
 
 
 ## Running the tests
@@ -182,7 +183,7 @@ For example, to test Customer entity and CustomerServiceImpl we only need to pro
 
 Test class
 
-```
+```java
 package foo.bar.test.service;
 
 import foo.bar.domain.Customer;
@@ -198,46 +199,26 @@ public class TestCustomerService extends TestCommon<CustomerServiceImpl, Custome
 
 ## Given abstract class
 
-Given is an abstract class that developer must extends to be able to test how the service deals with the entity. Developer has to fill the abstract methods with code that will represent the use of services in a real environment in order to prove that all works fine.
+`Given` is an abstract class that developer must extends to be able to test how the service deals with the entity in real time. Developer has to fill the abstract methods with code that will represent the use of services in a real environment in order to prove that all works fine.
 
+```java
+public abstract void givenExamplesEnvironment() throws UniqueException, InstantiationException, IllegalAccessException;
+
+public abstract String[] initCustomFields();
+
+public abstract VO[] initExamples() throws UniqueException, InstantiationException, IllegalAccessException;
+
+public abstract VO initTestSaveInstance() throws UniqueException, InstantiationException, IllegalAccessException;
+
+public abstract Map<String, HqlConditions> initFilter();
+
+public abstract Map<String, Object> initEntityFields();
+
+public abstract Map<String, Object> initTestUpdateValues();
 ```
-	/**
-	 * It sets up an examples environment for find by example test cases.
-	 */
-	public abstract void givenExamplesEnvironment()
-			throws UniqueException, InstantiationException, IllegalAccessException;
 
-	/**
-	 * Return the select custom fields for custom select test cases
-	 */
-	public abstract String[] initCustomFields();
+When the developer provides content to that methods the unit test can be run. The test should be the most similar to what would happen in the real application usage.
 
-	/**
-	 * Return the examples for find by example test cases.
-	 */
-	public abstract VO[] initExamples() throws UniqueException, InstantiationException, IllegalAccessException;
-
-	/**
-	 * Returns the object for save-update-delete test case.
-	 */
-	public abstract VO initTestSaveInstance() throws UniqueException, InstantiationException, IllegalAccessException;
-
-	/**
-	 * Returns the filter for find by example test cases.
-	 */
-	public abstract Map<String, HqlConditions> initFilter();
-
-	/**
-	 * Return the fields that we want to use for entity creation with map of
-	 * string objects.
-	 */
-	public abstract Map<String, Object> initEntityFields();
-
-	/**
-	 * Returns the fields and values for testUpdate case.
-	 */
-	public abstract Map<String, Object> initTestUpdateValues();
-```
 
 ## Built With
 
