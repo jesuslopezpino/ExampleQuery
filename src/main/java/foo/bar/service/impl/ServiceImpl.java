@@ -293,9 +293,8 @@ public abstract class ServiceImpl<VO extends BasicVO<?>> implements Service<VO> 
 			return query;
 		} catch (NoSuchFieldException | SecurityException | IllegalAccessException | IllegalArgumentException
 				| InvocationTargetException | NoSuchMethodException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
-			System.err.println("QUERY " + select + from + where);
+			LOGGER.error("ERROR QUERY " + select + from + where);
 			throw new ExampleQueryException(e.getMessage());
 		}
 
