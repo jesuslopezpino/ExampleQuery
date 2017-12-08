@@ -69,9 +69,9 @@ public class GivenCustomer extends Given<Customer, CustomerServiceImpl> {
 		productsStock.add(productStock);
 		GivenCustomerOrder givenCustomerOrder = new GivenCustomerOrder(entityManager);
 		givenCustomerOrder.givenACustomerOrder(customer, Utils.getDateTime("01/01/2017 00:00:00"), productsStock);
-		givenACustomer("One", "Customer", new Date(), "DNIXXX", "TYPE");
-		givenACustomer("Two", "Customer", new Date(), "DNIXXX", "TYPE");
-		givenACustomer("Three", "Customer", new Date(), "DNIXXX", "TYPE");
+		givenACustomer("One", "Customer", new Date(), "DNIXXX1", "TYPE");
+		givenACustomer("Two", "Customer", new Date(), "DNIXXX2", "TYPE");
+		givenACustomer("Three", "Customer", new Date(), "DNIXXX3", "TYPE");
 	}
 
 	@Override
