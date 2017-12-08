@@ -11,10 +11,15 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import javax.persistence.EntityManager;
+import javax.persistence.PersistenceException;
 import javax.persistence.Query;
+import javax.persistence.Table;
 import javax.persistence.TypedQuery;
+import javax.persistence.UniqueConstraint;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
+import org.hibernate.exception.ConstraintViolationException;
 
 import foo.bar.annotations.readers.ReferenceReader;
 import foo.bar.domain.BasicVO;
@@ -167,9 +172,11 @@ public abstract class ServiceImpl<VO extends BasicVO<?>> implements Service<VO> 
 			this.entityManager.persist(entity);
 			this.entityManager.flush();
 		} catch (Exception e) {
-			if (isUniqueException(e)) {
-				// TODO: unique reader for parameter
-				throw new UniqueException(entity.getClass(), "uk");
+			String uniqueConstraintViolation = getConstraintNameViolation(e);
+			if (StringUtils.isNotBlank(uniqueConstraintViolation) && isUniqueConstraint(uniqueConstraintViolation)) {
+				UniqueException uniqueException = new UniqueException(voClass, uniqueConstraintViolation, entity);
+				LOGGER.error(uniqueException.getUniqueConstraint());
+				throw uniqueException;
 			} else {
 				throw e;
 			}
@@ -177,9 +184,28 @@ public abstract class ServiceImpl<VO extends BasicVO<?>> implements Service<VO> 
 		return entity;
 	}
 
-	private boolean isUniqueException(Exception e) {
-		// TODO Implement!!
+	private boolean isUniqueConstraint(String uniqueConstraintViolation) {
+		Table table = this.voClass.getAnnotation(Table.class);
+		if (table != null) {
+			for (int i = 0; i < table.uniqueConstraints().length; i++) {
+				UniqueConstraint uniqueConstraint = table.uniqueConstraints()[i];
+				if(uniqueConstraint.name().equals(uniqueConstraintViolation)){
+					return true;
+				}
+			}
+		}
 		return false;
+	}
+
+	private String getConstraintNameViolation(Exception e) {
+		if (e instanceof PersistenceException) {
+			PersistenceException persistenceException = (PersistenceException) e;
+			if (persistenceException.getCause() instanceof ConstraintViolationException) {
+				ConstraintViolationException cause = (ConstraintViolationException) persistenceException.getCause();
+				return cause.getConstraintName();
+			}
+		}
+		return null;
 	}
 
 	public VO update(VO entity) {
