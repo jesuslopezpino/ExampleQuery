@@ -87,12 +87,12 @@ public abstract PK getPk();
 public abstract void setPk(PK pk);
 ```
 
-This is like that because we want that @Id annotation will be set in pk field that user must define in order to use sequence generator annotation instead of creating a field at abstract class.
+This is like that because we want that `@Id` annotation will be set in pk field that user must define in order to use sequence generator annotation instead of creating a field at abstract class.
 
 
 ## Setting up services
 
-To create a ExampleQuery service instance you just need to create a class that extends the abstract class `ServiceImpl<VO extends BasicVO>`
+To create a ExampleQuery service instance you just need to create a class that extends the abstract class `ServiceImpl<VO extends BasicVO>` with an entity class that extends `BasicVO` as type parameter.
 
 ```
 package foo.bar.service.impl;
@@ -109,7 +109,7 @@ That's all you need to set up and service of an entity.
 
 ## Filters
 
-Filters in ExampleQuery are very simple, it is the composition of a field name and a condition. In this case, a filter is represented by a `Map<String, HqlCondition>` where the key will be the field value (with dot annotation) and the condition that will be applied to the field. In that case, allowed conditions are represented by a java enum `HqlConditions`
+Filters in ExampleQuery are very simple, it is the composition of a field name and a condition. In this case, a filter is represented by a `Map<String, HqlCondition>` where the key will be the field value (with dot annotation) and the condition that will be applied to the field. In that case, allowed conditions are represented by a java enum `HqlConditions`.
 
 
 ### HqlConditions
@@ -136,6 +136,8 @@ Does require value in the example object to be applied
 * IN: the field is in the list value of the example
 * NOT_IN: the field is not in the list value of the example
 
+## First usage
+
 ## Annotation: @Reference
 
 The main idea of ExampleQuery is to usage the same class that represent the entity has holder for the different values that we want to apply to the custom filters applied. But what happens if we want to use a filter that can't be set directly in the entity, like a filter for a value inside a list. For that purpose ExampleQuery includes the field annotation `@Reference`
@@ -158,9 +160,19 @@ public class Customer extends BasicVO<Long> {
 }
 ```
 
+## Second Usage (With reference)
+
+TODO
+
+## Custom fields
+
+TODO
+
 ## UniqueException
 
-ExampleQuery returns UniqueException when a unique constraint is violated, this is because the rely on that should be part of database. A unique exception contains: the entity instance that violated the constraint, the class of the entity, the `@UniqueException` annotation instance and a detailed message. `ServiceImpl` needs that the uk will be defined inside the annotation `@Table` unique constraints array.
+ExampleQuery returns `UniqueException` when a unique constraint is violated, this is because the rely on that constraint should be part of database. To consider that behavior part as save action exception, it will be easier for developer to identify that exception and the involved fields and values. 
+
+A unique exception contains: the entity instance that violated the constraint, the class of the entity, the `@UniqueException` annotation instance and a detailed message. `ServiceImpl` needs that the uk constraint name will be defined inside the annotation `@Table` unique constraints array.
 
 ```java
 @Entity
