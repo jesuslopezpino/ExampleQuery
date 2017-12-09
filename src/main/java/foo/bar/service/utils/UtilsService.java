@@ -16,7 +16,7 @@ public class UtilsService {
 			throws NoSuchFieldException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException {
 		String fieldForQuery;
 		// first check if the field is transient or not
-		boolean isTransient = Utils.isTransientField(filterField, example);
+		boolean isTransient = ReferenceReader.isReferenceField(filterField, example);
 		if (isTransient) {
 			// field for query = the referenced field
 			fieldForQuery = ReferenceReader.getReferenceForField(filterField, example);

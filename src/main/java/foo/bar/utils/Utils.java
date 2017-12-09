@@ -25,32 +25,18 @@ public class Utils {
 
 	public static <T> Object getFieldValue(T object, String fieldName) throws IllegalAccessException,
 			IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException {
-		final String[] fieldSplit = fieldName.split("\\.");
-		final List<String> fields = new ArrayList<>();
-		if (fieldSplit.length == 0) {
-			fields.add(fieldName);
-		} else {
-			for (int i = 0; i < fieldSplit.length; i++) {
-				final String string = fieldSplit[i];
-				fields.add(string);
-			}
+		return getFieldValue(object, fieldName, false);
+	}
+
+	public static <T> Object getFieldValue(T object, String fieldName, boolean nullIfNoPath)
+			throws IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException,
+			SecurityException {
+		Object finalObject = getFinalInvokeClass(fieldName, object);
+		if (nullIfNoPath && finalObject == null) {
+			return null;
 		}
-
-		Object invokedValue = null;
-		for (int i = 0; i < fields.size(); i++) {
-			final String methodName = fields.get(i);
-			LOGGER.debug("methodName: " + methodName);
-			if (i == fields.size() - 1) {
-				// TODO: check at superclasses for the field
-				invokedValue = invokeGetter(methodName, object);
-			} else {
-				invokedValue = invokeGetter(methodName, object);
-				return getFieldValue(invokedValue, fieldName.replaceAll(methodName + ".", ""));
-
-			}
-
-		}
-		return invokedValue;
+		String lastField = getLastField(fieldName);
+		return invokeGetter(lastField, finalObject);
 	}
 
 	public static String getGetterOfField(String field) {
@@ -185,17 +171,25 @@ public class Utils {
 		return result;
 	}
 
-	public static boolean isTransientField(String fieldName, Object object)
-			throws NoSuchFieldException, SecurityException, IllegalAccessException, IllegalArgumentException,
-			InvocationTargetException, NoSuchMethodException {
-		Field field = getFinalField(fieldName, object);
-		return field.isAnnotationPresent(Transient.class);
+	// public static boolean isTransientField(String fieldName, Object object)
+	// throws NoSuchFieldException, SecurityException, IllegalAccessException,
+	// IllegalArgumentException,
+	// InvocationTargetException, NoSuchMethodException {
+	// Field field = getFinalField(fieldName, object);
+	// return field.isAnnotationPresent(Transient.class);
+	// }
+	public static Field getFinalField(String fieldName, Object object)
+			throws IllegalAccessException, InvocationTargetException, NoSuchMethodException {
+		return getFinalField(fieldName, object, false);
 	}
 
-	public static Field getFinalField(String fieldName, Object object)
+	public static Field getFinalField(String fieldName, Object object, boolean nullIfNoPath)
 			throws IllegalAccessException, InvocationTargetException, NoSuchMethodException {
 		Object finalObject = getFinalInvokeClass(fieldName, object);
 		String lastField = getLastField(fieldName);
+		if (nullIfNoPath && finalObject == null) {
+			return null;
+		}
 		Field field = FieldUtils.getField(finalObject.getClass(), lastField, true);
 		return field;
 	}

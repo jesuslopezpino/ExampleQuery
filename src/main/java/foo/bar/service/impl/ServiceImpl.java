@@ -283,16 +283,13 @@ public abstract class ServiceImpl<VO extends BasicVO<?>> implements Service<VO> 
 					Entry<String, HqlConditions> type = iterator.next();
 					HqlConditions condition = type.getValue();
 					String filterField = type.getKey();
-					String fieldForQuery;
-					fieldForQuery = UtilsService.getFieldForQuery(example, filterField);
-					Object valueForQuery = Utils.getFieldValue(example, filterField);
+					String fieldForQuery = UtilsService.getFieldForQuery(example, filterField);
+					Object valueForQuery = Utils.getFieldValue(example, filterField, true);
 					boolean applyValue = UtilsService.hasToApplyConditionForQuery(condition, valueForQuery);
 					if (applyValue) {
 						String nameForParameter = UtilsService.getNameForParameter(filterField, condition);
 						String lastTableAlias = getLastTableAlias(tableAlias, fieldForQuery);
 						String fromForField = null;
-//						VO voInstance = voClass.newInstance();
-						// TODO: improve new instance
 						if (ReferenceReader.isReferenceField(filterField, example)) {
 							String referencedField = ReferenceReader.getReferenceForField(filterField, example);
 							fromForField = getFromForField(tableAlias, tableAlias + "." + referencedField);
