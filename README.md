@@ -383,7 +383,7 @@ When the developer provides content to that methods the unit test can be run. Th
 
 ## Authors
 
-* **Jesús María López Pino** 2017
+* *[Jesús María López Pino](https://www.linkedin.com/in/jesus-lopez-pino/)* 2017
 
 
 ## License
