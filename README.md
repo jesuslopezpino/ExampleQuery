@@ -154,9 +154,9 @@ public enum HqlConditions {
 	NOT_EQUALS(" != "), 		// the field is not equals to the value of field in the example
 	GREATER_THAN(" > "), 		// the field is greater than the value of field in the example
 	GREATER_EQUALS(" >= "), 	// the field is greater or equals to the value of field in the example
-	LOWER_THAN(" < "), 			// the field is lower than the value of field in the example
+	LOWER_THAN(" < "), 		// the field is lower than the value of field in the example
 	LOWER_EQUALS(" <= "),		// the field is greater or equals to the value of field in the example
-	IN(" in "), 				// the field is in the list value of the example
+	IN(" in "), 			// the field is in the list value of the example
 	NOT_IN(" not in "); 		// the field is not in the list value of the example
 	...
 	
