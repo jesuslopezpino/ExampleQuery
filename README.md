@@ -252,7 +252,7 @@ Setting up parameter `:ordersProductsName` with value `"%PIZZA%"`.
 
 It's not necessary to use a transient field with `@Reference` annotation if we don't have to deal with lists in the path. Let's see another example, from CustomerOrder side:
 
-```
+```java
 @Entity
 @Table(name = "CUSTOMER_ORDER")
 public class CustomerOrder extends BasicVO<Long> {
