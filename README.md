@@ -136,26 +136,32 @@ Conditions are applied in two ways, all* or automatic. In automatic mode the con
 
 `HqlConditions` is an enum that contains the allowed filtering types to use with ExampleQuery. They are basically the most common jpql conditions clause.
 
-Does NOT requires value in example to be applied
+```java
+package foo.bar.service.utils;
 
-* IS_NULL: the field is null
-* IS_NOT_NULL: the field is not null
-* IS_EMPTY: the field is empty
-* IS_NOT_EMPTY: the field is not empty
+public enum HqlConditions {
 
-Does require value in the example object to be applied
-
-* LIKE: the field is like (case-sensitive) the value of field in the example
-* LIKE_IGNORE_CASE: the field is like (case-insensitive) the value of field in the example
-* EQUALS: the field is equals to the value of field in the examplethe value of field in the example
-* NOT_EQUALS: the field is not equals to the value of field in the example
-* GREATER_THAN: the field is greater than the value of field in the example
-* GREATER_EQUALS: the field is greater or equals to the value of field in the example
-* LOWER_THAN: the field is lower than the value of field in the example
-* LOWER_EQUALS: the field is greater or equals to the value of field in the example
-* IN: the field is in the list value of the example
-* NOT_IN: the field is not in the list value of the example
-
+	// Does NOT requires value in example to be applied
+	IS_NULL(" is null "), // the field is null
+	IS_NOT_NULL(" is not null "), // the field is not null
+	IS_EMPTY(" is empty "), // the field is empty
+	IS_NOT_EMPTY(" is not empty "), // the field is not empty
+	
+	// Does require value in the example object to be applied
+	LIKE(" like "), // the field is like (case-sensitive) the value of field in the example
+	LIKE_IGNORE_CASE(" LIKE "), // the field is like (case-insensitive) the value of field in the example
+	EQUALS(" = "), // the field is equals to the value of field in the examplethe value of field in the example
+	NOT_EQUALS(" != "), // the field is not equals to the value of field in the example
+	GREATER_THAN(" > "), // the field is greater than the value of field in the example
+	GREATER_EQUALS(" >= "), the field is greater or equals to the value of field in the example
+	LOWER_THAN(" < "), // the field is lower than the value of field in the example
+	LOWER_EQUALS(" <= "), //the field is greater or equals to the value of field in the example
+	IN(" in "), // the field is in the list value of the example
+	NOT_IN(" not in "); // the field is not in the list value of the example
+	...
+	
+}
+```
 ## First usage: findByExample
 
 ```java
