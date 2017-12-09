@@ -282,7 +282,7 @@ List<VO> result = service.findByExample(example, filter);
 
 ```
 
-That will result in that query:
+That will result in the next query:
 
 ```
 select 
@@ -298,6 +298,38 @@ where
 Setting up parameter `:customer_name` with value `"Jesús"`.
 
 ## Custom fields
+
+ExampleQuery offers to developer an easy way to perform custom field selection for our query, to do this Service<BasicVO<PK>> provides two methods to perform these queries:
+
+```
+public VO findCustomByPk(Object primaryKey, String[] fields);
+
+public List<VO> findCustomByExample(VO example, String[] fields, Map<String, HqlConditions> filter)
+		throws ExampleQueryException, NoSuchMethodException, SecurityException, InstantiationException,
+		IllegalAccessException, IllegalArgumentException, InvocationTargetException;
+```
+
+Just filling an String[] variable we will customize the fields that we want to retrieve. Those fields will be represented with an string that will contain the path to the field that we want to include with `"."` working as field path separator. We can see an example:
+
+```java
+CustomerOrderService service;
+
+String field1 = CustomerOrder.PK;
+String field2 = CustomerOrder.DATE;
+String field3 = CustomerOrder.CUSTOMER + "." + Customer.PK;
+String field4 = CustomerOrder.CUSTOMER + "." + Customer.NAME;
+String field5 = CustomerOrder.CUSTOMER + "." + Customer.LAST_NAME;
+String fields[] = { field1, field2, field3, field4, field5 };
+
+
+List<CustomerOrder> result = service.findCustomByPk(1L, fields);
+```
+
+That will result in the next query:
+```
+
+```
+
 
 TODO
 
