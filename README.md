@@ -118,7 +118,7 @@ public class ProductServiceImpl extends ServiceImpl<Product> {
 That's all you need to set up and service of an entity.
 
 
-### Filters
+### Setting up filters
 
 Filters in ExampleQuery are very simple, it is the composition of a *field name* and a *condition*. In this case, a filter is represented by a `Map<String, HqlCondition>` where the key will be the field value (with dot annotation) and the condition that will be applied to the field. In that case, allowed conditions are represented by a java enum `HqlConditions`. Each filter entry that has to be applied will be added with an `AND` to the where clause.
 
@@ -128,11 +128,11 @@ filter.put(Product.NAME, HqlConditions.EQUALS);
 filter.put(Product.DESCRIPTION, HqlConditions.LIKE_IGNORE_CASE);
 ```
 
-Conditions are applied in two ways, all* or automatic. In automatic mode the conditions will be applied only if a value is present (there are conditions that are always applied). In all mode all the conditions will be applied*.
+Conditions are applied in two ways, all* or automatic. In automatic mode the conditions will be applied only if a value is present (there are conditions that are always applied). In all mode all the conditions will be applied.
 
 (* - Not implemented)
 
-#### HqlConditions
+### HqlConditions
 
 `HqlConditions` is an enum that contains the allowed filtering types to use with ExampleQuery. They are basically the most common jpql conditions clause.
 
