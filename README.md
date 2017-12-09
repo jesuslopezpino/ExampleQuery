@@ -170,8 +170,18 @@ List<VO> result = service.findByExample(example, filter);
 Execution of that example will result in that hql query:
 
 ```
-query
+select 
+	product 
+from 
+	foo.bar.domain.Product product 
+where 
+	1=1  and 
+	(product.name = :name) and 
+	(UPPER(product.description) LIKE UPPER(:description))
 ```
+
+Setting up parameter `:name` with value `"Pizza"` and parameter `:description`	with value `"%FOOD%"`
+
 
 ## Annotation: @Reference
 
