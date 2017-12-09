@@ -124,7 +124,7 @@ That's all you need to set up and service of an entity.
 
 ### Filters
 
-Filters in ExampleQuery are very simple, it is the composition of a field name and a condition. In this case, a filter is represented by a `Map<String, HqlCondition>` where the key will be the field value (with dot annotation) and the condition that will be applied to the field. In that case, allowed conditions are represented by a java enum `HqlConditions`.
+Filters in ExampleQuery are very simple, it is the composition of a *field name* and a *condition*. In this case, a filter is represented by a `Map<String, HqlCondition>` where the key will be the field value (with dot annotation) and the condition that will be applied to the field. In that case, allowed conditions are represented by a java enum `HqlConditions`. Each filter entry that has to be applied will be added with an `AND` to the where clause.
 
 ```java
 Map<String, HqlConditions> filter = new HashMap<>();
