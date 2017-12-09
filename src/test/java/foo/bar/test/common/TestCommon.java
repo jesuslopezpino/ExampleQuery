@@ -309,15 +309,24 @@ public abstract class TestCommon<ServiceVO extends ServiceImpl<VO>, VO extends B
 	}
 
 	@Test
+	public void testFindCustomByPk() throws InstantiationException, IllegalAccessException, UniqueException,
+			NoSuchMethodException, InvocationTargetException {
+		logLine();
+		VO entity = this.testSave();
+		this.customFields = this.given.initCustomFields();
+		VO result = service.findCustomByPk(entity.getPk(), this.customFields);
+		LOGGER.info("testFindCustomByPk returns the searched element: " + result != null);
+		assertTrue("testFindCustomByPk returns the searched element: " + (result != null), result != null);
+		logLine();
+	}
+
+	@Test
 	public void findCustomByExample()
 			throws NoSuchMethodException, SecurityException, InstantiationException, IllegalAccessException,
 			IllegalArgumentException, InvocationTargetException, ExampleQueryException, UniqueException {
 		LOGGER.info("Find Custom by example " + this.getClass().getName());
 		logLine();
-
 		setupExamplesQueryEnvironment();
-
-		logLine();
 		for (int i = 0; i < this.examples.length; i++) {
 			logLine();
 			VO example = this.examples[i];
@@ -328,6 +337,7 @@ public abstract class TestCommon<ServiceVO extends ServiceImpl<VO>, VO extends B
 			logEmptyLine();
 			assertTrue("findCustomByExample returns more than zero: " + result, !result.isEmpty());
 		}
+		logLine();
 	}
 
 	private void logEmptyLine() {
