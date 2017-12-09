@@ -64,7 +64,7 @@ To be able to use ExampleQuery service your entity classes must extends abstract
 public class Product extends BasicVO<Long> {
 
 	public static final String NAME = "name"; // Those constants aren't requiered at all, but I found it very usefull 
-			// to define a constant that represent a field of the class because we
+								// to define a constant that represent a field of the class because we
 					  // will use strings to refer to filter and select fields selection
 
 	public static final String DESCRIPTION = "description";
