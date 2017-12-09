@@ -20,8 +20,6 @@ public class ProductStock extends BasicVO<Long> {
 
 	public static final String PRODUCT = "product";
 
-	public static final String PRODUCT_NAME = "productName";
-
 	public static final String QUANTITY = "quantity";
 
 	public static final String MAX_QUANTITY = "maxQuantity";
@@ -53,10 +51,6 @@ public class ProductStock extends BasicVO<Long> {
 	@Transient
 	@Reference(fieldName = MIN_QUANTITY, referenceFor = QUANTITY)
 	private Integer minQuantity;
-
-	@Transient
-	@Reference(fieldName = PRODUCT_NAME, referenceFor = PRODUCT + "." + Product.NAME)
-	private String productName;
 
 	public ProductStock() {
 		super();
@@ -90,14 +84,6 @@ public class ProductStock extends BasicVO<Long> {
 		this.quantity = quantity;
 	}
 
-	public String getProductName() {
-		return productName;
-	}
-
-	public void setProductName(String productName) {
-		this.productName = productName;
-	}
-
 	public Integer getMaxQuantity() {
 		return maxQuantity;
 	}
@@ -125,8 +111,7 @@ public class ProductStock extends BasicVO<Long> {
 	@Override
 	public String toStringDebug() {
 		return "ProductStock [pk=" + pk + ", customerOrder=" + customerOrder + ", product=" + product + ", quantity="
-				+ quantity + ", maxQuantity=" + maxQuantity + ", minQuantity=" + minQuantity + ", productName="
-				+ productName + "]";
+				+ quantity + ", maxQuantity=" + maxQuantity + ", minQuantity=" + minQuantity + "]";
 	}
 
 }
