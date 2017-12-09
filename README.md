@@ -208,16 +208,47 @@ public class Customer extends BasicVO<Long> {
 	
 	...
 	@Transient
-	@Reference(fieldName = ORDERS_PRODUCTS_NAME, referenceFor = Customer.CUSTOMER_ORDERS + "." + CustomerOrder.PRODUCTS_STOCK + "." + ProductStock.PRODUCT + "." + Product.NAME)
+	@Reference(fieldName = ORDERS_PRODUCTS_NAME, referenceFor = Customer.CUSTOMER_ORDERS + "." 
+		+ CustomerOrder.PRODUCTS_STOCK + "." + ProductStock.PRODUCT + "." + Product.NAME)
 	private String ordersProductsName;
 	...
 	
 }
 ```
 
+`@Reference` annotation has 2 values to define, `fieldName` that it is the field name it self and `referenceFor` that will contain the path to the field that we want to filter, the fields will be separated by `"."`.
+
 ## Second Usage (With reference)
 
-TODO
+In that case we are going to do an more elaborated query, to retrieve customers that has order "pizza".
+
+```java
+Map<String, HqlConditions> filter = new HashMap<>();
+filter.put(Customer.ORDERS_PRODUCTS_NAME, HqlConditions.LIKE_IGNORE_CASE);
+
+Customer example = new Customer();
+example.setOrdersProductsName("pizza");
+
+List<VO> result = service.findByExample(example, filter); 
+```
+
+Execution of that example will result in that hql query:
+
+```
+select 
+	customer 
+from 
+	foo.bar.domain.Customer customer 
+	join customer.customerOrders customerOrders  
+	join customerOrders.productsStock productsStock  
+	join productsStock.product product  
+where 
+	1=1  and 
+	(UPPER(product.name) LIKE UPPER(:ordersProductsName))
+```
+	
+02:00:43 DEBUG ServiceImpl       [356] - parameter: "ordersProductsName"	value: "%PIZZA%"
+
 
 ## Custom fields
 
