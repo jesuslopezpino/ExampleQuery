@@ -65,7 +65,7 @@ public class GivenCustomer extends Given<Customer, CustomerServiceImpl> {
 		GivenProduct givenProduct = new GivenProduct(entityManager);
 		Product product = givenProduct.givenAProduct("Pizza", "Pizza");
 		GivenProductStock givenProductStock = new GivenProductStock(entityManager);
-		ProductStock productStock = givenProductStock.givenAProductStock(product, 7, null);
+		ProductStock productStock = givenProductStock.givenAProductStock(product, 7);
 		productsStock.add(productStock);
 		GivenCustomerOrder givenCustomerOrder = new GivenCustomerOrder(entityManager);
 		givenCustomerOrder.givenACustomerOrder(customer, Utils.getDateTime("01/01/2017 00:00:00"), productsStock);

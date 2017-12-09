@@ -81,7 +81,7 @@ public class GivenCustomerOrder extends Given<CustomerOrder, CustomerOrderServic
 		Product product = givenProduct.givenAProduct("CocaCola", "Lata");
 		Date dateOrder = Utils.getDate("01/01/2017");
 		GivenProductStock givenProductStock = new GivenProductStock(entityManager);
-		ProductStock productsStock = givenProductStock.givenAProductStock(product, 100, null);
+		ProductStock productsStock = givenProductStock.givenAProductStock(product, 100);
 		List<ProductStock> productsStockList = new ArrayList<>();
 		productsStockList.add(productsStock);
 		givenACustomerOrder(customer, dateOrder, productsStockList);
@@ -130,7 +130,7 @@ public class GivenCustomerOrder extends Given<CustomerOrder, CustomerOrderServic
 		Product product = givenProduct.givenAProduct("Orange", "Color");
 		List<Long> productStockIds = new ArrayList<>();
 		GivenProductStock givenProductStock = new GivenProductStock(entityManager);
-		ProductStock productStock = givenProductStock.givenAProductStock(product, 10, null);
+		ProductStock productStock = givenProductStock.givenAProductStock(product, 10);
 		productStockIds.add(productStock.getPk());
 		List<ProductStock> productsStockList = new ArrayList<>();
 		productsStockList.add(productStock);

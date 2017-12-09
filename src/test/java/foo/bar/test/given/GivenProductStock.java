@@ -23,9 +23,9 @@ public class GivenProductStock extends Given<ProductStock, ProductStockServiceIm
 
 	private static Logger LOGGER = Logger.getLogger(GivenProductStock.class);
 
-	public ProductStock givenAProductStock(Product product, Integer quantity, CustomerOrder customerOrder)
+	public ProductStock givenAProductStock(Product product, Integer quantity)
 			throws UniqueException {
-		ProductStock result = givenObjectProductStock(product, quantity, customerOrder);
+		ProductStock result = givenObjectProductStock(product, quantity);
 		ProductStockServiceImpl service = new ProductStockServiceImpl();
 		service.setEntityManager(entityManager);
 		service.save(result);
@@ -33,11 +33,11 @@ public class GivenProductStock extends Given<ProductStock, ProductStockServiceIm
 		return result;
 	}
 
-	public static ProductStock givenObjectProductStock(Product product, Integer quantity, CustomerOrder customerOrder) {
+	public static ProductStock givenObjectProductStock(Product product, Integer quantity) {
 		ProductStock result = new ProductStock();
 		result.setProduct(product);
 		result.setQuantity(quantity);
-		result.setCustomerOrder(customerOrder);
+		result.setCustomerOrder(null);
 		LOGGER.info("GivenProductStock class instance " + productStockToString(result));
 		return result;
 	}
@@ -51,7 +51,7 @@ public class GivenProductStock extends Given<ProductStock, ProductStockServiceIm
 	public void givenExamplesEnvironment() throws InstantiationException, IllegalAccessException, UniqueException {
 		GivenProduct givenProduct = new GivenProduct(entityManager);
 		Product product = givenProduct.givenAProduct("Samsung", "tv");
-		givenAProductStock(product, 6, null);
+		givenAProductStock(product, 6);
 	}
 
 	@Override
@@ -66,7 +66,7 @@ public class GivenProductStock extends Given<ProductStock, ProductStockServiceIm
 	@Override
 	public Map<String, Object> initEntityFields() {
 		Map<String, Object> mapValues = new HashMap<>();
-		mapValues.put(ProductStock.PRODUCT_NAME, "LG");
+		mapValues.put(ProductStock.PRODUCT + "." + Product.NAME, "LG");
 		mapValues.put(ProductStock.PRODUCT + "." + Product.NAME, "Samsung");
 		return mapValues;
 	}
@@ -74,9 +74,12 @@ public class GivenProductStock extends Given<ProductStock, ProductStockServiceIm
 	@Override
 	public Map<String, HqlConditions> initFilter() {
 		Map<String, HqlConditions> filter = new HashMap<>();
-
+		
+		// All examples
+		// filter.put(ProductStock.CUSTOMER_ORDER, HqlConditions.IS_NULL);
+	
 		// example 1
-		filter.put(ProductStock.PRODUCT_NAME, HqlConditions.LIKE_IGNORE_CASE);
+		filter.put(ProductStock.PRODUCT + "." + Product.NAME, HqlConditions.LIKE_IGNORE_CASE);
 
 		// example 2
 		filter.put(ProductStock.MAX_QUANTITY, HqlConditions.LOWER_EQUALS);
@@ -84,7 +87,6 @@ public class GivenProductStock extends Given<ProductStock, ProductStockServiceIm
 
 		// example 3
 		filter.put(ProductStock.PK, HqlConditions.NOT_EQUALS);
-		filter.put(ProductStock.CUSTOMER_ORDER, HqlConditions.IS_NULL);
 		return filter;
 	}
 
@@ -92,14 +94,17 @@ public class GivenProductStock extends Given<ProductStock, ProductStockServiceIm
 	public ProductStock[] initExamples() {
 
 		ProductStock example1 = new ProductStock();
-		example1.setProductName("Samsung");
+		Product product = new Product();
+		product.setName("Samsung");
+		example1.setProduct(product);
+		// example1.setProductName("Samsung");
 
 		ProductStock example2 = new ProductStock();
 		example2.setMaxQuantity(10);
 		example2.setMinQuantity(3);
 
 		ProductStock example3 = new ProductStock();
-		example3.setPk(7L);
+		example3.setPk(9999L);
 
 		ProductStock[] examples = { example1, example2, example3 };
 		return examples;
@@ -108,8 +113,8 @@ public class GivenProductStock extends Given<ProductStock, ProductStockServiceIm
 	@Override
 	public ProductStock initTestSaveInstance() throws UniqueException, InstantiationException, IllegalAccessException {
 		GivenProduct givenProduct = new GivenProduct(entityManager);
-		Product product = givenProduct.givenAProduct("XBOX", "Video Game");
-		return GivenProductStock.givenObjectProductStock(product, 20, null);
+		Product product = givenProduct.givenAProduct("Samsung", "tv");
+		return GivenProductStock.givenObjectProductStock(product, 20);
 	}
 
 	@Override
