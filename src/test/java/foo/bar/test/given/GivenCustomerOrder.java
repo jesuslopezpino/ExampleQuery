@@ -103,7 +103,7 @@ public class GivenCustomerOrder extends Given<CustomerOrder, CustomerOrderServic
 		filter.put(CustomerOrder.PRODUCTS_STOCK, HqlConditions.IS_NOT_EMPTY);
 
 		// example 1
-		filter.put(CustomerOrder.CUSTOMER, HqlConditions.NOT_EQUALS);
+		filter.put(CustomerOrder.CUSTOMER + "." + Customer.NAME, HqlConditions.NOT_EQUALS);
 
 		// example 2
 		filter.put(CustomerOrder.DATE, HqlConditions.LOWER_EQUALS);
@@ -122,7 +122,8 @@ public class GivenCustomerOrder extends Given<CustomerOrder, CustomerOrderServic
 		example1.setCustomer(customerExample);
 
 		CustomerOrder example2 = new CustomerOrder();
-		example2.setDate(new Date());
+		customerExample.setName("Jesús");
+		example2.setCustomer(customerExample);
 
 		CustomerOrder example3 = new CustomerOrder();
 		GivenProduct givenProduct = new GivenProduct(entityManager);
