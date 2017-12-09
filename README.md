@@ -142,7 +142,7 @@ package foo.bar.service.utils;
 public enum HqlConditions {
 
 	// Does NOT requires value in example to be applied
-	IS_NULL(" is null "), 			// the field is null
+	IS_NULL(" is null "), 		// the field is null
 	IS_NOT_NULL(" is not null "), 	// the field is not null
 	IS_EMPTY(" is empty "), 		// the field is empty
 	IS_NOT_EMPTY(" is not empty "), // the field is not empty
