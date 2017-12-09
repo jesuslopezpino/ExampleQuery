@@ -132,6 +132,10 @@ filter.put(Product.NAME, HqlConditions.EQUALS);
 filter.put(Product.DESCRIPTION, HqlConditions.LIKE_IGNORE_CASE);
 ```
 
+Conditions are applied in two ways, all* or automatic. In automatic mode the conditions will be applied only if a value is present (there are conditions that are always applied). In all mode all the conditions will be applied*.
+
+(* - Not implemented)
+
 #### HqlConditions
 
 `HqlConditions` is an enum that contains the allowed filtering types to use with ExampleQuery. They are basically the most common jpql conditions clause.
