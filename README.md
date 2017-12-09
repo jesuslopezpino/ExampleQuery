@@ -1,15 +1,12 @@
 # ExampleQuery
 
-Example Query is a library to easily execute customized database queries without spend time creating or updating the queries, just using the defined entities class. You will build custom queries just identifying entity fields with the desired condition that you want to apply. Perform queries at tables by examples of entities with filters, so you will have the parameter value in the field that you chose for the filter. You won't have to worry about joins anymore! ExampleQuery will figure out it for you! You just have to worry about write the path to the field that you want to use, there will be cases that will be covered by `@Reference` annotation that will be very useful. Changes at database will not affect you so much in your code, besides ExampleQuery offers a TestCommon class to be able to set up a full battery of unit test for your services.
+ExampleQuery is a tool library where main utility is the ability of easily execute customized database queries without spend time creating or updating the queries, just using the defined entities class. You will build custom queries just identifying entity fields with the desired condition that you want to apply. Perform queries at tables by examples of entities with filters, so you will have the parameter value in the field that you chose for the filter. You won't have to worry about joins anymore! ExampleQuery will figure out it for you! You just have to worry about write the path to the field that you want to use, there will be cases that will be covered by `@Reference` annotation that will be very useful. Changes at database will not affect you so much in your code, besides ExampleQuery offers a TestCommon class to be able to set up a full battery of unit test for your services.
 
-Example Query will use a combination of an example entity with a maps of filter values as main parameters that will be applied if it is necessary to the result query. 
+*Example Query will use a combination of an example entity with a maps of filter values as main parameters that will be applied if it is necessary to the result query.* 
 	
-Custom queries.
+*Example Query also provides manual field selection for query.*
 
-Example Query also provides manual field selection for query.
-
-Unique Exception Processing 
-Returning controlled Unique Exceptions at persistence of entities
+*Unique Exception Processing returning controlled Unique Exceptions at persistence of entities*
 
 ## Getting Started
 
