@@ -61,7 +61,7 @@ To be able to use ExampleQuery service your entity classes must extends abstract
 ```java
 @Entity
 @Table(name = "PRODUCT")
-public class Product extends _BasicVO<Long>_ {
+public class Product extends BasicVO<Long> {
 
 	public static final String NAME = "name"; // Those constants aren't requiered at all, but I found it very usefull 
 											  // to define a constant that represent a field of the class because we
