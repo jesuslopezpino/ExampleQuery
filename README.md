@@ -247,7 +247,7 @@ where
 	(UPPER(product.name) LIKE UPPER(:ordersProductsName))
 ```
 	
-02:00:43 DEBUG ServiceImpl       [356] - parameter: "ordersProductsName"	value: "%PIZZA%"
+Setting up parameter `:ordersProductsName` with value `"%PIZZA%"`.
 
 
 ## Custom fields
