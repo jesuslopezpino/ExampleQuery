@@ -109,7 +109,7 @@ This is like that because we want that `@Id` annotation will be set in pk field 
 
 To create a ExampleQuery service instance you just need to create a class that extends the abstract class `ServiceImpl<VO extends BasicVO>` with an entity class that extends `BasicVO` as type parameter.
 
-```
+```java
 package foo.bar.service.impl;
 
 import foo.bar.domain.Product;
@@ -126,6 +126,11 @@ That's all you need to set up and service of an entity.
 
 Filters in ExampleQuery are very simple, it is the composition of a field name and a condition. In this case, a filter is represented by a `Map<String, HqlCondition>` where the key will be the field value (with dot annotation) and the condition that will be applied to the field. In that case, allowed conditions are represented by a java enum `HqlConditions`.
 
+```java
+Map<String, HqlConditions> filter = new HashMap<>();
+filter.put(Product.NAME, HqlConditions.EQUALS);
+filter.put(Product.DESCRIPTION, HqlConditions.LIKE_IGNORE_CASE);
+```
 
 #### HqlConditions
 
@@ -153,7 +158,7 @@ Does require value in the example object to be applied
 
 ## First usage: findByExample
 
-```
+```java
 ProductService service;
 
 Map<String, HqlConditions> filter = new HashMap<>();
