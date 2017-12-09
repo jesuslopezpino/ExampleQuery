@@ -144,13 +144,13 @@ public enum HqlConditions {
 	// Does NOT requires value in example to be applied
 	IS_NULL(" is null "), 		// the field is null
 	IS_NOT_NULL(" is not null "), 	// the field is not null
-	IS_EMPTY(" is empty "), 		// the field is empty
+	IS_EMPTY(" is empty "), 	// the field is empty
 	IS_NOT_EMPTY(" is not empty "), // the field is not empty
 	
 	// Does require value in the example object to be applied
-	LIKE(" like "), 			// the field is like (case-sensitive) the value of field in the example
-	LIKE_IGNORE_CASE(" LIKE "), // the field is like (case-insensitive) the value of field in the example
-	EQUALS(" = "), 				// the field is equals to the value of field in the examplethe value of field in the example
+	LIKE(" like "), 		// the field is like (case-sensitive) the value of field in the example
+	LIKE_IGNORE_CASE(" LIKE "), 	// the field is like (case-insensitive) the value of field in the example
+	EQUALS(" = "), 			// the field is equals to the value of field in the examplethe value of field in the example
 	NOT_EQUALS(" != "), 		// the field is not equals to the value of field in the example
 	GREATER_THAN(" > "), 		// the field is greater than the value of field in the example
 	GREATER_EQUALS(" >= "), 	// the field is greater or equals to the value of field in the example
