@@ -62,15 +62,17 @@ public abstract class ServiceImpl<VO extends BasicVO<?>> implements Service<VO> 
 		return (VO) entityManager.find(voClass, primaryKey);
 	}
 
-	public VO findCustomByPk(Object primaryKey, String[] fields) {
+	public VO findCustomByPk(Object primaryKey, String[] fields)
+			throws NoSuchMethodException, InstantiationException, IllegalAccessException, InvocationTargetException {
 		String select = createCustomSelect(fields);
 		String from = createCustomFrom(fields);
 		String where = " where " + BasicVO.PK + " = :" + BasicVO.PK;
 		String hqlString = select + from + where;
 		LOGGER.debug("hqlString: " + hqlString);
-		TypedQuery<VO> query = entityManager.createQuery(hqlString, voClass);
+		Query query = entityManager.createQuery(hqlString, Map.class);
 		query.setParameter(BasicVO.PK, primaryKey);
-		VO result = (VO) query.getSingleResult();
+		Map<String, Object> map = (Map<String, Object>) query.getSingleResult();
+		VO result = convertToEntity(map);
 		return result;
 	}
 
@@ -117,13 +119,25 @@ public abstract class ServiceImpl<VO extends BasicVO<?>> implements Service<VO> 
 		String from = createCustomFrom(fields);
 		Query query = createQueryForExample(example, filter, select, from);
 		List<Map<String, Object>> list = query.getResultList();
+		List<VO> result = converToEntityList(list);
+		return result;
+	}
+
+	protected List<VO> converToEntityList(List<Map<String, Object>> list)
+			throws NoSuchMethodException, InstantiationException, IllegalAccessException, InvocationTargetException {
 		List<VO> result = new ArrayList<>();
 		for (Map<String, Object> mapValues : list) {
-			Constructor constructor = voClass.getConstructor(HashMap.class);
-			VO entity = (VO) constructor.newInstance(mapValues);
+			VO entity = convertToEntity(mapValues);
 			result.add(entity);
 		}
 		return result;
+	}
+
+	protected VO convertToEntity(Map<String, Object> mapValues)
+			throws NoSuchMethodException, InstantiationException, IllegalAccessException, InvocationTargetException {
+		Constructor constructor = voClass.getConstructor(HashMap.class);
+		VO entity = (VO) constructor.newInstance(mapValues);
+		return entity;
 	}
 
 	public boolean delete(VO entity) {

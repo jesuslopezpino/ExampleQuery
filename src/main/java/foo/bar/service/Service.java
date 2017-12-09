@@ -17,7 +17,7 @@ public interface Service<VO extends BasicVO<?>> {
 
 	public VO findByPk(Object primaryKey);
 
-	public VO findCustomByPk(Object primaryKey, String[] fields);
+	public VO findCustomByPk(Object primaryKey, String[] fields) throws NoSuchMethodException, InstantiationException, IllegalAccessException, InvocationTargetException;
 
 	public int countByExample(VO example, Map<String, HqlConditions> filter) throws ExampleQueryException, InstantiationException;
 
