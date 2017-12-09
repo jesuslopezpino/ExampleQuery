@@ -151,15 +151,18 @@ Does require value in the example object to be applied
 * IN: the field is in the list value of the example
 * NOT_IN: the field is not in the list value of the example
 
-## First usage
+## First usage: findByExample
 
 ```
-@Autowired
 ProductService service;
 
 Map<String, HqlConditions> filter = new HashMap<>();
+filter.put(Product.NAME, HqlConditions.EQUALS);
+filter.put(Product.DESCRIPTION, HqlConditions.LIKE_IGNORE_CASE);
+		
 Product example = new Product();
 example.setName("Pizza");
+example.setDescription("food");
 
 List<VO> result = service.findByExample(example, filter); 
 ```
