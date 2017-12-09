@@ -1,10 +1,12 @@
 package foo.bar.annotations.readers;
 
 import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
 
 import org.apache.commons.lang3.reflect.FieldUtils;
 
 import foo.bar.annotations.Reference;
+import foo.bar.utils.Utils;
 
 public class ReferenceReader {
 
@@ -26,10 +28,10 @@ public class ReferenceReader {
 		return result;
 	}
 
-	public static boolean isReferenceField(String fieldName, Object object)
-			throws NoSuchFieldException, SecurityException {
+	public static boolean isReferenceField(String fieldName, Object object) throws NoSuchFieldException,
+			SecurityException, IllegalAccessException, InvocationTargetException, NoSuchMethodException {
 		boolean result = false;
-		Field field = FieldUtils.getField(object.getClass(), fieldName, true);
+		Field field = Utils.getFinalField(fieldName, object);
 		final Reference reference = field.getDeclaredAnnotation(Reference.class);
 		result = reference != null;
 		return result;

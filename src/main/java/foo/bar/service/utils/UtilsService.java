@@ -1,5 +1,6 @@
 package foo.bar.service.utils;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.Collection;
 
 import org.apache.log4j.Logger;
@@ -12,7 +13,7 @@ public class UtilsService {
 	private static Logger LOGGER = Logger.getLogger(UtilsService.class);
 
 	public static String getFieldForQuery(Object example, String filterField)
-			throws NoSuchFieldException, SecurityException {
+			throws NoSuchFieldException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException {
 		String fieldForQuery;
 		// first check if the field is transient or not
 		boolean isTransient = Utils.isTransientField(filterField, example);

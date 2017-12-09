@@ -186,21 +186,47 @@ public class Utils {
 	}
 
 	public static boolean isTransientField(String fieldName, Object object)
-			throws NoSuchFieldException, SecurityException {
-		if (isClassField(fieldName, object)) {
-			return hasAnnotation(fieldName, object.getClass(), Transient.class);
+			throws NoSuchFieldException, SecurityException, IllegalAccessException, IllegalArgumentException,
+			InvocationTargetException, NoSuchMethodException {
+		Field field = getFinalField(fieldName, object);
+		return field.isAnnotationPresent(Transient.class);
+	}
+
+	public static Field getFinalField(String fieldName, Object object)
+			throws IllegalAccessException, InvocationTargetException, NoSuchMethodException {
+		Object finalObject = getFinalInvokeClass(fieldName, object);
+		String lastField = getLastField(fieldName);
+		Field field = FieldUtils.getField(finalObject.getClass(), lastField, true);
+		return field;
+	}
+
+	private static String getLastField(String fieldName) {
+		if (fieldName.indexOf(".") > -1) {
+			return fieldName.substring(fieldName.lastIndexOf(".") + 1);
 		} else {
-			return hasAnnotation(fieldName, object.getClass().getSuperclass(), Transient.class);
+			return fieldName;
 		}
 	}
 
-	public static boolean hasAnnotation(String fieldName, Class objectClass, Class<? extends Annotation> annotation)
-			throws NoSuchFieldException, SecurityException {
-		boolean result = false;
-		Field field;
-		field = objectClass.getDeclaredField(fieldName);
-		result = field.isAnnotationPresent(annotation);
-		return result;
+	protected static Object getFinalInvokeClass(String fieldName, Object object)
+			throws IllegalAccessException, InvocationTargetException, NoSuchMethodException {
+		String[] fields = fieldName.split("\\.");
+		Object finalObject = object;
+		for (int i = 0; i < fields.length - 1; i++) {
+			String field = fields[i];
+			finalObject = invokeGetter(field, finalObject);
+		}
+		return finalObject;
 	}
+
+	// public static boolean hasAnnotation(String fieldName, Class objectClass,
+	// Class<? extends Annotation> annotation)
+	// throws NoSuchFieldException, SecurityException {
+	// boolean result = false;
+	// Field field;
+	// field = objectClass.getDeclaredField(fieldName);
+	// result = field.isAnnotationPresent(annotation);
+	// return result;
+	// }
 
 }
