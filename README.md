@@ -249,6 +249,52 @@ where
 	
 Setting up parameter `:ordersProductsName` with value `"%PIZZA%"`.
 
+It's not necessary to use a transient field with `@Reference` annotation if we don't have to deal with lists in the path. Let's see another example, from CustomerOrder side:
+
+```
+@Entity
+@Table(name = "CUSTOMER_ORDER")
+public class CustomerOrder extends BasicVO<Long> {
+	...
+	public static final String CUSTOMER = "customer";
+	...
+	@NotNull
+	@ManyToOne
+	@JoinColumn(name = CUSTOMER, referencedColumnName = CustomerOrder.PK)
+	private Customer customer;
+	...
+}
+```
+
+We can built this example:
+
+```java
+Map<String, HqlConditions> filter = new HashMap<>();
+filter.put(CustomerOrder.CUSTOMER + "." + Customer.NAME, HqlConditions.NOT_EQUALS);
+
+CustomerOrder example = new CustomerOrder();
+Customer customer = new Customer();
+customer.setName("Jesús");
+example.setCustomer(customer);
+
+List<VO> result = service.findByExample(example, filter); 
+
+```
+
+That will result in that query:
+
+```
+select 
+	customerOrder 
+from 
+	foo.bar.domain.CustomerOrder customerOrder 
+	join customerOrder.customer customer  
+where 
+	1=1  and 
+	(customer.name != :customer_name)
+
+```
+Setting up parameter `:customer_name` with value `"Jesús"`.
 
 ## Custom fields
 
