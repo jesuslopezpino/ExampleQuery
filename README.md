@@ -85,11 +85,11 @@ public class Product extends BasicVO<Long> {
 	private Long pk;
 	
 	@NotBlank
-	@Column(name = NAME)
+	@Column
 	private String name;
 
 	@NotBlank
-	@Column(name = DESCRIPTION)
+	@Column
 	private String description;
 	...
 }
