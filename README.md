@@ -219,7 +219,7 @@ public class Customer extends BasicVO<Long> {
 
 `@Reference` annotation has 2 values to define, `fieldName` that it is the field name it self and `referenceFor` that will contain the path to the field that we want to filter, the fields will be separated by `"."`.
 
-## Second Usage (With reference)
+## Second Usage (`@Reference`)
 
 In that case we are going to do an more elaborated query, to retrieve customers that has order "pizza".
 
