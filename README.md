@@ -72,7 +72,6 @@ public class Product extends BasicVO<Long> {
 	public Product(HashMap<String, Object> mapValues) {
 		super(mapValues);
 	}
-	...
 	
 	@Id
 	@GeneratedValue(generator = "SQ_PRODUCT")
