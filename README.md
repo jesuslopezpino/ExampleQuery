@@ -163,6 +163,20 @@ public enum HqlConditions {
 ```
 ## First usage: findByExample
 
+ExampleQuery offers to developer an easy way to perform custom filtered queries, to do this `Service<BasicVO<PK>>` provides three methods to perform these queries:
+
+```java
+public int countByExample(VO example, Map<String, HqlConditions> filter) throws ExampleQueryException, InstantiationException;
+
+public List<VO> findByExample(VO example, Map<String, HqlConditions> filter) throws ExampleQueryException, InstantiationException;
+
+public List<VO> findCustomByExample(VO example, String[] fields, Map<String, HqlConditions> filter)
+		throws ExampleQueryException, NoSuchMethodException, SecurityException, InstantiationException,
+		IllegalAccessException, IllegalArgumentException, InvocationTargetException;
+```
+
+For first example we want to filter products by 2 conditions, name has to be equals and description will be like in ingnore case.
+
 ```java
 ProductService service;
 
@@ -361,9 +375,9 @@ where
 ```
 Setting up parameter `:customer_name` with value `"Jesús"`.
 
-## Custom fields
+## Second usage: Custom fields
 
-ExampleQuery offers to developer an easy way to perform custom field selection for our query, to do this Service<BasicVO<PK>> provides two methods to perform these queries:
+ExampleQuery offers to developer an easy way to perform custom field selection for our query, to do this `Service<BasicVO<PK>>` provides two methods to perform these queries:
 
 ```
 public VO findCustomByPk(Object primaryKey, String[] fields);
