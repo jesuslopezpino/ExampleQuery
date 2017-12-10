@@ -45,11 +45,11 @@ public class ProductStock extends BasicVO<Long> {
 	private Integer price;
 
 	@Transient
-	@FilterForField(value = PRICE)
+	@FilterForField(PRICE)
 	private Integer maxPrice;
 
 	@Transient
-	@FilterForField(value = PRICE)
+	@FilterForField(PRICE)
 	private Integer minPrice;
 
 	public ProductStock() {
