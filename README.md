@@ -8,10 +8,16 @@ ExampleQuery is a tool library where main utility is the ability of easily execu
 
 *Unique Exception Processing returning controlled Unique Exceptions at persistence of entities*
 
+
+[Getting Started](#getting-started)
+[Prerequisites](#prerequisites)
+
+#getting-started
 ## Getting Started
 
 These instructions will get you a copy of the project up and running on your local machine for development and testing purposes. See deployment for notes on how to deploy the project on a live system.
-	
+
+#prerequisites
 ### Prerequisites
 
 To install ExampleQuery you will need:
