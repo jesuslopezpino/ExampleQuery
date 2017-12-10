@@ -42,7 +42,7 @@ public class Customer extends BasicVO<Long> {
 
 	public static final String CUSTOMER_ORDERS = "customerOrders";
 
-	public static final String ORDERS_PRODUCTS_NAME = "ordersProductsName";
+	public static final String CUSTOMER_ORDERS_PRODUCTS_NAME = "customerOrdersProductName";
 
 	public static final String NOTES = "notes";
 
@@ -77,23 +77,21 @@ public class Customer extends BasicVO<Long> {
 	@OneToMany(mappedBy = Note.CUSTOMER, targetEntity = Note.class)
 	private List<Note> notes;
 
-	// TODO: if we don't include the transient annotation que query will not
-	// consider the Reference Annotation...
 	@Transient
-	@Reference(fieldName = ORDERS_PRODUCTS_NAME, referenceFor = Customer.CUSTOMER_ORDERS + "."
-			+ CustomerOrder.PRODUCTS_STOCK + "." + ProductStock.PRODUCT + "." + Product.NAME)
-	private String ordersProductsName;
+	@Reference(referenceFor = Customer.CUSTOMER_ORDERS + "." + CustomerOrder.PRODUCTS_STOCK + "." + ProductStock.PRODUCT
+			+ "." + Product.NAME)
+	private String customerOrdersProductName;
 
 	@Transient
-	@Reference(fieldName = DOCUMENT_TYPE_LIST, referenceFor = DOCUMENT_TYPE)
+	@Reference(referenceFor = DOCUMENT_TYPE)
 	private List<String> documentTypeList;
 
 	@Transient
-	@Reference(fieldName = BIRTH_DATE_START, referenceFor = BIRTH_DATE)
+	@Reference(referenceFor = BIRTH_DATE)
 	private Date birthDateStart;
 
 	@Transient
-	@Reference(fieldName = BIRTH_DATE_END, referenceFor = BIRTH_DATE)
+	@Reference(referenceFor = BIRTH_DATE)
 	private Date birthDateEnd;
 
 	public Customer() {
@@ -176,12 +174,12 @@ public class Customer extends BasicVO<Long> {
 		this.documentTypeList = documentTypeList;
 	}
 
-	public String getOrdersProductsName() {
-		return ordersProductsName;
+	public String getCustomerOrdersProductName() {
+		return customerOrdersProductName;
 	}
 
-	public void setOrdersProductsName(String ordersProductsName) {
-		this.ordersProductsName = ordersProductsName;
+	public void setCustomerOrdersProductName(String customerOrdersProductName) {
+		this.customerOrdersProductName = customerOrdersProductName;
 	}
 
 	public List<CustomerOrder> getCustomerOrders() {
@@ -204,7 +202,7 @@ public class Customer extends BasicVO<Long> {
 	public String toStringDebug() {
 		return "Customer [pk=" + pk + ", name=" + name + ", lastName=" + lastName + ", document=" + document
 				+ ", documentType=" + documentType + ", birthDate=" + birthDate + ", customerOrders=" + customerOrders
-				+ ", ordersProductsName=" + ordersProductsName + ", documentTypeList=" + documentTypeList
+				+ ", customerOrdersProductName=" + customerOrdersProductName + ", documentTypeList=" + documentTypeList
 				+ ", birthDateStart=" + birthDateStart + ", birthDateEnd=" + birthDateEnd + ", notes=" + notes + "]";
 	}
 

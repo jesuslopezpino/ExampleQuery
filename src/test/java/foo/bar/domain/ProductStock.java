@@ -20,11 +20,11 @@ public class ProductStock extends BasicVO<Long> {
 
 	public static final String PRODUCT = "product";
 
-	public static final String QUANTITY = "quantity";
+	public static final String PRICE = "price";
 
-	public static final String MAX_QUANTITY = "maxQuantity";
+	public static final String MAX_PRICE = "maxPrice";
 
-	public static final String MIN_QUANTITY = "minQuantity";
+	public static final String MIN_PRICE = "minPrice";
 
 	public static final String CUSTOMER_ORDER = "customerOrder";
 
@@ -41,16 +41,16 @@ public class ProductStock extends BasicVO<Long> {
 	@JoinColumn(name = PRODUCT)
 	private Product product;
 
-	@Column(name = QUANTITY)
-	private Integer quantity;
+	@Column(name = PRICE)
+	private Integer price;
 
 	@Transient
-	@Reference(fieldName = MAX_QUANTITY, referenceFor = QUANTITY)
-	private Integer maxQuantity;
+	@Reference(referenceFor = PRICE)
+	private Integer maxPrice;
 
 	@Transient
-	@Reference(fieldName = MIN_QUANTITY, referenceFor = QUANTITY)
-	private Integer minQuantity;
+	@Reference(referenceFor = PRICE)
+	private Integer minPrice;
 
 	public ProductStock() {
 		super();
@@ -76,28 +76,28 @@ public class ProductStock extends BasicVO<Long> {
 		this.product = product;
 	}
 
-	public Integer getQuantity() {
-		return quantity;
+	public Integer getPrice() {
+		return price;
 	}
 
-	public void setQuantity(Integer quantity) {
-		this.quantity = quantity;
+	public void setPrice(Integer price) {
+		this.price = price;
 	}
 
-	public Integer getMaxQuantity() {
-		return maxQuantity;
+	public Integer getMaxPrice() {
+		return maxPrice;
 	}
 
-	public void setMaxQuantity(Integer maxQuantity) {
-		this.maxQuantity = maxQuantity;
+	public void setMaxPrice(Integer maxPrice) {
+		this.maxPrice = maxPrice;
 	}
 
-	public Integer getMinQuantity() {
-		return minQuantity;
+	public Integer getMinPrice() {
+		return minPrice;
 	}
 
-	public void setMinQuantity(Integer minQuantity) {
-		this.minQuantity = minQuantity;
+	public void setMinPrice(Integer minPrice) {
+		this.minPrice = minPrice;
 	}
 
 	public CustomerOrder getCustomerOrder() {
@@ -110,8 +110,8 @@ public class ProductStock extends BasicVO<Long> {
 
 	@Override
 	public String toStringDebug() {
-		return "ProductStock [pk=" + pk + ", customerOrder=" + customerOrder + ", product=" + product + ", quantity="
-				+ quantity + ", maxQuantity=" + maxQuantity + ", minQuantity=" + minQuantity + "]";
+		return "ProductStock [pk=" + pk + ", customerOrder=" + customerOrder + ", product=" + product + ", price="
+				+ price + ", maxPrice=" + maxPrice + ", minPrice=" + minPrice + "]";
 	}
 
 }

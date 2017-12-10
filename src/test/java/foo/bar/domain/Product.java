@@ -43,7 +43,7 @@ public class Product extends BasicVO<Long> {
 	private String description;
 
 	@Transient
-	@Reference(fieldName = PK_LIST, referenceFor = Product.PK)
+	@Reference(referenceFor = Product.PK)
 	private List<Long> pkList;
 
 	public Product() {

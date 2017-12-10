@@ -7,7 +7,6 @@ import javax.persistence.EntityManager;
 
 import org.apache.log4j.Logger;
 
-import foo.bar.domain.CustomerOrder;
 import foo.bar.domain.Product;
 import foo.bar.domain.ProductStock;
 import foo.bar.exceptions.UniqueException;
@@ -23,9 +22,8 @@ public class GivenProductStock extends Given<ProductStock, ProductStockServiceIm
 
 	private static Logger LOGGER = Logger.getLogger(GivenProductStock.class);
 
-	public ProductStock givenAProductStock(Product product, Integer quantity)
-			throws UniqueException {
-		ProductStock result = givenObjectProductStock(product, quantity);
+	public ProductStock givenAProductStock(Product product, Integer price) throws UniqueException {
+		ProductStock result = givenObjectProductStock(product, price);
 		ProductStockServiceImpl service = new ProductStockServiceImpl();
 		service.setEntityManager(entityManager);
 		service.save(result);
@@ -33,10 +31,10 @@ public class GivenProductStock extends Given<ProductStock, ProductStockServiceIm
 		return result;
 	}
 
-	public static ProductStock givenObjectProductStock(Product product, Integer quantity) {
+	public static ProductStock givenObjectProductStock(Product product, Integer price) {
 		ProductStock result = new ProductStock();
 		result.setProduct(product);
-		result.setQuantity(quantity);
+		result.setPrice(price);
 		result.setCustomerOrder(null);
 		LOGGER.info("GivenProductStock class instance " + productStockToString(result));
 		return result;
@@ -44,7 +42,7 @@ public class GivenProductStock extends Given<ProductStock, ProductStockServiceIm
 
 	public static String productStockToString(ProductStock productStock) {
 		return "ProductStock [pk=" + productStock.getPk() + ", customerOrder=" + productStock.getCustomerOrder()
-				+ ", product=" + productStock.getProduct() + ", quantity=" + productStock.getQuantity() + "]";
+				+ ", product=" + productStock.getProduct() + ", price=" + productStock.getPrice() + "]";
 	}
 
 	@Override
@@ -58,7 +56,7 @@ public class GivenProductStock extends Given<ProductStock, ProductStockServiceIm
 	public String[] initCustomFields() {
 		String field1 = ProductStock.PK;
 		String field2 = ProductStock.PRODUCT;
-		String field3 = ProductStock.QUANTITY;
+		String field3 = ProductStock.PRICE;
 		String fields[] = { field1, field2, field3 };
 		return fields;
 	}
@@ -74,16 +72,16 @@ public class GivenProductStock extends Given<ProductStock, ProductStockServiceIm
 	@Override
 	public Map<String, HqlConditions> initFilter() {
 		Map<String, HqlConditions> filter = new HashMap<>();
-		
+
 		// All examples
 		// filter.put(ProductStock.CUSTOMER_ORDER, HqlConditions.IS_NULL);
-	
+
 		// example 1
 		filter.put(ProductStock.PRODUCT + "." + Product.NAME, HqlConditions.LIKE_IGNORE_CASE);
 
 		// example 2
-		filter.put(ProductStock.MAX_QUANTITY, HqlConditions.LOWER_EQUALS);
-		filter.put(ProductStock.MIN_QUANTITY, HqlConditions.GREATER_THAN);
+		filter.put(ProductStock.MAX_PRICE, HqlConditions.LOWER_EQUALS);
+		filter.put(ProductStock.MIN_PRICE, HqlConditions.GREATER_THAN);
 
 		// example 3
 		filter.put(ProductStock.PK, HqlConditions.NOT_EQUALS);
@@ -100,8 +98,8 @@ public class GivenProductStock extends Given<ProductStock, ProductStockServiceIm
 		// example1.setProductName("Samsung");
 
 		ProductStock example2 = new ProductStock();
-		example2.setMaxQuantity(10);
-		example2.setMinQuantity(3);
+		example2.setMaxPrice(10);
+		example2.setMinPrice(3);
 
 		ProductStock example3 = new ProductStock();
 		example3.setPk(9999L);
@@ -120,7 +118,7 @@ public class GivenProductStock extends Given<ProductStock, ProductStockServiceIm
 	@Override
 	public Map<String, Object> initTestUpdateValues() {
 		Map<String, Object> result = new HashMap<>();
-		result.put(ProductStock.QUANTITY, 500);
+		result.put(ProductStock.PRICE, 500);
 		return result;
 	}
 }

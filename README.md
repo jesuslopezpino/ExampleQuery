@@ -209,15 +209,15 @@ public class Customer extends BasicVO<Long> {
 	
 	...
 	@Transient
-	@Reference(fieldName = ORDERS_PRODUCTS_NAME, referenceFor = Customer.CUSTOMER_ORDERS + "." 
-		+ CustomerOrder.PRODUCTS_STOCK + "." + ProductStock.PRODUCT + "." + Product.NAME)
-	private String ordersProductsName;
+	@Reference(referenceFor = Customer.CUSTOMER_ORDERS + "." + CustomerOrder.PRODUCTS_STOCK + "." 
+							+ ProductStock.PRODUCT + "." + Product.NAME)
+	private String customerOrdersProductName;
 	...
 	
 }
 ```
 
-`@Reference` annotation has 2 values to define, `fieldName` that it is the field name it self and `referenceFor` that will contain the path to the field that we want to filter, the fields will be separated by `"."`.
+`@Reference` annotation has 1 value to define, `referenceFor` that will contain the path to the field that we want to filter, the fields will be separated by `"."`.
 
 ## Second Usage (`@Reference`)
 
@@ -228,7 +228,7 @@ Map<String, HqlConditions> filter = new HashMap<>();
 filter.put(Customer.ORDERS_PRODUCTS_NAME, HqlConditions.LIKE_IGNORE_CASE);
 
 Customer example = new Customer();
-example.setOrdersProductsName("pizza");
+example.setCustomerOrdersProductName("pizza");
 
 List<VO> result = service.findByExample(example, filter); 
 ```
@@ -245,10 +245,10 @@ from
 	join productsStock.product product  
 where 
 	1=1  and 
-	(UPPER(product.name) LIKE UPPER(:ordersProductsName))
+	(UPPER(product.name) LIKE UPPER(:customerOrdersProductName))
 ```
 	
-Setting up parameter `:ordersProductsName` with value `"%PIZZA%"`.
+Setting up parameter `:customerOrdersProductName` with value `"%PIZZA%"`.
 
 It's not necessary to use a transient field with `@Reference` annotation if we don't have to deal with lists in the path. Let's see another example, from CustomerOrder side:
 

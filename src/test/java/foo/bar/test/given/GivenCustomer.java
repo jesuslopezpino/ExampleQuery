@@ -102,7 +102,7 @@ public class GivenCustomer extends Given<Customer, CustomerServiceImpl> {
 		filter.put(Customer.BIRTH_DATE_END, HqlConditions.LOWER_THAN);
 
 		// example 3
-		filter.put(Customer.ORDERS_PRODUCTS_NAME, HqlConditions.LIKE_IGNORE_CASE);
+		filter.put(Customer.CUSTOMER_ORDERS_PRODUCTS_NAME, HqlConditions.LIKE_IGNORE_CASE);
 
 		// example 4
 		filter.put(Customer.DOCUMENT_TYPE_LIST, HqlConditions.IN);
@@ -121,7 +121,7 @@ public class GivenCustomer extends Given<Customer, CustomerServiceImpl> {
 		example2.setBirthDateEnd(Utils.getDateTime("12/12/1983 23:59:59"));
 
 		Customer example3 = new Customer();
-		example3.setOrdersProductsName("Pizza");
+		example3.setCustomerOrdersProductName("Pizza");
 
 		List<String> documentTypeListExample = new ArrayList<>();
 		documentTypeListExample.add("DNI");

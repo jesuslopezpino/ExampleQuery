@@ -19,15 +19,6 @@ public class ReferenceReader {
 		return result;
 	}
 
-	public static String getReferenceFieldName(String fieldName, Object object)
-			throws NoSuchFieldException, SecurityException {
-		String result = null;
-		Field field = FieldUtils.getField(object.getClass(), fieldName, true);
-		final Reference reference = field.getDeclaredAnnotation(Reference.class);
-		result = reference.fieldName();
-		return result;
-	}
-
 	public static boolean isReferenceField(String fieldName, Object object) throws NoSuchFieldException,
 			SecurityException, IllegalAccessException, InvocationTargetException, NoSuchMethodException {
 		boolean result = false;

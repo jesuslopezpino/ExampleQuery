@@ -18,11 +18,11 @@ import foo.bar.utils.Utils;
 
 public class GivenNote extends Given<Note, NoteServiceImpl> {
 
+	private static Logger LOGGER = Logger.getLogger(GivenNote.class);
+
 	public GivenNote(EntityManager entityManager) throws InstantiationException, IllegalAccessException {
 		super(entityManager);
 	}
-
-	private static Logger LOGGER = Logger.getLogger(GivenNote.class);
 
 	public Note givenANote(Date date, Customer customer, String note) throws UniqueException {
 		Note result = GivenNote.givenObjectNote(date, customer, note);
@@ -40,11 +40,6 @@ public class GivenNote extends Given<Note, NoteServiceImpl> {
 		result.setNote(note);
 		LOGGER.info("GivenNote class instance " + GivenNote.noteToString(result));
 		return result;
-	}
-
-	public static String noteToString(Note note) {
-		return "Note [pk=" + note.getPk() + ", date=" + note.getDate() + ", note=" + note.getNote() + ", customer="
-				+ note.getCustomer() + "]";
 	}
 
 	@Override
@@ -112,7 +107,11 @@ public class GivenNote extends Given<Note, NoteServiceImpl> {
 		Map<String, Object> result = new HashMap<>();
 		result.put(Note.NOTE, "Updated note");
 		result.put(Note.DATE, new Date());
-//		result.put(Note.NOTE, "Updated note");
 		return result;
+	}
+	
+	public static String noteToString(Note note) {
+		return "Note [pk=" + note.getPk() + ", date=" + note.getDate() + ", note=" + note.getNote() + ", customer="
+				+ note.getCustomer() + "]";
 	}
 }

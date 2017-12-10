@@ -34,7 +34,7 @@ public class CustomerOrder extends BasicVO<Long> {
 	@GeneratedValue(generator = "SQ_CUSTOMER_ORDER")
 	@SequenceGenerator(name = "SQ_CUSTOMER_ORDER", sequenceName = "SQ_CUSTOMER_ORDER")
 	private Long pk;
-	
+
 	@NotNull
 	@ManyToOne
 	@JoinColumn(name = CUSTOMER, referencedColumnName = CustomerOrder.PK)
@@ -48,7 +48,7 @@ public class CustomerOrder extends BasicVO<Long> {
 	private List<ProductStock> productsStock;
 
 	@Transient
-	@Reference(fieldName = PRODUCTS_STOCK_IDS, referenceFor = PRODUCTS_STOCK + "." + ProductStock.PK)
+	@Reference(referenceFor = PRODUCTS_STOCK + "." + ProductStock.PK)
 	private List<Long> productsStockIds;
 
 	public CustomerOrder() {
@@ -66,7 +66,7 @@ public class CustomerOrder extends BasicVO<Long> {
 	public void setPk(Long pk) {
 		this.pk = pk;
 	}
-	
+
 	public Customer getCustomer() {
 		return customer;
 	}
