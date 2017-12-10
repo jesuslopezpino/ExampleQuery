@@ -217,7 +217,7 @@ public class Customer extends BasicVO<Long> {
 }
 ```
 
-`@FilterForField` annotation has 1 value to define, `referenceFor` that will contain the path to the field that we want to filter, the fields will be separated by `"."`.
+`@FilterForField` annotation has 1 value to define that will contain the path to the field that we want to filter, the fields will be separated by `"."`.
 
 ## Second Usage (`@FilterForField`)
 
