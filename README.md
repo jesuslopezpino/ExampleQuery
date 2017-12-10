@@ -196,7 +196,7 @@ Setting up parameter `:name` with value `"Pizza"` and parameter `:description`	w
 
 ## Annotation: @FilterForField
 
-The main idea of ExampleQuery is to usage the same class that represent the entity has holder for the different values that we want to apply to the custom filters applied. But what happens if we want to use a filter that can't be set directly in the entity, like a filter for a value inside a list. For that purpose ExampleQuery includes the field annotation `@FilterForField`
+The main idea of ExampleQuery is to usage the same class that represent the entity has holder for the different values that we want to apply to the custom filters applied. But what happens if we want to use a filter that can't be set directly in the entity, like a filter for a value inside of a list. For that purpose ExampleQuery includes the field annotation `@FilterForField`
 
 ```java
 @Entity
