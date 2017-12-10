@@ -120,7 +120,7 @@ public class UtilsService {
 
 	public static String getClauseLikeIgnoreCase(String tableName, String filterField, final HqlConditions condition,
 			String nameForParameter) {
-		return " and (UPPER(" + tableName + "." + filterField + ")" + condition + "UPPER(:" + nameForParameter + "))";
+		return " and (UPPER(" + tableName + "." + filterField + ")" + condition + ":" + nameForParameter + ")";
 	}
 
 	private static String getClauseConditionCase(String tableName, String filterField, final HqlConditions condition,

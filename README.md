@@ -187,7 +187,7 @@ from
 where 
 	1=1  and 
 	(product.name = :name) and 
-	(UPPER(product.description) LIKE UPPER(:description))
+	(UPPER(product.description) LIKE :description)
 ```
 
 Setting up parameter `:name` with value `"Pizza"` and parameter `:description`	with value `"%FOOD%"`
@@ -244,7 +244,7 @@ from
 	join productsStock.product product  
 where 
 	1=1  and 
-	(UPPER(product.name) LIKE UPPER(:customerOrdersProductName))
+	(UPPER(product.name) LIKE :customerOrdersProductName)
 ```
 	
 Setting up parameter `:customerOrdersProductName` with value `"%PIZZA%"`.
