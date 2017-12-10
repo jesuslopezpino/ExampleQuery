@@ -21,6 +21,7 @@ import foo.bar.service.utils.HqlConditions;
  * @param <ServiceVO>
  *            the generic service type for our VOs
  */
+// TODO: Given must focus on new specific MethodGiven class
 public abstract class Given<VO extends BasicVO<?>, ServiceVO extends ServiceImpl<VO>> {
 
 	/** The entity manager. */
