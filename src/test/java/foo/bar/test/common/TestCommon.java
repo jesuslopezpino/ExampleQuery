@@ -312,8 +312,8 @@ public abstract class TestCommon<ServiceVO extends ServiceImpl<VO>, VO extends B
 	public void testFindCustomByPk() throws InstantiationException, IllegalAccessException, UniqueException,
 			NoSuchMethodException, InvocationTargetException {
 		logLine();
-		VO entity = this.testSave();
 		this.customFields = this.given.initCustomFields();
+		VO entity = this.testSave();
 		VO result = service.findCustomByPk(entity.getPk(), this.customFields);
 		LOGGER.info("testFindCustomByPk returns the searched element: " + result != null);
 		assertTrue("testFindCustomByPk returns the searched element: " + (result != null), result != null);
