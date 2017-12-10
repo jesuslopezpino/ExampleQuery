@@ -78,20 +78,20 @@ public class Customer extends BasicVO<Long> {
 	private List<Note> notes;
 
 	@Transient
-	@FilterForField(referenceFor = Customer.CUSTOMER_ORDERS + "." + CustomerOrder.PRODUCTS_STOCK + "." + ProductStock.PRODUCT
+	@FilterForField(value = Customer.CUSTOMER_ORDERS + "." + CustomerOrder.PRODUCTS_STOCK + "." + ProductStock.PRODUCT
 			+ "." + Product.NAME)
 	private String customerOrdersProductName;
 
 	@Transient
-	@FilterForField(referenceFor = DOCUMENT_TYPE)
+	@FilterForField(value = DOCUMENT_TYPE)
 	private List<String> documentTypeList;
 
 	@Transient
-	@FilterForField(referenceFor = BIRTH_DATE)
+	@FilterForField(value = BIRTH_DATE)
 	private Date birthDateStart;
 
 	@Transient
-	@FilterForField(referenceFor = BIRTH_DATE)
+	@FilterForField(value = BIRTH_DATE)
 	private Date birthDateEnd;
 
 	public Customer() {

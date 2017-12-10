@@ -304,8 +304,8 @@ public abstract class ServiceImpl<VO extends BasicVO<?>> implements Service<VO> 
 						String nameForParameter = UtilsService.getNameForParameter(filterField, condition);
 						String lastTableAlias = getLastTableAlias(tableAlias, fieldForQuery);
 						String fromForField = null;
-						if (FilterForFieldReader.isReferenceField(filterField, example)) {
-							String referencedField = FilterForFieldReader.getReferenceForField(filterField, example);
+						if (FilterForFieldReader.isAnnotatedField(filterField, example)) {
+							String referencedField = FilterForFieldReader.getValue(filterField, example);
 							fromForField = getFromForField(tableAlias, tableAlias + "." + referencedField);
 						} else {
 							fromForField = getFromForField(tableAlias, tableAlias + "." + filterField);

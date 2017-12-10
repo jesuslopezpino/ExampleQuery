@@ -48,7 +48,7 @@ public class CustomerOrder extends BasicVO<Long> {
 	private List<ProductStock> productsStock;
 
 	@Transient
-	@FilterForField(referenceFor = PRODUCTS_STOCK + "." + ProductStock.PK)
+	@FilterForField(value = PRODUCTS_STOCK + "." + ProductStock.PK)
 	private List<Long> productsStockIds;
 
 	public CustomerOrder() {

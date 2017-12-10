@@ -10,16 +10,16 @@ import foo.bar.utils.Utils;
 
 public class FilterForFieldReader {
 
-	public static String getReferenceForField(String fieldName, Object object)
+	public static String getValue(String fieldName, Object object)
 			throws NoSuchFieldException, SecurityException {
 		String result = null;
 		Field field = FieldUtils.getField(object.getClass(), fieldName, true);
 		final FilterForField filterForField = field.getDeclaredAnnotation(FilterForField.class);
-		result = filterForField.referenceFor();
+		result = filterForField.value();
 		return result;
 	}
 
-	public static boolean isReferenceField(String fieldName, Object object) throws NoSuchFieldException,
+	public static boolean isAnnotatedField(String fieldName, Object object) throws NoSuchFieldException,
 			SecurityException, IllegalAccessException, InvocationTargetException, NoSuchMethodException {
 		boolean result = false;
 		Field field = Utils.getFinalField(fieldName, object, true);
