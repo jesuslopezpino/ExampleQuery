@@ -5,8 +5,7 @@ import java.util.Collection;
 
 import org.apache.log4j.Logger;
 
-import foo.bar.annotations.readers.ReferenceReader;
-import foo.bar.utils.Utils;
+import foo.bar.annotations.readers.FilterForFieldReader;
 
 public class UtilsService {
 
@@ -16,10 +15,10 @@ public class UtilsService {
 			throws NoSuchFieldException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException {
 		String fieldForQuery;
 		// first check if the field is transient or not
-		boolean isTransient = ReferenceReader.isReferenceField(filterField, example);
+		boolean isTransient = FilterForFieldReader.isReferenceField(filterField, example);
 		if (isTransient) {
 			// field for query = the referenced field
-			fieldForQuery = ReferenceReader.getReferenceForField(filterField, example);
+			fieldForQuery = FilterForFieldReader.getReferenceForField(filterField, example);
 		} else {
 			// field for query = the current field name
 			fieldForQuery = filterField;

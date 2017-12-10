@@ -8,7 +8,7 @@ import org.apache.commons.lang3.reflect.FieldUtils;
 import foo.bar.annotations.FilterForField;
 import foo.bar.utils.Utils;
 
-public class ReferenceReader {
+public class FilterForFieldReader {
 
 	public static String getReferenceForField(String fieldName, Object object)
 			throws NoSuchFieldException, SecurityException {

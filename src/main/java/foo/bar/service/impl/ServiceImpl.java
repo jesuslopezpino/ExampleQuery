@@ -21,7 +21,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.hibernate.exception.ConstraintViolationException;
 
-import foo.bar.annotations.readers.ReferenceReader;
+import foo.bar.annotations.readers.FilterForFieldReader;
 import foo.bar.domain.BasicVO;
 import foo.bar.exceptions.ExampleQueryException;
 import foo.bar.exceptions.UniqueException;
@@ -304,8 +304,8 @@ public abstract class ServiceImpl<VO extends BasicVO<?>> implements Service<VO> 
 						String nameForParameter = UtilsService.getNameForParameter(filterField, condition);
 						String lastTableAlias = getLastTableAlias(tableAlias, fieldForQuery);
 						String fromForField = null;
-						if (ReferenceReader.isReferenceField(filterField, example)) {
-							String referencedField = ReferenceReader.getReferenceForField(filterField, example);
+						if (FilterForFieldReader.isReferenceField(filterField, example)) {
+							String referencedField = FilterForFieldReader.getReferenceForField(filterField, example);
 							fromForField = getFromForField(tableAlias, tableAlias + "." + referencedField);
 						} else {
 							fromForField = getFromForField(tableAlias, tableAlias + "." + filterField);
