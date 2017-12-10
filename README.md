@@ -192,10 +192,79 @@ where
 
 Setting up parameter `:name` with value `"Pizza"` and parameter `:description`	with value `"%FOOD%"`
 
-
 ## Annotation: @FilterForField
 
-The main idea of ExampleQuery is to usage the same class that represent the entity has holder for the different values that we want to apply to the custom filters applied. But what happens if we want to use a filter that can't be set directly in the entity, like a filter for a value inside of a list. For that purpose ExampleQuery includes the field annotation `@FilterForField`
+The main idea of ExampleQuery is to usage the same class that represent the entity has holder for the different values that we want to apply to the custom filters applied. But what happens if we want to use a filter that can't be set directly in the entity, like when we want to filter a field by a range or filter for a value inside of a list. For that purpose ExampleQuery includes the field annotation `@FilterForField`
+
+`@FilterForField` annotation has one value to define that will contain the path to the field that we want to filter, the fields will be separated by `"."`.
+
+## @FilterForField: First usage
+
+In that case we are going to filter a field by range using two `@Transient` fields.
+
+We have CustomerOrder class:
+
+```java
+@Entity
+@Table(name = "CUSTOMER")
+public class Customer extends BasicVO<Long> {
+
+	...
+	public static final String BIRTH_DATE = "birthDate";
+
+	public static final String BIRTH_DATE_START = "birthDateStart";
+
+	public static final String BIRTH_DATE_END = "birthDateEnd";
+	...
+	
+	@NotNull
+	@Column(name = BIRTH_DATE)
+	private Date birthDate;
+
+	@Transient
+	@FilterForField(BIRTH_DATE)
+	private Date birthDateStart;
+
+	@Transient
+	@FilterForField(BIRTH_DATE)
+	private Date birthDateEnd;
+	...		
+}
+```
+We will set up the values for range at the transient fields.
+
+```java
+Map<String, HqlConditions> filter = new HashMap<>();
+filter.put(Customer.BIRTH_DATE_START, HqlConditions.GREATER_EQUALS);
+filter.put(Customer.BIRTH_DATE_END, HqlConditions.LOWER_THAN);
+
+Customer example = new Customer();
+example.setBirthDateStart(Utils.getDateTime("01/01/1983 00:00:00"));
+example.setBirthDateEnd(Utils.getDateTime("12/12/1983 23:59:59"));	
+
+List<VO> result = service.findByExample(example, filter); 	
+```
+
+Execution of that example will result in that hql query:
+
+```
+select 
+	customer 
+from 
+	foo.bar.domain.Customer customer 
+	where 
+	1=1  and 
+	(customer.birthDate >= :birthDateStart) and
+	(customer.birthDate < :birthDateEnd)
+```
+Setting up parameter `:birthDateStart` with value `"Sun Dec 26 00:00:00 CET 1982"` and `:birthDateEnd` with value `"Sun Dec 26 23:59:00 CET 1982"`
+
+
+## @FilterForField: Second usage
+
+In that case we are going to do an more elaborated query, to retrieve customers that has order "pizza".
+
+We have Customer class:
 
 ```java
 @Entity
@@ -208,7 +277,7 @@ public class Customer extends BasicVO<Long> {
 	
 	...
 	@Transient
-	@FilterForField(referenceFor = Customer.CUSTOMER_ORDERS + "." + CustomerOrder.PRODUCTS_STOCK + "." 
+	@FilterForField(Customer.CUSTOMER_ORDERS + "." + CustomerOrder.PRODUCTS_STOCK + "." 
 							+ ProductStock.PRODUCT + "." + Product.NAME)
 	private String customerOrdersProductName;
 	...
@@ -216,11 +285,7 @@ public class Customer extends BasicVO<Long> {
 }
 ```
 
-`@FilterForField` annotation has 1 value to define that will contain the path to the field that we want to filter, the fields will be separated by `"."`.
-
-## Second Usage (`@FilterForField`)
-
-In that case we are going to do an more elaborated query, to retrieve customers that has order "pizza".
+We will set up the value of product name at the transient field.
 
 ```java
 Map<String, HqlConditions> filter = new HashMap<>();
