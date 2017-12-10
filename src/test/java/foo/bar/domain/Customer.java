@@ -17,7 +17,7 @@ import javax.validation.constraints.NotNull;
 
 import org.hibernate.validator.constraints.NotBlank;
 
-import foo.bar.annotations.Reference;
+import foo.bar.annotations.FilterForField;
 
 @Entity
 @Table(name = "CUSTOMER", uniqueConstraints = {
@@ -78,20 +78,20 @@ public class Customer extends BasicVO<Long> {
 	private List<Note> notes;
 
 	@Transient
-	@Reference(referenceFor = Customer.CUSTOMER_ORDERS + "." + CustomerOrder.PRODUCTS_STOCK + "." + ProductStock.PRODUCT
+	@FilterForField(referenceFor = Customer.CUSTOMER_ORDERS + "." + CustomerOrder.PRODUCTS_STOCK + "." + ProductStock.PRODUCT
 			+ "." + Product.NAME)
 	private String customerOrdersProductName;
 
 	@Transient
-	@Reference(referenceFor = DOCUMENT_TYPE)
+	@FilterForField(referenceFor = DOCUMENT_TYPE)
 	private List<String> documentTypeList;
 
 	@Transient
-	@Reference(referenceFor = BIRTH_DATE)
+	@FilterForField(referenceFor = BIRTH_DATE)
 	private Date birthDateStart;
 
 	@Transient
-	@Reference(referenceFor = BIRTH_DATE)
+	@FilterForField(referenceFor = BIRTH_DATE)
 	private Date birthDateEnd;
 
 	public Customer() {

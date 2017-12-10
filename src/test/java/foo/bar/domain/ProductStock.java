@@ -12,7 +12,7 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
-import foo.bar.annotations.Reference;
+import foo.bar.annotations.FilterForField;
 
 @Entity
 @Table(name = "PRODUCT_STOCK")
@@ -45,11 +45,11 @@ public class ProductStock extends BasicVO<Long> {
 	private Integer price;
 
 	@Transient
-	@Reference(referenceFor = PRICE)
+	@FilterForField(referenceFor = PRICE)
 	private Integer maxPrice;
 
 	@Transient
-	@Reference(referenceFor = PRICE)
+	@FilterForField(referenceFor = PRICE)
 	private Integer minPrice;
 
 	public ProductStock() {

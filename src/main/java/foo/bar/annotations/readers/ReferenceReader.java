@@ -5,7 +5,7 @@ import java.lang.reflect.InvocationTargetException;
 
 import org.apache.commons.lang3.reflect.FieldUtils;
 
-import foo.bar.annotations.Reference;
+import foo.bar.annotations.FilterForField;
 import foo.bar.utils.Utils;
 
 public class ReferenceReader {
@@ -14,8 +14,8 @@ public class ReferenceReader {
 			throws NoSuchFieldException, SecurityException {
 		String result = null;
 		Field field = FieldUtils.getField(object.getClass(), fieldName, true);
-		final Reference reference = field.getDeclaredAnnotation(Reference.class);
-		result = reference.referenceFor();
+		final FilterForField filterForField = field.getDeclaredAnnotation(FilterForField.class);
+		result = filterForField.referenceFor();
 		return result;
 	}
 
@@ -24,8 +24,8 @@ public class ReferenceReader {
 		boolean result = false;
 		Field field = Utils.getFinalField(fieldName, object, true);
 		if(field != null){
-			final Reference reference = field.getDeclaredAnnotation(Reference.class);
-			result = reference != null;
+			final FilterForField filterForField = field.getDeclaredAnnotation(FilterForField.class);
+			result = filterForField != null;
 		}
 		return result;
 	}

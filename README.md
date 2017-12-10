@@ -1,6 +1,6 @@
 # ExampleQuery
 
-ExampleQuery is a tool library where main utility is the ability of easily execute customized database queries without spend time creating or updating the queries, just using the defined entities class. You will build custom queries just identifying entity fields with the desired condition that you want to apply. Perform queries at tables by examples of entities with filters, so you will have the parameter value in the field that you chose for the filter. You won't have to worry about joins anymore! ExampleQuery will figure out it for you! You just have to worry about write the path to the field that you want to use, there will be cases that will be covered by `@Reference` annotation that will be very useful. Changes at database will not affect you so much in your code, besides ExampleQuery offers a TestCommon class to be able to set up a full battery of unit test for your services.
+ExampleQuery is a tool library where main utility is the ability of easily execute customized database queries without spend time creating or updating the queries, just using the defined entities class. You will build custom queries just identifying entity fields with the desired condition that you want to apply. Perform queries at tables by examples of entities with filters, so you will have the parameter value in the field that you chose for the filter. You won't have to worry about joins anymore! ExampleQuery will figure out it for you! You just have to worry about write the path to the field that you want to use, there will be cases that will be covered by `@FilterForField` annotation that will be very useful. Changes at database will not affect you so much in your code, besides ExampleQuery offers a TestCommon class to be able to set up a full battery of unit test for your services.
 
 *Example Query will use a combination of an example entity with a maps of filter values as main parameters that will be applied if it is necessary to the result query.* 
 	
@@ -194,9 +194,9 @@ where
 Setting up parameter `:name` with value `"Pizza"` and parameter `:description`	with value `"%FOOD%"`
 
 
-## Annotation: @Reference
+## Annotation: @FilterForField
 
-The main idea of ExampleQuery is to usage the same class that represent the entity has holder for the different values that we want to apply to the custom filters applied. But what happens if we want to use a filter that can't be set directly in the entity, like a filter for a value inside a list. For that purpose ExampleQuery includes the field annotation `@Reference`
+The main idea of ExampleQuery is to usage the same class that represent the entity has holder for the different values that we want to apply to the custom filters applied. But what happens if we want to use a filter that can't be set directly in the entity, like a filter for a value inside a list. For that purpose ExampleQuery includes the field annotation `@FilterForField`
 
 ```java
 @Entity
@@ -209,7 +209,7 @@ public class Customer extends BasicVO<Long> {
 	
 	...
 	@Transient
-	@Reference(referenceFor = Customer.CUSTOMER_ORDERS + "." + CustomerOrder.PRODUCTS_STOCK + "." 
+	@FilterForField(referenceFor = Customer.CUSTOMER_ORDERS + "." + CustomerOrder.PRODUCTS_STOCK + "." 
 							+ ProductStock.PRODUCT + "." + Product.NAME)
 	private String customerOrdersProductName;
 	...
@@ -217,9 +217,9 @@ public class Customer extends BasicVO<Long> {
 }
 ```
 
-`@Reference` annotation has 1 value to define, `referenceFor` that will contain the path to the field that we want to filter, the fields will be separated by `"."`.
+`@FilterForField` annotation has 1 value to define, `referenceFor` that will contain the path to the field that we want to filter, the fields will be separated by `"."`.
 
-## Second Usage (`@Reference`)
+## Second Usage (`@FilterForField`)
 
 In that case we are going to do an more elaborated query, to retrieve customers that has order "pizza".
 
@@ -250,7 +250,7 @@ where
 	
 Setting up parameter `:customerOrdersProductName` with value `"%PIZZA%"`.
 
-It's not necessary to use a transient field with `@Reference` annotation if we don't have to deal with lists in the path. Let's see another example, from CustomerOrder side:
+It's not necessary to use a transient field with `@FilterForField` annotation if we don't have to deal with lists in the path. Let's see another example, from CustomerOrder side:
 
 ```java
 @Entity

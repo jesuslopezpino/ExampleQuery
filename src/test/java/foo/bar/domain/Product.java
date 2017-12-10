@@ -14,7 +14,7 @@ import javax.persistence.UniqueConstraint;
 
 import org.hibernate.validator.constraints.NotBlank;
 
-import foo.bar.annotations.Reference;
+import foo.bar.annotations.FilterForField;
 
 @Entity
 @Table(name = "PRODUCT", uniqueConstraints = {
@@ -43,7 +43,7 @@ public class Product extends BasicVO<Long> {
 	private String description;
 
 	@Transient
-	@Reference(referenceFor = Product.PK)
+	@FilterForField(referenceFor = Product.PK)
 	private List<Long> pkList;
 
 	public Product() {

@@ -16,7 +16,7 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 
-import foo.bar.annotations.Reference;
+import foo.bar.annotations.FilterForField;
 
 @Entity
 @Table(name = "CUSTOMER_ORDER")
@@ -48,7 +48,7 @@ public class CustomerOrder extends BasicVO<Long> {
 	private List<ProductStock> productsStock;
 
 	@Transient
-	@Reference(referenceFor = PRODUCTS_STOCK + "." + ProductStock.PK)
+	@FilterForField(referenceFor = PRODUCTS_STOCK + "." + ProductStock.PK)
 	private List<Long> productsStockIds;
 
 	public CustomerOrder() {
