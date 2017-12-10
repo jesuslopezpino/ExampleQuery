@@ -88,24 +88,24 @@ public class GivenCustomer extends Given<Customer, CustomerServiceImpl> {
 	public Map<String, HqlConditions> initFilter() {
 		Map<String, HqlConditions> filter = new HashMap<>();
 
-		// all examples... IS_NULL, IS_NOT_NULL, IS_EMPTY and IS_NOT_EMPTY
-		filter.put(Customer.BIRTH_DATE, HqlConditions.IS_NOT_NULL);
-		filter.put(Customer.NOTES, HqlConditions.IS_EMPTY);
+//		// all examples... IS_NULL, IS_NOT_NULL, IS_EMPTY and IS_NOT_EMPTY
+//		filter.put(Customer.BIRTH_DATE, HqlConditions.IS_NOT_NULL);
+//		filter.put(Customer.NOTES, HqlConditions.IS_EMPTY);
 
-		// example 1
-		filter.put(Customer.NAME, HqlConditions.LIKE);
-		filter.put(Customer.LAST_NAME, HqlConditions.EQUALS);
-		filter.put(Customer.DOCUMENT, HqlConditions.EQUALS);
+//		// example 1
+//		filter.put(Customer.NAME, HqlConditions.LIKE);
+//		filter.put(Customer.LAST_NAME, HqlConditions.EQUALS);
+//		filter.put(Customer.DOCUMENT, HqlConditions.EQUALS);
 
 		// example 2
 		filter.put(Customer.BIRTH_DATE_START, HqlConditions.GREATER_EQUALS);
 		filter.put(Customer.BIRTH_DATE_END, HqlConditions.LOWER_THAN);
 
-		// example 3
-		filter.put(Customer.CUSTOMER_ORDERS_PRODUCTS_NAME, HqlConditions.LIKE_IGNORE_CASE);
-
-		// example 4
-		filter.put(Customer.DOCUMENT_TYPE_LIST, HqlConditions.IN);
+//		// example 3
+//		filter.put(Customer.CUSTOMER_ORDERS_PRODUCTS_NAME, HqlConditions.LIKE_IGNORE_CASE);
+//
+//		// example 4
+//		filter.put(Customer.DOCUMENT_TYPE_LIST, HqlConditions.IN);
 		return filter;
 	}
 
@@ -130,7 +130,11 @@ public class GivenCustomer extends Given<Customer, CustomerServiceImpl> {
 		Customer example4 = new Customer();
 		example4.setDocumentTypeList(documentTypeListExample);
 
-		Customer[] examples = { example1, example2, example3, example4 };
+		Customer[] examples = { 
+//				example1, 
+				example2
+//				, example3, example4 
+				};
 		return examples;
 	}
 
