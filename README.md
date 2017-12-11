@@ -79,7 +79,7 @@ To use ExampleQuery in your project you need to include the dependency at your p
 
 #### Setting up entities
 
-To be able to use ExampleQuery service your entity classes must extends abstract `BasicVO<PK>.`
+To be able to use ExampleQuery service your entity classes must extends abstract `BasicVO<PK>` and implements those constructors
 
 ```java
 @Entity
