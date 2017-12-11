@@ -12,7 +12,7 @@ ExampleQuery is a tool library where main utility is the ability of easily execu
 * [Getting Started](#getting-started)
 	* [Prerequisites](#prerequisites)
 	* [Installing](#installing)
-	* [Usage](#usage)
+	* [Set up](#set-up)
 		* [Setting up project](#setting-up-project)
 		* [Setting up entities](#setting-up-entities)
 		* [Setting up services](#setting-up-services)
@@ -53,7 +53,7 @@ git clone https://github.com/jesuslopezpino/ExampleQuery.git
 mvn install
 ```
 
-### Usage
+### Set up
 
 #### Setting up project
 
