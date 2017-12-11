@@ -291,49 +291,57 @@ public abstract class ServiceImpl<VO extends BasicVO<?>> implements Service<VO> 
 		LOGGER.debug("FROM FOR FIELD: " + from);
 		return from;
 	}
-
 	private Query createQueryForExample(VO example, FilterMap filter, String select, String from)
+			throws ExampleQueryException, InstantiationException {
+		return this.createQueryForExample(example, filter, select, from, "");
+	}
+
+	private Query createQueryForExample(VO example, FilterMap filter, String select, String from, String where)
 			throws ExampleQueryException, InstantiationException {
 
 		Map<String, Object> parameters = new HashMap<>();
 		String tableAlias = this.getTableAliasForClass(this.voClass);
-		String where = "";
+//		String where = "";
 		try {
 			if (filter != null) {
 				for (Iterator<Entry<String, Object>> iterator = filter.getMap().entrySet().iterator(); iterator
 						.hasNext();) {
 					Entry<String, Object> type = iterator.next();
-					HqlConditions condition = (HqlConditions) type.getValue();
-					String filterField = type.getKey();
-					String fieldForQuery = UtilsService.getFieldForQuery(example, filterField);
-					Object valueForQuery = Utils.getFieldValue(example, filterField, true);
-					boolean applyValue = UtilsService.hasToApplyConditionForQuery(condition, valueForQuery);
-					if (applyValue) {
-						String nameForParameter = UtilsService.getNameForParameter(filterField, condition);
-						String lastTableAlias = this.getLastTableAlias(tableAlias, fieldForQuery);
-						String fromForField = null;
-						if (FilterForFieldReader.isAnnotatedField(filterField, example)) {
-							String referencedField = FilterForFieldReader.getValue(filterField, example);
-							fromForField = getFromForField(tableAlias, tableAlias + "." + referencedField);
-						} else {
-							fromForField = getFromForField(tableAlias, tableAlias + "." + filterField);
-						}
-						if (!from.contains(fromForField)) {
-							LOGGER.debug("From does not contains: " + fromForField);
-							from += fromForField;
-						}
-						fieldForQuery = this.getLastField(fieldForQuery);
-						LOGGER.debug("FROM: " + from);
-						if(where.equals("")){
-							where += " where " + UtilsService.getClauseCondition(lastTableAlias, fieldForQuery, condition,
-									nameForParameter, null);
-						}else{
-							where += UtilsService.getClauseCondition(lastTableAlias, fieldForQuery, condition,
-									nameForParameter, filter.getFilterAddCondition());
-						}
-						if (nameForParameter != null) {
-							Object fixedValueForQuery = UtilsService.fixValueForQuery(valueForQuery, condition);
-							parameters.put(nameForParameter, fixedValueForQuery);
+					if(type.getValue() instanceof FilterMap){
+						// TODO:
+					}else{
+						HqlConditions condition = (HqlConditions) type.getValue();
+						String filterField = type.getKey();
+						String fieldForQuery = UtilsService.getFieldForQuery(example, filterField);
+						Object valueForQuery = Utils.getFieldValue(example, filterField, true);
+						boolean applyValue = UtilsService.hasToApplyConditionForQuery(condition, valueForQuery);
+						if (applyValue) {
+							String nameForParameter = UtilsService.getNameForParameter(filterField, condition);
+							String lastTableAlias = this.getLastTableAlias(tableAlias, fieldForQuery);
+							String fromForField = null;
+							if (FilterForFieldReader.isAnnotatedField(filterField, example)) {
+								String referencedField = FilterForFieldReader.getValue(filterField, example);
+								fromForField = getFromForField(tableAlias, tableAlias + "." + referencedField);
+							} else {
+								fromForField = getFromForField(tableAlias, tableAlias + "." + filterField);
+							}
+							if (!from.contains(fromForField)) {
+								LOGGER.debug("From does not contains: " + fromForField);
+								from += fromForField;
+							}
+							fieldForQuery = this.getLastField(fieldForQuery);
+							LOGGER.debug("FROM: " + from);
+							if(where.equals("")){
+								where += " where " + UtilsService.getClauseCondition(lastTableAlias, fieldForQuery, condition,
+										nameForParameter, null);
+							}else{
+								where += UtilsService.getClauseCondition(lastTableAlias, fieldForQuery, condition,
+										nameForParameter, filter.getFilterAddCondition());
+							}
+							if (nameForParameter != null) {
+								Object fixedValueForQuery = UtilsService.fixValueForQuery(valueForQuery, condition);
+								parameters.put(nameForParameter, fixedValueForQuery);
+							}
 						}
 					}
 				}
