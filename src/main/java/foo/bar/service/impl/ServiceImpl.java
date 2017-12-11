@@ -287,7 +287,7 @@ public abstract class ServiceImpl<VO extends BasicVO<?>> implements Service<VO> 
 
 		Map<String, Object> parameters = new HashMap<>();
 		String tableAlias = getTableAliasForClass(voClass);
-		String where = " where 1=1 ";
+		String where = "";
 		try {
 			if (filter != null) {
 				for (Iterator<Entry<String, HqlConditions>> iterator = filter.entrySet().iterator(); iterator
@@ -314,8 +314,13 @@ public abstract class ServiceImpl<VO extends BasicVO<?>> implements Service<VO> 
 						}
 						fieldForQuery = getLastField(fieldForQuery);
 						LOGGER.debug("FROM: " + from);
-						where += UtilsService.getClauseCondition(lastTableAlias, fieldForQuery, condition,
-								nameForParameter, filter.getFilterAddCondition());
+						if(where.equals("")){
+							where += " where " + UtilsService.getClauseCondition(lastTableAlias, fieldForQuery, condition,
+									nameForParameter, null);
+						}else{
+							where += UtilsService.getClauseCondition(lastTableAlias, fieldForQuery, condition,
+									nameForParameter, filter.getFilterAddCondition());
+						}
 						if (nameForParameter != null) {
 							Object fixedValueForQuery = UtilsService.fixValueForQuery(valueForQuery, condition);
 							parameters.put(nameForParameter, fixedValueForQuery);

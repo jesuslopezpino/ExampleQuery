@@ -13,7 +13,8 @@ public class UtilsService {
 	private static Logger LOGGER = Logger.getLogger(UtilsService.class);
 
 	public static String getFieldForQuery(Object example, String filterField)
-			throws NoSuchFieldException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException {
+			throws NoSuchFieldException, SecurityException, IllegalAccessException, IllegalArgumentException,
+			InvocationTargetException, NoSuchMethodException {
 		String fieldForQuery;
 		// first check if the field is @FilterForField or not
 		boolean isFilterForField = FilterForFieldReader.isAnnotatedField(filterField, example);
@@ -72,23 +73,29 @@ public class UtilsService {
 		LOGGER.debug("nameForParameter: " + nameForParameter);
 		LOGGER.debug("filterAddCondition: " + filterAddCondition);
 		String result = null;
+		String addCondition = null;
+		if (filterAddCondition == null) {
+			addCondition = " ";
+		} else {
+			addCondition = filterAddCondition.toString();
+		}
 		switch (condition) {
 		case LIKE:
-			result = getClauseLike(tableName, filterField, condition, nameForParameter, filterAddCondition);
+			result = getClauseLike(tableName, filterField, condition, nameForParameter, addCondition);
 			break;
 		case LIKE_IGNORE_CASE:
-			result = getClauseLikeIgnoreCase(tableName, filterField, condition, nameForParameter, filterAddCondition);
+			result = getClauseLikeIgnoreCase(tableName, filterField, condition, nameForParameter, addCondition);
 			break;
 		case IS_NOT_EMPTY:
 		case IS_NOT_NULL:
 		case IS_EMPTY:
 		case IS_NULL:
-			result = getClauseIsNullOrNotNull(tableName, filterField, condition, filterAddCondition);
+			result = getClauseIsNullOrNotNull(tableName, filterField, condition, addCondition);
 			break;
 		// case HqlConditions.BETWEEN:
 		case IN:
 		case NOT_IN:
-			result = getClauseIn(tableName, filterField, condition, nameForParameter, filterAddCondition);
+			result = getClauseIn(tableName, filterField, condition, nameForParameter, addCondition);
 			break;
 		case EQUALS:
 		case GREATER_EQUALS:
@@ -96,7 +103,7 @@ public class UtilsService {
 		case LOWER_EQUALS:
 		case LOWER_THAN:
 		case NOT_EQUALS:
-			result = getClauseConditionCase(tableName, filterField, condition, nameForParameter, filterAddCondition);
+			result = getClauseConditionCase(tableName, filterField, condition, nameForParameter, addCondition);
 			break;
 		// case HqlConditions.MEMBER_OF:
 		// case HqlConditions.NOT_MEMBER_OF:
@@ -107,26 +114,30 @@ public class UtilsService {
 	}
 
 	private static String getClauseIn(String tableName, String filterField, HqlConditions condition,
-			String nameForParameter, FilterAddCondition filterAddCondition) {
-		return filterAddCondition + "(" + tableName + "." + filterField + " " + condition + " (:" + nameForParameter + "))";
+			String nameForParameter, String filterAddCondition) {
+		return filterAddCondition + "(" + tableName + "." + filterField + " " + condition + " (:" + nameForParameter
+				+ "))";
 	}
 
-	public static String getClauseIsNullOrNotNull(String tableName, String filterField, HqlConditions condition, FilterAddCondition filterAddCondition) {
+	public static String getClauseIsNullOrNotNull(String tableName, String filterField, HqlConditions condition,
+			String filterAddCondition) {
 		return filterAddCondition + "(" + tableName + "." + filterField + " " + condition + ")";
 	}
 
 	public static String getClauseLike(String tableName, String filterField, final HqlConditions condition,
-			String nameForParameter, FilterAddCondition filterAddCondition) {
-		return filterAddCondition + "(" + tableName + "." + filterField + " " + condition + " :" + nameForParameter + ")";
+			String nameForParameter, String filterAddCondition) {
+		return filterAddCondition + "(" + tableName + "." + filterField + " " + condition + " :" + nameForParameter
+				+ ")";
 	}
 
 	public static String getClauseLikeIgnoreCase(String tableName, String filterField, final HqlConditions condition,
-			String nameForParameter, FilterAddCondition filterAddCondition) {
-		return filterAddCondition + "(UPPER(" + tableName + "." + filterField + ")" + condition + ":" + nameForParameter + ")";
+			String nameForParameter, String filterAddCondition) {
+		return filterAddCondition + "(UPPER(" + tableName + "." + filterField + ")" + condition + ":" + nameForParameter
+				+ ")";
 	}
 
 	private static String getClauseConditionCase(String tableName, String filterField, final HqlConditions condition,
-			String nameForParameter, FilterAddCondition filterAddCondition) {
+			String nameForParameter, String filterAddCondition) {
 		return filterAddCondition + "(" + tableName + "." + filterField + "" + condition + ":" + nameForParameter + ")";
 	}
 
@@ -169,7 +180,7 @@ public class UtilsService {
 		return field.replaceAll("\\.", "_");
 	}
 
-	public static String getFieldFromAlias(String alias){
+	public static String getFieldFromAlias(String alias) {
 		return alias.replaceAll("_", "\\.");
 	}
 }

@@ -82,20 +82,19 @@ To use ExampleQuery in your project you need to include the dependency at your p
 
 #### Setting up entities
 
-To be able to use ExampleQuery service your entity classes must extends abstract `BasicVO<PK>` and implements those constructors
+To be able to use ExampleQuery service your entity classes must extends abstract `BasicVO<PK>`.
 
 ```java
 @Entity
 @Table(name = "PRODUCT")
 public class Product extends BasicVO<Long> {
 
-	// Those constants aren't requiered at all, but I found it very usefull
-	// to define a constant that represent a field of the class because we
-	// will use strings to refer to filter and select fields selection
-	public static final String NAME = "name"; 
+```
 
-	public static final String DESCRIPTION = "description";
-	
+Those constructors must be included.
+
+```java
+	...
 	public Product() {
 		super();
 	}
@@ -103,6 +102,20 @@ public class Product extends BasicVO<Long> {
 	public Product(Map<String, Object> mapValues) {
 		super(mapValues);
 	}
+	...
+```
+
+Now we can define the rest of the entity as usual.
+
+```java
+	...
+	// Those constants aren't requiered at all, but I found it very usefull
+	// to define a constant that represent a field of the class because we
+	// will use strings to refer to filter and select fields selection
+	public static final String NAME = "name"; 
+
+	public static final String DESCRIPTION = "description";
+	
 	
 	@Id
 	@GeneratedValue(generator = "SQ_PRODUCT")
@@ -264,7 +277,6 @@ select
 from 
 	foo.bar.domain.Product product 
 where 
-	1=1  and 
 	(product.name = :name) and 
 	(UPPER(product.description) LIKE :description)
 ```
@@ -332,7 +344,6 @@ select
 from 
 	foo.bar.domain.Customer customer 
 	where 
-	1=1  and 
 	(customer.birthDate >= :birthDateStart) and
 	(customer.birthDate < :birthDateEnd)
 ```
@@ -386,7 +397,6 @@ from
 	join customerOrders.productsStock productsStock  
 	join productsStock.product product  
 where 
-	1=1  and 
 	(UPPER(product.name) LIKE :customerOrdersProductName)
 ```
 	
@@ -433,7 +443,6 @@ from
 	foo.bar.domain.CustomerOrder customerOrder 
 	join customerOrder.customer customer  
 where 
-	1=1  and 
 	(customer.name != :customer_name)
 
 ```
