@@ -10,12 +10,12 @@ ExampleQuery is a tool library where main utility is the ability of easily execu
 
 
 * [Getting Started](#getting-started)
-* [Prerequisites](#prerequisites)
-* [Installing](#installing)
-* [Usage](#usage)
-* [Setting up project](#setting-up-project)
-* [Setting up entities](#setting-up-entities)
-* [Setting up services](#setting-up-services)
+	* [Prerequisites](#prerequisites)
+	* [Installing](#installing)
+	* [Usage](#usage)
+		* [Setting up project](#setting-up-project)
+		* [Setting up entities](#setting-up-entities)
+		* [Setting up services](#setting-up-services)
 * [Setting up filters](#setting-up-filters)
 * [HqlConditions](#hqlconditions)
 * [First usage: findByExample](#first-usage-findbyexample)
@@ -53,9 +53,9 @@ git clone https://github.com/jesuslopezpino/ExampleQuery.git
 mvn install
 ```
 
-## Usage
+### Usage
 
-### Setting up project
+#### Setting up project
 
 To use ExampleQuery in your project you need to include the dependency at your pom.xml file:
 
@@ -71,7 +71,7 @@ To use ExampleQuery in your project you need to include the dependency at your p
 </dependencies>
 ```
 
-### Setting up entities
+#### Setting up entities
 
 To be able to use ExampleQuery service your entity classes must extends abstract `BasicVO<PK>.`
 
@@ -122,7 +122,7 @@ public abstract void setPk(PK pk);
 This is like that because we want that `@Id` annotation will be set in pk field that user must define in order to use sequence generator annotation instead of creating a field at abstract class.
 
 
-### Setting up services
+#### Setting up services
 
 To create a ExampleQuery service instance you just need to create a class that extends the abstract class `ServiceImpl<VO extends BasicVO>` with an entity class that extends `BasicVO` as type parameter.
 
