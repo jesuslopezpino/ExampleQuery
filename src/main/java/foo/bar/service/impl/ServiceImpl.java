@@ -328,14 +328,14 @@ public abstract class ServiceImpl<VO extends BasicVO<?>> implements Service<VO> 
 								LOGGER.debug("From does not contains: " + fromForField);
 								from += fromForField;
 							}
-							fieldForQuery = this.getLastField(fieldForQuery);
+							String lastField = this.getLastField(fieldForQuery);
 							LOGGER.debug("FROM: " + from);
 							String nameForParameter = UtilsService.getNameForParameter(filterField, condition);
 							if(where.equals("")){
-								where += " where " + UtilsService.getClauseCondition(lastTableAlias, fieldForQuery, condition,
+								where += " where " + UtilsService.getClauseCondition(lastTableAlias, lastField, condition,
 										nameForParameter, null);
 							}else{
-								where += UtilsService.getClauseCondition(lastTableAlias, fieldForQuery, condition,
+								where += UtilsService.getClauseCondition(lastTableAlias, lastField, condition,
 										nameForParameter, filter.getFilterAddCondition());
 							}
 							if (nameForParameter != null) {
