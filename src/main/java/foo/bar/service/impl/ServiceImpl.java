@@ -27,6 +27,7 @@ import foo.bar.exceptions.UniqueException;
 import foo.bar.filter.FilterMap;
 import foo.bar.service.Service;
 import foo.bar.service.utils.HqlConditions;
+import foo.bar.service.utils.QueryBuilderHelper;
 import foo.bar.service.utils.UtilsService;
 import foo.bar.utils.Utils;
 
@@ -300,13 +301,13 @@ public abstract class ServiceImpl<VO extends BasicVO<?>> implements Service<VO> 
 
 		Map<String, Object> parameters = new HashMap<>();
 		String tableAlias = this.getTableAliasForClass(this.voClass);
-//		String where = "";
 		try {
 			if (filter != null) {
 				for (Iterator<Entry<String, Object>> iterator = filter.getMap().entrySet().iterator(); iterator
 						.hasNext();) {
 					Entry<String, Object> type = iterator.next();
 					if(type.getValue() instanceof FilterMap){
+						FilterMap filterMap = (FilterMap) type.getValue();
 						// TODO:
 					}else{
 						HqlConditions condition = (HqlConditions) type.getValue();
@@ -326,9 +327,10 @@ public abstract class ServiceImpl<VO extends BasicVO<?>> implements Service<VO> 
 				}
 			}
 			String hqlString = select + from + where;
+			QueryBuilderHelper builderHelper = new QueryBuilderHelper(hqlString, parameters);
 			LOGGER.debug("ExampleQuery: " + hqlString);
-			Query query = this.entityManager.createQuery(hqlString);
-			this.setQueryParams(query, parameters);
+			Query query = this.entityManager.createQuery(builderHelper.getHqlString());
+			this.setQueryParams(query, builderHelper.getParameters());
 			return query;
 		} catch (NoSuchFieldException | SecurityException | IllegalAccessException | IllegalArgumentException
 				| InvocationTargetException | NoSuchMethodException e) {
