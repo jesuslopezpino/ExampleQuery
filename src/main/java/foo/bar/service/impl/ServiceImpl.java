@@ -313,6 +313,7 @@ public abstract class ServiceImpl<VO extends BasicVO<?>> implements Service<VO> 
 		QueryBuilderHelper builderHelper = new QueryBuilderHelper(select, from, where, parameters);
 		// try {
 		builderHelper = this.buildQueryForFilterMap(example, filter, tableAlias, builderHelper);
+		LOGGER.info("HQL STRING: " + builderHelper.getHqlString());
 		Query query = this.entityManager.createQuery(builderHelper.getHqlString());
 		this.setQueryParams(query, builderHelper.getParameters());
 		return query;
@@ -331,14 +332,35 @@ public abstract class ServiceImpl<VO extends BasicVO<?>> implements Service<VO> 
 	protected QueryBuilderHelper buildQueryForFilterMap(VO example, FilterMap filter, String tableAlias,
 			QueryBuilderHelper builderHelper) throws IllegalAccessException, InvocationTargetException,
 					NoSuchMethodException, NoSuchFieldException {
+		QueryBuilderHelper result = new QueryBuilderHelper(builderHelper.getSelect(), builderHelper.getFrom(),
+				builderHelper.getWhere(), builderHelper.getParameters());
 		if (filter != null) {
 			for (Iterator<Entry<String, Object>> iterator = filter.getMap().entrySet().iterator(); iterator
 					.hasNext();) {
 				Entry<String, Object> type = iterator.next();
 				if (type.getValue() instanceof FilterMap) {
 					FilterMap filterMap = (FilterMap) type.getValue();
-					if (filter.getMap().size() == 0) {
-
+					if (filterMap.getMap().size() == 0) {
+						LOGGER.info("NESTED FILTER MAP EMPTY");
+					} else {
+						LOGGER.info("initial result: " + result);
+						QueryBuilderHelper nestedBuilderHelper = new QueryBuilderHelper(result.getSelect(),
+								result.getFrom(), "", result.getParameters());
+						nestedBuilderHelper = this.buildQueryForFilterMap(example, filterMap, tableAlias, nestedBuilderHelper);
+						LOGGER.info("nestedBuilderHelper: " + nestedBuilderHelper);
+						if (StringUtils.isNotBlank(nestedBuilderHelper.getWhere())) {
+							String nestedWhere = null;
+							if (StringUtils.isBlank(result.getWhere())) {
+								nestedWhere = "(" + nestedBuilderHelper.getWhere() + ") ";
+							} else {
+								nestedWhere = result.getWhere() + " " + filter.getFilterAddCondition() + " ("
+										+ nestedBuilderHelper.getWhere() + ") ";
+							}
+							LOGGER.info("nestedWhere: " + nestedWhere);
+							result.setFrom(nestedBuilderHelper.getFrom());
+							result.setWhere(nestedWhere);
+							result.getParameters().putAll(nestedBuilderHelper.getParameters());
+						}
 					}
 				} else {
 					HqlConditions condition = (HqlConditions) type.getValue();
@@ -348,19 +370,18 @@ public abstract class ServiceImpl<VO extends BasicVO<?>> implements Service<VO> 
 					if (applyValue) {
 						String fieldForQuery = UtilsService.getFieldForQuery(example, filterField);
 						String lastTableAlias = this.getTableAliasForField(fieldForQuery);
-						builderHelper.setFrom(this.applyFieldToForm(example, builderHelper.getFrom(), tableAlias,
-								filterField, lastTableAlias));
+						result.setFrom(this.applyFieldToForm(example, result.getFrom(), tableAlias, filterField,
+								lastTableAlias));
 						String nameForParameter = UtilsService.getNameForParameter(filterField, condition);
-						builderHelper.setWhere(this.applyFieldToWhere(filter, builderHelper.getWhere(), condition,
-								fieldForQuery, lastTableAlias, nameForParameter));
-						this.applyFieldToParameters(builderHelper.getParameters(), condition, valueForQuery,
-								nameForParameter);
+						result.setWhere(this.applyFieldToWhere(filter, result.getWhere(), condition, fieldForQuery,
+								lastTableAlias, nameForParameter));
+						this.applyFieldToParameters(result.getParameters(), condition, valueForQuery, nameForParameter);
 					}
 				}
 			}
 		}
-		LOGGER.debug("ExampleQuery: " + builderHelper.getHqlString());
-		return builderHelper;
+		LOGGER.debug("ExampleQuery: " + result.getHqlString());
+		return result;
 	}
 
 	protected void applyFieldToParameters(Map<String, Object> parameters, HqlConditions condition, Object valueForQuery,
@@ -375,8 +396,7 @@ public abstract class ServiceImpl<VO extends BasicVO<?>> implements Service<VO> 
 			String lastTableAlias, String nameForParameter) {
 		String lastField = this.getLastField(fieldForQuery);
 		if (where.equals("")) {
-			where += " where "
-					+ UtilsService.getClauseCondition(lastTableAlias, lastField, condition, nameForParameter, null);
+			where += UtilsService.getClauseCondition(lastTableAlias, lastField, condition, nameForParameter, null);
 		} else {
 			where += UtilsService.getClauseCondition(lastTableAlias, lastField, condition, nameForParameter,
 					filter.getFilterAddCondition());

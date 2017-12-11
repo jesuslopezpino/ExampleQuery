@@ -11,6 +11,7 @@ import org.apache.log4j.Logger;
 
 import foo.bar.domain.Product;
 import foo.bar.exceptions.UniqueException;
+import foo.bar.filter.FilterAddCondition;
 import foo.bar.filter.FilterMap;
 import foo.bar.service.impl.ProductServiceImpl;
 import foo.bar.service.utils.HqlConditions;
@@ -74,14 +75,18 @@ public class GivenProduct extends Given<Product, ProductServiceImpl> {
 		FilterMap filter = new FilterMap();
 
 		// example 1
-		filter.put(Product.NAME, HqlConditions.LIKE_IGNORE_CASE);
+		// filter.put(Product.NAME, HqlConditions.LIKE_IGNORE_CASE);
+		FilterMap nestedFilter = new FilterMap(FilterAddCondition.OR);
+		nestedFilter.put(Product.NAME, HqlConditions.EQUALS);
+		nestedFilter.put(Product.DESCRIPTION, HqlConditions.EQUALS);
+		filter.put(nestedFilter);
 
 		// example 2
-		filter.put(Product.DESCRIPTION, HqlConditions.LIKE_IGNORE_CASE);
-
-		// example 3
-		filter.put(Product.PK_LIST, HqlConditions.NOT_IN);
-
+		// filter.put(Product.PK_LIST, HqlConditions.NOT_IN);
+		FilterMap nestedFilter2 = new FilterMap(FilterAddCondition.AND);
+		nestedFilter2.put(Product.PK_LIST, HqlConditions.NOT_IN);
+		nestedFilter2.put(Product.PK, HqlConditions.NOT_EQUALS);
+		filter.put(nestedFilter2);
 		return filter;
 	}
 
@@ -90,18 +95,24 @@ public class GivenProduct extends Given<Product, ProductServiceImpl> {
 
 		Product example1 = new Product();
 		example1.setName("Apple");
+		example1.setDescription("fruit");
 
 		Product example2 = new Product();
-		example2.setDescription("fruit");
+		example2.setPk(888888L);
+		List<Long> notList = new ArrayList<>();
+		notList.add(99999L);
+		notList.add(99998L);
+		notList.add(99997L);
+		example2.setPkList(notList);
 
 		Product example3 = new Product();
-		List<Long> notList = new ArrayList<>();
-		notList.add(9L);
-		notList.add(99L);
-		notList.add(999L);
-		example3.setPkList(notList);
-
-		Product[] examples = { example1, example2, example3 };
+		example3.setName(example1.getName());
+		example3.setDescription(example1.getDescription());
+		example3.setPk(example2.getPk());
+		example3.setPkList(example2.getPkList());
+		Product[] examples = { 
+//				example1, example2, 
+				example3 };
 		return examples;
 	}
 

@@ -2,6 +2,8 @@ package foo.bar.service.utils;
 
 import java.util.Map;
 
+import org.apache.commons.lang3.StringUtils;
+
 public class QueryBuilderHelper {
 
 	private String select;
@@ -53,7 +55,15 @@ public class QueryBuilderHelper {
 	}
 
 	public String getHqlString() {
-		return this.select + this.from + this.where;
+		if (StringUtils.isNotBlank(this.where)) {
+			return this.select + this.from + " where " + this.where;
+		} else {
+			return this.select + this.from;
+		}
 	}
 
+	@Override
+	public String toString() {
+		return this.getHqlString();
+	}
 }
