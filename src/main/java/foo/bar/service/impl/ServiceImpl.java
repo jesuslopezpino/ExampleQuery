@@ -261,8 +261,7 @@ public abstract class ServiceImpl<VO extends BasicVO<?>> implements Service<VO> 
 		for (int i = 0; i < fieldsLength; i++) {
 			String field = fields[i];
 			String entityField = this.getLastField(field);
-			String tableAlias = this.getTableAliasForClass(this.voClass);
-			String entityAlias = this.getTableAliasForField(tableAlias, field);
+			String entityAlias = this.getTableAliasForField(field);
 			String fieldAlias = UtilsService.getAliasForField(field);
 			select += entityAlias + "." + entityField + " as " + fieldAlias + "";
 			if (i != lastField - 1) {
@@ -316,7 +315,7 @@ public abstract class ServiceImpl<VO extends BasicVO<?>> implements Service<VO> 
 						Object valueForQuery = Utils.getFieldValue(example, filterField, true);
 						boolean applyValue = UtilsService.hasToApplyConditionForQuery(condition, valueForQuery);
 						if (applyValue) {
-							String lastTableAlias = this.getTableAliasForField(tableAlias, fieldForQuery);
+							String lastTableAlias = this.getTableAliasForField(fieldForQuery);
 							String fromForField = null;
 							if (FilterForFieldReader.isAnnotatedField(filterField, example)) {
 								String referencedField = FilterForFieldReader.getValue(filterField, example);
@@ -368,13 +367,13 @@ public abstract class ServiceImpl<VO extends BasicVO<?>> implements Service<VO> 
 		return entity.getSimpleName().substring(0, 1).toLowerCase() + entity.getSimpleName().substring(1);
 	}
 
-	private String getTableAliasForField(String currentTableAlias, String fieldForQuery) {
+	private String getTableAliasForField(String fieldForQuery) {
 		String result = null;
 		String[] split = fieldForQuery.split("\\.");
 		if (split.length > 1) {
 			result = split[split.length - 2];
 		} else {
-			result = currentTableAlias;
+			result = this.getTableAliasForClass(this.voClass);;
 		}
 		LOGGER.debug("LAST TABLE ALIAS: of " + fieldForQuery + " is " + result);
 		return result;
