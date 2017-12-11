@@ -166,7 +166,7 @@ That's all you need to set up and service of an entity.
 Filters in ExampleQuery are very simple, it is the composition of a *field name* and a *condition*. In this case, a filter is represented by a `Map<String, HqlCondition>` where the key will be the field value (with dot annotation) and the condition that will be applied to the field. In that case, allowed conditions are represented by a java enum `HqlConditions`. Each filter entry that has to be applied will be added with an `AND` to the where clause.
 
 ```java
-Map<String, HqlConditions> filter = new HashMap<>();
+FilterMap filter = new FilterMap();
 filter.put(Product.NAME, HqlConditions.EQUALS);
 filter.put(Product.DESCRIPTION, HqlConditions.LIKE_IGNORE_CASE);
 ```
@@ -222,11 +222,11 @@ public VO findByPk(Object primaryKey);
 
 public VO findCustomByPk(Object primaryKey, String[] fields) throws NoSuchMethodException, InstantiationException, IllegalAccessException, InvocationTargetException;
 
-public int countByExample(VO example, Map<String, HqlConditions> filter) throws ExampleQueryException, InstantiationException;
+public int countByExample(VO example, FilterMap filter) throws ExampleQueryException, InstantiationException;
 
-public List<VO> findByExample(VO example, Map<String, HqlConditions> filter) throws ExampleQueryException, InstantiationException;
+public List<VO> findByExample(VO example, FilterMap filter) throws ExampleQueryException, InstantiationException;
 
-public List<VO> findCustomByExample(VO example, String[] fields, Map<String, HqlConditions> filter) throws ExampleQueryException, NoSuchMethodException, SecurityException, InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException;
+public List<VO> findCustomByExample(VO example, String[] fields, FilterMap filter) throws ExampleQueryException, NoSuchMethodException, SecurityException, InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException;
 
 boolean delete(VO element);
 
@@ -246,11 +246,11 @@ public boolean deleteList(List<VO> list);
 ExampleQuery offers to developer an easy way to perform custom filtered queries, to do this `Service<BasicVO<PK>>` provides three methods to perform these queries:
 
 ```java
-public int countByExample(VO example, Map<String, HqlConditions> filter) throws ExampleQueryException, InstantiationException;
+public int countByExample(VO example, FilterMap filter) throws ExampleQueryException, InstantiationException;
 
-public List<VO> findByExample(VO example, Map<String, HqlConditions> filter) throws ExampleQueryException, InstantiationException;
+public List<VO> findByExample(VO example, FilterMap filter) throws ExampleQueryException, InstantiationException;
 
-public List<VO> findCustomByExample(VO example, String[] fields, Map<String, HqlConditions> filter) throws ExampleQueryException, NoSuchMethodException, SecurityException, InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException;
+public List<VO> findCustomByExample(VO example, String[] fields, FilterMap filter) throws ExampleQueryException, NoSuchMethodException, SecurityException, InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException;
 ```
 
 For first example we want to filter products by 2 conditions, name has to be equals and description will be like in ingnore case.
@@ -258,7 +258,7 @@ For first example we want to filter products by 2 conditions, name has to be equ
 ```java
 ProductService service;
 
-Map<String, HqlConditions> filter = new HashMap<>();
+FilterMap filter = new FilterMap();
 filter.put(Product.NAME, HqlConditions.EQUALS);
 filter.put(Product.DESCRIPTION, HqlConditions.LIKE_IGNORE_CASE);
 		
@@ -325,7 +325,7 @@ public class Customer extends BasicVO<Long> {
 We will set up the values for range at the transient fields.
 
 ```java
-Map<String, HqlConditions> filter = new HashMap<>();
+FilterMap filter = new FilterMap();
 filter.put(Customer.BIRTH_DATE_START, HqlConditions.GREATER_EQUALS);
 filter.put(Customer.BIRTH_DATE_END, HqlConditions.LOWER_THAN);
 
@@ -377,7 +377,7 @@ public class Customer extends BasicVO<Long> {
 We will set up the value of product name at the transient field.
 
 ```java
-Map<String, HqlConditions> filter = new HashMap<>();
+FilterMap filter = new FilterMap();
 filter.put(Customer.ORDERS_PRODUCTS_NAME, HqlConditions.LIKE_IGNORE_CASE);
 
 Customer example = new Customer();
@@ -422,7 +422,7 @@ public class CustomerOrder extends BasicVO<Long> {
 We can built this example:
 
 ```java
-Map<String, HqlConditions> filter = new HashMap<>();
+FilterMap filter = new FilterMap();
 filter.put(CustomerOrder.CUSTOMER + "." + Customer.NAME, HqlConditions.NOT_EQUALS);
 
 CustomerOrder example = new CustomerOrder();
@@ -454,7 +454,7 @@ ExampleQuery offers to developer an easy way to perform custom field selection f
 ```
 public VO findCustomByPk(Object primaryKey, String[] fields);
 
-public List<VO> findCustomByExample(VO example, String[] fields, Map<String, HqlConditions> filter) throws ExampleQueryException, NoSuchMethodException, SecurityException, InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException;
+public List<VO> findCustomByExample(VO example, String[] fields, FilterMap filter) throws ExampleQueryException, NoSuchMethodException, SecurityException, InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException;
 ```
 
 Just filling an String[] variable we will customize the fields that we want to retrieve. Those fields will be represented with an string that will contain the path to the field that we want to include with `"."` working as field path separator. We can see an example:
@@ -587,7 +587,7 @@ public abstract VO[] initExamples() throws UniqueException, InstantiationExcepti
 
 public abstract VO initTestSaveInstance() throws UniqueException, InstantiationException, IllegalAccessException;
 
-public abstract Map<String, HqlConditions> initFilter();
+public abstract FilterMap initFilter();
 
 public abstract Map<String, Object> initEntityFields();
 
