@@ -431,7 +431,6 @@ customer.setName("Jesús");
 example.setCustomer(customer);
 
 List<VO> result = service.findByExample(example, filter); 
-
 ```
 
 That will result in the next query:
@@ -485,10 +484,36 @@ TODO
 TODO
 
 ## findAll
-TODO
+ExampleQuery Service offers and method to find all element in a table.
+```java
+CustomerService service;
+...
+List<Customer> result = service.findAll(); 
+```
+
+That will result in the next query:
+```
+select 
+	customer 
+from 
+	foo.bar.domain.Customer customer
+```
+
 
 ## countAll
-TODO
+ExampleQuery Service offers and method to count all element in a table.
+```java
+CustomerService service;
+...
+int result = service.countAll(); 
+```
+That will result in the next query:
+```
+select 
+	count(*) 
+from 
+	foo.bar.domain.Product
+```
 
 ## delete
 TODO
