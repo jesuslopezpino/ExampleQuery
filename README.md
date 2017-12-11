@@ -19,12 +19,17 @@ ExampleQuery is a tool library where main utility is the ability of easily execu
 * [ExampleQuery Filters](#examplequery-filters)
 	* [HqlConditions](#hqlconditions)
 * [Service](#service)
-* [First usage: findByExample](#first-usage-findbyexample)
-* [Annotation: @FilterForField](#annotation-filterforfield)
-* [@FilterForField: First usage](#filterforfield-first-usage)
-* [@FilterForField: Second usage](#filterforfield-second-usage)
-* [Second usage: Custom fields](#second-usage-custom-fields)
-* [UniqueException](#uniqueexception)
+	* [findByExample](#findbyexample)
+		* [Annotation: @FilterForField](#annotation-filterforfield)
+		* [@FilterForField: First usage](#filterforfield-first-usage)
+		* [@FilterForField: Second usage](#filterforfield-second-usage)
+	* [Second usage: Custom fields](#second-usage-custom-fields)
+	* [findAll](#findall)
+	* [countAll](#countall)
+	* [save](#save)
+	* [delete](#delete)
+	* [update](#update)
+		* [UniqueException](#uniqueexception)
 * [Running the tests](#running-the-tests)
 * [Given abstract class](#given-abstract-class)
 * [Built With](#built-with)
@@ -218,7 +223,7 @@ public List<VO> updateList(List<VO> list) throws UniqueException;
 public boolean deleteList(List<VO> list);
 ```
 
-## First usage: findByExample
+###findByExample
 
 ExampleQuery offers to developer an easy way to perform custom filtered queries, to do this `Service<BasicVO<PK>>` provides three methods to perform these queries:
 
@@ -462,13 +467,25 @@ List<CustomerOrder> result = service.findCustomByPk(1L, fields);
 
 That will result in the next query:
 ```
-
+TODO
 ```
 
-
+## findAll
 TODO
 
-## UniqueException
+## countAll
+TODO
+
+## delete
+TODO
+
+## update
+TODO
+
+## save
+TODO
+	
+### UniqueException
 
 ExampleQuery returns `UniqueException` when a unique constraint is violated, this is because the rely on that constraint should be part of database. To consider that behavior part as save action exception, it will be easier for developer to identify that exception and the involved fields and values. 
 
