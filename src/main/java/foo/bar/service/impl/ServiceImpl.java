@@ -340,9 +340,7 @@ public abstract class ServiceImpl<VO extends BasicVO<?>> implements Service<VO> 
 				Entry<String, Object> type = iterator.next();
 				if (type.getValue() instanceof FilterMap) {
 					FilterMap filterMap = (FilterMap) type.getValue();
-					if (filterMap.getMap().size() == 0) {
-						LOGGER.info("NESTED FILTER MAP EMPTY");
-					} else {
+					if (filterMap.getMap().size() > 0) {
 						LOGGER.info("initial result: " + result);
 						QueryBuilderHelper nestedBuilderHelper = new QueryBuilderHelper(result.getSelect(),
 								result.getFrom(), "", result.getParameters());
