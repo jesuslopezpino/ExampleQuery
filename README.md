@@ -213,9 +213,7 @@ public int countByExample(VO example, Map<String, HqlConditions> filter) throws 
 
 public List<VO> findByExample(VO example, Map<String, HqlConditions> filter) throws ExampleQueryException, InstantiationException;
 
-public List<VO> findCustomByExample(VO example, String[] fields, Map<String, HqlConditions> filter)
-		throws ExampleQueryException, NoSuchMethodException, SecurityException, InstantiationException,
-		IllegalAccessException, IllegalArgumentException, InvocationTargetException;
+public List<VO> findCustomByExample(VO example, String[] fields, Map<String, HqlConditions> filter) throws ExampleQueryException, NoSuchMethodException, SecurityException, InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException;
 
 boolean delete(VO element);
 
@@ -239,9 +237,7 @@ public int countByExample(VO example, Map<String, HqlConditions> filter) throws 
 
 public List<VO> findByExample(VO example, Map<String, HqlConditions> filter) throws ExampleQueryException, InstantiationException;
 
-public List<VO> findCustomByExample(VO example, String[] fields, Map<String, HqlConditions> filter)
-		throws ExampleQueryException, NoSuchMethodException, SecurityException, InstantiationException,
-		IllegalAccessException, IllegalArgumentException, InvocationTargetException;
+public List<VO> findCustomByExample(VO example, String[] fields, Map<String, HqlConditions> filter) throws ExampleQueryException, NoSuchMethodException, SecurityException, InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException;
 ```
 
 For first example we want to filter products by 2 conditions, name has to be equals and description will be like in ingnore case.
@@ -450,9 +446,7 @@ ExampleQuery offers to developer an easy way to perform custom field selection f
 ```
 public VO findCustomByPk(Object primaryKey, String[] fields);
 
-public List<VO> findCustomByExample(VO example, String[] fields, Map<String, HqlConditions> filter)
-		throws ExampleQueryException, NoSuchMethodException, SecurityException, InstantiationException,
-		IllegalAccessException, IllegalArgumentException, InvocationTargetException;
+public List<VO> findCustomByExample(VO example, String[] fields, Map<String, HqlConditions> filter) throws ExampleQueryException, NoSuchMethodException, SecurityException, InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException;
 ```
 
 Just filling an String[] variable we will customize the fields that we want to retrieve. Those fields will be represented with an string that will contain the path to the field that we want to include with `"."` working as field path separator. We can see an example:
