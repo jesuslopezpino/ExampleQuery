@@ -16,8 +16,9 @@ ExampleQuery is a tool library where main utility is the ability of easily execu
 		* [Setting up project](#setting-up-project)
 		* [Setting up entities](#setting-up-entities)
 		* [Setting up services](#setting-up-services)
-* [Setting up filters](#setting-up-filters)
-* [HqlConditions](#hqlconditions)
+* [ExampleQuery Filters](#examplequery-filters)
+	* [HqlConditions](#hqlconditions)
+* [Service](#service)
 * [First usage: findByExample](#first-usage-findbyexample)
 * [Annotation: @FilterForField](#annotation-filterforfield)
 * [@FilterForField: First usage](#filterforfield-first-usage)
@@ -139,7 +140,7 @@ public class ProductServiceImpl extends ServiceImpl<Product> {
 That's all you need to set up and service of an entity.
 
 
-### Setting up filters
+### ExampleQuery Filters
 
 Filters in ExampleQuery are very simple, it is the composition of a *field name* and a *condition*. In this case, a filter is represented by a `Map<String, HqlCondition>` where the key will be the field value (with dot annotation) and the condition that will be applied to the field. In that case, allowed conditions are represented by a java enum `HqlConditions`. Each filter entry that has to be applied will be added with an `AND` to the where clause.
 
@@ -153,7 +154,7 @@ Conditions are applied in two ways, all* or automatic. In automatic mode the con
 
 (* - Not implemented)
 
-### HqlConditions
+#### HqlConditions
 
 `HqlConditions` is an enum that contains the allowed filtering types to use with ExampleQuery. They are basically the most common jpql conditions clause.
 
@@ -183,6 +184,40 @@ public enum HqlConditions {
 	
 }
 ```
+## Service
+
+ExampleQuery provides an abstract interface that also implements that offers most usual usage to deal with a data repository.
+
+```java
+public int countAll() throws InstantiationException, IllegalAccessException, ExampleQueryException;
+
+public List<VO> findAll() throws InstantiationException, IllegalAccessException, ExampleQueryException;
+
+public VO findByPk(Object primaryKey);
+
+public VO findCustomByPk(Object primaryKey, String[] fields) throws NoSuchMethodException, InstantiationException, IllegalAccessException, InvocationTargetException;
+
+public int countByExample(VO example, Map<String, HqlConditions> filter) throws ExampleQueryException, InstantiationException;
+
+public List<VO> findByExample(VO example, Map<String, HqlConditions> filter) throws ExampleQueryException, InstantiationException;
+
+public List<VO> findCustomByExample(VO example, String[] fields, Map<String, HqlConditions> filter)
+		throws ExampleQueryException, NoSuchMethodException, SecurityException, InstantiationException,
+		IllegalAccessException, IllegalArgumentException, InvocationTargetException;
+
+boolean delete(VO element);
+
+public VO save(VO element) throws UniqueException;
+
+public VO update(VO element);
+
+public List<VO> saveList(List<VO> list) throws UniqueException;
+
+public List<VO> updateList(List<VO> list) throws UniqueException;
+
+public boolean deleteList(List<VO> list);
+```
+
 ## First usage: findByExample
 
 ExampleQuery offers to developer an easy way to perform custom filtered queries, to do this `Service<BasicVO<PK>>` provides three methods to perform these queries:
