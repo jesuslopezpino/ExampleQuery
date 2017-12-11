@@ -316,7 +316,6 @@ public abstract class ServiceImpl<VO extends BasicVO<?>> implements Service<VO> 
 						Object valueForQuery = Utils.getFieldValue(example, filterField, true);
 						boolean applyValue = UtilsService.hasToApplyConditionForQuery(condition, valueForQuery);
 						if (applyValue) {
-							String nameForParameter = UtilsService.getNameForParameter(filterField, condition);
 							String lastTableAlias = this.getLastTableAlias(tableAlias, fieldForQuery);
 							String fromForField = null;
 							if (FilterForFieldReader.isAnnotatedField(filterField, example)) {
@@ -331,17 +330,8 @@ public abstract class ServiceImpl<VO extends BasicVO<?>> implements Service<VO> 
 							}
 							fieldForQuery = this.getLastField(fieldForQuery);
 							LOGGER.debug("FROM: " + from);
-							if(where.equals("")){
-								where += " where " + UtilsService.getClauseCondition(lastTableAlias, fieldForQuery, condition,
-										nameForParameter, null);
-							}else{
-								where += UtilsService.getClauseCondition(lastTableAlias, fieldForQuery, condition,
-										nameForParameter, filter.getFilterAddCondition());
-							}
-							if (nameForParameter != null) {
-								Object fixedValueForQuery = UtilsService.fixValueForQuery(valueForQuery, condition);
-								parameters.put(nameForParameter, fixedValueForQuery);
-							}
+							where = this.applyValueForQuery(filter, where, parameters, condition, filterField, fieldForQuery,
+									valueForQuery, lastTableAlias);
 						}
 					}
 				}
@@ -358,6 +348,24 @@ public abstract class ServiceImpl<VO extends BasicVO<?>> implements Service<VO> 
 			throw new ExampleQueryException(e.getMessage());
 		}
 
+	}
+
+	protected String applyValueForQuery(FilterMap filter, String where, Map<String, Object> parameters,
+			HqlConditions condition, String filterField, String fieldForQuery, Object valueForQuery,
+			String lastTableAlias) {
+		String nameForParameter = UtilsService.getNameForParameter(filterField, condition);
+		if(where.equals("")){
+			where += " where " + UtilsService.getClauseCondition(lastTableAlias, fieldForQuery, condition,
+					nameForParameter, null);
+		}else{
+			where += UtilsService.getClauseCondition(lastTableAlias, fieldForQuery, condition,
+					nameForParameter, filter.getFilterAddCondition());
+		}
+		if (nameForParameter != null) {
+			Object fixedValueForQuery = UtilsService.fixValueForQuery(valueForQuery, condition);
+			parameters.put(nameForParameter, fixedValueForQuery);
+		}
+		return where;
 	}
 
 	private String getLastField(String fieldForQuery) {
