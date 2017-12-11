@@ -262,7 +262,7 @@ public abstract class ServiceImpl<VO extends BasicVO<?>> implements Service<VO> 
 			String field = fields[i];
 			String entityField = this.getLastField(field);
 			String tableAlias = this.getTableAliasForClass(this.voClass);
-			String entityAlias = this.getLastTableAlias(tableAlias, field);
+			String entityAlias = this.getTableAliasForField(tableAlias, field);
 			String fieldAlias = UtilsService.getAliasForField(field);
 			select += entityAlias + "." + entityField + " as " + fieldAlias + "";
 			if (i != lastField - 1) {
@@ -316,8 +316,7 @@ public abstract class ServiceImpl<VO extends BasicVO<?>> implements Service<VO> 
 						Object valueForQuery = Utils.getFieldValue(example, filterField, true);
 						boolean applyValue = UtilsService.hasToApplyConditionForQuery(condition, valueForQuery);
 						if (applyValue) {
-							String nameForParameter = UtilsService.getNameForParameter(filterField, condition);
-							String lastTableAlias = this.getLastTableAlias(tableAlias, fieldForQuery);
+							String lastTableAlias = this.getTableAliasForField(tableAlias, fieldForQuery);
 							String fromForField = null;
 							if (FilterForFieldReader.isAnnotatedField(filterField, example)) {
 								String referencedField = FilterForFieldReader.getValue(filterField, example);
@@ -331,6 +330,7 @@ public abstract class ServiceImpl<VO extends BasicVO<?>> implements Service<VO> 
 							}
 							fieldForQuery = this.getLastField(fieldForQuery);
 							LOGGER.debug("FROM: " + from);
+							String nameForParameter = UtilsService.getNameForParameter(filterField, condition);
 							if(where.equals("")){
 								where += " where " + UtilsService.getClauseCondition(lastTableAlias, fieldForQuery, condition,
 										nameForParameter, null);
@@ -368,7 +368,7 @@ public abstract class ServiceImpl<VO extends BasicVO<?>> implements Service<VO> 
 		return entity.getSimpleName().substring(0, 1).toLowerCase() + entity.getSimpleName().substring(1);
 	}
 
-	private String getLastTableAlias(String currentTableAlias, String fieldForQuery) {
+	private String getTableAliasForField(String currentTableAlias, String fieldForQuery) {
 		String result = null;
 		String[] split = fieldForQuery.split("\\.");
 		if (split.length > 1) {
