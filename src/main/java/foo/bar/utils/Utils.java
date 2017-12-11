@@ -165,13 +165,6 @@ public class Utils {
 		return result;
 	}
 
-	// public static boolean isTransientField(String fieldName, Object object)
-	// throws NoSuchFieldException, SecurityException, IllegalAccessException,
-	// IllegalArgumentException,
-	// InvocationTargetException, NoSuchMethodException {
-	// Field field = getFinalField(fieldName, object);
-	// return field.isAnnotationPresent(Transient.class);
-	// }
 	public static Field getFinalField(String fieldName, Object object)
 			throws IllegalAccessException, InvocationTargetException, NoSuchMethodException {
 		return getFinalField(fieldName, object, false);

@@ -46,14 +46,12 @@ public abstract class ServiceImpl<VO extends BasicVO<?>> implements Service<VO> 
 	}
 
 	@Override
-	public List<VO> findAll()
-			throws InstantiationException, IllegalAccessException, ExampleQueryException, IllegalArgumentException,
-			InvocationTargetException, NoSuchMethodException, SecurityException, NoSuchFieldException {
+	public List<VO> findAll() throws ExampleQueryException {
 		return this.findByExample(null, null);
 	}
 
 	@Override
-	public int countAll() throws InstantiationException, IllegalAccessException, ExampleQueryException {
+	public int countAll() throws ExampleQueryException {
 		String hqlString = "select count(*) from " + this.voClass.getName();
 		LOGGER.debug("hqlString: " + hqlString);
 		Long result = (Long) this.entityManager.createQuery(hqlString).getSingleResult();
@@ -66,8 +64,7 @@ public abstract class ServiceImpl<VO extends BasicVO<?>> implements Service<VO> 
 	}
 
 	@Override
-	public VO findCustomByPk(Object primaryKey, String[] fields)
-			throws NoSuchMethodException, InstantiationException, IllegalAccessException, InvocationTargetException {
+	public VO findCustomByPk(Object primaryKey, String[] fields) throws ExampleQueryException {
 		String select = this.createCustomSelect(fields);
 		String from = this.createCustomFrom(fields);
 		String where = " where " + BasicVO.PK + " = :" + BasicVO.PK;
@@ -98,9 +95,7 @@ public abstract class ServiceImpl<VO extends BasicVO<?>> implements Service<VO> 
 	}
 
 	@Override
-	public List<VO> findByExample(VO example, FilterMap filter)
-			throws ExampleQueryException, InstantiationException, IllegalAccessException, IllegalArgumentException,
-			InvocationTargetException, NoSuchMethodException, SecurityException, NoSuchFieldException {
+	public List<VO> findByExample(VO example, FilterMap filter) throws ExampleQueryException {
 		String tableAlias = this.getTableAliasForClass(this.voClass);
 		String select = "select " + tableAlias;
 		String from = " from " + this.voClass.getName() + " " + tableAlias;
@@ -109,9 +104,7 @@ public abstract class ServiceImpl<VO extends BasicVO<?>> implements Service<VO> 
 	}
 
 	@Override
-	public int countByExample(VO example, FilterMap filter)
-			throws ExampleQueryException, InstantiationException, IllegalAccessException, IllegalArgumentException,
-			InvocationTargetException, NoSuchMethodException, SecurityException, NoSuchFieldException {
+	public int countByExample(VO example, FilterMap filter) throws ExampleQueryException {
 		String select = "select count(*) ";
 		String tableAlias = this.getTableAliasForClass(this.voClass);
 		String from = " from " + this.voClass.getName() + " " + tableAlias;
@@ -121,9 +114,7 @@ public abstract class ServiceImpl<VO extends BasicVO<?>> implements Service<VO> 
 	}
 
 	@Override
-	public List<VO> findCustomByExample(VO example, String[] fields, FilterMap filter)
-			throws ExampleQueryException, NoSuchMethodException, SecurityException, InstantiationException,
-			IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchFieldException {
+	public List<VO> findCustomByExample(VO example, String[] fields, FilterMap filter) throws ExampleQueryException {
 		String select = this.createCustomSelect(fields);
 		String from = this.createCustomFrom(fields);
 		Query query = this.createQueryForExample(example, filter, select, from);
@@ -132,8 +123,7 @@ public abstract class ServiceImpl<VO extends BasicVO<?>> implements Service<VO> 
 		return result;
 	}
 
-	protected List<VO> converToEntityList(List<Map<String, Object>> list)
-			throws NoSuchMethodException, InstantiationException, IllegalAccessException, InvocationTargetException {
+	protected List<VO> converToEntityList(List<Map<String, Object>> list) throws ExampleQueryException {
 		List<VO> result = new ArrayList<>();
 		for (Map<String, Object> mapValues : list) {
 			VO entity = this.convertToEntity(mapValues);
@@ -142,11 +132,15 @@ public abstract class ServiceImpl<VO extends BasicVO<?>> implements Service<VO> 
 		return result;
 	}
 
-	protected VO convertToEntity(Map<String, Object> mapValues)
-			throws NoSuchMethodException, InstantiationException, IllegalAccessException, InvocationTargetException {
-		Constructor constructor = this.voClass.getConstructor(Map.class);
-		VO entity = (VO) constructor.newInstance(mapValues);
-		return entity;
+	protected VO convertToEntity(Map<String, Object> mapValues) throws ExampleQueryException {
+		try {
+			Constructor constructor = this.voClass.getConstructor(Map.class);
+			VO entity = (VO) constructor.newInstance(mapValues);
+			return entity;
+		} catch (NoSuchMethodException | SecurityException | InstantiationException | IllegalAccessException
+				| IllegalArgumentException | InvocationTargetException e) {
+			throw new ExampleQueryException(e);
+		}
 	}
 
 	@Override
@@ -201,7 +195,8 @@ public abstract class ServiceImpl<VO extends BasicVO<?>> implements Service<VO> 
 			this.entityManager.flush();
 		} catch (Exception e) {
 			String uniqueConstraintViolation = this.getConstraintNameViolation(e);
-			if (StringUtils.isNotBlank(uniqueConstraintViolation) && this.isUniqueConstraint(uniqueConstraintViolation)) {
+			if (StringUtils.isNotBlank(uniqueConstraintViolation)
+					&& this.isUniqueConstraint(uniqueConstraintViolation)) {
 				this.throwUniqueException(entity, uniqueConstraintViolation);
 			} else {
 				throw e;
@@ -248,7 +243,8 @@ public abstract class ServiceImpl<VO extends BasicVO<?>> implements Service<VO> 
 			this.entityManager.flush();
 		} catch (Exception e) {
 			String uniqueConstraintViolation = this.getConstraintNameViolation(e);
-			if (StringUtils.isNotBlank(uniqueConstraintViolation) && this.isUniqueConstraint(uniqueConstraintViolation)) {
+			if (StringUtils.isNotBlank(uniqueConstraintViolation)
+					&& this.isUniqueConstraint(uniqueConstraintViolation)) {
 				this.throwUniqueException(entity, uniqueConstraintViolation);
 			} else {
 				throw e;
@@ -304,14 +300,12 @@ public abstract class ServiceImpl<VO extends BasicVO<?>> implements Service<VO> 
 	}
 
 	private Query createQueryForExample(VO example, FilterMap filter, String select, String from)
-			throws ExampleQueryException, InstantiationException, IllegalAccessException, IllegalArgumentException,
-			InvocationTargetException, NoSuchMethodException, SecurityException, NoSuchFieldException {
+			throws ExampleQueryException {
 		return this.createQueryForExample(example, filter, select, from, "");
 	}
 
 	private Query createQueryForExample(VO example, FilterMap filter, String select, String from, String where)
-			throws ExampleQueryException, InstantiationException, IllegalAccessException, IllegalArgumentException,
-			InvocationTargetException, NoSuchMethodException, SecurityException, NoSuchFieldException {
+			throws ExampleQueryException {
 		String tableAlias = this.getTableAliasForClass(this.voClass);
 		Map<String, Object> parameters = new HashMap<>();
 		QueryBuilderHelper builderHelper = new QueryBuilderHelper(select, from, where, parameters);
@@ -324,8 +318,7 @@ public abstract class ServiceImpl<VO extends BasicVO<?>> implements Service<VO> 
 	}
 
 	protected QueryBuilderHelper buildQueryForFilterMap(VO example, FilterMap filter, String tableAlias,
-			QueryBuilderHelper builderHelper) throws IllegalAccessException, InvocationTargetException,
-					NoSuchMethodException, NoSuchFieldException {
+			QueryBuilderHelper builderHelper) throws ExampleQueryException {
 		QueryBuilderHelper result = new QueryBuilderHelper(builderHelper.getSelect(), builderHelper.getFrom(),
 				builderHelper.getWhere(), builderHelper.getParameters());
 		if (filter != null) {
@@ -358,17 +351,23 @@ public abstract class ServiceImpl<VO extends BasicVO<?>> implements Service<VO> 
 				} else {
 					HqlConditions condition = (HqlConditions) type.getValue();
 					String filterField = type.getKey();
-					Object valueForQuery = Utils.getFieldValue(example, filterField, true);
-					boolean applyValue = UtilsService.hasToApplyConditionForQuery(condition, valueForQuery);
-					if (applyValue) {
-						String fieldForQuery = UtilsService.getFieldForQuery(example, filterField);
-						String lastTableAlias = this.getTableAliasForField(fieldForQuery);
-						result.setFrom(this.applyFieldToForm(example, result.getFrom(), tableAlias, filterField,
-								lastTableAlias));
-						String nameForParameter = UtilsService.getNameForParameter(filterField, condition);
-						result.setWhere(this.applyFieldToWhere(filter, result.getWhere(), condition, fieldForQuery,
-								lastTableAlias, nameForParameter));
-						this.applyFieldToParameters(result.getParameters(), condition, valueForQuery, nameForParameter);
+					try {
+						Object valueForQuery = Utils.getFieldValue(example, filterField, true);
+						boolean applyValue = UtilsService.hasToApplyConditionForQuery(condition, valueForQuery);
+						if (applyValue) {
+							String fieldForQuery = UtilsService.getFieldForQuery(example, filterField);
+							String lastTableAlias = this.getTableAliasForField(fieldForQuery);
+							result.setFrom(this.applyFieldToForm(example, result.getFrom(), tableAlias, filterField,
+									lastTableAlias));
+							String nameForParameter = UtilsService.getNameForParameter(filterField, condition);
+							result.setWhere(this.applyFieldToWhere(filter, result.getWhere(), condition, fieldForQuery,
+									lastTableAlias, nameForParameter));
+							this.applyFieldToParameters(result.getParameters(), condition, valueForQuery,
+									nameForParameter);
+						}
+					} catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException
+							| NoSuchMethodException | SecurityException | NoSuchFieldException e) {
+						throw new ExampleQueryException(e);
 					}
 				}
 			}
@@ -398,21 +397,25 @@ public abstract class ServiceImpl<VO extends BasicVO<?>> implements Service<VO> 
 	}
 
 	protected String applyFieldToForm(VO example, String from, String tableAlias, String filterField,
-			String lastTableAlias) throws NoSuchFieldException, IllegalAccessException, InvocationTargetException,
-					NoSuchMethodException {
+			String lastTableAlias) throws ExampleQueryException {
 		String fromForField = null;
-		if (FilterForFieldReader.isAnnotatedField(filterField, example)) {
-			String referencedField = FilterForFieldReader.getValue(filterField, example);
-			fromForField = getFromForField(tableAlias, lastTableAlias + "." + referencedField);
-		} else {
-			fromForField = getFromForField(tableAlias, lastTableAlias + "." + filterField);
+		try {
+			if (FilterForFieldReader.isAnnotatedField(filterField, example)) {
+				String referencedField = FilterForFieldReader.getValue(filterField, example);
+				fromForField = getFromForField(tableAlias, lastTableAlias + "." + referencedField);
+			} else {
+				fromForField = getFromForField(tableAlias, lastTableAlias + "." + filterField);
+			}
+			if (!from.contains(fromForField)) {
+				LOGGER.debug("From does not contains: " + fromForField);
+				from += fromForField;
+			}
+			LOGGER.debug("FROM: " + from);
+			return from;
+		} catch (NoSuchFieldException | SecurityException | IllegalAccessException | InvocationTargetException
+				| NoSuchMethodException e) {
+			throw new ExampleQueryException(e);
 		}
-		if (!from.contains(fromForField)) {
-			LOGGER.debug("From does not contains: " + fromForField);
-			from += fromForField;
-		}
-		LOGGER.debug("FROM: " + from);
-		return from;
 	}
 
 	private String getLastField(String fieldForQuery) {

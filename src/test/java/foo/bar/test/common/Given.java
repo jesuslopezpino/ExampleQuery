@@ -122,8 +122,7 @@ public abstract class Given<VO extends BasicVO<?>, ServiceVO extends ServiceImpl
 			this.service = (ServiceVO) this.serviceVoClass.newInstance();
 			this.service.setEntityManager(entityManager);
 		} catch (InstantiationException | IllegalAccessException e) {
-			throw new ExampleQueryException("Fail at Given class: " + this.getClass().getName()
-					+ " trying to instantiate " + this.serviceVoClass.getName());
+			throw new ExampleQueryException(e);
 		}
 	}
 }
