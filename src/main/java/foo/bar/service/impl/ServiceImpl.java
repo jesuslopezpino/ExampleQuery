@@ -45,8 +45,7 @@ public abstract class ServiceImpl<VO extends BasicVO<?>> implements Service<VO> 
 	}
 
 	public List<VO> findAll() throws InstantiationException, IllegalAccessException, ExampleQueryException {
-		VO example = voClass.newInstance();
-		return this.findByExample(example, null);
+		return this.findByExample(null, null);
 	}
 
 	public int countAll() throws InstantiationException, IllegalAccessException, ExampleQueryException {
