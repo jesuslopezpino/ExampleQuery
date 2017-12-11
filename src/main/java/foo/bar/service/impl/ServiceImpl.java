@@ -49,10 +49,7 @@ public abstract class ServiceImpl<VO extends BasicVO<?>> implements Service<VO> 
 	}
 
 	public int countAll() throws InstantiationException, IllegalAccessException, ExampleQueryException {
-		String select = "select count(*) ";
-		String tableAlias = getTableAliasForClass(voClass);
-		String from = " from " + voClass.getName() + " " + tableAlias;
-		String hqlString = select + from;
+		String hqlString = "select count(*) from " + voClass.getName();
 		Long result = (Long) entityManager.createQuery(hqlString).getSingleResult();
 		return result.intValue();
 	}
