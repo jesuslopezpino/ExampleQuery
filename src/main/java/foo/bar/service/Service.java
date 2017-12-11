@@ -12,19 +12,24 @@ public interface Service<VO extends BasicVO<?>> {
 
 	public int countAll() throws InstantiationException, IllegalAccessException, ExampleQueryException;
 
-	public List<VO> findAll() throws InstantiationException, IllegalAccessException, ExampleQueryException;
+	public List<VO> findAll() throws InstantiationException, IllegalAccessException, ExampleQueryException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException, NoSuchFieldException;
 
 	public VO findByPk(Object primaryKey);
 
-	public VO findCustomByPk(Object primaryKey, String[] fields) throws NoSuchMethodException, InstantiationException, IllegalAccessException, InvocationTargetException;
+	public VO findCustomByPk(Object primaryKey, String[] fields)
+			throws NoSuchMethodException, InstantiationException, IllegalAccessException, InvocationTargetException;
 
-	public int countByExample(VO example, FilterMap filter) throws ExampleQueryException, InstantiationException;
+	public int countByExample(VO example, FilterMap filter)
+			throws ExampleQueryException, InstantiationException, IllegalAccessException, IllegalArgumentException,
+			InvocationTargetException, NoSuchMethodException, SecurityException, NoSuchFieldException;
 
-	public List<VO> findByExample(VO example, FilterMap filter) throws ExampleQueryException, InstantiationException;
+	public List<VO> findByExample(VO example, FilterMap filter)
+			throws ExampleQueryException, InstantiationException, IllegalAccessException, IllegalArgumentException,
+			InvocationTargetException, NoSuchMethodException, SecurityException, NoSuchFieldException;
 
 	public List<VO> findCustomByExample(VO example, String[] fields, FilterMap filter)
 			throws ExampleQueryException, NoSuchMethodException, SecurityException, InstantiationException,
-			IllegalAccessException, IllegalArgumentException, InvocationTargetException;
+			IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchFieldException;
 
 	boolean delete(VO element);
 
@@ -35,7 +40,7 @@ public interface Service<VO extends BasicVO<?>> {
 	public List<VO> saveList(List<VO> list) throws UniqueException;
 
 	public List<VO> updateList(List<VO> list) throws UniqueException;
-	
+
 	public boolean deleteList(List<VO> list);
 
 }

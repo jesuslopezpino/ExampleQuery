@@ -224,7 +224,7 @@ public abstract class TestCommon<ServiceVO extends ServiceImpl<VO>, VO extends B
 
 	@Test
 	public void testFindAll()
-			throws InstantiationException, IllegalAccessException, ExampleQueryException, UniqueException {
+			throws InstantiationException, IllegalAccessException, ExampleQueryException, UniqueException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException, NoSuchFieldException {
 		logLine();
 		LOGGER.info("testFindAll at class: " + this.getClass().getName());
 		logLine();
@@ -256,7 +256,7 @@ public abstract class TestCommon<ServiceVO extends ServiceImpl<VO>, VO extends B
 
 	@Test
 	public void testFindByExample()
-			throws InstantiationException, ExampleQueryException, UniqueException, IllegalAccessException {
+			throws InstantiationException, ExampleQueryException, UniqueException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException, NoSuchFieldException {
 		logLine();
 		LOGGER.info("testFindByExample at class: " + this.getClass().getName());
 		this.setupExamplesQueryEnvironment();
@@ -292,7 +292,7 @@ public abstract class TestCommon<ServiceVO extends ServiceImpl<VO>, VO extends B
 
 	@Test
 	public void testCountByExample()
-			throws InstantiationException, ExampleQueryException, UniqueException, IllegalAccessException {
+			throws InstantiationException, ExampleQueryException, UniqueException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException, NoSuchFieldException {
 		logLine();
 		LOGGER.info("testCountByExample at class: " + this.getClass().getName());
 		logLine();
@@ -322,7 +322,7 @@ public abstract class TestCommon<ServiceVO extends ServiceImpl<VO>, VO extends B
 	@Test
 	public void findCustomByExample()
 			throws NoSuchMethodException, SecurityException, InstantiationException, IllegalAccessException,
-			IllegalArgumentException, InvocationTargetException, ExampleQueryException, UniqueException {
+			IllegalArgumentException, InvocationTargetException, ExampleQueryException, UniqueException, NoSuchFieldException {
 		LOGGER.info("Find Custom by example " + this.getClass().getName());
 		logLine();
 		this.setupExamplesQueryEnvironment();
