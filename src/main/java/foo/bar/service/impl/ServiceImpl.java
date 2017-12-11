@@ -298,9 +298,10 @@ public abstract class ServiceImpl<VO extends BasicVO<?>> implements Service<VO> 
 
 	private Query createQueryForExample(VO example, FilterMap filter, String select, String from, String where)
 			throws ExampleQueryException, InstantiationException {
-
-		Map<String, Object> parameters = new HashMap<>();
+		String hqlString = "";
 		String tableAlias = this.getTableAliasForClass(this.voClass);
+		Map<String, Object> parameters = new HashMap<>();
+		QueryBuilderHelper builderHelper = new QueryBuilderHelper(select, from, where, parameters);
 		try {
 			if (filter != null) {
 				for (Iterator<Entry<String, Object>> iterator = filter.getMap().entrySet().iterator(); iterator
@@ -317,17 +318,15 @@ public abstract class ServiceImpl<VO extends BasicVO<?>> implements Service<VO> 
 						if (applyValue) {
 							String fieldForQuery = UtilsService.getFieldForQuery(example, filterField);
 							String lastTableAlias = this.getTableAliasForField(fieldForQuery);
-							from = this.applyFieldToForm(example, from, tableAlias, filterField, lastTableAlias);
+							builderHelper.setFrom(this.applyFieldToForm(example, builderHelper.getFrom(), tableAlias, filterField, lastTableAlias));
 							String nameForParameter = UtilsService.getNameForParameter(filterField, condition);
-							where = this.applyFieldToWhere(filter, where, condition, fieldForQuery, lastTableAlias,
-									nameForParameter);
-							this.applyFieldToParameters(parameters, condition, valueForQuery, nameForParameter);
+							builderHelper.setWhere(this.applyFieldToWhere(filter, builderHelper.getWhere(), condition, fieldForQuery, lastTableAlias,
+									nameForParameter));
+							this.applyFieldToParameters(builderHelper.getParameters(), condition, valueForQuery, nameForParameter);
 						}
 					}
 				}
 			}
-			String hqlString = select + from + where;
-			QueryBuilderHelper builderHelper = new QueryBuilderHelper(hqlString, parameters);
 			LOGGER.debug("ExampleQuery: " + hqlString);
 			Query query = this.entityManager.createQuery(builderHelper.getHqlString());
 			this.setQueryParams(query, builderHelper.getParameters());
@@ -335,7 +334,8 @@ public abstract class ServiceImpl<VO extends BasicVO<?>> implements Service<VO> 
 		} catch (NoSuchFieldException | SecurityException | IllegalAccessException | IllegalArgumentException
 				| InvocationTargetException | NoSuchMethodException e) {
 			e.printStackTrace();
-			LOGGER.error("ERROR QUERY " + select + from + where);
+			LOGGER.error("ERROR QUERY " + builderHelper.getHqlString());
+			LOGGER.error("ERROR QUERY PARAMETERS" + builderHelper.getParameters());
 			throw new ExampleQueryException(e.getMessage());
 		}
 
