@@ -15,6 +15,7 @@ import foo.bar.domain.CustomerOrder;
 import foo.bar.domain.Product;
 import foo.bar.domain.ProductStock;
 import foo.bar.exceptions.UniqueException;
+import foo.bar.filter.FilterMap;
 import foo.bar.service.impl.CustomerOrderServiceImpl;
 import foo.bar.service.impl.ProductStockServiceImpl;
 import foo.bar.service.utils.HqlConditions;
@@ -96,9 +97,8 @@ public class GivenCustomerOrder extends Given<CustomerOrder, CustomerOrderServic
 	}
 
 	@Override
-	public Map<String, HqlConditions> initFilter() {
-		Map<String, HqlConditions> filter = new HashMap<String, HqlConditions>();
-
+	public FilterMap initFilter() {
+		FilterMap filter = new FilterMap();
 		// all examples
 		filter.put(CustomerOrder.PRODUCTS_STOCK, HqlConditions.IS_NOT_EMPTY);
 

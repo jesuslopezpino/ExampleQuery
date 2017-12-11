@@ -11,6 +11,7 @@ import org.apache.log4j.Logger;
 
 import foo.bar.domain.Product;
 import foo.bar.exceptions.UniqueException;
+import foo.bar.filter.FilterMap;
 import foo.bar.service.impl.ProductServiceImpl;
 import foo.bar.service.utils.HqlConditions;
 import foo.bar.test.common.Given;
@@ -69,8 +70,8 @@ public class GivenProduct extends Given<Product, ProductServiceImpl> {
 	}
 
 	@Override
-	public Map<String, HqlConditions> initFilter() {
-		Map<String, HqlConditions> filter = new HashMap<String, HqlConditions>();
+	public FilterMap initFilter() {
+		FilterMap filter = new FilterMap();
 
 		// example 1
 		filter.put(Product.NAME, HqlConditions.LIKE_IGNORE_CASE);

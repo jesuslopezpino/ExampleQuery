@@ -14,6 +14,7 @@ import foo.bar.domain.Customer;
 import foo.bar.domain.Product;
 import foo.bar.domain.ProductStock;
 import foo.bar.exceptions.UniqueException;
+import foo.bar.filter.FilterMap;
 import foo.bar.service.impl.CustomerServiceImpl;
 import foo.bar.service.utils.HqlConditions;
 import foo.bar.test.common.Given;
@@ -85,8 +86,8 @@ public class GivenCustomer extends Given<Customer, CustomerServiceImpl> {
 	}
 
 	@Override
-	public Map<String, HqlConditions> initFilter() {
-		Map<String, HqlConditions> filter = new HashMap<>();
+	public FilterMap initFilter() {
+		FilterMap filter = new FilterMap();
 
 //		// all examples... IS_NULL, IS_NOT_NULL, IS_EMPTY and IS_NOT_EMPTY
 //		filter.put(Customer.BIRTH_DATE, HqlConditions.IS_NOT_NULL);

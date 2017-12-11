@@ -14,7 +14,6 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceException;
 import javax.persistence.Query;
 import javax.persistence.Table;
-import javax.persistence.TypedQuery;
 import javax.persistence.UniqueConstraint;
 
 import org.apache.commons.lang3.StringUtils;
@@ -25,6 +24,7 @@ import foo.bar.annotations.readers.FilterForFieldReader;
 import foo.bar.domain.BasicVO;
 import foo.bar.exceptions.ExampleQueryException;
 import foo.bar.exceptions.UniqueException;
+import foo.bar.filter.FilterMap;
 import foo.bar.service.Service;
 import foo.bar.service.utils.HqlConditions;
 import foo.bar.service.utils.UtilsService;
@@ -93,8 +93,7 @@ public abstract class ServiceImpl<VO extends BasicVO<?>> implements Service<VO> 
 		return from;
 	}
 
-	public List<VO> findByExample(VO example, Map<String, HqlConditions> filter)
-			throws ExampleQueryException, InstantiationException {
+	public List<VO> findByExample(VO example, FilterMap filter) throws ExampleQueryException, InstantiationException {
 		String tableAlias = getTableAliasForClass(voClass);
 		String select = "select " + tableAlias;
 		String from = " from " + voClass.getName() + " " + tableAlias;
@@ -102,8 +101,7 @@ public abstract class ServiceImpl<VO extends BasicVO<?>> implements Service<VO> 
 		return query.getResultList();
 	}
 
-	public int countByExample(VO example, Map<String, HqlConditions> filter)
-			throws ExampleQueryException, InstantiationException {
+	public int countByExample(VO example, FilterMap filter) throws ExampleQueryException, InstantiationException {
 		String select = "select count(*) ";
 		String tableAlias = getTableAliasForClass(voClass);
 		String from = " from " + voClass.getName() + " " + tableAlias;
@@ -112,7 +110,7 @@ public abstract class ServiceImpl<VO extends BasicVO<?>> implements Service<VO> 
 		return result.intValue();
 	}
 
-	public List<VO> findCustomByExample(VO example, String[] fields, Map<String, HqlConditions> filter)
+	public List<VO> findCustomByExample(VO example, String[] fields, FilterMap filter)
 			throws ExampleQueryException, NoSuchMethodException, SecurityException, InstantiationException,
 			IllegalAccessException, IllegalArgumentException, InvocationTargetException {
 		String select = this.createCustomSelect(fields);
@@ -284,7 +282,7 @@ public abstract class ServiceImpl<VO extends BasicVO<?>> implements Service<VO> 
 		return from;
 	}
 
-	private Query createQueryForExample(VO example, Map<String, HqlConditions> filter, String select, String from)
+	private Query createQueryForExample(VO example, FilterMap filter, String select, String from)
 			throws ExampleQueryException, InstantiationException {
 
 		Map<String, Object> parameters = new HashMap<>();
@@ -317,7 +315,7 @@ public abstract class ServiceImpl<VO extends BasicVO<?>> implements Service<VO> 
 						fieldForQuery = getLastField(fieldForQuery);
 						LOGGER.debug("FROM: " + from);
 						where += UtilsService.getClauseCondition(lastTableAlias, fieldForQuery, condition,
-								nameForParameter);
+								nameForParameter, filter.getFilterAddCondition());
 						if (nameForParameter != null) {
 							Object fixedValueForQuery = UtilsService.fixValueForQuery(valueForQuery, condition);
 							parameters.put(nameForParameter, fixedValueForQuery);

@@ -5,7 +5,6 @@ import static org.junit.Assert.assertTrue;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.ParameterizedType;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -30,6 +29,7 @@ import org.springframework.transaction.annotation.Transactional;
 import foo.bar.domain.BasicVO;
 import foo.bar.exceptions.ExampleQueryException;
 import foo.bar.exceptions.UniqueException;
+import foo.bar.filter.FilterMap;
 import foo.bar.service.impl.ServiceImpl;
 import foo.bar.service.utils.HqlConditions;
 import foo.bar.utils.Utils;
@@ -55,7 +55,7 @@ public abstract class TestCommon<ServiceVO extends ServiceImpl<VO>, VO extends B
 
 	private Class givenVoClass;
 
-	private Map<String, HqlConditions> filter;
+	private FilterMap filter;
 
 	private VO[] examples;
 

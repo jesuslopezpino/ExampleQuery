@@ -11,6 +11,7 @@ import org.apache.log4j.Logger;
 import foo.bar.domain.Customer;
 import foo.bar.domain.Note;
 import foo.bar.exceptions.UniqueException;
+import foo.bar.filter.FilterMap;
 import foo.bar.service.impl.NoteServiceImpl;
 import foo.bar.service.utils.HqlConditions;
 import foo.bar.test.common.Given;
@@ -60,9 +61,9 @@ public class GivenNote extends Given<Note, NoteServiceImpl> {
 	}
 
 	@Override
-	public Map<String, HqlConditions> initFilter() {
+	public FilterMap initFilter() {
 
-		Map<String, HqlConditions> filter = new HashMap<>();
+		FilterMap filter = new FilterMap();
 
 		// example 1
 		filter.put(Note.NOTE, HqlConditions.LIKE_IGNORE_CASE);

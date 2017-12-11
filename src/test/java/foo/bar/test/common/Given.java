@@ -7,8 +7,8 @@ import javax.persistence.EntityManager;
 
 import foo.bar.domain.BasicVO;
 import foo.bar.exceptions.UniqueException;
+import foo.bar.filter.FilterMap;
 import foo.bar.service.impl.ServiceImpl;
-import foo.bar.service.utils.HqlConditions;
 
 /**
  * The abstract Class Given.
@@ -84,7 +84,7 @@ public abstract class Given<VO extends BasicVO<?>, ServiceVO extends ServiceImpl
 	 *
 	 * @return the map
 	 */
-	public abstract Map<String, HqlConditions> initFilter();
+	public abstract FilterMap initFilter();
 
 	/**
 	 * Return the fields that we want to use for entity creation with map of

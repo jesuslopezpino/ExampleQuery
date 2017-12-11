@@ -10,6 +10,7 @@ import org.apache.log4j.Logger;
 import foo.bar.domain.Product;
 import foo.bar.domain.ProductStock;
 import foo.bar.exceptions.UniqueException;
+import foo.bar.filter.FilterMap;
 import foo.bar.service.impl.ProductStockServiceImpl;
 import foo.bar.service.utils.HqlConditions;
 import foo.bar.test.common.Given;
@@ -70,8 +71,8 @@ public class GivenProductStock extends Given<ProductStock, ProductStockServiceIm
 	}
 
 	@Override
-	public Map<String, HqlConditions> initFilter() {
-		Map<String, HqlConditions> filter = new HashMap<>();
+	public FilterMap initFilter() {
+		FilterMap filter = new FilterMap();
 
 		// All examples
 		// filter.put(ProductStock.CUSTOMER_ORDER, HqlConditions.IS_NULL);
