@@ -76,7 +76,7 @@ public class GivenCustomerOrder extends Given<CustomerOrder, CustomerOrderServic
 	}
 
 	@Override
-	public void givenExamplesEnvironment() throws UniqueException, InstantiationException, IllegalAccessException, ExampleQueryException {
+	public void givenExamplesEnvironment() throws UniqueException, ExampleQueryException {
 		GivenCustomer givenCustomer = new GivenCustomer(this.entityManager);
 		Customer customer = givenCustomer.givenADefaultCustomer();
 		GivenProduct givenProduct = new GivenProduct(this.entityManager);
@@ -114,9 +114,8 @@ public class GivenCustomerOrder extends Given<CustomerOrder, CustomerOrderServic
 		return filter;
 	}
 
-//	@Override
 	@Override
-	public CustomerOrder[] initExamples() throws UniqueException, ExampleQueryException {
+	public CustomerOrder[] initExamples() {
 		Customer customerExample = new Customer();
 		customerExample.setPk(100L);
 
@@ -128,26 +127,36 @@ public class GivenCustomerOrder extends Given<CustomerOrder, CustomerOrderServic
 		example2.setCustomer(customerExample);
 
 		CustomerOrder example3 = new CustomerOrder();
-		GivenProduct givenProduct = new GivenProduct(this.entityManager);
-		Product product = givenProduct.givenAProduct("Orange", "Color");
-		List<Long> productStockIds = new ArrayList<>();
-		GivenProductStock givenProductStock = new GivenProductStock(this.entityManager);
-		ProductStock productStock = givenProductStock.givenAProductStock(product, 10);
-		productStockIds.add(productStock.getPk());
-		List<ProductStock> productsStockList = new ArrayList<>();
-		productsStockList.add(productStock);
-		GivenCustomer givenCustomer = new GivenCustomer(this.entityManager);
-		Customer customer = givenCustomer.givenACustomer("Buyer", "cutomer", new Date(), "NO-ID", "DNI");
-		GivenCustomerOrder givenCustomerOrder = new GivenCustomerOrder(this.entityManager);
-		givenCustomerOrder.givenACustomerOrder(customer, new Date(), productsStockList);
-		example3.setProductsStockIds(productStockIds);
+		GivenProduct givenProduct;
+		try {
+			givenProduct = new GivenProduct(this.entityManager);
+			Product product = givenProduct.givenAProduct("Orange", "Color");
+			List<Long> productStockIds = new ArrayList<>();
+			GivenProductStock givenProductStock = new GivenProductStock(this.entityManager);
+			ProductStock productStock = givenProductStock.givenAProductStock(product, 10);
+			productStockIds.add(productStock.getPk());
+			List<ProductStock> productsStockList = new ArrayList<>();
+			productsStockList.add(productStock);
+			GivenCustomer givenCustomer = new GivenCustomer(this.entityManager);
+			Customer customer = givenCustomer.givenACustomer("Buyer", "cutomer", new Date(), "NO-ID", "DNI");
+			GivenCustomerOrder givenCustomerOrder = new GivenCustomerOrder(this.entityManager);
+			givenCustomerOrder.givenACustomerOrder(customer, new Date(), productsStockList);
+			example3.setProductsStockIds(productStockIds);
 
-		CustomerOrder[] examples = { example1, example2, example3 };
-		return examples;
+			CustomerOrder[] examples = { example1, example2, example3 };
+			return examples;
+		} catch (ExampleQueryException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (UniqueException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
 	}
 
 	@Override
-	public CustomerOrder initTestSaveInstance() throws UniqueException, InstantiationException, IllegalAccessException, ExampleQueryException {
+	public CustomerOrder initTestSaveInstance() throws ExampleQueryException, UniqueException {
 		Customer customer = null;
 		GivenCustomer givenCustomer = new GivenCustomer(this.entityManager);
 		customer = givenCustomer.givenACustomer("User", "Saved", new Date(), "LKKJHK", "DNI");

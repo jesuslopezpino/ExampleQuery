@@ -43,10 +43,9 @@ public abstract class Given<VO extends BasicVO<?>, ServiceVO extends ServiceImpl
 	 *             the instantiation exception
 	 * @throws IllegalAccessException
 	 *             the illegal access exception
-	 * @throws ExampleQueryException 
+	 * @throws ExampleQueryException
 	 */
-	public abstract void givenExamplesEnvironment()
-			throws UniqueException, InstantiationException, IllegalAccessException, ExampleQueryException;
+	public abstract void givenExamplesEnvironment() throws UniqueException, ExampleQueryException;
 
 	/**
 	 * Return the select custom fields for custom select test cases
@@ -61,13 +60,13 @@ public abstract class Given<VO extends BasicVO<?>, ServiceVO extends ServiceImpl
 	 * @return the vo[]
 	 * @throws UniqueException
 	 *             the unique exception
-	 * @throws ExampleQueryException 
+	 * @throws ExampleQueryException
 	 * @throws InstantiationException
 	 *             the instantiation exception
 	 * @throws IllegalAccessException
 	 *             the illegal access exception
 	 */
-	public abstract VO[] initExamples() throws UniqueException, ExampleQueryException, InstantiationException, IllegalAccessException;
+	public abstract VO[] initExamples();
 
 	/**
 	 * Returns the object for save-update-delete test case.
@@ -79,9 +78,9 @@ public abstract class Given<VO extends BasicVO<?>, ServiceVO extends ServiceImpl
 	 *             the instantiation exception
 	 * @throws IllegalAccessException
 	 *             the illegal access exception
-	 * @throws ExampleQueryException 
+	 * @throws ExampleQueryException
 	 */
-	public abstract VO initTestSaveInstance() throws UniqueException, ExampleQueryException, InstantiationException, IllegalAccessException;
+	public abstract VO initTestSaveInstance() throws UniqueException, ExampleQueryException;
 
 	/**
 	 * Returns the filter for find by example test cases.

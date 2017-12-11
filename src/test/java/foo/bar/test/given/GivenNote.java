@@ -76,13 +76,13 @@ public class GivenNote extends Given<Note, NoteServiceImpl> {
 	}
 
 	@Override
-	public Note[] initExamples() throws UniqueException, InstantiationException, IllegalAccessException, ExampleQueryException {
+	public Note[] initExamples() {
 		Note example1 = new Note();
 		example1.setNote("e");
 
 		Note example2 = new Note();
-		GivenCustomer givenCustomer = new GivenCustomer(this.entityManager);
-		Customer customer = givenCustomer.givenADefaultCustomer();
+		Customer customer = new Customer();
+		customer.setPk(1L);
 		example2.setCustomer(customer);
 
 		Note[] examples = { example1, example2 };

@@ -270,7 +270,7 @@ public abstract class TestCommon<ServiceVO extends ServiceImpl<VO>, VO extends B
 		logLine();
 	}
 
-	private void initSetupEnvironmentExamples() throws InstantiationException, IllegalAccessException, UniqueException, ExampleQueryException {
+	private void initSetupEnvironmentExamples() throws UniqueException, ExampleQueryException {
 		this.logGivenEnvironmentStart();
 		this.given.givenExamplesEnvironment();
 		LOGGER.info("Example environment ends");
