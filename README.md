@@ -23,7 +23,9 @@ ExampleQuery is a tool library where main utility is the ability of easily execu
 		* [Annotation: @FilterForField](#annotation-filterforfield)
 		* [@FilterForField: First usage](#filterforfield-first-usage)
 		* [@FilterForField: Second usage](#filterforfield-second-usage)
-	* [Second usage: Custom fields](#second-usage-custom-fields)
+	* [findCustomByPk](#findcustombypk)
+	* [findCustomByExample](#findcustombyexample)
+	* [countByExample](#countbyexample)
 	* [findAll](#findall)
 	* [countAll](#countall)
 	* [save](#save)
@@ -437,7 +439,7 @@ where
 ```
 Setting up parameter `:customer_name` with value `"Jesús"`.
 
-## Second usage: Custom fields
+## findCustomByPk
 
 ExampleQuery offers to developer an easy way to perform custom field selection for our query, to do this `Service<BasicVO<PK>>` provides two methods to perform these queries:
 
@@ -469,6 +471,11 @@ That will result in the next query:
 ```
 TODO
 ```
+## findCustomByExample
+TODO
+
+## countByExample
+TODO
 
 ## findAll
 TODO
