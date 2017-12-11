@@ -10,6 +10,7 @@ import org.apache.log4j.Logger;
 
 import foo.bar.domain.Customer;
 import foo.bar.domain.Note;
+import foo.bar.exceptions.ExampleQueryException;
 import foo.bar.exceptions.UniqueException;
 import foo.bar.filter.FilterMap;
 import foo.bar.service.impl.NoteServiceImpl;
@@ -21,7 +22,7 @@ public class GivenNote extends Given<Note, NoteServiceImpl> {
 
 	private static Logger LOGGER = Logger.getLogger(GivenNote.class);
 
-	public GivenNote(EntityManager entityManager) throws InstantiationException, IllegalAccessException {
+	public GivenNote(EntityManager entityManager) throws ExampleQueryException {
 		super(entityManager);
 	}
 
@@ -44,7 +45,7 @@ public class GivenNote extends Given<Note, NoteServiceImpl> {
 	}
 
 	@Override
-	public void givenExamplesEnvironment() throws UniqueException, InstantiationException, IllegalAccessException {
+	public void givenExamplesEnvironment() throws UniqueException, ExampleQueryException {
 		GivenCustomer givenCustomer = new GivenCustomer(this.entityManager);
 		Customer customer = givenCustomer.givenACustomer("Real", "Customer", new Date(), "REALDOC", "ID");
 		Customer customer2 = givenCustomer.givenACustomer("Real2", "Customer2", new Date(), "REALDOC2", "ID");
@@ -75,7 +76,7 @@ public class GivenNote extends Given<Note, NoteServiceImpl> {
 	}
 
 	@Override
-	public Note[] initExamples() throws UniqueException, InstantiationException, IllegalAccessException {
+	public Note[] initExamples() throws UniqueException, InstantiationException, IllegalAccessException, ExampleQueryException {
 		Note example1 = new Note();
 		example1.setNote("e");
 

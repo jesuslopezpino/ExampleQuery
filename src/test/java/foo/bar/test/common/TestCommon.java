@@ -109,7 +109,7 @@ public abstract class TestCommon<ServiceVO extends ServiceImpl<VO>, VO extends B
 	}
 
 	@Test
-	public void testUniqueException() throws InstantiationException, IllegalAccessException {
+	public void testUniqueException() throws InstantiationException, IllegalAccessException, ExampleQueryException {
 		logLine();
 		LOGGER.info("testUniqueException");
 		Table table = (Table) this.voClass.getAnnotation(Table.class);
@@ -148,7 +148,7 @@ public abstract class TestCommon<ServiceVO extends ServiceImpl<VO>, VO extends B
 	@Test
 	public void testSaveUpdateFindByPkAndDelete()
 			throws UniqueException, NoSuchMethodException, SecurityException, IllegalAccessException,
-			IllegalArgumentException, InvocationTargetException, NoSuchFieldException, InstantiationException {
+			IllegalArgumentException, InvocationTargetException, NoSuchFieldException, InstantiationException, ExampleQueryException {
 		logLine();
 		LOGGER.info("testSaveUpdateFindByPkAndDelete");
 		VO entity = this.testSave();
@@ -167,7 +167,7 @@ public abstract class TestCommon<ServiceVO extends ServiceImpl<VO>, VO extends B
 		return findByPkEntity;
 	}
 
-	protected VO testSave() throws UniqueException, InstantiationException, IllegalAccessException {
+	protected VO testSave() throws UniqueException, InstantiationException, IllegalAccessException, ExampleQueryException {
 		logLine();
 		LOGGER.info("testSave");
 		VO entity = this.given.initTestSaveInstance();
@@ -270,14 +270,14 @@ public abstract class TestCommon<ServiceVO extends ServiceImpl<VO>, VO extends B
 		logLine();
 	}
 
-	private void initSetupEnvironmentExamples() throws InstantiationException, IllegalAccessException, UniqueException {
+	private void initSetupEnvironmentExamples() throws InstantiationException, IllegalAccessException, UniqueException, ExampleQueryException {
 		this.logGivenEnvironmentStart();
 		this.given.givenExamplesEnvironment();
 		LOGGER.info("Example environment ends");
 	}
 
 	protected void setupExamplesQueryEnvironment()
-			throws UniqueException, InstantiationException, IllegalAccessException {
+			throws UniqueException, InstantiationException, IllegalAccessException, ExampleQueryException {
 		logLine();
 		LOGGER.info("setupExamplesQueryEnvironment");
 		this.initSetupEnvironmentExamples();
@@ -309,7 +309,7 @@ public abstract class TestCommon<ServiceVO extends ServiceImpl<VO>, VO extends B
 
 	@Test
 	public void testFindCustomByPk() throws InstantiationException, IllegalAccessException, UniqueException,
-			NoSuchMethodException, InvocationTargetException {
+			NoSuchMethodException, InvocationTargetException, ExampleQueryException {
 		logLine();
 		this.customFields = this.given.initCustomFields();
 		VO entity = this.testSave();

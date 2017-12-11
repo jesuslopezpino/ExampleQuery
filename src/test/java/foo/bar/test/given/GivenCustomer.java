@@ -13,6 +13,7 @@ import org.apache.log4j.Logger;
 import foo.bar.domain.Customer;
 import foo.bar.domain.Product;
 import foo.bar.domain.ProductStock;
+import foo.bar.exceptions.ExampleQueryException;
 import foo.bar.exceptions.UniqueException;
 import foo.bar.filter.FilterMap;
 import foo.bar.service.impl.CustomerServiceImpl;
@@ -22,7 +23,7 @@ import foo.bar.utils.Utils;
 
 public class GivenCustomer extends Given<Customer, CustomerServiceImpl> {
 
-	public GivenCustomer(EntityManager entityManager) throws InstantiationException, IllegalAccessException {
+	public GivenCustomer(EntityManager entityManager) throws ExampleQueryException {
 		super(entityManager);
 	}
 
@@ -60,7 +61,7 @@ public class GivenCustomer extends Given<Customer, CustomerServiceImpl> {
 	}
 
 	@Override
-	public void givenExamplesEnvironment() throws UniqueException, InstantiationException, IllegalAccessException {
+	public void givenExamplesEnvironment() throws UniqueException, InstantiationException, IllegalAccessException, ExampleQueryException {
 		Customer customer = this.givenADefaultCustomer();
 		List<ProductStock> productsStock = new ArrayList<>();
 		GivenProduct givenProduct = new GivenProduct(this.entityManager);
@@ -144,7 +145,7 @@ public class GivenCustomer extends Given<Customer, CustomerServiceImpl> {
 	}
 
 	@Override
-	public Customer initTestSaveInstance() throws UniqueException, InstantiationException, IllegalAccessException {
+	public Customer initTestSaveInstance() throws UniqueException, ExampleQueryException {
 		GivenCustomer givenCustomer = new GivenCustomer(this.entityManager);
 		return givenCustomer.givenObjectCustomer("test name", "test last name", new Date(), "1234", "DNI");
 	}

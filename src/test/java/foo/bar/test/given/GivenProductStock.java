@@ -9,6 +9,7 @@ import org.apache.log4j.Logger;
 
 import foo.bar.domain.Product;
 import foo.bar.domain.ProductStock;
+import foo.bar.exceptions.ExampleQueryException;
 import foo.bar.exceptions.UniqueException;
 import foo.bar.filter.FilterAddCondition;
 import foo.bar.filter.FilterMap;
@@ -18,7 +19,7 @@ import foo.bar.test.common.Given;
 
 public class GivenProductStock extends Given<ProductStock, ProductStockServiceImpl> {
 
-	public GivenProductStock(EntityManager entityManager) throws InstantiationException, IllegalAccessException {
+	public GivenProductStock(EntityManager entityManager) throws ExampleQueryException {
 		super(entityManager);
 	}
 
@@ -48,7 +49,7 @@ public class GivenProductStock extends Given<ProductStock, ProductStockServiceIm
 	}
 
 	@Override
-	public void givenExamplesEnvironment() throws InstantiationException, IllegalAccessException, UniqueException {
+	public void givenExamplesEnvironment() throws InstantiationException, IllegalAccessException, UniqueException, ExampleQueryException {
 		GivenProduct givenProduct = new GivenProduct(this.entityManager);
 		Product product = givenProduct.givenAProduct("Samsung", "tv");
 		this.givenAProductStock(product, 6);
@@ -111,7 +112,7 @@ public class GivenProductStock extends Given<ProductStock, ProductStockServiceIm
 	}
 
 	@Override
-	public ProductStock initTestSaveInstance() throws UniqueException, InstantiationException, IllegalAccessException {
+	public ProductStock initTestSaveInstance() throws UniqueException, ExampleQueryException {
 		GivenProduct givenProduct = new GivenProduct(this.entityManager);
 		Product product = givenProduct.givenAProduct("Samsung", "tv");
 		return GivenProductStock.givenObjectProductStock(product, 20);

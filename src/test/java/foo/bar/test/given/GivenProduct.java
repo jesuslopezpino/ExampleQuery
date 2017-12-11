@@ -10,6 +10,7 @@ import javax.persistence.EntityManager;
 import org.apache.log4j.Logger;
 
 import foo.bar.domain.Product;
+import foo.bar.exceptions.ExampleQueryException;
 import foo.bar.exceptions.UniqueException;
 import foo.bar.filter.FilterAddCondition;
 import foo.bar.filter.FilterMap;
@@ -19,7 +20,7 @@ import foo.bar.test.common.Given;
 
 public class GivenProduct extends Given<Product, ProductServiceImpl> {
 
-	public GivenProduct(EntityManager entityManager) throws InstantiationException, IllegalAccessException {
+	public GivenProduct(EntityManager entityManager) throws ExampleQueryException {
 		super(entityManager);
 	}
 

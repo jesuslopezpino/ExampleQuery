@@ -14,6 +14,7 @@ import foo.bar.domain.Customer;
 import foo.bar.domain.CustomerOrder;
 import foo.bar.domain.Product;
 import foo.bar.domain.ProductStock;
+import foo.bar.exceptions.ExampleQueryException;
 import foo.bar.exceptions.UniqueException;
 import foo.bar.filter.FilterMap;
 import foo.bar.service.impl.CustomerOrderServiceImpl;
@@ -24,7 +25,7 @@ import foo.bar.utils.Utils;
 
 public class GivenCustomerOrder extends Given<CustomerOrder, CustomerOrderServiceImpl> {
 
-	public GivenCustomerOrder(EntityManager entityManager) throws InstantiationException, IllegalAccessException {
+	public GivenCustomerOrder(EntityManager entityManager) throws ExampleQueryException {
 		super(entityManager);
 	}
 
@@ -75,7 +76,7 @@ public class GivenCustomerOrder extends Given<CustomerOrder, CustomerOrderServic
 	}
 
 	@Override
-	public void givenExamplesEnvironment() throws UniqueException, InstantiationException, IllegalAccessException {
+	public void givenExamplesEnvironment() throws UniqueException, InstantiationException, IllegalAccessException, ExampleQueryException {
 		GivenCustomer givenCustomer = new GivenCustomer(this.entityManager);
 		Customer customer = givenCustomer.givenADefaultCustomer();
 		GivenProduct givenProduct = new GivenProduct(this.entityManager);
@@ -113,8 +114,9 @@ public class GivenCustomerOrder extends Given<CustomerOrder, CustomerOrderServic
 		return filter;
 	}
 
+//	@Override
 	@Override
-	public CustomerOrder[] initExamples() throws UniqueException, InstantiationException, IllegalAccessException {
+	public CustomerOrder[] initExamples() throws UniqueException, ExampleQueryException {
 		Customer customerExample = new Customer();
 		customerExample.setPk(100L);
 
@@ -145,7 +147,7 @@ public class GivenCustomerOrder extends Given<CustomerOrder, CustomerOrderServic
 	}
 
 	@Override
-	public CustomerOrder initTestSaveInstance() throws UniqueException, InstantiationException, IllegalAccessException {
+	public CustomerOrder initTestSaveInstance() throws UniqueException, InstantiationException, IllegalAccessException, ExampleQueryException {
 		Customer customer = null;
 		GivenCustomer givenCustomer = new GivenCustomer(this.entityManager);
 		customer = givenCustomer.givenACustomer("User", "Saved", new Date(), "LKKJHK", "DNI");

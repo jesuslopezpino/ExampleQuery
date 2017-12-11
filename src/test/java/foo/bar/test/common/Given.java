@@ -6,6 +6,7 @@ import java.util.Map;
 import javax.persistence.EntityManager;
 
 import foo.bar.domain.BasicVO;
+import foo.bar.exceptions.ExampleQueryException;
 import foo.bar.exceptions.UniqueException;
 import foo.bar.filter.FilterMap;
 import foo.bar.service.impl.ServiceImpl;
@@ -42,9 +43,10 @@ public abstract class Given<VO extends BasicVO<?>, ServiceVO extends ServiceImpl
 	 *             the instantiation exception
 	 * @throws IllegalAccessException
 	 *             the illegal access exception
+	 * @throws ExampleQueryException 
 	 */
 	public abstract void givenExamplesEnvironment()
-			throws UniqueException, InstantiationException, IllegalAccessException;
+			throws UniqueException, InstantiationException, IllegalAccessException, ExampleQueryException;
 
 	/**
 	 * Return the select custom fields for custom select test cases
@@ -59,12 +61,13 @@ public abstract class Given<VO extends BasicVO<?>, ServiceVO extends ServiceImpl
 	 * @return the vo[]
 	 * @throws UniqueException
 	 *             the unique exception
+	 * @throws ExampleQueryException 
 	 * @throws InstantiationException
 	 *             the instantiation exception
 	 * @throws IllegalAccessException
 	 *             the illegal access exception
 	 */
-	public abstract VO[] initExamples() throws UniqueException, InstantiationException, IllegalAccessException;
+	public abstract VO[] initExamples() throws UniqueException, ExampleQueryException, InstantiationException, IllegalAccessException;
 
 	/**
 	 * Returns the object for save-update-delete test case.
@@ -76,8 +79,9 @@ public abstract class Given<VO extends BasicVO<?>, ServiceVO extends ServiceImpl
 	 *             the instantiation exception
 	 * @throws IllegalAccessException
 	 *             the illegal access exception
+	 * @throws ExampleQueryException 
 	 */
-	public abstract VO initTestSaveInstance() throws UniqueException, InstantiationException, IllegalAccessException;
+	public abstract VO initTestSaveInstance() throws UniqueException, ExampleQueryException, InstantiationException, IllegalAccessException;
 
 	/**
 	 * Returns the filter for find by example test cases.
@@ -111,11 +115,16 @@ public abstract class Given<VO extends BasicVO<?>, ServiceVO extends ServiceImpl
 	 * @throws IllegalAccessException
 	 *             the illegal access exception
 	 */
-	public Given(EntityManager entityManager) throws InstantiationException, IllegalAccessException {
+	public Given(EntityManager entityManager) throws ExampleQueryException {
 		this.entityManager = entityManager;
 		this.serviceVoClass = (Class<ServiceVO>) ((ParameterizedType) this.getClass().getGenericSuperclass())
 				.getActualTypeArguments()[1];
-		this.service = (ServiceVO) this.serviceVoClass.newInstance();
-		this.service.setEntityManager(entityManager);
+		try {
+			this.service = (ServiceVO) this.serviceVoClass.newInstance();
+			this.service.setEntityManager(entityManager);
+		} catch (InstantiationException | IllegalAccessException e) {
+			throw new ExampleQueryException("Fail at Given class: " + this.getClass().getName()
+					+ " trying to instantiate " + this.serviceVoClass.getName());
+		}
 	}
 }
