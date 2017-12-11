@@ -12,7 +12,23 @@ ExampleQuery is a tool library where main utility is the ability of easily execu
 * [Getting Started](#getting-started)
 * [Prerequisites](#prerequisites)
 * [Installing](#installing)
+* [Usage](#usage)
+* [Setting up project](#setting-up-project)
+* [Setting up entities](#setting-up-entities)
+* [Setting up services](#setting-up-services)
+* [Setting up filters](#setting-up-filters)
+* [HqlConditions](#hqlconditions)
+* [First usage: findByExample](#first-usage-findbyexample)
+* [Annotation: @FilterForField](#annotation-filterforfield)
+* [@FilterForField: First usage](#filterforfield-first-usage)
+* [@FilterForField: Second usage](#filterforfield-second-usage)
+* [Second usage: Custom fields](#second-usage-custom-fields)
+* [UniqueException](#uniqueexception)
+* [Running the tests](#running-the-tests)
 * [Given abstract class](#given-abstract-class)
+* [Built With](#built-with)
+* [Authors](#authors)
+* [License](#license)
 
 ## Getting Started
 
