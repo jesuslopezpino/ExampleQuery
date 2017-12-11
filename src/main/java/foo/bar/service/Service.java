@@ -35,7 +35,7 @@ public interface Service<VO extends BasicVO<?>> {
 
 	public VO save(VO element) throws UniqueException;
 
-	public VO update(VO element);
+	public VO update(VO element) throws UniqueException;
 
 	public List<VO> saveList(List<VO> list) throws UniqueException;
 

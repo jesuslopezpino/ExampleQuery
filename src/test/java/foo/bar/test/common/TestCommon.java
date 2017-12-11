@@ -179,7 +179,7 @@ public abstract class TestCommon<ServiceVO extends ServiceImpl<VO>, VO extends B
 	}
 
 	protected VO testUpdate(VO entity) throws NoSuchMethodException, SecurityException, IllegalAccessException,
-			IllegalArgumentException, InvocationTargetException, NoSuchFieldException, InstantiationException {
+			IllegalArgumentException, InvocationTargetException, NoSuchFieldException, InstantiationException, UniqueException {
 		logLine();
 		LOGGER.info("testUpdate");
 		boolean updated = true;

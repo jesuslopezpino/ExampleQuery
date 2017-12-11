@@ -201,8 +201,7 @@ public abstract class ServiceImpl<VO extends BasicVO<?>> implements Service<VO> 
 			this.entityManager.flush();
 		} catch (Exception e) {
 			String uniqueConstraintViolation = this.getConstraintNameViolation(e);
-			if (StringUtils.isNotBlank(uniqueConstraintViolation)
-					&& this.isUniqueConstraint(uniqueConstraintViolation)) {
+			if (StringUtils.isNotBlank(uniqueConstraintViolation) && this.isUniqueConstraint(uniqueConstraintViolation)) {
 				this.throwUniqueException(entity, uniqueConstraintViolation);
 			} else {
 				throw e;
@@ -243,12 +242,17 @@ public abstract class ServiceImpl<VO extends BasicVO<?>> implements Service<VO> 
 	}
 
 	@Override
-	public VO update(VO entity) {
+	public VO update(VO entity) throws UniqueException {
 		try {
 			this.entityManager.merge(entity);
 			this.entityManager.flush();
 		} catch (Exception e) {
-			// TODO: implement
+			String uniqueConstraintViolation = this.getConstraintNameViolation(e);
+			if (StringUtils.isNotBlank(uniqueConstraintViolation) && this.isUniqueConstraint(uniqueConstraintViolation)) {
+				this.throwUniqueException(entity, uniqueConstraintViolation);
+			} else {
+				throw e;
+			}
 		}
 		return entity;
 	}
@@ -317,16 +321,6 @@ public abstract class ServiceImpl<VO extends BasicVO<?>> implements Service<VO> 
 		Query query = this.entityManager.createQuery(builderHelper.getHqlString());
 		this.setQueryParams(query, builderHelper.getParameters());
 		return query;
-		// } catch (NoSuchFieldException | SecurityException |
-		// IllegalAccessException | IllegalArgumentException
-		// | InvocationTargetException | NoSuchMethodException e) {
-		// e.printStackTrace();
-		// LOGGER.error("ERROR QUERY " + builderHelper.getHqlString());
-		// LOGGER.error("ERROR QUERY PARAMETERS" +
-		// builderHelper.getParameters());
-		// throw new ExampleQueryException(e.getMessage());
-		// }
-
 	}
 
 	protected QueryBuilderHelper buildQueryForFilterMap(VO example, FilterMap filter, String tableAlias,
@@ -344,7 +338,8 @@ public abstract class ServiceImpl<VO extends BasicVO<?>> implements Service<VO> 
 						LOGGER.info("initial result: " + result);
 						QueryBuilderHelper nestedBuilderHelper = new QueryBuilderHelper(result.getSelect(),
 								result.getFrom(), "", result.getParameters());
-						nestedBuilderHelper = this.buildQueryForFilterMap(example, filterMap, tableAlias, nestedBuilderHelper);
+						nestedBuilderHelper = this.buildQueryForFilterMap(example, filterMap, tableAlias,
+								nestedBuilderHelper);
 						LOGGER.info("nestedBuilderHelper: " + nestedBuilderHelper);
 						if (StringUtils.isNotBlank(nestedBuilderHelper.getWhere())) {
 							String nestedWhere = null;
