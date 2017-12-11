@@ -355,8 +355,7 @@ public class Customer extends BasicVO<Long> {
 	
 	...
 	@Transient
-	@FilterForField(Customer.CUSTOMER_ORDERS + "." + CustomerOrder.PRODUCTS_STOCK + "." 
-							+ ProductStock.PRODUCT + "." + Product.NAME)
+	@FilterForField(Customer.CUSTOMER_ORDERS + "." + CustomerOrder.PRODUCTS_STOCK + "." + ProductStock.PRODUCT + "." + Product.NAME)
 	private String customerOrdersProductName;
 	...
 	
