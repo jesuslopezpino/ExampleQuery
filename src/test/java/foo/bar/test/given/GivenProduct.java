@@ -75,14 +75,12 @@ public class GivenProduct extends Given<Product, ProductServiceImpl> {
 		FilterMap filter = new FilterMap();
 
 		// example 1
-		// filter.put(Product.NAME, HqlConditions.LIKE_IGNORE_CASE);
 		FilterMap nameOrDescription = new FilterMap(FilterAddCondition.OR);
 		nameOrDescription.put(Product.NAME, HqlConditions.EQUALS);
 		nameOrDescription.put(Product.DESCRIPTION, HqlConditions.EQUALS);
 		filter.put(nameOrDescription);
 
 		// example 2
-		// filter.put(Product.PK_LIST, HqlConditions.NOT_IN);
 		FilterMap pkAndPkList = new FilterMap(FilterAddCondition.AND);
 		pkAndPkList.put(Product.PK_LIST, HqlConditions.NOT_IN);
 		pkAndPkList.put(Product.PK, HqlConditions.NOT_EQUALS);
