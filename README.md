@@ -9,10 +9,10 @@ ExampleQuery is a tool library where main utility is the ability of easily execu
 *Unique Exception Processing returning controlled Unique Exceptions at persistence of entities*
 
 
-[Getting Started](##-Getting-Started)
-[Prerequisites](###-Prerequisites)
-[Installing](### Installing)
-[Given abstract class](##-Given-abstract-class)
+* [Getting Started](#getting-started)
+* [Prerequisites](#prerequisites)
+* [Installing](#installing)
+* [Given abstract class](#given-abstract-class)
 
 ## Getting Started
 
