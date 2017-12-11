@@ -311,10 +311,10 @@ public abstract class ServiceImpl<VO extends BasicVO<?>> implements Service<VO> 
 					}else{
 						HqlConditions condition = (HqlConditions) type.getValue();
 						String filterField = type.getKey();
-						String fieldForQuery = UtilsService.getFieldForQuery(example, filterField);
 						Object valueForQuery = Utils.getFieldValue(example, filterField, true);
 						boolean applyValue = UtilsService.hasToApplyConditionForQuery(condition, valueForQuery);
 						if (applyValue) {
+							String fieldForQuery = UtilsService.getFieldForQuery(example, filterField);
 							String lastTableAlias = this.getTableAliasForField(fieldForQuery);
 							String fromForField = null;
 							if (FilterForFieldReader.isAnnotatedField(filterField, example)) {
