@@ -316,31 +316,11 @@ public abstract class ServiceImpl<VO extends BasicVO<?>> implements Service<VO> 
 						if (applyValue) {
 							String fieldForQuery = UtilsService.getFieldForQuery(example, filterField);
 							String lastTableAlias = this.getTableAliasForField(fieldForQuery);
-							String fromForField = null;
-							if (FilterForFieldReader.isAnnotatedField(filterField, example)) {
-								String referencedField = FilterForFieldReader.getValue(filterField, example);
-								fromForField = getFromForField(tableAlias, lastTableAlias + "." + referencedField);
-							} else {
-								fromForField = getFromForField(tableAlias, lastTableAlias + "." + filterField);
-							}
-							if (!from.contains(fromForField)) {
-								LOGGER.debug("From does not contains: " + fromForField);
-								from += fromForField;
-							}
-							String lastField = this.getLastField(fieldForQuery);
-							LOGGER.debug("FROM: " + from);
+							from = this.applyFieldToForm(example, from, tableAlias, filterField, lastTableAlias);
 							String nameForParameter = UtilsService.getNameForParameter(filterField, condition);
-							if(where.equals("")){
-								where += " where " + UtilsService.getClauseCondition(lastTableAlias, lastField, condition,
-										nameForParameter, null);
-							}else{
-								where += UtilsService.getClauseCondition(lastTableAlias, lastField, condition,
-										nameForParameter, filter.getFilterAddCondition());
-							}
-							if (nameForParameter != null) {
-								Object fixedValueForQuery = UtilsService.fixValueForQuery(valueForQuery, condition);
-								parameters.put(nameForParameter, fixedValueForQuery);
-							}
+							where = this.applyFieldToWhere(filter, where, condition, fieldForQuery, lastTableAlias,
+									nameForParameter);
+							this.applyFieldToParameters(parameters, condition, valueForQuery, nameForParameter);
 						}
 					}
 				}
@@ -357,6 +337,45 @@ public abstract class ServiceImpl<VO extends BasicVO<?>> implements Service<VO> 
 			throw new ExampleQueryException(e.getMessage());
 		}
 
+	}
+
+	protected void applyFieldToParameters(Map<String, Object> parameters, HqlConditions condition, Object valueForQuery,
+			String nameForParameter) {
+		if (nameForParameter != null) {
+			Object fixedValueForQuery = UtilsService.fixValueForQuery(valueForQuery, condition);
+			parameters.put(nameForParameter, fixedValueForQuery);
+		}
+	}
+
+	protected String applyFieldToWhere(FilterMap filter, String where, HqlConditions condition, String fieldForQuery,
+			String lastTableAlias, String nameForParameter) {
+		String lastField = this.getLastField(fieldForQuery);
+		if(where.equals("")){
+			where += " where " + UtilsService.getClauseCondition(lastTableAlias, lastField, condition,
+					nameForParameter, null);
+		}else{
+			where += UtilsService.getClauseCondition(lastTableAlias, lastField, condition,
+					nameForParameter, filter.getFilterAddCondition());
+		}
+		return where;
+	}
+
+	protected String applyFieldToForm(VO example, String from, String tableAlias, String filterField,
+			String lastTableAlias) throws NoSuchFieldException, IllegalAccessException, InvocationTargetException,
+					NoSuchMethodException {
+		String fromForField = null;
+		if (FilterForFieldReader.isAnnotatedField(filterField, example)) {
+			String referencedField = FilterForFieldReader.getValue(filterField, example);
+			fromForField = getFromForField(tableAlias, lastTableAlias + "." + referencedField);
+		} else {
+			fromForField = getFromForField(tableAlias, lastTableAlias + "." + filterField);
+		}
+		if (!from.contains(fromForField)) {
+			LOGGER.debug("From does not contains: " + fromForField);
+			from += fromForField;
+		}
+		LOGGER.debug("FROM: " + from);
+		return from;
 	}
 
 	private String getLastField(String fieldForQuery) {
