@@ -230,7 +230,7 @@ public List<VO> updateList(List<VO> list) throws UniqueException;
 public boolean deleteList(List<VO> list);
 ```
 
-###findByExample
+### findByExample
 
 ExampleQuery offers to developer an easy way to perform custom filtered queries, to do this `Service<BasicVO<PK>>` provides three methods to perform these queries:
 
