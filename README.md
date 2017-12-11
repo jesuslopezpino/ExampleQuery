@@ -18,6 +18,7 @@ ExampleQuery is a tool library where main utility is the ability of easily execu
 		* [Setting up services](#setting-up-services)
 * [ExampleQuery Filters](#examplequery-filters)
 	* [HqlConditions](#hqlconditions)
+* [ExampleQuery "Examples](#examplequery-examples)
 * [Service](#service)
 	* [findByExample](#findbyexample)
 		* [Annotation: @FilterForField](#annotation-filterforfield)
@@ -191,6 +192,10 @@ public enum HqlConditions {
 	
 }
 ```
+
+## ExampleQuery "Examples"
+TODO
+
 ## Service
 
 ExampleQuery provides an abstract interface that also implements that offers most usual usage to deal with a data repository.
