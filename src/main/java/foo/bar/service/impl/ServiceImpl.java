@@ -287,10 +287,10 @@ public abstract class ServiceImpl<VO extends BasicVO<?>> implements Service<VO> 
 		String where = "";
 		try {
 			if (filter != null) {
-				for (Iterator<Entry<String, HqlConditions>> iterator = filter.entrySet().iterator(); iterator
+				for (Iterator<Entry<String, Object>> iterator = filter.getMap().entrySet().iterator(); iterator
 						.hasNext();) {
-					Entry<String, HqlConditions> type = iterator.next();
-					HqlConditions condition = type.getValue();
+					Entry<String, Object> type = iterator.next();
+					HqlConditions condition = (HqlConditions) type.getValue();
 					String filterField = type.getKey();
 					String fieldForQuery = UtilsService.getFieldForQuery(example, filterField);
 					Object valueForQuery = Utils.getFieldValue(example, filterField, true);

@@ -285,7 +285,7 @@ public abstract class TestCommon<ServiceVO extends ServiceImpl<VO>, VO extends B
 		this.customFields = this.given.initCustomFields();
 		assertTrue("Custom fields has been initializated", this.customFields != null && this.customFields.length > 0);
 		this.filter = this.given.initFilter();
-		assertTrue("Filters has been initializated", this.filter != null && this.filter.size() > 0);
+		assertTrue("Filters has been initializated", this.filter != null && this.filter.getMap().size() > 0);
 		this.examples = this.given.initExamples();
 		assertTrue("Examples has been initializated", this.examples != null && this.examples.length > 0);
 		logLine();
@@ -344,7 +344,7 @@ public abstract class TestCommon<ServiceVO extends ServiceImpl<VO>, VO extends B
 		LOGGER.info("");
 	}
 
-	private void showResult(VO example, List<VO> result, int exampleIndex, Map<String, HqlConditions> filters) {
+	private void showResult(VO example, List<VO> result, int exampleIndex, FilterMap filters) {
 		if (result.isEmpty()) {
 			LOGGER.error("FAIL AT SAMPLE: " + (exampleIndex + 1));
 			LOGGER.error("Example object: " + example.toStringDebug());
