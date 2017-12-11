@@ -45,13 +45,13 @@ public class GivenNote extends Given<Note, NoteServiceImpl> {
 
 	@Override
 	public void givenExamplesEnvironment() throws UniqueException, InstantiationException, IllegalAccessException {
-		GivenCustomer givenCustomer = new GivenCustomer(entityManager);
+		GivenCustomer givenCustomer = new GivenCustomer(this.entityManager);
 		Customer customer = givenCustomer.givenACustomer("Real", "Customer", new Date(), "REALDOC", "ID");
 		Customer customer2 = givenCustomer.givenACustomer("Real2", "Customer2", new Date(), "REALDOC2", "ID");
-		givenANote(new Date(), customer, "text note");
-		givenANote(new Date(), customer, "second user note");
-		givenANote(new Date(), customer, "another user note");
-		givenANote(new Date(), customer2, "text note customer 2");
+		this.givenANote(new Date(), customer, "text note");
+		this.givenANote(new Date(), customer, "second user note");
+		this.givenANote(new Date(), customer, "another user note");
+		this.givenANote(new Date(), customer2, "text note customer 2");
 	}
 
 	@Override
@@ -80,7 +80,7 @@ public class GivenNote extends Given<Note, NoteServiceImpl> {
 		example1.setNote("e");
 
 		Note example2 = new Note();
-		GivenCustomer givenCustomer = new GivenCustomer(entityManager);
+		GivenCustomer givenCustomer = new GivenCustomer(this.entityManager);
 		Customer customer = givenCustomer.givenADefaultCustomer();
 		example2.setCustomer(customer);
 
@@ -110,7 +110,7 @@ public class GivenNote extends Given<Note, NoteServiceImpl> {
 		result.put(Note.DATE, new Date());
 		return result;
 	}
-	
+
 	public static String noteToString(Note note) {
 		return "Note [pk=" + note.getPk() + ", date=" + note.getDate() + ", note=" + note.getNote() + ", customer="
 				+ note.getCustomer() + "]";

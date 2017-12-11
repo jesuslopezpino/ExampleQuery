@@ -48,16 +48,18 @@ public class Note extends BasicVO<Long> {
 		super(mapValues);
 	}
 
+	@Override
 	public Long getPk() {
-		return pk;
+		return this.pk;
 	}
 
+	@Override
 	public void setPk(Long pk) {
 		this.pk = pk;
 	}
 	
 	public Date getDate() {
-		return date;
+		return this.date;
 	}
 
 	public void setDate(Date date) {
@@ -65,7 +67,7 @@ public class Note extends BasicVO<Long> {
 	}
 
 	public String getNote() {
-		return note;
+		return this.note;
 	}
 
 	public void setNote(String note) {
@@ -73,7 +75,7 @@ public class Note extends BasicVO<Long> {
 	}
 
 	public Customer getCustomer() {
-		return customer;
+		return this.customer;
 	}
 
 	public void setCustomer(Customer customer) {
@@ -82,7 +84,7 @@ public class Note extends BasicVO<Long> {
 
 	@Override
 	public String toStringDebug() {
-		return "Note [pk=" + pk + ", date=" + date + ", note=" + note + ", customer=" + customer + "]";
+		return "Note [pk=" + this.pk + ", date=" + this.date + ", note=" + this.note + ", customer=" + this.customer + "]";
 	}
 
 }

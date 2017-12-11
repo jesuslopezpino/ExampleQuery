@@ -60,16 +60,18 @@ public class ProductStock extends BasicVO<Long> {
 		super(mapValues);
 	}
 
+	@Override
 	public Long getPk() {
-		return pk;
+		return this.pk;
 	}
 
+	@Override
 	public void setPk(Long pk) {
 		this.pk = pk;
 	}
 
 	public Product getProduct() {
-		return product;
+		return this.product;
 	}
 
 	public void setProduct(Product product) {
@@ -77,7 +79,7 @@ public class ProductStock extends BasicVO<Long> {
 	}
 
 	public Integer getPrice() {
-		return price;
+		return this.price;
 	}
 
 	public void setPrice(Integer price) {
@@ -85,7 +87,7 @@ public class ProductStock extends BasicVO<Long> {
 	}
 
 	public Integer getMaxPrice() {
-		return maxPrice;
+		return this.maxPrice;
 	}
 
 	public void setMaxPrice(Integer maxPrice) {
@@ -93,7 +95,7 @@ public class ProductStock extends BasicVO<Long> {
 	}
 
 	public Integer getMinPrice() {
-		return minPrice;
+		return this.minPrice;
 	}
 
 	public void setMinPrice(Integer minPrice) {
@@ -101,7 +103,7 @@ public class ProductStock extends BasicVO<Long> {
 	}
 
 	public CustomerOrder getCustomerOrder() {
-		return customerOrder;
+		return this.customerOrder;
 	}
 
 	public void setCustomerOrder(CustomerOrder customerOrder) {
@@ -110,8 +112,8 @@ public class ProductStock extends BasicVO<Long> {
 
 	@Override
 	public String toStringDebug() {
-		return "ProductStock [pk=" + pk + ", customerOrder=" + customerOrder + ", product=" + product + ", price="
-				+ price + ", maxPrice=" + maxPrice + ", minPrice=" + minPrice + "]";
+		return "ProductStock [pk=" + this.pk + ", customerOrder=" + this.customerOrder + ", product=" + this.product + ", price="
+				+ this.price + ", maxPrice=" + this.maxPrice + ", minPrice=" + this.minPrice + "]";
 	}
 
 }

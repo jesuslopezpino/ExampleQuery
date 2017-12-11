@@ -6,5 +6,5 @@ import foo.bar.test.common.TestCommon;
 import foo.bar.test.given.GivenCustomerOrder;
 
 public class TestCustomerOrderService extends TestCommon<CustomerOrderServiceImpl, CustomerOrder, GivenCustomerOrder> {
-	
+
 }

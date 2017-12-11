@@ -48,13 +48,13 @@ public class GivenCustomerOrder extends Given<CustomerOrder, CustomerOrderServic
 
 	public CustomerOrder givenACustomerOrder(Customer customer, Date date, List<ProductStock> productsStock)
 			throws UniqueException {
-		CustomerOrder result = givenObjectCustomerOrder(customer, date, productsStock);
+		CustomerOrder result = this.givenObjectCustomerOrder(customer, date, productsStock);
 		CustomerOrderServiceImpl service = new CustomerOrderServiceImpl();
-		service.setEntityManager(entityManager);
+		service.setEntityManager(this.entityManager);
 		service.save(result);
 		if (productsStock.size() > 0) {
 			ProductStockServiceImpl productStockServiceImpl = new ProductStockServiceImpl();
-			productStockServiceImpl.setEntityManager(entityManager);
+			productStockServiceImpl.setEntityManager(this.entityManager);
 			// TODO: change for list save
 			for (ProductStock productStock : productsStock) {
 				productStock.setCustomerOrder(result);
@@ -76,16 +76,16 @@ public class GivenCustomerOrder extends Given<CustomerOrder, CustomerOrderServic
 
 	@Override
 	public void givenExamplesEnvironment() throws UniqueException, InstantiationException, IllegalAccessException {
-		GivenCustomer givenCustomer = new GivenCustomer(entityManager);
+		GivenCustomer givenCustomer = new GivenCustomer(this.entityManager);
 		Customer customer = givenCustomer.givenADefaultCustomer();
-		GivenProduct givenProduct = new GivenProduct(entityManager);
+		GivenProduct givenProduct = new GivenProduct(this.entityManager);
 		Product product = givenProduct.givenAProduct("CocaCola", "Lata");
 		Date dateOrder = Utils.getDate("01/01/2017");
-		GivenProductStock givenProductStock = new GivenProductStock(entityManager);
+		GivenProductStock givenProductStock = new GivenProductStock(this.entityManager);
 		ProductStock productsStock = givenProductStock.givenAProductStock(product, 100);
 		List<ProductStock> productsStockList = new ArrayList<>();
 		productsStockList.add(productsStock);
-		givenACustomerOrder(customer, dateOrder, productsStockList);
+		this.givenACustomerOrder(customer, dateOrder, productsStockList);
 	}
 
 	@Override
@@ -126,17 +126,17 @@ public class GivenCustomerOrder extends Given<CustomerOrder, CustomerOrderServic
 		example2.setCustomer(customerExample);
 
 		CustomerOrder example3 = new CustomerOrder();
-		GivenProduct givenProduct = new GivenProduct(entityManager);
+		GivenProduct givenProduct = new GivenProduct(this.entityManager);
 		Product product = givenProduct.givenAProduct("Orange", "Color");
 		List<Long> productStockIds = new ArrayList<>();
-		GivenProductStock givenProductStock = new GivenProductStock(entityManager);
+		GivenProductStock givenProductStock = new GivenProductStock(this.entityManager);
 		ProductStock productStock = givenProductStock.givenAProductStock(product, 10);
 		productStockIds.add(productStock.getPk());
 		List<ProductStock> productsStockList = new ArrayList<>();
 		productsStockList.add(productStock);
-		GivenCustomer givenCustomer = new GivenCustomer(entityManager);
+		GivenCustomer givenCustomer = new GivenCustomer(this.entityManager);
 		Customer customer = givenCustomer.givenACustomer("Buyer", "cutomer", new Date(), "NO-ID", "DNI");
-		GivenCustomerOrder givenCustomerOrder = new GivenCustomerOrder(entityManager);
+		GivenCustomerOrder givenCustomerOrder = new GivenCustomerOrder(this.entityManager);
 		givenCustomerOrder.givenACustomerOrder(customer, new Date(), productsStockList);
 		example3.setProductsStockIds(productStockIds);
 
@@ -147,9 +147,9 @@ public class GivenCustomerOrder extends Given<CustomerOrder, CustomerOrderServic
 	@Override
 	public CustomerOrder initTestSaveInstance() throws UniqueException, InstantiationException, IllegalAccessException {
 		Customer customer = null;
-		GivenCustomer givenCustomer = new GivenCustomer(entityManager);
+		GivenCustomer givenCustomer = new GivenCustomer(this.entityManager);
 		customer = givenCustomer.givenACustomer("User", "Saved", new Date(), "LKKJHK", "DNI");
-		GivenCustomerOrder givenCustomerOrder = new GivenCustomerOrder(entityManager);
+		GivenCustomerOrder givenCustomerOrder = new GivenCustomerOrder(this.entityManager);
 		return givenCustomerOrder.givenObjectCustomerOrder(customer, new Date(), null);
 	}
 

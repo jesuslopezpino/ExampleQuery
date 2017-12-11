@@ -30,6 +30,6 @@ public enum HqlConditions {
 	
 	public boolean equalsName(String otherName) {
         // (otherName == null) check is not needed because name.equals(null) returns false 
-        return condition.equals(otherName);
+        return this.condition.equals(otherName);
     }
 }

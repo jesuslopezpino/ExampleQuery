@@ -31,7 +31,6 @@ import foo.bar.exceptions.ExampleQueryException;
 import foo.bar.exceptions.UniqueException;
 import foo.bar.filter.FilterMap;
 import foo.bar.service.impl.ServiceImpl;
-import foo.bar.service.utils.HqlConditions;
 import foo.bar.utils.Utils;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -95,9 +94,9 @@ public abstract class TestCommon<ServiceVO extends ServiceImpl<VO>, VO extends B
 			SecurityException, IllegalArgumentException, InvocationTargetException {
 		logLine();
 		LOGGER.info("setUp");
-		this.service = (ServiceImpl<VO>) serviceVoClass.newInstance();
+		this.service = (ServiceImpl<VO>) this.serviceVoClass.newInstance();
 		this.service.setEntityManager(this.entityManager);
-		Constructor constructor = givenVoClass.getConstructor(EntityManager.class);
+		Constructor constructor = this.givenVoClass.getConstructor(EntityManager.class);
 		this.given = (GivenVO) constructor.newInstance(this.entityManager);
 		logLine();
 	}
@@ -126,8 +125,8 @@ public abstract class TestCommon<ServiceVO extends ServiceImpl<VO>, VO extends B
 				assertTrue(this.service.getClass() + " returns UniqueException", true);
 			}
 		} else {
-			LOGGER.info(voClass.getName() + " doesn't have unique constraints");
-			assertTrue(voClass.getName() + " doesn't have unique constraints", true);
+			LOGGER.info(this.voClass.getName() + " doesn't have unique constraints");
+			assertTrue(this.voClass.getName() + " doesn't have unique constraints", true);
 		}
 		logLine();
 	}
@@ -138,7 +137,7 @@ public abstract class TestCommon<ServiceVO extends ServiceImpl<VO>, VO extends B
 		logLine();
 		LOGGER.info("testEntityConstructor");
 		Map<String, Object> mapValues = this.given.initEntityFields();
-		Constructor constructor = voClass.getConstructor(Map.class);
+		Constructor constructor = this.voClass.getConstructor(Map.class);
 		VO entity = (VO) constructor.newInstance((Map) mapValues);
 		LOGGER.info("Instance has been created with map values: " + mapValues);
 		LOGGER.info("Instance: " + entity.toStringDebug());
@@ -172,7 +171,7 @@ public abstract class TestCommon<ServiceVO extends ServiceImpl<VO>, VO extends B
 		logLine();
 		LOGGER.info("testSave");
 		VO entity = this.given.initTestSaveInstance();
-		entity = service.save(entity);
+		entity = this.service.save(entity);
 		LOGGER.info("Save successfull is " + (entity != null && entity.getPk() != null));
 		assertTrue("Save successfull", entity != null && entity.getPk() != null);
 		logLine();
@@ -189,7 +188,7 @@ public abstract class TestCommon<ServiceVO extends ServiceImpl<VO>, VO extends B
 			Entry<String, Object> entry = iterator.next();
 			String fieldName = entry.getKey();
 			Object newValue = entry.getValue();
-			updated &= updateFieldAtEntity(entity, fieldName, newValue);
+			updated &= this.updateFieldAtEntity(entity, fieldName, newValue);
 		}
 		VO updatedEntity = this.service.update(entity);
 		LOGGER.info("Entity updated: is " + updated);
@@ -212,7 +211,7 @@ public abstract class TestCommon<ServiceVO extends ServiceImpl<VO>, VO extends B
 		logLine();
 		LOGGER.info("testDelete at class: " + this.getClass().getName());
 		if (entity != null) {
-			result = service.delete(entity);
+			result = this.service.delete(entity);
 			assertTrue("Delete successfull", result);
 		} else {
 			assertTrue("Can't test delete", false);
@@ -230,10 +229,10 @@ public abstract class TestCommon<ServiceVO extends ServiceImpl<VO>, VO extends B
 		LOGGER.info("testFindAll at class: " + this.getClass().getName());
 		logLine();
 
-		initSetupEnvironmentExamples();
+		this.initSetupEnvironmentExamples();
 
 		logLine();
-		List<VO> result = service.findAll();
+		List<VO> result = this.service.findAll();
 		LOGGER.info("Test findAll returns more than zero: " + result.size());
 		assertTrue("Test findAll returns more than zero: ", !result.isEmpty());
 		logLine();
@@ -246,10 +245,10 @@ public abstract class TestCommon<ServiceVO extends ServiceImpl<VO>, VO extends B
 		LOGGER.info("testCountAll at class: " + this.getClass().getName());
 		logLine();
 
-		initSetupEnvironmentExamples();
+		this.initSetupEnvironmentExamples();
 
 		logLine();
-		int result = service.countAll();
+		int result = this.service.countAll();
 		LOGGER.info("Count all returns more than zero: " + result);
 		assertTrue("Count all returns more than zero: " + result, result > 0);
 		logLine();
@@ -260,11 +259,11 @@ public abstract class TestCommon<ServiceVO extends ServiceImpl<VO>, VO extends B
 			throws InstantiationException, ExampleQueryException, UniqueException, IllegalAccessException {
 		logLine();
 		LOGGER.info("testFindByExample at class: " + this.getClass().getName());
-		setupExamplesQueryEnvironment();
+		this.setupExamplesQueryEnvironment();
 		for (int i = 0; i < this.examples.length; i++) {
 			VO example = this.examples[i];
-			List<VO> result = service.findByExample(example, this.filter);
-			showResult(example, result, i, this.filter);
+			List<VO> result = this.service.findByExample(example, this.filter);
+			this.showResult(example, result, i, this.filter);
 			LOGGER.info("findByExample returns more than zero: " + result.size());
 			assertTrue("findByExample returns more than zero: ", !result.isEmpty());
 		}
@@ -272,7 +271,7 @@ public abstract class TestCommon<ServiceVO extends ServiceImpl<VO>, VO extends B
 	}
 
 	private void initSetupEnvironmentExamples() throws InstantiationException, IllegalAccessException, UniqueException {
-		logGivenEnvironmentStart();
+		this.logGivenEnvironmentStart();
 		this.given.givenExamplesEnvironment();
 		LOGGER.info("Example environment ends");
 	}
@@ -297,11 +296,11 @@ public abstract class TestCommon<ServiceVO extends ServiceImpl<VO>, VO extends B
 		logLine();
 		LOGGER.info("testCountByExample at class: " + this.getClass().getName());
 		logLine();
-		setupExamplesQueryEnvironment();
+		this.setupExamplesQueryEnvironment();
 		LOGGER.info("Count by example filters: " + this.filter);
 		for (int i = 0; i < this.examples.length; i++) {
 			VO example = this.examples[i];
-			Integer result = service.countByExample(example, this.filter);
+			Integer result = this.service.countByExample(example, this.filter);
 			LOGGER.info("Count by example returns more than zero: " + result + " Example: " + example.toStringDebug());
 			assertTrue("Count by example returns more than zero: " + result, result > 0);
 		}
@@ -314,7 +313,7 @@ public abstract class TestCommon<ServiceVO extends ServiceImpl<VO>, VO extends B
 		logLine();
 		this.customFields = this.given.initCustomFields();
 		VO entity = this.testSave();
-		VO result = service.findCustomByPk(entity.getPk(), this.customFields);
+		VO result = this.service.findCustomByPk(entity.getPk(), this.customFields);
 		LOGGER.info("testFindCustomByPk returns the searched element: " + result != null);
 		assertTrue("testFindCustomByPk returns the searched element: " + (result != null), result != null);
 		logLine();
@@ -326,15 +325,15 @@ public abstract class TestCommon<ServiceVO extends ServiceImpl<VO>, VO extends B
 			IllegalArgumentException, InvocationTargetException, ExampleQueryException, UniqueException {
 		LOGGER.info("Find Custom by example " + this.getClass().getName());
 		logLine();
-		setupExamplesQueryEnvironment();
+		this.setupExamplesQueryEnvironment();
 		for (int i = 0; i < this.examples.length; i++) {
 			logLine();
 			VO example = this.examples[i];
 			LOGGER.info("example: " + (i + 1));
-			List<VO> result = service.findCustomByExample(example, this.customFields, this.filter);
-			showResult(example, result, i, this.filter);
+			List<VO> result = this.service.findCustomByExample(example, this.customFields, this.filter);
+			this.showResult(example, result, i, this.filter);
 			LOGGER.info("findCustomByExample returns more than zero: " + result.size());
-			logEmptyLine();
+			this.logEmptyLine();
 			assertTrue("findCustomByExample returns more than zero: " + result, !result.isEmpty());
 		}
 		logLine();

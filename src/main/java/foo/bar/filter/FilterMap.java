@@ -29,7 +29,7 @@ public class FilterMap
 	}
 
 	public FilterAddCondition getFilterAddCondition() {
-		return filterAddCondition;
+		return this.filterAddCondition;
 	}
 
 	public void put(String key, HqlConditions condition) {
@@ -41,7 +41,7 @@ public class FilterMap
 	}
 
 	public Map<String, Object> getMap() {
-		return map;
+		return this.map;
 	}
 
 	public void setMap(Map<String, Object> map) {

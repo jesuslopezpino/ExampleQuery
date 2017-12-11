@@ -1,7 +1,5 @@
 package foo.bar.exceptions;
 
-import java.lang.reflect.Field;
-
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
@@ -30,7 +28,7 @@ public class UniqueException extends Exception {
 	}
 
 	public BasicVO getEntity() {
-		return entity;
+		return this.entity;
 	}
 
 	public void setEntity(BasicVO entity) {
@@ -38,7 +36,7 @@ public class UniqueException extends Exception {
 	}
 
 	public Class getClazz() {
-		return clazz;
+		return this.clazz;
 	}
 
 	public void setClazz(Class clazz) {
@@ -46,7 +44,7 @@ public class UniqueException extends Exception {
 	}
 
 	public String getUk() {
-		return uk;
+		return this.uk;
 	}
 
 	public void setUk(String uk) {
@@ -56,10 +54,10 @@ public class UniqueException extends Exception {
 	public UniqueConstraint getUniqueConstraint() {
 		UniqueConstraint result = null;
 		boolean found = false;
-		table = (Table) this.clazz.getAnnotation(Table.class);
-		if (table != null && table.uniqueConstraints().length > 0) {
-			for (int i = 0; i < table.uniqueConstraints().length; i++) {
-				UniqueConstraint uniqueConstraint = table.uniqueConstraints()[i];
+		this.table = (Table) this.clazz.getAnnotation(Table.class);
+		if (this.table != null && this.table.uniqueConstraints().length > 0) {
+			for (int i = 0; i < this.table.uniqueConstraints().length; i++) {
+				UniqueConstraint uniqueConstraint = this.table.uniqueConstraints()[i];
 				if (uniqueConstraint.name().equals(this.uk)) {
 					result = uniqueConstraint;
 					break;

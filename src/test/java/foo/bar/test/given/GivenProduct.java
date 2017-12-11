@@ -27,7 +27,7 @@ public class GivenProduct extends Given<Product, ProductServiceImpl> {
 	public Product givenAProduct(String name, String description) throws UniqueException {
 		Product result = GivenProduct.givenObjectProduct(name, description);
 		ProductServiceImpl service = new ProductServiceImpl();
-		service.setEntityManager(entityManager);
+		service.setEntityManager(this.entityManager);
 		service.save(result);
 		LOGGER.info("GivenProduct instance persisted " + GivenProduct.productToString(result));
 		return result;
@@ -48,8 +48,8 @@ public class GivenProduct extends Given<Product, ProductServiceImpl> {
 
 	@Override
 	public void givenExamplesEnvironment() throws UniqueException {
-		givenAProduct("Samsung", "television");
-		givenAProduct("Apple", "fruit");
+		this.givenAProduct("Samsung", "television");
+		this.givenAProduct("Apple", "fruit");
 	}
 
 	@Override

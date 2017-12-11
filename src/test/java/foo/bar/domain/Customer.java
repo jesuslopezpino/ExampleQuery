@@ -102,16 +102,18 @@ public class Customer extends BasicVO<Long> {
 		super(mapValues);
 	}
 
+	@Override
 	public Long getPk() {
-		return pk;
+		return this.pk;
 	}
 
+	@Override
 	public void setPk(Long pk) {
 		this.pk = pk;
 	}
 
 	public String getName() {
-		return name;
+		return this.name;
 	}
 
 	public void setName(String name) {
@@ -119,7 +121,7 @@ public class Customer extends BasicVO<Long> {
 	}
 
 	public String getLastName() {
-		return lastName;
+		return this.lastName;
 	}
 
 	public void setLastName(String lastName) {
@@ -127,7 +129,7 @@ public class Customer extends BasicVO<Long> {
 	}
 
 	public String getDocument() {
-		return document;
+		return this.document;
 	}
 
 	public void setDocument(String document) {
@@ -135,7 +137,7 @@ public class Customer extends BasicVO<Long> {
 	}
 
 	public String getDocumentType() {
-		return documentType;
+		return this.documentType;
 	}
 
 	public void setDocumentType(String documentType) {
@@ -143,7 +145,7 @@ public class Customer extends BasicVO<Long> {
 	}
 
 	public Date getBirthDate() {
-		return birthDate;
+		return this.birthDate;
 	}
 
 	public void setBirthDate(Date birthDate) {
@@ -151,7 +153,7 @@ public class Customer extends BasicVO<Long> {
 	}
 
 	public Date getBirthDateStart() {
-		return birthDateStart;
+		return this.birthDateStart;
 	}
 
 	public void setBirthDateStart(Date birthDateStart) {
@@ -159,7 +161,7 @@ public class Customer extends BasicVO<Long> {
 	}
 
 	public Date getBirthDateEnd() {
-		return birthDateEnd;
+		return this.birthDateEnd;
 	}
 
 	public void setBirthDateEnd(Date birthDateEnd) {
@@ -167,7 +169,7 @@ public class Customer extends BasicVO<Long> {
 	}
 
 	public List<String> getDocumentTypeList() {
-		return documentTypeList;
+		return this.documentTypeList;
 	}
 
 	public void setDocumentTypeList(List<String> documentTypeList) {
@@ -175,7 +177,7 @@ public class Customer extends BasicVO<Long> {
 	}
 
 	public String getCustomerOrdersProductName() {
-		return customerOrdersProductName;
+		return this.customerOrdersProductName;
 	}
 
 	public void setCustomerOrdersProductName(String customerOrdersProductName) {
@@ -183,7 +185,7 @@ public class Customer extends BasicVO<Long> {
 	}
 
 	public List<CustomerOrder> getCustomerOrders() {
-		return customerOrders;
+		return this.customerOrders;
 	}
 
 	public void setCustomerOrders(List<CustomerOrder> customerOrders) {
@@ -191,7 +193,7 @@ public class Customer extends BasicVO<Long> {
 	}
 
 	public List<Note> getNotes() {
-		return notes;
+		return this.notes;
 	}
 
 	public void setNotes(List<Note> notes) {
@@ -200,10 +202,10 @@ public class Customer extends BasicVO<Long> {
 
 	@Override
 	public String toStringDebug() {
-		return "Customer [pk=" + pk + ", name=" + name + ", lastName=" + lastName + ", document=" + document
-				+ ", documentType=" + documentType + ", birthDate=" + birthDate + ", customerOrders=" + customerOrders
-				+ ", customerOrdersProductName=" + customerOrdersProductName + ", documentTypeList=" + documentTypeList
-				+ ", birthDateStart=" + birthDateStart + ", birthDateEnd=" + birthDateEnd + ", notes=" + notes + "]";
+		return "Customer [pk=" + this.pk + ", name=" + this.name + ", lastName=" + this.lastName + ", document=" + this.document
+				+ ", documentType=" + this.documentType + ", birthDate=" + this.birthDate + ", customerOrders=" + this.customerOrders
+				+ ", customerOrdersProductName=" + this.customerOrdersProductName + ", documentTypeList=" + this.documentTypeList
+				+ ", birthDateStart=" + this.birthDateStart + ", birthDateEnd=" + this.birthDateEnd + ", notes=" + this.notes + "]";
 	}
 
 }

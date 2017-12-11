@@ -27,7 +27,7 @@ public class GivenProductStock extends Given<ProductStock, ProductStockServiceIm
 	public ProductStock givenAProductStock(Product product, Integer price) throws UniqueException {
 		ProductStock result = givenObjectProductStock(product, price);
 		ProductStockServiceImpl service = new ProductStockServiceImpl();
-		service.setEntityManager(entityManager);
+		service.setEntityManager(this.entityManager);
 		service.save(result);
 		LOGGER.info("GivenProductStock instance persisted " + productStockToString(result));
 		return result;
@@ -49,9 +49,9 @@ public class GivenProductStock extends Given<ProductStock, ProductStockServiceIm
 
 	@Override
 	public void givenExamplesEnvironment() throws InstantiationException, IllegalAccessException, UniqueException {
-		GivenProduct givenProduct = new GivenProduct(entityManager);
+		GivenProduct givenProduct = new GivenProduct(this.entityManager);
 		Product product = givenProduct.givenAProduct("Samsung", "tv");
-		givenAProductStock(product, 6);
+		this.givenAProductStock(product, 6);
 	}
 
 	@Override
@@ -112,7 +112,7 @@ public class GivenProductStock extends Given<ProductStock, ProductStockServiceIm
 
 	@Override
 	public ProductStock initTestSaveInstance() throws UniqueException, InstantiationException, IllegalAccessException {
-		GivenProduct givenProduct = new GivenProduct(entityManager);
+		GivenProduct givenProduct = new GivenProduct(this.entityManager);
 		Product product = givenProduct.givenAProduct("Samsung", "tv");
 		return GivenProductStock.givenObjectProductStock(product, 20);
 	}

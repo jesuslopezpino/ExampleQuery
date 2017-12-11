@@ -54,16 +54,18 @@ public class Product extends BasicVO<Long> {
 		super(mapValues);
 	}
 
+	@Override
 	public Long getPk() {
-		return pk;
+		return this.pk;
 	}
 
+	@Override
 	public void setPk(Long pk) {
 		this.pk = pk;
 	}
 
 	public String getName() {
-		return name;
+		return this.name;
 	}
 
 	public void setName(String name) {
@@ -71,7 +73,7 @@ public class Product extends BasicVO<Long> {
 	}
 
 	public String getDescription() {
-		return description;
+		return this.description;
 	}
 
 	public void setDescription(String description) {
@@ -79,7 +81,7 @@ public class Product extends BasicVO<Long> {
 	}
 
 	public List<Long> getPkList() {
-		return pkList;
+		return this.pkList;
 	}
 
 	public void setPkList(List<Long> pkList) {
@@ -88,7 +90,7 @@ public class Product extends BasicVO<Long> {
 
 	@Override
 	public String toStringDebug() {
-		return "Product [pk=" + pk + ", name=" + name + ", description=" + description + ", pkList=" + pkList + "]";
+		return "Product [pk=" + this.pk + ", name=" + this.name + ", description=" + this.description + ", pkList=" + this.pkList + "]";
 	}
 
 }

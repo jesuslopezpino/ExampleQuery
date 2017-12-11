@@ -29,13 +29,13 @@ public class GivenCustomer extends Given<Customer, CustomerServiceImpl> {
 	private static Logger LOGGER = Logger.getLogger(GivenCustomer.class);
 
 	public Customer givenADefaultCustomer() throws UniqueException {
-		return givenACustomer("Jesus", "Lopez", Utils.getDateTime("10/12/1983 12:00:00"), "XXXXXXX", "DNI");
+		return this.givenACustomer("Jesus", "Lopez", Utils.getDateTime("10/12/1983 12:00:00"), "XXXXXXX", "DNI");
 	}
 
 	public Customer givenACustomer(String name, String lastName, Date birthDate, String document, String documentType)
 			throws UniqueException {
-		Customer result = givenObjectCustomer(name, lastName, birthDate, document, documentType);
-		result = service.save(result);
+		Customer result = this.givenObjectCustomer(name, lastName, birthDate, document, documentType);
+		result = this.service.save(result);
 		LOGGER.info("GivenCustomer instance persisted " + customerToString(result));
 		return result;
 	}
@@ -61,18 +61,18 @@ public class GivenCustomer extends Given<Customer, CustomerServiceImpl> {
 
 	@Override
 	public void givenExamplesEnvironment() throws UniqueException, InstantiationException, IllegalAccessException {
-		Customer customer = givenADefaultCustomer();
+		Customer customer = this.givenADefaultCustomer();
 		List<ProductStock> productsStock = new ArrayList<>();
-		GivenProduct givenProduct = new GivenProduct(entityManager);
+		GivenProduct givenProduct = new GivenProduct(this.entityManager);
 		Product product = givenProduct.givenAProduct("Pizza", "Pizza");
-		GivenProductStock givenProductStock = new GivenProductStock(entityManager);
+		GivenProductStock givenProductStock = new GivenProductStock(this.entityManager);
 		ProductStock productStock = givenProductStock.givenAProductStock(product, 7);
 		productsStock.add(productStock);
-		GivenCustomerOrder givenCustomerOrder = new GivenCustomerOrder(entityManager);
+		GivenCustomerOrder givenCustomerOrder = new GivenCustomerOrder(this.entityManager);
 		givenCustomerOrder.givenACustomerOrder(customer, Utils.getDateTime("01/01/2017 00:00:00"), productsStock);
-		givenACustomer("One", "Customer", new Date(), "DNIXXX1", "TYPE");
-		givenACustomer("Two", "Customer", new Date(), "DNIXXX2", "TYPE");
-		givenACustomer("Three", "Customer", new Date(), "DNIXXX3", "TYPE");
+		this.givenACustomer("One", "Customer", new Date(), "DNIXXX1", "TYPE");
+		this.givenACustomer("Two", "Customer", new Date(), "DNIXXX2", "TYPE");
+		this.givenACustomer("Three", "Customer", new Date(), "DNIXXX3", "TYPE");
 	}
 
 	@Override
@@ -149,7 +149,7 @@ public class GivenCustomer extends Given<Customer, CustomerServiceImpl> {
 
 	@Override
 	public Customer initTestSaveInstance() throws UniqueException, InstantiationException, IllegalAccessException {
-		GivenCustomer givenCustomer = new GivenCustomer(entityManager);
+		GivenCustomer givenCustomer = new GivenCustomer(this.entityManager);
 		return givenCustomer.givenObjectCustomer("test name", "test last name", new Date(), "1234", "DNI");
 	}
 

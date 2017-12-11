@@ -18,6 +18,6 @@ public enum FilterAddCondition {
 	
 	public boolean equalsName(String otherName) {
         // (otherName == null) check is not needed because name.equals(null) returns false 
-        return addCondition.equals(otherName);
+        return this.addCondition.equals(otherName);
     }
 }

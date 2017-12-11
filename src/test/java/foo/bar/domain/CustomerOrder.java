@@ -59,16 +59,18 @@ public class CustomerOrder extends BasicVO<Long> {
 		super(mapValues);
 	}
 
+	@Override
 	public Long getPk() {
-		return pk;
+		return this.pk;
 	}
 
+	@Override
 	public void setPk(Long pk) {
 		this.pk = pk;
 	}
 
 	public Customer getCustomer() {
-		return customer;
+		return this.customer;
 	}
 
 	public void setCustomer(Customer customer) {
@@ -76,7 +78,7 @@ public class CustomerOrder extends BasicVO<Long> {
 	}
 
 	public Date getDate() {
-		return date;
+		return this.date;
 	}
 
 	public void setDate(Date date) {
@@ -84,7 +86,7 @@ public class CustomerOrder extends BasicVO<Long> {
 	}
 
 	public List<ProductStock> getProductsStock() {
-		return productsStock;
+		return this.productsStock;
 	}
 
 	public void setProductsStock(List<ProductStock> productsStock) {
@@ -92,7 +94,7 @@ public class CustomerOrder extends BasicVO<Long> {
 	}
 
 	public List<Long> getProductsStockIds() {
-		return productsStockIds;
+		return this.productsStockIds;
 	}
 
 	public void setProductsStockIds(List<Long> productsStockIds) {
@@ -101,8 +103,8 @@ public class CustomerOrder extends BasicVO<Long> {
 
 	@Override
 	public String toStringDebug() {
-		return "CustomerOrder [pk=" + pk + ", customer=" + customer + ", date=" + date + ", productsStock="
-				+ productsStock + ", productsStockIds=" + productsStockIds + "]";
+		return "CustomerOrder [pk=" + this.pk + ", customer=" + this.customer + ", date=" + this.date + ", productsStock="
+				+ this.productsStock + ", productsStockIds=" + this.productsStockIds + "]";
 	}
 
 }
