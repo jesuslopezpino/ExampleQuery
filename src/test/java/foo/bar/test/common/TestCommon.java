@@ -138,7 +138,7 @@ public abstract class TestCommon<ServiceVO extends ServiceImpl<VO>, VO extends B
 		logLine();
 		LOGGER.info("testEntityConstructor");
 		Map<String, Object> mapValues = this.given.initEntityFields();
-		Constructor constructor = voClass.getConstructor(HashMap.class);
+		Constructor constructor = voClass.getConstructor(Map.class);
 		VO entity = (VO) constructor.newInstance((Map) mapValues);
 		LOGGER.info("Instance has been created with map values: " + mapValues);
 		LOGGER.info("Instance: " + entity.toStringDebug());

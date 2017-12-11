@@ -1,7 +1,7 @@
 package foo.bar.domain;
 
 import java.util.Date;
-import java.util.HashMap;
+import java.util.Map;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -44,7 +44,7 @@ public class Note extends BasicVO<Long> {
 		super();
 	}
 
-	public Note(HashMap<String, Object> mapValues) {
+	public Note(Map<String, Object> mapValues) {
 		super(mapValues);
 	}
 

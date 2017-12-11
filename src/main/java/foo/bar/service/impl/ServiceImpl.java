@@ -135,7 +135,7 @@ public abstract class ServiceImpl<VO extends BasicVO<?>> implements Service<VO> 
 
 	protected VO convertToEntity(Map<String, Object> mapValues)
 			throws NoSuchMethodException, InstantiationException, IllegalAccessException, InvocationTargetException {
-		Constructor constructor = voClass.getConstructor(HashMap.class);
+		Constructor constructor = voClass.getConstructor(Map.class);
 		VO entity = (VO) constructor.newInstance(mapValues);
 		return entity;
 	}

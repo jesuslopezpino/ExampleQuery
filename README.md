@@ -97,7 +97,7 @@ public class Product extends BasicVO<Long> {
 		super();
 	}
 
-	public Product(HashMap<String, Object> mapValues) {
+	public Product(Map<String, Object> mapValues) {
 		super(mapValues);
 	}
 	

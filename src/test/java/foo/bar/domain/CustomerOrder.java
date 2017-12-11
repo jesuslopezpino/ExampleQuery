@@ -1,8 +1,8 @@
 package foo.bar.domain;
 
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -55,7 +55,7 @@ public class CustomerOrder extends BasicVO<Long> {
 		super();
 	}
 
-	public CustomerOrder(HashMap<String, Object> mapValues) {
+	public CustomerOrder(Map<String, Object> mapValues) {
 		super(mapValues);
 	}
 
