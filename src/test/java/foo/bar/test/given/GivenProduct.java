@@ -76,17 +76,17 @@ public class GivenProduct extends Given<Product, ProductServiceImpl> {
 
 		// example 1
 		// filter.put(Product.NAME, HqlConditions.LIKE_IGNORE_CASE);
-		FilterMap nestedFilter = new FilterMap(FilterAddCondition.OR);
-		nestedFilter.put(Product.NAME, HqlConditions.EQUALS);
-		nestedFilter.put(Product.DESCRIPTION, HqlConditions.EQUALS);
-		filter.put(nestedFilter);
+		FilterMap nameOrDescription = new FilterMap(FilterAddCondition.OR);
+		nameOrDescription.put(Product.NAME, HqlConditions.EQUALS);
+		nameOrDescription.put(Product.DESCRIPTION, HqlConditions.EQUALS);
+		filter.put(nameOrDescription);
 
 		// example 2
 		// filter.put(Product.PK_LIST, HqlConditions.NOT_IN);
-		FilterMap nestedFilter2 = new FilterMap(FilterAddCondition.AND);
-		nestedFilter2.put(Product.PK_LIST, HqlConditions.NOT_IN);
-		nestedFilter2.put(Product.PK, HqlConditions.NOT_EQUALS);
-		filter.put(nestedFilter2);
+		FilterMap pkAndPkList = new FilterMap(FilterAddCondition.AND);
+		pkAndPkList.put(Product.PK_LIST, HqlConditions.NOT_IN);
+		pkAndPkList.put(Product.PK, HqlConditions.NOT_EQUALS);
+		filter.put(pkAndPkList);
 		return filter;
 	}
 
