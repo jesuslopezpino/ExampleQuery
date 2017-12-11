@@ -5,9 +5,7 @@ import java.util.Map;
 
 import foo.bar.service.utils.HqlConditions;
 
-public class FilterMap
-// extends HashMap<String, HqlConditions> implements Map<String, HqlConditions>
-{
+public class FilterMap {
 
 	/**
 	 * serializable
@@ -48,4 +46,8 @@ public class FilterMap
 		this.map = map;
 	}
 
+	@Override
+	public String toString(){
+		return this.filterAddCondition +  " map: " + this.map;
+	}
 }
