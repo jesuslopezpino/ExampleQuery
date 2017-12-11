@@ -320,9 +320,9 @@ public abstract class ServiceImpl<VO extends BasicVO<?>> implements Service<VO> 
 							String fromForField = null;
 							if (FilterForFieldReader.isAnnotatedField(filterField, example)) {
 								String referencedField = FilterForFieldReader.getValue(filterField, example);
-								fromForField = getFromForField(tableAlias, tableAlias + "." + referencedField);
+								fromForField = getFromForField(tableAlias, lastTableAlias + "." + referencedField);
 							} else {
-								fromForField = getFromForField(tableAlias, tableAlias + "." + filterField);
+								fromForField = getFromForField(tableAlias, lastTableAlias + "." + filterField);
 							}
 							if (!from.contains(fromForField)) {
 								LOGGER.debug("From does not contains: " + fromForField);
@@ -377,7 +377,7 @@ public abstract class ServiceImpl<VO extends BasicVO<?>> implements Service<VO> 
 	}
 
 	private String getLastTableAlias(String currentTableAlias, String fieldForQuery) {
-		String result = currentTableAlias;
+		String result = null;
 		String[] split = fieldForQuery.split("\\.");
 		if (split.length > 1) {
 			result = split[split.length - 2];
