@@ -516,13 +516,38 @@ from
 ```
 
 ## delete
+ExampleQuery Service offers and method to delete a row of table.
+```java
+CustomerService service;
+Customer customer;
+...
+boolean result = service.delete(customer); 
+```
+That will result in the next query:
+```
 TODO
+```
 
 ## update
 TODO
 
 ## save
+ExampleQuery Service offers and method to save an entity.
+```java
+CustomerService service;
+Customer customer;
+...
+try {
+	boolean result = service.save(customer); 
+catch(UniqueException e){
+
+}
+```
+That will result in the next query:
+```
 TODO
+```
+
 	
 ### UniqueException
 
