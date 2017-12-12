@@ -99,7 +99,7 @@ Those constructors must be included.
 		super();
 	}
 
-	public Product(Map<String, Object> mapValues) {
+	public Product(Map<String, Object> mapValues) throws ExampleQueryException {
 		super(mapValues);
 	}
 	...
@@ -214,25 +214,25 @@ TODO
 ExampleQuery provides an abstract interface that also implements that offers most usual usage to deal with a data repository.
 
 ```java
-public int countAll() throws InstantiationException, IllegalAccessException, ExampleQueryException;
+public int countAll() throws ExampleQueryException;
 
-public List<VO> findAll() throws InstantiationException, IllegalAccessException, ExampleQueryException;
+public List<VO> findAll() throws ExampleQueryException;
 
 public VO findByPk(Object primaryKey);
 
-public VO findCustomByPk(Object primaryKey, String[] fields) throws NoSuchMethodException, InstantiationException, IllegalAccessException, InvocationTargetException;
+public VO findCustomByPk(Object primaryKey, String[] fields) throws ExampleQueryException;
 
-public int countByExample(VO example, FilterMap filter) throws ExampleQueryException, InstantiationException;
+public int countByExample(VO example, FilterMap filter) throws ExampleQueryException;
 
-public List<VO> findByExample(VO example, FilterMap filter) throws ExampleQueryException, InstantiationException;
+public List<VO> findByExample(VO example, FilterMap filter) throws ExampleQueryException;
 
-public List<VO> findCustomByExample(VO example, String[] fields, FilterMap filter) throws ExampleQueryException, NoSuchMethodException, SecurityException, InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException;
+public List<VO> findCustomByExample(VO example, String[] fields, FilterMap filter) throws ExampleQueryException;
 
 boolean delete(VO element);
 
 public VO save(VO element) throws UniqueException;
 
-public VO update(VO element);
+public VO update(VO element) throws UniqueException;
 
 public List<VO> saveList(List<VO> list) throws UniqueException;
 
@@ -246,11 +246,11 @@ public boolean deleteList(List<VO> list);
 ExampleQuery offers to developer an easy way to perform custom filtered queries, to do this `Service<BasicVO<PK>>` provides three methods to perform these queries:
 
 ```java
-public int countByExample(VO example, FilterMap filter) throws ExampleQueryException, InstantiationException;
+public int countByExample(VO example, FilterMap filter) throws ExampleQueryException;
 
-public List<VO> findByExample(VO example, FilterMap filter) throws ExampleQueryException, InstantiationException;
+public List<VO> findByExample(VO example, FilterMap filter) throws ExampleQueryException;
 
-public List<VO> findCustomByExample(VO example, String[] fields, FilterMap filter) throws ExampleQueryException, NoSuchMethodException, SecurityException, InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException;
+public List<VO> findCustomByExample(VO example, String[] fields, FilterMap filter) throws ExampleQueryException;
 ```
 
 For first example we want to filter products by 2 conditions, name has to be equals and description will be like in ingnore case.
@@ -452,9 +452,9 @@ Setting up parameter `:customer_name` with value `"Jesús"`.
 ExampleQuery offers to developer an easy way to perform custom field selection for our query, to do this `Service<BasicVO<PK>>` provides two methods to perform these queries:
 
 ```
-public VO findCustomByPk(Object primaryKey, String[] fields);
+public VO findCustomByPk(Object primaryKey, String[] fields) throws ExampleQueryException;
 
-public List<VO> findCustomByExample(VO example, String[] fields, FilterMap filter) throws ExampleQueryException, NoSuchMethodException, SecurityException, InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException;
+public List<VO> findCustomByExample(VO example, String[] fields, FilterMap filter) throws ExampleQueryException;
 ```
 
 Just filling an String[] variable we will customize the fields that we want to retrieve. Those fields will be represented with an string that will contain the path to the field that we want to include with `"."` working as field path separator. We can see an example:
@@ -579,19 +579,19 @@ public class TestCustomerService extends TestCommon<CustomerServiceImpl, Custome
 `Given` is an abstract class that developer must extends to be able to test how the service deals with the entity in real time. Developer has to fill the abstract methods with code that will represent the use of services in a real environment in order to prove that all works fine.
 
 ```java
-public abstract void givenExamplesEnvironment() throws UniqueException, InstantiationException, IllegalAccessException;
+public abstract void givenExamplesEnvironment() throws UniqueException, ExampleQueryException;
 
 public abstract String[] initCustomFields();
 
-public abstract VO[] initExamples() throws UniqueException, InstantiationException, IllegalAccessException;
+public abstract VO[] initExamples() throws UniqueException, ExampleQueryException;
 
-public abstract VO initTestSaveInstance() throws UniqueException, InstantiationException, IllegalAccessException;
+public abstract VO initTestSaveInstance() throws UniqueException, ExampleQueryException;
 
 public abstract FilterMap initFilter();
 
 public abstract Map<String, Object> initEntityFields();
 
-public abstract Map<String, Object> initTestUpdateValues();
+public abstract Map<String, Object> initTestUpdateValues() throws ExampleQueryException;
 ```
 
 When the developer provides content to that methods the unit test can be run. The test should be the most similar to what would happen in the real application usage.
