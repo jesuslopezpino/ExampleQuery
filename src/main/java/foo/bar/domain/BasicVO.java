@@ -7,6 +7,7 @@ import java.util.Map.Entry;
 
 import javax.persistence.MappedSuperclass;
 
+import foo.bar.exceptions.ExampleQueryException;
 import foo.bar.service.utils.UtilsService;
 import foo.bar.utils.Utils;
 
@@ -19,7 +20,7 @@ public abstract class BasicVO<PK> {
 		super();
 	}
 
-	public BasicVO(Map<String, Object> mapValues) {
+	public BasicVO(Map<String, Object> mapValues) throws ExampleQueryException {
 		super();
 		for (Iterator<Entry<String, Object>> iterator = mapValues.entrySet().iterator(); iterator.hasNext();) {
 			Entry<String, Object> entry = iterator.next();
@@ -28,8 +29,7 @@ public abstract class BasicVO<PK> {
 				Utils.setFieldValue(fieldName, entry.getValue(), this);
 			} catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException
 					| InvocationTargetException | NoSuchFieldException | InstantiationException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				throw new ExampleQueryException(e);
 			}
 		}
 	}

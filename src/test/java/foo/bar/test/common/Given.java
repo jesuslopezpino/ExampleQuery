@@ -66,7 +66,7 @@ public abstract class Given<VO extends BasicVO<?>, ServiceVO extends ServiceImpl
 	 * @throws IllegalAccessException
 	 *             the illegal access exception
 	 */
-	public abstract VO[] initExamples();
+	public abstract VO[] initExamples() throws UniqueException, ExampleQueryException;
 
 	/**
 	 * Returns the object for save-update-delete test case.
@@ -101,8 +101,9 @@ public abstract class Given<VO extends BasicVO<?>, ServiceVO extends ServiceImpl
 	 * Returns the fields and values for testUpdate case.
 	 *
 	 * @return the map
+	 * @throws ExampleQueryException
 	 */
-	public abstract Map<String, Object> initTestUpdateValues();
+	public abstract Map<String, Object> initTestUpdateValues() throws ExampleQueryException;
 
 	/**
 	 * Instantiates a new given for VO.

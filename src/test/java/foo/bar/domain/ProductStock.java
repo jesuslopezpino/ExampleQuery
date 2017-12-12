@@ -13,6 +13,7 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 
 import foo.bar.annotations.FilterForField;
+import foo.bar.exceptions.ExampleQueryException;
 
 @Entity
 @Table(name = "PRODUCT_STOCK")
@@ -56,7 +57,7 @@ public class ProductStock extends BasicVO<Long> {
 		super();
 	}
 
-	public ProductStock(Map<String, Object> mapValues) {
+	public ProductStock(Map<String, Object> mapValues) throws ExampleQueryException {
 		super(mapValues);
 	}
 

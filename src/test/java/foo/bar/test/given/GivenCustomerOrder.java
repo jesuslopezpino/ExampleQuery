@@ -115,7 +115,7 @@ public class GivenCustomerOrder extends Given<CustomerOrder, CustomerOrderServic
 	}
 
 	@Override
-	public CustomerOrder[] initExamples() {
+	public CustomerOrder[] initExamples() throws ExampleQueryException, UniqueException {
 		Customer customerExample = new Customer();
 		customerExample.setPk(100L);
 
@@ -127,32 +127,22 @@ public class GivenCustomerOrder extends Given<CustomerOrder, CustomerOrderServic
 		example2.setCustomer(customerExample);
 
 		CustomerOrder example3 = new CustomerOrder();
-		GivenProduct givenProduct;
-		try {
-			givenProduct = new GivenProduct(this.entityManager);
-			Product product = givenProduct.givenAProduct("Orange", "Color");
-			List<Long> productStockIds = new ArrayList<>();
-			GivenProductStock givenProductStock = new GivenProductStock(this.entityManager);
-			ProductStock productStock = givenProductStock.givenAProductStock(product, 10);
-			productStockIds.add(productStock.getPk());
-			List<ProductStock> productsStockList = new ArrayList<>();
-			productsStockList.add(productStock);
-			GivenCustomer givenCustomer = new GivenCustomer(this.entityManager);
-			Customer customer = givenCustomer.givenACustomer("Buyer", "cutomer", new Date(), "NO-ID", "DNI");
-			GivenCustomerOrder givenCustomerOrder = new GivenCustomerOrder(this.entityManager);
-			givenCustomerOrder.givenACustomerOrder(customer, new Date(), productsStockList);
-			example3.setProductsStockIds(productStockIds);
+		GivenProduct givenProduct = new GivenProduct(this.entityManager);
+		Product product = givenProduct.givenAProduct("Orange", "Color");
+		List<Long> productStockIds = new ArrayList<>();
+		GivenProductStock givenProductStock = new GivenProductStock(this.entityManager);
+		ProductStock productStock = givenProductStock.givenAProductStock(product, 10);
+		productStockIds.add(productStock.getPk());
+		List<ProductStock> productsStockList = new ArrayList<>();
+		productsStockList.add(productStock);
+		GivenCustomer givenCustomer = new GivenCustomer(this.entityManager);
+		Customer customer = givenCustomer.givenACustomer("Buyer", "cutomer", new Date(), "NO-ID", "DNI");
+		GivenCustomerOrder givenCustomerOrder = new GivenCustomerOrder(this.entityManager);
+		givenCustomerOrder.givenACustomerOrder(customer, new Date(), productsStockList);
+		example3.setProductsStockIds(productStockIds);
 
-			CustomerOrder[] examples = { example1, example2, example3 };
-			return examples;
-		} catch (ExampleQueryException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (UniqueException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return null;
+		CustomerOrder[] examples = { example1, example2, example3 };
+		return examples;
 	}
 
 	@Override

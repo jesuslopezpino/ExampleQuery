@@ -49,19 +49,10 @@ public class GivenProductStock extends Given<ProductStock, ProductStockServiceIm
 	}
 
 	@Override
-	public void givenExamplesEnvironment() {
-		GivenProduct givenProduct;
-		try {
-			givenProduct = new GivenProduct(this.entityManager);
-			Product product = givenProduct.givenAProduct("Samsung", "tv");
-			this.givenAProductStock(product, 6);
-		} catch (ExampleQueryException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (UniqueException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+	public void givenExamplesEnvironment() throws ExampleQueryException, UniqueException {
+		GivenProduct givenProduct = new GivenProduct(this.entityManager);
+		Product product = givenProduct.givenAProduct("Samsung", "tv");
+		this.givenAProductStock(product, 6);
 	}
 
 	@Override

@@ -14,6 +14,8 @@ import javax.validation.constraints.NotNull;
 
 import org.hibernate.validator.constraints.NotEmpty;
 
+import foo.bar.exceptions.ExampleQueryException;
+
 @Entity
 @Table(name = "NOTE")
 public class Note extends BasicVO<Long> {
@@ -44,7 +46,7 @@ public class Note extends BasicVO<Long> {
 		super();
 	}
 
-	public Note(Map<String, Object> mapValues) {
+	public Note(Map<String, Object> mapValues) throws ExampleQueryException {
 		super(mapValues);
 	}
 

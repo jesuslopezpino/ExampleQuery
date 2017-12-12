@@ -90,7 +90,7 @@ public class GivenNote extends Given<Note, NoteServiceImpl> {
 	}
 
 	@Override
-	public Note initTestSaveInstance() throws UniqueException {
+	public Note initTestSaveInstance() throws UniqueException, ExampleQueryException {
 		return GivenNote.givenObjectNote(Utils.getDateTime("01/01/2017 00:00:00"), null, "First note");
 	}
 

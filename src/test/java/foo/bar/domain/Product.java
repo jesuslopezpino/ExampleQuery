@@ -15,6 +15,7 @@ import javax.persistence.UniqueConstraint;
 import org.hibernate.validator.constraints.NotBlank;
 
 import foo.bar.annotations.FilterForField;
+import foo.bar.exceptions.ExampleQueryException;
 
 @Entity
 @Table(name = "PRODUCT", uniqueConstraints = {
@@ -50,7 +51,7 @@ public class Product extends BasicVO<Long> {
 		super();
 	}
 
-	public Product(Map<String, Object> mapValues) {
+	public Product(Map<String, Object> mapValues) throws ExampleQueryException {
 		super(mapValues);
 	}
 

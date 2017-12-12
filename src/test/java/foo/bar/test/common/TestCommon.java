@@ -76,14 +76,14 @@ public abstract class TestCommon<ServiceVO extends ServiceImpl<VO>, VO extends B
 	}
 
 	@BeforeClass
-	public static void setUpBeforeClass() throws Exception {
+	public static void setUpBeforeClass() {
 		logAsteriscLine();
 		LOGGER.info("setUpBeforeClass");
 		logAsteriscLine();
 	}
 
 	@AfterClass
-	public static void tearDownAfterClass() throws Exception {
+	public static void tearDownAfterClass() {
 		logAsteriscLine();
 		LOGGER.info("tearDownAfterClass");
 		logAsteriscLine();
@@ -109,7 +109,7 @@ public abstract class TestCommon<ServiceVO extends ServiceImpl<VO>, VO extends B
 	}
 
 	@Test
-	public void testUniqueException() throws InstantiationException, IllegalAccessException, ExampleQueryException {
+	public void testUniqueException() throws ExampleQueryException {
 		logLine();
 		LOGGER.info("testUniqueException");
 		Table table = (Table) this.voClass.getAnnotation(Table.class);
@@ -132,23 +132,25 @@ public abstract class TestCommon<ServiceVO extends ServiceImpl<VO>, VO extends B
 	}
 
 	@Test
-	public void testEntityConstructor() throws NoSuchMethodException, SecurityException, InstantiationException,
-			IllegalAccessException, IllegalArgumentException, InvocationTargetException {
+	public void testEntityConstructor() throws ExampleQueryException {
 		logLine();
 		LOGGER.info("testEntityConstructor");
 		Map<String, Object> mapValues = this.given.initEntityFields();
-		Constructor constructor = this.voClass.getConstructor(Map.class);
-		VO entity = (VO) constructor.newInstance((Map) mapValues);
-		LOGGER.info("Instance has been created with map values: " + mapValues);
-		LOGGER.info("Instance: " + entity.toStringDebug());
-		assertTrue("Instance has been created with map values: " + mapValues, entity != null);
-		logLine();
+		try {
+			Constructor constructor = this.voClass.getConstructor(Map.class);
+			VO entity = (VO) constructor.newInstance((Map) mapValues);
+			LOGGER.info("Instance has been created with map values: " + mapValues);
+			LOGGER.info("Instance: " + entity.toStringDebug());
+			assertTrue("Instance has been created with map values: " + mapValues, entity != null);
+			logLine();
+		} catch (NoSuchMethodException | SecurityException | InstantiationException | IllegalAccessException
+				| IllegalArgumentException | InvocationTargetException e) {
+			throw new ExampleQueryException(e);
+		}
 	}
 
 	@Test
-	public void testSaveUpdateFindByPkAndDelete()
-			throws UniqueException, NoSuchMethodException, SecurityException, IllegalAccessException,
-			IllegalArgumentException, InvocationTargetException, NoSuchFieldException, InstantiationException, ExampleQueryException {
+	public void testSaveUpdateFindByPkAndDelete() throws UniqueException, ExampleQueryException {
 		logLine();
 		LOGGER.info("testSaveUpdateFindByPkAndDelete");
 		VO entity = this.testSave();
@@ -167,7 +169,7 @@ public abstract class TestCommon<ServiceVO extends ServiceImpl<VO>, VO extends B
 		return findByPkEntity;
 	}
 
-	protected VO testSave() throws UniqueException, InstantiationException, IllegalAccessException, ExampleQueryException {
+	protected VO testSave() throws UniqueException, ExampleQueryException {
 		logLine();
 		LOGGER.info("testSave");
 		VO entity = this.given.initTestSaveInstance();
@@ -178,8 +180,7 @@ public abstract class TestCommon<ServiceVO extends ServiceImpl<VO>, VO extends B
 		return entity;
 	}
 
-	protected VO testUpdate(VO entity) throws NoSuchMethodException, SecurityException, IllegalAccessException,
-			IllegalArgumentException, InvocationTargetException, NoSuchFieldException, InstantiationException, UniqueException {
+	protected VO testUpdate(VO entity) throws UniqueException, ExampleQueryException {
 		logLine();
 		LOGGER.info("testUpdate");
 		boolean updated = true;
@@ -198,12 +199,16 @@ public abstract class TestCommon<ServiceVO extends ServiceImpl<VO>, VO extends B
 
 	}
 
-	protected boolean updateFieldAtEntity(VO entity, String fieldName, Object newValue) throws IllegalAccessException,
-			InvocationTargetException, NoSuchMethodException, NoSuchFieldException, InstantiationException {
-		Object originalValue = Utils.getFieldValue(entity, fieldName);
-		Utils.setFieldValue(fieldName, newValue, entity);
-		LOGGER.info("Entity updated: Field \"" + fieldName + "\" (" + originalValue + ") => (" + newValue + ")");
-		return (newValue != originalValue);
+	protected boolean updateFieldAtEntity(VO entity, String fieldName, Object newValue) throws ExampleQueryException {
+		try {
+			Object originalValue = Utils.getFieldValue(entity, fieldName);
+			Utils.setFieldValue(fieldName, newValue, entity);
+			LOGGER.info("Entity updated: Field \"" + fieldName + "\" (" + originalValue + ") => (" + newValue + ")");
+			return (newValue != originalValue);
+		} catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException | NoSuchMethodException
+				| SecurityException | NoSuchFieldException | InstantiationException e) {
+			throw new ExampleQueryException(e);
+		}
 	}
 
 	protected boolean testDelete(VO entity) {
@@ -223,8 +228,7 @@ public abstract class TestCommon<ServiceVO extends ServiceImpl<VO>, VO extends B
 	// TODO: test for unique exception
 
 	@Test
-	public void testFindAll()
-			throws InstantiationException, IllegalAccessException, ExampleQueryException, UniqueException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException, NoSuchFieldException {
+	public void testFindAll() throws UniqueException, ExampleQueryException {
 		logLine();
 		LOGGER.info("testFindAll at class: " + this.getClass().getName());
 		logLine();
@@ -255,8 +259,7 @@ public abstract class TestCommon<ServiceVO extends ServiceImpl<VO>, VO extends B
 	}
 
 	@Test
-	public void testFindByExample()
-			throws InstantiationException, ExampleQueryException, UniqueException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException, NoSuchFieldException {
+	public void testFindByExample() throws UniqueException, ExampleQueryException {
 		logLine();
 		LOGGER.info("testFindByExample at class: " + this.getClass().getName());
 		this.setupExamplesQueryEnvironment();
@@ -276,8 +279,7 @@ public abstract class TestCommon<ServiceVO extends ServiceImpl<VO>, VO extends B
 		LOGGER.info("Example environment ends");
 	}
 
-	protected void setupExamplesQueryEnvironment()
-			throws UniqueException, InstantiationException, IllegalAccessException, ExampleQueryException {
+	protected void setupExamplesQueryEnvironment() throws UniqueException, ExampleQueryException {
 		logLine();
 		LOGGER.info("setupExamplesQueryEnvironment");
 		this.initSetupEnvironmentExamples();
@@ -291,8 +293,9 @@ public abstract class TestCommon<ServiceVO extends ServiceImpl<VO>, VO extends B
 	}
 
 	@Test
-	public void testCountByExample()
-			throws InstantiationException, ExampleQueryException, UniqueException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException, NoSuchFieldException {
+	public void testCountByExample() throws InstantiationException, ExampleQueryException, UniqueException,
+			IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException,
+			SecurityException, NoSuchFieldException {
 		logLine();
 		LOGGER.info("testCountByExample at class: " + this.getClass().getName());
 		logLine();
@@ -320,9 +323,9 @@ public abstract class TestCommon<ServiceVO extends ServiceImpl<VO>, VO extends B
 	}
 
 	@Test
-	public void findCustomByExample()
-			throws NoSuchMethodException, SecurityException, InstantiationException, IllegalAccessException,
-			IllegalArgumentException, InvocationTargetException, ExampleQueryException, UniqueException, NoSuchFieldException {
+	public void findCustomByExample() throws NoSuchMethodException, SecurityException, InstantiationException,
+			IllegalAccessException, IllegalArgumentException, InvocationTargetException, ExampleQueryException,
+			UniqueException, NoSuchFieldException {
 		LOGGER.info("Find Custom by example " + this.getClass().getName());
 		logLine();
 		this.setupExamplesQueryEnvironment();

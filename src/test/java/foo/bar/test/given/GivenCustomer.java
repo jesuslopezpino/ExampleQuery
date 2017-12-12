@@ -29,7 +29,7 @@ public class GivenCustomer extends Given<Customer, CustomerServiceImpl> {
 
 	private static Logger LOGGER = Logger.getLogger(GivenCustomer.class);
 
-	public Customer givenADefaultCustomer() throws UniqueException {
+	public Customer givenADefaultCustomer() throws UniqueException, ExampleQueryException {
 		return this.givenACustomer("Jesus", "Lopez", Utils.getDateTime("10/12/1983 12:00:00"), "XXXXXXX", "DNI");
 	}
 
@@ -112,7 +112,7 @@ public class GivenCustomer extends Given<Customer, CustomerServiceImpl> {
 	}
 
 	@Override
-	public Customer[] initExamples() {
+	public Customer[] initExamples() throws ExampleQueryException {
 		Customer example1 = new Customer();
 		example1.setName("Jesus");
 		example1.setLastName("Lopez");
@@ -151,7 +151,7 @@ public class GivenCustomer extends Given<Customer, CustomerServiceImpl> {
 	}
 
 	@Override
-	public Map<String, Object> initTestUpdateValues() {
+	public Map<String, Object> initTestUpdateValues() throws ExampleQueryException {
 		Map<String, Object> result = new HashMap<>();
 		result.put(Customer.NAME, "Jose");
 		result.put(Customer.LAST_NAME, "Lopez Gamero");

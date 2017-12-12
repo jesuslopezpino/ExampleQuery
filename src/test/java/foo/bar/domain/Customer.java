@@ -18,6 +18,7 @@ import javax.validation.constraints.NotNull;
 import org.hibernate.validator.constraints.NotBlank;
 
 import foo.bar.annotations.FilterForField;
+import foo.bar.exceptions.ExampleQueryException;
 
 @Entity
 @Table(name = "CUSTOMER", uniqueConstraints = {
@@ -98,7 +99,7 @@ public class Customer extends BasicVO<Long> {
 		super();
 	}
 
-	public Customer(Map<String, Object> mapValues) {
+	public Customer(Map<String, Object> mapValues) throws ExampleQueryException {
 		super(mapValues);
 	}
 

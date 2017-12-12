@@ -17,6 +17,7 @@ import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 
 import foo.bar.annotations.FilterForField;
+import foo.bar.exceptions.ExampleQueryException;
 
 @Entity
 @Table(name = "CUSTOMER_ORDER")
@@ -55,7 +56,7 @@ public class CustomerOrder extends BasicVO<Long> {
 		super();
 	}
 
-	public CustomerOrder(Map<String, Object> mapValues) {
+	public CustomerOrder(Map<String, Object> mapValues) throws ExampleQueryException {
 		super(mapValues);
 	}
 

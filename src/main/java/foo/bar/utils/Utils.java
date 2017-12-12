@@ -12,6 +12,7 @@ import org.apache.commons.lang3.reflect.FieldUtils;
 import org.apache.log4j.Logger;
 
 import foo.bar.domain.BasicVO;
+import foo.bar.exceptions.ExampleQueryException;
 
 public class Utils {
 
@@ -144,23 +145,22 @@ public class Utils {
 
 	public static final String DATE_FORMAT = "DD/MM/YYYY";
 
-	public static Date getDate(String date) {
+	public static Date getDate(String date) throws ExampleQueryException {
 		return getDate(date, DATE_FORMAT);
 	}
 
-	public static Date getDateTime(String date) {
+	public static Date getDateTime(String date) throws ExampleQueryException {
 		return getDate(date, TIME_FORMAT);
 	}
 
-	public static Date getDate(String date, String format) {
+	public static Date getDate(String date, String format) throws ExampleQueryException {
 		// TODO: improve to don't make new always
 		SimpleDateFormat formatter = new SimpleDateFormat(format);
 		Date result = null;
 		try {
 			result = formatter.parse(date);
 		} catch (ParseException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			throw new ExampleQueryException(e);
 		}
 		return result;
 	}
