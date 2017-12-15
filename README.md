@@ -373,9 +373,7 @@ public class Customer extends BasicVO<Long> {
 	
 }
 ```
-
 We will set up the value of product name at the transient field.
-
 ```java
 FilterMap filter = new FilterMap();
 filter.put(Customer.ORDERS_PRODUCTS_NAME, HqlConditions.LIKE_IGNORE_CASE);
@@ -385,9 +383,7 @@ example.setCustomerOrdersProductName("pizza");
 
 List<VO> result = service.findByExample(example, filter); 
 ```
-
 Execution of that example will result in that hql query:
-
 ```
 select 
 	customer 
@@ -399,11 +395,8 @@ from
 where 
 	(UPPER(product.name) LIKE :customerOrdersProductName)
 ```
-	
 Setting up parameter `:customerOrdersProductName` with value `"%PIZZA%"`.
-
 It's not necessary to use a transient field with `@FilterForField` annotation if we don't have to deal with lists in the path. Let's see another example, from CustomerOrder side:
-
 ```java
 @Entity
 @Table(name = "CUSTOMER_ORDER")
@@ -418,9 +411,7 @@ public class CustomerOrder extends BasicVO<Long> {
 	...
 }
 ```
-
 We can built this example:
-
 ```java
 FilterMap filter = new FilterMap();
 filter.put(CustomerOrder.CUSTOMER + "." + Customer.NAME, HqlConditions.NOT_EQUALS);
@@ -432,9 +423,7 @@ example.setCustomer(customer);
 
 List<VO> result = service.findByExample(example, filter); 
 ```
-
 That will result in the next query:
-
 ```
 select 
 	customerOrder 
@@ -448,17 +437,13 @@ where
 Setting up parameter `:customer_name` with value `"Jesús"`.
 
 ## findCustomByPk
-
 ExampleQuery offers to developer an easy way to perform custom field selection for our query, to do this `Service<BasicVO<PK>>` provides two methods to perform these queries:
-
 ```
 public VO findCustomByPk(Object primaryKey, String[] fields) throws ExampleQueryException;
 
 public List<VO> findCustomByExample(VO example, String[] fields, FilterMap filter) throws ExampleQueryException;
 ```
-
 Just filling an String[] variable we will customize the fields that we want to retrieve. Those fields will be represented with an string that will contain the path to the field that we want to include with `"."` working as field path separator. We can see an example:
-
 ```java
 CustomerOrderService service;
 
@@ -478,11 +463,66 @@ That will result in the next query:
 TODO
 ```
 ## findCustomByExample
-TODO
+ExampleQuery Service offers and method to find all elements in a table by a given example.
+```java
+CustomerService service;
+...
+FilterMap filter = new FilterMap();
+filter.put(Customer.NAME, HqlConditions.LIKE);
+filter.put(Customer.LAST_NAME, HqlConditions.EQUALS);
+filter.put(Customer.DOCUMENT, HqlConditions.EQUALS);
+filter.put(Customer.BIRTH_DATE, HqlConditions.LIKE_IGNORE_CASE);
+filter.put(Customer.DOCUMENT, HqlConditions.EQUALS);
+filter.put(Customer.NOTES, HqlConditions.IS_EMPTY);
+
+Customer example = new Customer();
+example.setName("Jesus");
+example.setLastName("Lopez");
+example.setDocument("XXXXXXX");
+
+int result = service.countByExample(example, filter);
+```
+That will result in the next query:
+```
+Hibernate: 
+    select 
+    	count(*)
+    from 
+    	foo.bar.domain.Customer customer 
+    where  
+    	(customer.name like :name) and 
+    	(customer.lastName = :lastName) and 
+    	(customer.document = :document) and 
+    	(customer.birthDate is not null) and 
+    	(customer.notes is empty)
+```
 
 ## countByExample
-TODO
+ExampleQuery Service offers and method to count all element in a table by a given example.
+```java
+CustomerService service;
 
+Customer example = new Customer();
+example.setName("Jesus");
+example.setLastName("Lopez");
+example.setDocument("XXXXXXX");
+
+int result = service.countByExample(example);
+```
+That will result in the next query:
+```
+Hibernate: 
+    select 
+    	count(*)
+    from 
+    	foo.bar.domain.Customer customer 
+    where  
+    	(customer.name like :name) and 
+    	(customer.lastName = :lastName) and 
+    	(customer.document = :document) and 
+    	(customer.birthDate is not null) and 
+    	(customer.notes is empty)
+```
 ## findAll
 ExampleQuery Service offers and method to find all element in a table.
 ```java
@@ -490,7 +530,6 @@ CustomerService service;
 ...
 List<Customer> result = service.findAll(); 
 ```
-
 That will result in the next query:
 ```
 select 
@@ -498,8 +537,6 @@ select
 from 
 	foo.bar.domain.Customer customer
 ```
-
-
 ## countAll
 ExampleQuery Service offers and method to count all element in a table.
 ```java
@@ -514,47 +551,77 @@ select
 from 
 	foo.bar.domain.Product
 ```
-
 ## delete
 ExampleQuery Service offers and method to delete a row of table.
 ```java
+@Autowired
 CustomerService service;
-Customer customer;
+Customer customer; // a customer instance
 ...
 boolean result = service.delete(customer); 
 ```
 That will result in the next query:
 ```
-TODO
+Hibernate: 
+    delete 
+    from
+        CUSTOMER 
+    where
+        pk=?
 ```
-
 ## update
-TODO
-
+ExampleQuery Service offers and method to update a row of table.
+```java
+@Autowired
+CustomerService service;
+Customer customer;
+...
+try {
+	boolean result = service.update(customer); 
+catch(UniqueException e){
+	// handle UniqueException
+}
+```
+That will result in the next query:
+```
+Hibernate: 
+    update
+        CUSTOMER 
+    set
+        birthDate=?,
+        document=?,
+        documentType=?,
+        lastName=?,
+        name=? 
+    where
+        pk=?
+```
 ## save
 ExampleQuery Service offers and method to save an entity.
 ```java
+@Autowired
 CustomerService service;
 Customer customer;
 ...
 try {
 	boolean result = service.save(customer); 
 catch(UniqueException e){
-
+	// handle UniqueException
 }
 ```
 That will result in the next query:
 ```
-TODO
+Hibernate: 
+	insert 
+    into
+        CUSTOMER
+        (pk, birthDate, document, documentType, lastName, name) 
+    values
+        (default, ?, ?, ?, ?, ?)
 ```
-
-	
 ### UniqueException
-
 ExampleQuery returns `UniqueException` when a unique constraint is violated, this is because the rely on that constraint should be part of database. To consider that behavior part as save action exception, it will be easier for developer to identify that exception and the involved fields and values. 
-
 A unique exception contains: the entity instance that violated the constraint, the class of the entity, the `@UniqueException` annotation instance and a detailed message. `ServiceImpl` needs that the uk constraint name will be defined inside the annotation `@Table` unique constraints array.
-
 ```java
 @Entity
 @Table(name = "CUSTOMER", uniqueConstraints = {
@@ -569,21 +636,13 @@ public class Customer extends BasicVO<Long> {
 	...
 }
 ```
-
-
 ## Running the tests
-
 ExampleQuery includes a in-memory database to test all the ExampleQuery API. The basic examples includes a simple sample of database. That database includes a table system that represent a Note - Customer - CustomerOrder - ProductStock - Product. It is provided a test class for each entity that test the full service based on a Given class instance. 
-
 To run the test, in the root application folder execute:
-
 ```
 mvn test
 ```
-
-To create an test class for an Entity and Service you will have to provide a Given Entity Class instance
-
-For example, to test Customer entity and CustomerServiceImpl we only need to provide the GivenCustomer class:
+To create an test class for an Entity and Service you will have to provide a Given Entity Class instance. For example, to test Customer entity and CustomerServiceImpl we only need to provide the GivenCustomer class:
 
 ```java
 package foo.bar.test.service;
@@ -600,9 +659,7 @@ public class TestCustomerService extends TestCommon<CustomerServiceImpl, Custome
 ```
 
 ## Given abstract class
-
 `Given` is an abstract class that developer must extends to be able to test how the service deals with the entity in real time. Developer has to fill the abstract methods with code that will represent the use of services in a real environment in order to prove that all works fine.
-
 ```java
 public abstract void givenExamplesEnvironment() throws UniqueException, ExampleQueryException;
 
@@ -618,23 +675,17 @@ public abstract Map<String, Object> initEntityFields();
 
 public abstract Map<String, Object> initTestUpdateValues() throws ExampleQueryException;
 ```
-
 When the developer provides content to that methods the unit test can be run. The test should be the most similar to what would happen in the real application usage.
 
-
 ## Built With
-
 * [Git](https://git-scm.com/) Git for downloading source code
 * [Hibernate](http://hibernate.org/orm/documentation/4.2/) - The hibernate framework version used
 * [Maven](https://maven.apache.org/) - Dependency Management
 * [Java SDK 1.8](http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html) - Java used version
 
 ## Authors
-
 * *[Jesús María López Pino](https://www.linkedin.com/in/jesus-lopez-pino/)* 2017
 
-
 ## License
-
 This project is licensed under the Apache License 2.0 - see the [LICENSE.md](LICENSE.md) file for details
 
