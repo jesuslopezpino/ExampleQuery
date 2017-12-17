@@ -201,7 +201,7 @@ Customer example = new Customer();
 example.setName("Jesús");
 example.setLastName("López");
 ```
-This is an example that we can apply as filter for our queries to CUSTOMER table. We will see more uses of examples in the service method explanations. 
+This is an example that we can apply as filter values container for our queries to CUSTOMER table. We will see more uses of examples in the service method explanations. 
 ## ExampleQuery Service
 
 ExampleQuery provides an abstract interface that also implements that offers most usual usage to deal with a data repository.
