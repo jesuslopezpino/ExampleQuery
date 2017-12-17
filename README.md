@@ -18,7 +18,7 @@ ExampleQuery is a tool library where main utility is the ability of easily execu
 		* [Setting up services](#setting-up-services)
 * [ExampleQuery Filters](#examplequery-filters)
 	* [HqlConditions](#hqlconditions)
-* [ExampleQuery "Examples](#examplequery-examples)
+* [ExampleQuery Examples](#examplequery-examples)
 * [ExampleQuery Service](#examplequery-service)
 	* [findByExample](#findbyexample)
 		* [Annotation: @FilterForField](#annotation-filterforfield)
@@ -194,9 +194,14 @@ public enum HqlConditions {
 }
 ```
 
-## ExampleQuery "Examples"
-TODO
-
+## ExampleQuery Examples
+ExampleQuery bases its queries on the examples, that means that the query for the entity example given. For example, if we want to filter Customer table, our example will be an instance of Customer.
+```java
+Customer example = new Customer();
+example.setName("Jesús");
+example.setLastName("López");
+```
+This is an example that we can apply as filter for our queries to CUSTOMER table. We will see more uses of examples in the service method explanations. 
 ## ExampleQuery Service
 
 ExampleQuery provides an abstract interface that also implements that offers most usual usage to deal with a data repository.
@@ -457,7 +462,20 @@ List<CustomerOrder> result = service.findCustomByPk(1L, fields);
 
 That will result in the next query:
 ```
-TODO
+Hibernate: 
+	select 
+		new map ( 
+			customerOrder.pk as pk, 
+			customerOrder.date as date, 
+			customer.pk as customer_pk, 
+			customer.name as customer_name, 
+			customer.lastName as customer_lastName
+		) 
+	from 
+		foo.bar.domain.CustomerOrder customerOrder 
+		join customerOrder.customer customer  
+	where 
+		pk = :pk
 ```
 ## findCustomByExample
 ExampleQuery Service offers and method to find all elements in a table by a given example.
