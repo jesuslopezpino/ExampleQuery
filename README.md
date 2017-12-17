@@ -137,7 +137,7 @@ public class ProductServiceImpl extends ServiceImpl<Product> {
 ```
 That's all you need to set up and service of an entity.
 
-### ExampleQuery Filters
+## ExampleQuery Filters
 Filters in ExampleQuery are very simple, it is the composition of a *field name* and a *condition*. In this case, a filter is represented by a `Map<String, HqlCondition>` where the key will be the field value (with dot annotation) and the condition that will be applied to the field. In that case, allowed conditions are represented by a java enum `HqlConditions`. Each filter entry that has to be applied will be added with an `AND` to the where clause.
 
 ```java
@@ -150,7 +150,7 @@ Conditions are applied in two ways, all* or automatic. In automatic mode the con
 
 (* - Not implemented)
 
-#### HqlConditions
+### HqlConditions
 
 `HqlConditions` is an enum that contains the allowed filtering types to use with ExampleQuery. They are basically the most common jpql conditions clause.
 
@@ -272,13 +272,13 @@ where
 
 Setting up parameter `:name` with value `"Pizza"` and parameter `:description`	with value `"%FOOD%"`
 
-## Annotation: @FilterForField
+#### Annotation: @FilterForField
 
 The main idea of ExampleQuery is to usage the same class that represent the entity has holder for the different values that we want to apply to the custom filters applied. But what happens if we want to use a filter that can't be set directly in the entity, like when we want to filter a field by a range or filter for a value inside of a list. For that purpose ExampleQuery includes the field annotation `@FilterForField`
 
 `@FilterForField` annotation has one value to define that will contain the path to the field that we want to filter, the fields will be separated by `"."`.
 
-## @FilterForField: First usage
+#### @FilterForField: First usage
 
 In that case we are going to filter a field by range using two `@Transient` fields.
 
@@ -341,7 +341,7 @@ from
 Setting up parameter `:birthDateStart` with value `"Sun Dec 26 00:00:00 CET 1982"` and `:birthDateEnd` with value `"Sun Dec 26 23:59:00 CET 1982"`
 
 
-## @FilterForField: Second usage
+#### @FilterForField: Second usage
 
 In that case we are going to do an more elaborated query, to retrieve customers that has order "pizza".
 
@@ -433,7 +433,7 @@ where
 ```
 Setting up parameter `:customer_name` with value `"Jesús"`.
 
-## findCustomByPk
+### findCustomByPk
 ExampleQuery offers to developer an easy way to perform custom field selection for our query, to do this `Service<BasicVO<PK>>` provides two methods to perform these queries:
 ```
 public VO findCustomByPk(Object primaryKey, String[] fields) throws ExampleQueryException;
@@ -472,7 +472,7 @@ Hibernate:
 	where 
 		pk = :pk
 ```
-## findCustomByExample
+### findCustomByExample
 ExampleQuery Service offers and method to find all elements in a table by a given example.
 ```java
 @Autowired
@@ -508,7 +508,7 @@ Hibernate:
     	(customer.notes is empty)
 ```
 
-## countByExample
+### countByExample
 ExampleQuery Service offers and method to count all element in a table by a given example.
 ```java
 CustomerService service;
@@ -534,7 +534,7 @@ Hibernate:
     	(customer.birthDate is not null) and 
     	(customer.notes is empty)
 ```
-## findAll
+### findAll
 ExampleQuery Service offers and method to find all element in a table.
 ```java
 CustomerService service;
@@ -548,7 +548,7 @@ select
 from 
 	com.polvisoft.exampleQuery.domain.Customer customer
 ```
-## countAll
+### countAll
 ExampleQuery Service offers and method to count all element in a table.
 ```java
 CustomerService service;
@@ -562,7 +562,7 @@ select
 from 
 	com.polvisoft.exampleQuery.domain.Product
 ```
-## delete
+### delete
 ExampleQuery Service offers and method to delete a row of table.
 ```java
 @Autowired
@@ -580,7 +580,7 @@ Hibernate:
     where
         pk=?
 ```
-## update
+### update
 ExampleQuery Service offers and method to update a row of table.
 ```java
 @Autowired
@@ -607,7 +607,7 @@ Hibernate:
     where
         pk=?
 ```
-## save
+### save
 ExampleQuery Service offers and method to save an entity.
 ```java
 @Autowired
@@ -630,7 +630,7 @@ Hibernate:
     values
         (default, ?, ?, ?, ?, ?)
 ```
-### UniqueException
+#### UniqueException
 ExampleQuery returns `UniqueException` when a unique constraint is violated, this is because the rely on that constraint should be part of database. To consider that behavior part as save action exception, it will be easier for developer to identify that exception and the involved fields and values. 
 A unique exception contains: the entity instance that violated the constraint, the class of the entity, the `@UniqueException` annotation instance and a detailed message. `ServiceImpl` needs that the uk constraint name will be defined inside the annotation `@Table` unique constraints array.
 ```java
