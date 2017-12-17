@@ -2,16 +2,15 @@ package com.polvisoft.exampleQuery.utils;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import org.apache.commons.lang3.reflect.FieldUtils;
+import org.apache.commons.lang3.reflect.MethodUtils;
 import org.apache.log4j.Logger;
 
-import com.polvisoft.exampleQuery.domain.BasicVO;
 import com.polvisoft.exampleQuery.exceptions.ExampleQueryException;
 
 public class Utils {
@@ -86,41 +85,17 @@ public class Utils {
 			throws NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException,
 			InvocationTargetException, NoSuchFieldException {
 		String setterName = getSetterOfField(fieldName);
-		Method setter = null;
 		// Dates... Database will return Timestamp that we usually implements
 		// with java.util.Date, so we have to check it and fix it
 		if (isTimestamp(value)) {
 			Date dateValue = timestampToDate((Timestamp) value);
-			setter = objectClass.getClass().getMethod(setterName, Date.class);
-			setter.invoke(objectClass, dateValue);
+			Class[] argsTypes = { Date.class };
+			Object[] argsValues = { dateValue };
+			MethodUtils.invokeMethod(objectClass, true, setterName, argsValues, argsTypes);
 		} else {
-			if (isClassField(fieldName, objectClass)) {
-				setter = objectClass.getClass().getMethod(setterName, value.getClass());
-				setter.invoke(objectClass, value);
-			} else {
-				// TODO: we are only covering one herence...
-				if (!isPkField(fieldName)) {
-					setter = objectClass.getClass().getSuperclass().getMethod(setterName, value.getClass());
-				} else {
-					// Maybe I can use that case allways...?
-					setter = objectClass.getClass().getSuperclass().getMethod(setterName, Object.class);
-				}
-				setter.invoke(objectClass, value);
-
-			}
-		}
-	}
-
-	private static boolean isPkField(String fieldName) {
-		return fieldName.equals(BasicVO.PK);
-	}
-
-	private static boolean isClassField(String fieldName, Object objectClass) {
-		try {
-			objectClass.getClass().getDeclaredField(fieldName);
-			return true;
-		} catch (NoSuchFieldException | SecurityException e) {
-			return false;
+			Class[] argsTypes = { value.getClass() };
+			Object[] argsValues = { value };
+			MethodUtils.invokeMethod(objectClass, true, setterName, argsValues, argsTypes);
 		}
 	}
 
@@ -136,9 +111,7 @@ public class Utils {
 			IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException {
 		String getterName = getGetterOfField(fieldName);
 		LOGGER.debug("invokeGetter getterName \"" + getterName + "");
-		Object invokedValue = objectClass.getClass().getMethod(getterName).invoke(objectClass, (Object[]) null);
-		return invokedValue;
-
+		return MethodUtils.invokeMethod(objectClass, true, getterName);
 	}
 
 	public static final String TIME_FORMAT = "DD/MM/YYYY HH:mm:SS";
