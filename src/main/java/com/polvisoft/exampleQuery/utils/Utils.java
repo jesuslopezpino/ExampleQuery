@@ -71,7 +71,7 @@ public class Utils {
 			LOGGER.debug("lastValue: " + lastValue);
 			if (lastValue == null) {
 				LOGGER.debug("lastClass " + lastClass.getClass().getName());
-				Class<? extends Object> fieldType = lastClass.getClass().getDeclaredField(getter).getType();
+				Class<? extends Object> fieldType = FieldUtils.getField(lastClass.getClass(), getter, true).getType();
 				lastValue = fieldType.newInstance();
 				LOGGER.debug("NEW LAST VALUE: " + lastValue);
 				invokeSetter(getter, lastClass, lastValue);
