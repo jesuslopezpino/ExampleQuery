@@ -105,6 +105,10 @@ public abstract class Given<VO extends BasicVO<?>, ServiceVO extends ServiceImpl
 	 */
 	public abstract Map<String, Object> initTestUpdateValues() throws ExampleQueryException;
 
+	public abstract int initPageNumber();
+
+	public abstract int initPageSize();
+
 	/**
 	 * Instantiates a new given for VO.
 	 *

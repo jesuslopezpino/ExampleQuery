@@ -160,4 +160,15 @@ public class GivenCustomerOrder extends Given<CustomerOrder, CustomerOrderServic
 		result.put(CustomerOrder.DATE, new Date());
 		return result;
 	}
+
+	@Override
+	public int initPageNumber() {
+		return 0;
+	}
+
+	@Override
+	public int initPageSize() {
+		return 10;
+	}
+
 }

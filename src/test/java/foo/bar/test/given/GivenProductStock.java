@@ -124,4 +124,15 @@ public class GivenProductStock extends Given<ProductStock, ProductStockServiceIm
 		result.put(ProductStock.PRICE, 500);
 		return result;
 	}
+
+	@Override
+	public int initPageNumber() {
+		return 0;
+	}
+
+	@Override
+	public int initPageSize() {
+		return 10;
+	}
+
 }

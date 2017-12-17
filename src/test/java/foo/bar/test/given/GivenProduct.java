@@ -109,8 +109,8 @@ public class GivenProduct extends Given<Product, ProductServiceImpl> {
 		example3.setDescription(example1.getDescription());
 		example3.setPk(example2.getPk());
 		example3.setPkList(example2.getPkList());
-		Product[] examples = { 
-//				example1, example2, 
+		Product[] examples = {
+				// example1, example2,
 				example3 };
 		return examples;
 	}
@@ -127,4 +127,15 @@ public class GivenProduct extends Given<Product, ProductServiceImpl> {
 		result.put(Product.DESCRIPTION, "new description value");
 		return result;
 	}
+
+	@Override
+	public int initPageNumber() {
+		return 0;
+	}
+
+	@Override
+	public int initPageSize() {
+		return 10;
+	}
+
 }

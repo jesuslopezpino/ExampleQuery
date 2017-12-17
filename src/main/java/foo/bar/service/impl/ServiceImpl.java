@@ -102,6 +102,17 @@ public abstract class ServiceImpl<VO extends BasicVO<?>> implements Service<VO> 
 		Query query = this.createQueryForExample(example, filter, select, from);
 		return query.getResultList();
 	}
+	
+	@Override
+	public List<VO> findByExample(VO example, FilterMap filter, int pageNumber, int pageSize) throws ExampleQueryException {
+		String tableAlias = this.getTableAliasForClass(this.voClass);
+		String select = "select " + tableAlias;
+		String from = " from " + this.voClass.getName() + " " + tableAlias;
+		Query query = this.createQueryForExample(example, filter, select, from);
+		query.setFirstResult(pageSize * pageNumber);
+		query.setMaxResults(pageNumber);
+		return query.getResultList();
+	}
 
 	@Override
 	public int countByExample(VO example, FilterMap filter) throws ExampleQueryException {
@@ -118,6 +129,18 @@ public abstract class ServiceImpl<VO extends BasicVO<?>> implements Service<VO> 
 		String select = this.createCustomSelect(fields);
 		String from = this.createCustomFrom(fields);
 		Query query = this.createQueryForExample(example, filter, select, from);
+		List<Map<String, Object>> list = query.getResultList();
+		List<VO> result = this.converToEntityList(list);
+		return result;
+	}
+	
+	@Override
+	public List<VO> findCustomByExample(VO example, String[] fields, FilterMap filter, int pageNumber, int pageSize) throws ExampleQueryException {
+		String select = this.createCustomSelect(fields);
+		String from = this.createCustomFrom(fields);
+		Query query = this.createQueryForExample(example, filter, select, from);
+		query.setFirstResult(pageSize * pageNumber);
+		query.setMaxResults(pageNumber);
 		List<Map<String, Object>> list = query.getResultList();
 		List<VO> result = this.converToEntityList(list);
 		return result;
@@ -433,7 +456,6 @@ public abstract class ServiceImpl<VO extends BasicVO<?>> implements Service<VO> 
 			result = split[split.length - 2];
 		} else {
 			result = this.getTableAliasForClass(this.voClass);
-			;
 		}
 		LOGGER.debug("LAST TABLE ALIAS: of " + fieldForQuery + " is " + result);
 		return result;

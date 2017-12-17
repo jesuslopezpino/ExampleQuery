@@ -21,7 +21,13 @@ public interface Service<VO extends BasicVO<?>> {
 
 	public List<VO> findByExample(VO example, FilterMap filter) throws ExampleQueryException;
 
+	public List<VO> findByExample(VO example, FilterMap filter, int pageNumber, int pageSize)
+			throws ExampleQueryException;
+
 	public List<VO> findCustomByExample(VO example, String[] fields, FilterMap filter) throws ExampleQueryException;
+
+	public List<VO> findCustomByExample(VO example, String[] fields, FilterMap filter, int pageNumber, int pageSize)
+			throws ExampleQueryException;
 
 	boolean delete(VO element);
 

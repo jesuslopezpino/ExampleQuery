@@ -116,4 +116,15 @@ public class GivenNote extends Given<Note, NoteServiceImpl> {
 		return "Note [pk=" + note.getPk() + ", date=" + note.getDate() + ", note=" + note.getNote() + ", customer="
 				+ note.getCustomer() + "]";
 	}
+
+	@Override
+	public int initPageNumber() {
+		return 0;
+	}
+
+	@Override
+	public int initPageSize() {
+		return 10;
+	}
+
 }

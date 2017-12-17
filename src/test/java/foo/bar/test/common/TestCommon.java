@@ -60,6 +60,10 @@ public abstract class TestCommon<ServiceVO extends ServiceImpl<VO>, VO extends B
 
 	private String[] customFields;
 
+	private int pageSize;
+
+	private int pageNumber;
+
 	public TestCommon() {
 		logLine();
 		this.serviceVoClass = (Class<ServiceVO>) ((ParameterizedType) this.getClass().getGenericSuperclass())
@@ -272,6 +276,21 @@ public abstract class TestCommon<ServiceVO extends ServiceImpl<VO>, VO extends B
 		}
 		logLine();
 	}
+	
+	@Test
+	public void testFindByExamplePaginated() throws UniqueException, ExampleQueryException {
+		logLine();
+		LOGGER.info("testFindByExample at class: " + this.getClass().getName());
+		this.setupExamplesQueryEnvironment();
+		for (int i = 0; i < this.examples.length; i++) {
+			VO example = this.examples[i];
+			List<VO> result = this.service.findByExample(example, this.filter, this.pageNumber, this.pageSize);
+			this.showResult(example, result, i, this.filter);
+			LOGGER.info("findByExample returns more than zero: " + result.size());
+			assertTrue("findByExample returns more than zero: ", !result.isEmpty());
+		}
+		logLine();
+	}
 
 	private void initSetupEnvironmentExamples() throws UniqueException, ExampleQueryException {
 		this.logGivenEnvironmentStart();
@@ -289,6 +308,10 @@ public abstract class TestCommon<ServiceVO extends ServiceImpl<VO>, VO extends B
 		assertTrue("Filters has been initializated", this.filter != null && this.filter.getMap().size() > 0);
 		this.examples = this.given.initExamples();
 		assertTrue("Examples has been initializated", this.examples != null && this.examples.length > 0);
+		this.pageNumber = this.given.initPageNumber();
+		assertTrue("PageNumber has been initilizated", this.pageNumber >= 0);
+		this.pageSize = this.given.initPageSize();
+		assertTrue("PageSize has been initilizated", this.pageSize > 0);
 		logLine();
 	}
 

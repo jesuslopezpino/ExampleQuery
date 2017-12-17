@@ -160,4 +160,14 @@ public class GivenCustomer extends Given<Customer, CustomerServiceImpl> {
 		return result;
 	}
 
+	@Override
+	public int initPageNumber() {
+		return 0;
+	}
+
+	@Override
+	public int initPageSize() {
+		return 10;
+	}
+
 }
