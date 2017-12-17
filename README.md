@@ -698,6 +698,10 @@ public abstract FilterMap initFilter();
 public abstract Map<String, Object> initEntityFields();
 
 public abstract Map<String, Object> initTestUpdateValues() throws ExampleQueryException;
+
+public abstract int initPageNumber();
+
+public abstract int initPageSize();
 ```
 When the developer provides content to that methods the unit test can be run. The test should be the most similar to what would happen in the real application usage.
 
