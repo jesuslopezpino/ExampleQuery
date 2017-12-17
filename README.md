@@ -219,7 +219,11 @@ public int countByExample(VO example, FilterMap filter) throws ExampleQueryExcep
 
 public List<VO> findByExample(VO example, FilterMap filter) throws ExampleQueryException;
 
+public List<VO> findByExample(VO example, FilterMap filter, int pageNumber, int pageSize) throws ExampleQueryException;
+
 public List<VO> findCustomByExample(VO example, String[] fields, FilterMap filter) throws ExampleQueryException;
+
+public List<VO> findCustomByExample(VO example, String[] fields, FilterMap filter, int pageNumber, int pageSize) throws ExampleQueryException;
 
 boolean delete(VO element);
 
@@ -236,17 +240,21 @@ public boolean deleteList(List<VO> list);
 
 ### findByExample
 
-ExampleQuery offers to developer an easy way to perform custom filtered queries, to do this `Service<BasicVO<PK>>` provides three methods to perform these queries:
+ExampleQuery offers to developer an easy way to perform custom filtered queries, to do this `Service<BasicVO<PK>>` provides five methods to perform these queries:
 
 ```java
 public int countByExample(VO example, FilterMap filter) throws ExampleQueryException;
 
 public List<VO> findByExample(VO example, FilterMap filter) throws ExampleQueryException;
 
+public List<VO> findByExample(VO example, FilterMap filter, int pageNumber, int pageSize) throws ExampleQueryException;
+
 public List<VO> findCustomByExample(VO example, String[] fields, FilterMap filter) throws ExampleQueryException;
+
+public List<VO> findCustomByExample(VO example, String[] fields, FilterMap filter, int pageNumber, int pageSize) throws ExampleQueryException;
 ```
 
-For first example we want to filter products by 2 conditions, name has to be equals and description will be like in ignore case.
+For first example we want to filter products by 2 conditions, name has to be equals and description like ignore case.
 
 ```java
 @Autowired
