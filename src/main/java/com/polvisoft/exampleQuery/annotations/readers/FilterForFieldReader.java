@@ -1,12 +1,12 @@
-package com.polvisoft.annotations.readers;
+package com.polvisoft.exampleQuery.annotations.readers;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 
 import org.apache.commons.lang3.reflect.FieldUtils;
 
-import com.polvisoft.annotations.FilterForField;
-import com.polvisoft.utils.Utils;
+import com.polvisoft.exampleQuery.annotations.FilterForField;
+import com.polvisoft.exampleQuery.utils.Utils;
 
 public class FilterForFieldReader {
 

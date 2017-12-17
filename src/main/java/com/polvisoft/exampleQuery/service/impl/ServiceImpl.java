@@ -1,4 +1,4 @@
-package com.polvisoft.service.impl;
+package com.polvisoft.exampleQuery.service.impl;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
@@ -20,16 +20,16 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.hibernate.exception.ConstraintViolationException;
 
-import com.polvisoft.annotations.readers.FilterForFieldReader;
-import com.polvisoft.domain.BasicVO;
-import com.polvisoft.exceptions.ExampleQueryException;
-import com.polvisoft.exceptions.UniqueException;
-import com.polvisoft.filter.FilterMap;
-import com.polvisoft.service.Service;
-import com.polvisoft.service.utils.HqlConditions;
-import com.polvisoft.service.utils.QueryBuilderHelper;
-import com.polvisoft.service.utils.UtilsService;
-import com.polvisoft.utils.Utils;
+import com.polvisoft.exampleQuery.annotations.readers.FilterForFieldReader;
+import com.polvisoft.exampleQuery.domain.BasicVO;
+import com.polvisoft.exampleQuery.exceptions.ExampleQueryException;
+import com.polvisoft.exampleQuery.exceptions.UniqueException;
+import com.polvisoft.exampleQuery.filter.FilterMap;
+import com.polvisoft.exampleQuery.service.Service;
+import com.polvisoft.exampleQuery.service.utils.HqlConditions;
+import com.polvisoft.exampleQuery.service.utils.QueryBuilderHelper;
+import com.polvisoft.exampleQuery.service.utils.UtilsService;
+import com.polvisoft.exampleQuery.utils.Utils;
 
 public abstract class ServiceImpl<VO extends BasicVO<?>> implements Service<VO> {
 

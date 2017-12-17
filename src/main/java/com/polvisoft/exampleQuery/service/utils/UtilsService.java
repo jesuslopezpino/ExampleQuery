@@ -1,12 +1,12 @@
-package com.polvisoft.service.utils;
+package com.polvisoft.exampleQuery.service.utils;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.Collection;
 
 import org.apache.log4j.Logger;
 
-import com.polvisoft.annotations.readers.FilterForFieldReader;
-import com.polvisoft.filter.FilterAddCondition;
+import com.polvisoft.exampleQuery.annotations.readers.FilterForFieldReader;
+import com.polvisoft.exampleQuery.filter.FilterAddCondition;
 
 public class UtilsService {
 

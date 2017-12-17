@@ -1,4 +1,4 @@
-package com.polvisoft.service.query;
+package com.polvisoft.exampleQuery.service.query;
 
 public class CustomField {
 

@@ -1,4 +1,4 @@
-package com.polvisoft.service.query;
+package com.polvisoft.exampleQuery.service.query;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -10,6 +10,10 @@ import javax.persistence.EntityManager;
 
 import org.apache.log4j.Logger;
 
+import com.polvisoft.exampleQuery.exceptions.ExampleQueryException;
+import com.polvisoft.exampleQuery.exceptions.UniqueException;
+import com.polvisoft.exampleQuery.filter.FilterMap;
+import com.polvisoft.exampleQuery.service.utils.HqlConditions;
 import com.polvisoft.exampleQuery.test.domain.Customer;
 import com.polvisoft.exampleQuery.test.domain.CustomerOrder;
 import com.polvisoft.exampleQuery.test.domain.Product;
@@ -17,11 +21,7 @@ import com.polvisoft.exampleQuery.test.domain.ProductStock;
 import com.polvisoft.exampleQuery.test.service.impl.CustomerOrderServiceImpl;
 import com.polvisoft.exampleQuery.test.service.impl.ProductStockServiceImpl;
 import com.polvisoft.exampleQuery.test.test.common.Given;
-import com.polvisoft.exceptions.ExampleQueryException;
-import com.polvisoft.exceptions.UniqueException;
-import com.polvisoft.filter.FilterMap;
-import com.polvisoft.service.utils.HqlConditions;
-import com.polvisoft.utils.Utils;
+import com.polvisoft.exampleQuery.utils.Utils;
 
 public class GivenCustomerOrder extends Given<CustomerOrder, CustomerOrderServiceImpl> {
 

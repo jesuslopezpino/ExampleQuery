@@ -1,9 +1,9 @@
-package com.polvisoft.exceptions;
+package com.polvisoft.exampleQuery.exceptions;
 
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
-import com.polvisoft.domain.BasicVO;
+import com.polvisoft.exampleQuery.domain.BasicVO;
 
 public class UniqueException extends Exception {
 

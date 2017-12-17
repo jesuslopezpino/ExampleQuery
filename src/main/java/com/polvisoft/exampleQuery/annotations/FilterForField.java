@@ -1,4 +1,4 @@
-package com.polvisoft.annotations;
+package com.polvisoft.exampleQuery.annotations;
 
 import static java.lang.annotation.ElementType.FIELD;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;

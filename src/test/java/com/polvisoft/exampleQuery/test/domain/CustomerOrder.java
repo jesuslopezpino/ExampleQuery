@@ -16,9 +16,9 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 
-import com.polvisoft.annotations.FilterForField;
-import com.polvisoft.domain.BasicVO;
-import com.polvisoft.exceptions.ExampleQueryException;
+import com.polvisoft.exampleQuery.annotations.FilterForField;
+import com.polvisoft.exampleQuery.domain.BasicVO;
+import com.polvisoft.exampleQuery.exceptions.ExampleQueryException;
 
 @Entity
 @Table(name = "CUSTOMER_ORDER")

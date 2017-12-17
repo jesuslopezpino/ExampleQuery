@@ -14,8 +14,8 @@ import javax.validation.constraints.NotNull;
 
 import org.hibernate.validator.constraints.NotEmpty;
 
-import com.polvisoft.domain.BasicVO;
-import com.polvisoft.exceptions.ExampleQueryException;
+import com.polvisoft.exampleQuery.domain.BasicVO;
+import com.polvisoft.exampleQuery.exceptions.ExampleQueryException;
 
 @Entity
 @Table(name = "NOTE")

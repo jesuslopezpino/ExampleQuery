@@ -1,4 +1,4 @@
-package com.polvisoft.domain;
+package com.polvisoft.exampleQuery.domain;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.Iterator;
@@ -7,9 +7,9 @@ import java.util.Map.Entry;
 
 import javax.persistence.MappedSuperclass;
 
-import com.polvisoft.exceptions.ExampleQueryException;
-import com.polvisoft.service.utils.UtilsService;
-import com.polvisoft.utils.Utils;
+import com.polvisoft.exampleQuery.exceptions.ExampleQueryException;
+import com.polvisoft.exampleQuery.service.utils.UtilsService;
+import com.polvisoft.exampleQuery.utils.Utils;
 
 @MappedSuperclass
 public abstract class BasicVO<PK> {

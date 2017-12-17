@@ -1,9 +1,9 @@
-package com.polvisoft.controller;
+package com.polvisoft.exampleQuery.controller;
 
 import java.util.List;
 import java.util.Map;
 
-import com.polvisoft.service.utils.HqlConditions;
+import com.polvisoft.exampleQuery.service.utils.HqlConditions;
 
 public interface Controller<VO> {
 

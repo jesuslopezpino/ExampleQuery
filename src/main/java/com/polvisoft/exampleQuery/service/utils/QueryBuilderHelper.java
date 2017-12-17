@@ -1,4 +1,4 @@
-package com.polvisoft.service.utils;
+package com.polvisoft.exampleQuery.service.utils;
 
 import java.util.Map;
 

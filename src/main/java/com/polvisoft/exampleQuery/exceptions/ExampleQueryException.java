@@ -1,4 +1,4 @@
-package com.polvisoft.exceptions;
+package com.polvisoft.exampleQuery.exceptions;
 
 import org.apache.log4j.Logger;
 

@@ -1,9 +1,9 @@
-package com.polvisoft.filter;
+package com.polvisoft.exampleQuery.filter;
 
 import java.util.HashMap;
 import java.util.Map;
 
-import com.polvisoft.service.utils.HqlConditions;
+import com.polvisoft.exampleQuery.service.utils.HqlConditions;
 
 public class FilterMap {
 

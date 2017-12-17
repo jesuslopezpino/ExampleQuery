@@ -26,12 +26,12 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.polvisoft.domain.BasicVO;
-import com.polvisoft.exceptions.ExampleQueryException;
-import com.polvisoft.exceptions.UniqueException;
-import com.polvisoft.filter.FilterMap;
-import com.polvisoft.service.impl.ServiceImpl;
-import com.polvisoft.utils.Utils;
+import com.polvisoft.exampleQuery.domain.BasicVO;
+import com.polvisoft.exampleQuery.exceptions.ExampleQueryException;
+import com.polvisoft.exampleQuery.exceptions.UniqueException;
+import com.polvisoft.exampleQuery.filter.FilterMap;
+import com.polvisoft.exampleQuery.service.impl.ServiceImpl;
+import com.polvisoft.exampleQuery.utils.Utils;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = { "classpath:applicationContext.xml" })

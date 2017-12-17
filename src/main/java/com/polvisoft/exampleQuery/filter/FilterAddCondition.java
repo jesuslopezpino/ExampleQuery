@@ -1,4 +1,4 @@
-package com.polvisoft.filter;
+package com.polvisoft.exampleQuery.filter;
 
 public enum FilterAddCondition {
 
