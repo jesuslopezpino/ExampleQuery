@@ -52,22 +52,16 @@ To install ExampleQuery you will need:
 * Maven 3.x
 
 ### Installing
-
 To install ExampleQuery from source code you need to clone repository and install it in local maven repository.
-
 ```
 mkdir exampleQuery
 cd exampleQuery
 git clone https://github.com/jesuslopezpino/ExampleQuery.git
 mvn install
 ```
-
 ### Set up
-
 #### Setting up project
-
 To use ExampleQuery in your project you need to include the dependency at your pom.xml file:
-
 ```
 <dependencies>
 	...
@@ -79,9 +73,7 @@ To use ExampleQuery in your project you need to include the dependency at your p
 	...
 </dependencies>
 ```
-
 #### Setting up entities
-
 To be able to use ExampleQuery service your entity classes must extends abstract `BasicVO<PK>`.
 
 ```java
@@ -145,7 +137,6 @@ This is like that because we want that `@Id` annotation will be set in pk field 
 
 
 #### Setting up services
-
 To create a ExampleQuery service instance you just need to create a class that extends the abstract class `ServiceImpl<VO extends BasicVO>` with an entity class that extends `BasicVO` as type parameter.
 
 ```java
@@ -157,12 +148,9 @@ public class ProductServiceImpl extends ServiceImpl<Product> {
 
 }
 ```
-
 That's all you need to set up and service of an entity.
 
-
 ### ExampleQuery Filters
-
 Filters in ExampleQuery are very simple, it is the composition of a *field name* and a *condition*. In this case, a filter is represented by a `Map<String, HqlCondition>` where the key will be the field value (with dot annotation) and the condition that will be applied to the field. In that case, allowed conditions are represented by a java enum `HqlConditions`. Each filter entry that has to be applied will be added with an `AND` to the where clause.
 
 ```java
@@ -253,11 +241,12 @@ public List<VO> findByExample(VO example, FilterMap filter) throws ExampleQueryE
 public List<VO> findCustomByExample(VO example, String[] fields, FilterMap filter) throws ExampleQueryException;
 ```
 
-For first example we want to filter products by 2 conditions, name has to be equals and description will be like in ingnore case.
+For first example we want to filter products by 2 conditions, name has to be equals and description will be like in ignore case.
 
 ```java
+@Autowired
 ProductService service;
-
+...
 FilterMap filter = new FilterMap();
 filter.put(Product.NAME, HqlConditions.EQUALS);
 filter.put(Product.DESCRIPTION, HqlConditions.LIKE_IGNORE_CASE);
@@ -323,8 +312,10 @@ public class Customer extends BasicVO<Long> {
 }
 ```
 We will set up the values for range at the transient fields.
-
 ```java
+@Autowired
+CustomerService service;
+...
 FilterMap filter = new FilterMap();
 filter.put(Customer.BIRTH_DATE_START, HqlConditions.GREATER_EQUALS);
 filter.put(Customer.BIRTH_DATE_END, HqlConditions.LOWER_THAN);
@@ -375,6 +366,9 @@ public class Customer extends BasicVO<Long> {
 ```
 We will set up the value of product name at the transient field.
 ```java
+@Autowired
+CustomerService service;
+...
 FilterMap filter = new FilterMap();
 filter.put(Customer.ORDERS_PRODUCTS_NAME, HqlConditions.LIKE_IGNORE_CASE);
 
@@ -413,6 +407,9 @@ public class CustomerOrder extends BasicVO<Long> {
 ```
 We can built this example:
 ```java
+@Autowired
+CustomerOrderService service;
+...
 FilterMap filter = new FilterMap();
 filter.put(CustomerOrder.CUSTOMER + "." + Customer.NAME, HqlConditions.NOT_EQUALS);
 
@@ -465,6 +462,7 @@ TODO
 ## findCustomByExample
 ExampleQuery Service offers and method to find all elements in a table by a given example.
 ```java
+@Autowired
 CustomerService service;
 ...
 FilterMap filter = new FilterMap();
