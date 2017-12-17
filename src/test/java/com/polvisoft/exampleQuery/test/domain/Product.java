@@ -1,7 +1,6 @@
 package com.polvisoft.exampleQuery.test.domain;
 
 import java.util.List;
-import java.util.Map;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -16,7 +15,6 @@ import org.hibernate.validator.constraints.NotBlank;
 
 import com.polvisoft.exampleQuery.annotations.FilterForField;
 import com.polvisoft.exampleQuery.domain.BasicVO;
-import com.polvisoft.exampleQuery.exceptions.ExampleQueryException;
 
 @Entity
 @Table(name = "PRODUCT", uniqueConstraints = {
@@ -47,14 +45,6 @@ public class Product extends BasicVO<Long> {
 	@Transient
 	@FilterForField(Product.PK)
 	private List<Long> pkList;
-
-	public Product() {
-		super();
-	}
-
-	public Product(Map<String, Object> mapValues) throws ExampleQueryException {
-		super(mapValues);
-	}
 
 	@Override
 	public Long getPk() {

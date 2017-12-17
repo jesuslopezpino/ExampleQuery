@@ -136,24 +136,6 @@ public abstract class TestCommon<ServiceVO extends ServiceImpl<VO>, VO extends B
 	}
 
 	@Test
-	public void testEntityConstructor() throws ExampleQueryException {
-		logLine();
-		LOGGER.info("testEntityConstructor");
-		Map<String, Object> mapValues = this.given.initEntityFields();
-		try {
-			Constructor constructor = this.voClass.getConstructor(Map.class);
-			VO entity = (VO) constructor.newInstance((Map) mapValues);
-			LOGGER.info("Instance has been created with map values: " + mapValues);
-			LOGGER.info("Instance: " + entity.toStringDebug());
-			assertTrue("Instance has been created with map values: " + mapValues, entity != null);
-			logLine();
-		} catch (NoSuchMethodException | SecurityException | InstantiationException | IllegalAccessException
-				| IllegalArgumentException | InvocationTargetException e) {
-			throw new ExampleQueryException(e);
-		}
-	}
-
-	@Test
 	public void testSaveUpdateFindByPkAndDelete() throws UniqueException, ExampleQueryException {
 		logLine();
 		LOGGER.info("testSaveUpdateFindByPkAndDelete");

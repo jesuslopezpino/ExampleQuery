@@ -65,14 +65,6 @@ public class GivenProductStock extends Given<ProductStock, ProductStockServiceIm
 	}
 
 	@Override
-	public Map<String, Object> initEntityFields() {
-		Map<String, Object> mapValues = new HashMap<>();
-		mapValues.put(ProductStock.PRODUCT + "." + Product.NAME, "LG");
-		mapValues.put(ProductStock.PRODUCT + "." + Product.NAME, "Samsung");
-		return mapValues;
-	}
-
-	@Override
 	public FilterMap initFilter() {
 		FilterMap filter = new FilterMap(FilterAddCondition.OR);
 

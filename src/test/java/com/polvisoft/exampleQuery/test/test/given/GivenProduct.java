@@ -64,14 +64,6 @@ public class GivenProduct extends Given<Product, ProductServiceImpl> {
 	}
 
 	@Override
-	public Map<String, Object> initEntityFields() {
-		Map<String, Object> mapValues = new HashMap<>();
-		mapValues.put(Product.DESCRIPTION, "television");
-		mapValues.put(Product.NAME, "Samsung");
-		return mapValues;
-	}
-
-	@Override
 	public FilterMap initFilter() {
 		FilterMap filter = new FilterMap();
 

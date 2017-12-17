@@ -95,16 +95,6 @@ public class GivenNote extends Given<Note, NoteServiceImpl> {
 	}
 
 	@Override
-	public Map<String, Object> initEntityFields() {
-		Map<String, Object> initFields = new HashMap<>();
-		initFields.put(Note.PK, 1l);
-		initFields.put(Note.DATE, new Date());
-		initFields.put(Note.CUSTOMER, new Customer());
-		initFields.put(Note.NOTE, "note body");
-		return initFields;
-	}
-
-	@Override
 	public Map<String, Object> initTestUpdateValues() {
 		Map<String, Object> result = new HashMap<>();
 		result.put(Note.NOTE, "Updated note");

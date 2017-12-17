@@ -80,21 +80,8 @@ To be able to use ExampleQuery service your entity classes must extends abstract
 @Entity
 @Table(name = "PRODUCT")
 public class Product extends BasicVO<Long> {
-
-```
-
-Those constructors must be included.
-
-```java
-	...
-	public Product() {
-		super();
-	}
-
-	public Product(Map<String, Object> mapValues) throws ExampleQueryException {
-		super(mapValues);
-	}
-	...
+...
+}
 ```
 
 Now we can define the rest of the entity as usual.
@@ -694,8 +681,6 @@ public abstract VO[] initExamples() throws UniqueException, ExampleQueryExceptio
 public abstract VO initTestSaveInstance() throws UniqueException, ExampleQueryException;
 
 public abstract FilterMap initFilter();
-
-public abstract Map<String, Object> initEntityFields();
 
 public abstract Map<String, Object> initTestUpdateValues() throws ExampleQueryException;
 

@@ -90,14 +90,6 @@ public class GivenCustomerOrder extends Given<CustomerOrder, CustomerOrderServic
 	}
 
 	@Override
-	public Map<String, Object> initEntityFields() {
-		Map<String, Object> mapValues = new HashMap<>();
-		mapValues.put(CustomerOrder.DATE, new Date());
-		mapValues.put(CustomerOrder.CUSTOMER + "." + Customer.NAME, "Jesus");
-		return mapValues;
-	}
-
-	@Override
 	public FilterMap initFilter() {
 		FilterMap filter = new FilterMap();
 		// all examples

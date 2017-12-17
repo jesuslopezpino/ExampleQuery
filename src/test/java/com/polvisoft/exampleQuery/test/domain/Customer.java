@@ -2,7 +2,6 @@ package com.polvisoft.exampleQuery.test.domain;
 
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -19,7 +18,6 @@ import org.hibernate.validator.constraints.NotBlank;
 
 import com.polvisoft.exampleQuery.annotations.FilterForField;
 import com.polvisoft.exampleQuery.domain.BasicVO;
-import com.polvisoft.exampleQuery.exceptions.ExampleQueryException;
 
 @Entity
 @Table(name = "CUSTOMER", uniqueConstraints = {
@@ -98,10 +96,6 @@ public class Customer extends BasicVO<Long> {
 
 	public Customer() {
 		super();
-	}
-
-	public Customer(Map<String, Object> mapValues) throws ExampleQueryException {
-		super(mapValues);
 	}
 
 	@Override

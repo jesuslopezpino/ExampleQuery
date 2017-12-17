@@ -90,14 +90,6 @@ public abstract class Given<VO extends BasicVO<?>, ServiceVO extends ServiceImpl
 	public abstract FilterMap initFilter();
 
 	/**
-	 * Return the fields that we want to use for entity creation with map of
-	 * string objects.
-	 *
-	 * @return the map
-	 */
-	public abstract Map<String, Object> initEntityFields();
-
-	/**
 	 * Returns the fields and values for testUpdate case.
 	 *
 	 * @return the map

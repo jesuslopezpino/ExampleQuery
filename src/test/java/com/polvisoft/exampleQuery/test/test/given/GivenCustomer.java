@@ -137,14 +137,6 @@ public class GivenCustomer extends Given<Customer, CustomerServiceImpl> {
 	}
 
 	@Override
-	public Map<String, Object> initEntityFields() {
-		Map<String, Object> mapValues = new HashMap<>();
-		mapValues.put(Customer.BIRTH_DATE, new Date());
-		mapValues.put(Customer.NAME, "Jesus");
-		return mapValues;
-	}
-
-	@Override
 	public Customer initTestSaveInstance() throws UniqueException, ExampleQueryException {
 		GivenCustomer givenCustomer = new GivenCustomer(this.entityManager);
 		return givenCustomer.givenObjectCustomer("test name", "test last name", new Date(), "1234", "DNI");

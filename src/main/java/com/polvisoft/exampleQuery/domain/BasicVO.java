@@ -1,15 +1,6 @@
 package com.polvisoft.exampleQuery.domain;
 
-import java.lang.reflect.InvocationTargetException;
-import java.util.Iterator;
-import java.util.Map;
-import java.util.Map.Entry;
-
 import javax.persistence.MappedSuperclass;
-
-import com.polvisoft.exampleQuery.exceptions.ExampleQueryException;
-import com.polvisoft.exampleQuery.service.utils.UtilsService;
-import com.polvisoft.exampleQuery.utils.Utils;
 
 @MappedSuperclass
 public abstract class BasicVO<PK> {
@@ -18,20 +9,6 @@ public abstract class BasicVO<PK> {
 
 	public BasicVO() {
 		super();
-	}
-
-	public BasicVO(Map<String, Object> mapValues) throws ExampleQueryException {
-		super();
-		for (Iterator<Entry<String, Object>> iterator = mapValues.entrySet().iterator(); iterator.hasNext();) {
-			Entry<String, Object> entry = iterator.next();
-			try {
-				String fieldName = UtilsService.getFieldFromAlias(entry.getKey());
-				Utils.setFieldValue(fieldName, entry.getValue(), this);
-			} catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException
-					| InvocationTargetException | NoSuchFieldException | InstantiationException e) {
-				throw new ExampleQueryException(e);
-			}
-		}
 	}
 
 	public abstract PK getPk();

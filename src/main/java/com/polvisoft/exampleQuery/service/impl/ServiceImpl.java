@@ -1,6 +1,5 @@
 package com.polvisoft.exampleQuery.service.impl;
 
-import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.ParameterizedType;
 import java.util.ArrayList;
@@ -102,9 +101,10 @@ public abstract class ServiceImpl<VO extends BasicVO<?>> implements Service<VO> 
 		Query query = this.createQueryForExample(example, filter, select, from);
 		return query.getResultList();
 	}
-	
+
 	@Override
-	public List<VO> findByExample(VO example, FilterMap filter, int pageNumber, int pageSize) throws ExampleQueryException {
+	public List<VO> findByExample(VO example, FilterMap filter, int pageNumber, int pageSize)
+			throws ExampleQueryException {
 		String tableAlias = this.getTableAliasForClass(this.voClass);
 		String select = "select " + tableAlias;
 		String from = " from " + this.voClass.getName() + " " + tableAlias;
@@ -133,9 +133,10 @@ public abstract class ServiceImpl<VO extends BasicVO<?>> implements Service<VO> 
 		List<VO> result = this.converToEntityList(list);
 		return result;
 	}
-	
+
 	@Override
-	public List<VO> findCustomByExample(VO example, String[] fields, FilterMap filter, int pageNumber, int pageSize) throws ExampleQueryException {
+	public List<VO> findCustomByExample(VO example, String[] fields, FilterMap filter, int pageNumber, int pageSize)
+			throws ExampleQueryException {
 		String select = this.createCustomSelect(fields);
 		String from = this.createCustomFrom(fields);
 		Query query = this.createQueryForExample(example, filter, select, from);
@@ -157,11 +158,19 @@ public abstract class ServiceImpl<VO extends BasicVO<?>> implements Service<VO> 
 
 	protected VO convertToEntity(Map<String, Object> mapValues) throws ExampleQueryException {
 		try {
-			Constructor constructor = this.voClass.getConstructor(Map.class);
-			VO entity = (VO) constructor.newInstance(mapValues);
+			VO entity = this.voClass.newInstance();
+			for (Iterator<Entry<String, Object>> iterator = mapValues.entrySet().iterator(); iterator.hasNext();) {
+				Entry<String, Object> entry = iterator.next();
+				try {
+					String fieldName = UtilsService.getFieldFromAlias(entry.getKey());
+					Utils.setFieldValue(fieldName, entry.getValue(), entity);
+				} catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException
+						| InvocationTargetException | NoSuchFieldException | InstantiationException e) {
+					throw new ExampleQueryException(e);
+				}
+			}
 			return entity;
-		} catch (NoSuchMethodException | SecurityException | InstantiationException | IllegalAccessException
-				| IllegalArgumentException | InvocationTargetException e) {
+		} catch (SecurityException | InstantiationException | IllegalAccessException | IllegalArgumentException e) {
 			throw new ExampleQueryException(e);
 		}
 	}

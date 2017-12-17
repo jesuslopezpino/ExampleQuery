@@ -1,7 +1,5 @@
 package com.polvisoft.exampleQuery.test.domain;
 
-import java.util.Map;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -14,7 +12,6 @@ import javax.persistence.Transient;
 
 import com.polvisoft.exampleQuery.annotations.FilterForField;
 import com.polvisoft.exampleQuery.domain.BasicVO;
-import com.polvisoft.exampleQuery.exceptions.ExampleQueryException;
 
 @Entity
 @Table(name = "PRODUCT_STOCK")
@@ -56,10 +53,6 @@ public class ProductStock extends BasicVO<Long> {
 
 	public ProductStock() {
 		super();
-	}
-
-	public ProductStock(Map<String, Object> mapValues) throws ExampleQueryException {
-		super(mapValues);
 	}
 
 	@Override
