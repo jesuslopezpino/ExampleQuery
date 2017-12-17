@@ -12,8 +12,9 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
-import foo.bar.annotations.FilterForField;
-import foo.bar.exceptions.ExampleQueryException;
+import com.polvisoft.annotations.FilterForField;
+import com.polvisoft.domain.BasicVO;
+import com.polvisoft.exceptions.ExampleQueryException;
 
 @Entity
 @Table(name = "PRODUCT_STOCK")

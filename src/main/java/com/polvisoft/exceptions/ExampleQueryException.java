@@ -1,4 +1,4 @@
-package foo.bar.exceptions;
+package com.polvisoft.exceptions;
 
 import org.apache.log4j.Logger;
 

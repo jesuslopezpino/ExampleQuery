@@ -1,9 +1,9 @@
-package foo.bar.controller;
+package com.polvisoft.controller;
 
 import java.util.List;
 import java.util.Map;
 
-import foo.bar.service.utils.HqlConditions;
+import com.polvisoft.service.utils.HqlConditions;
 
 public interface Controller<VO> {
 

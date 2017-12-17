@@ -5,11 +5,11 @@ import java.util.Map;
 
 import javax.persistence.EntityManager;
 
-import foo.bar.domain.BasicVO;
-import foo.bar.exceptions.ExampleQueryException;
-import foo.bar.exceptions.UniqueException;
-import foo.bar.filter.FilterMap;
-import foo.bar.service.impl.ServiceImpl;
+import com.polvisoft.domain.BasicVO;
+import com.polvisoft.exceptions.ExampleQueryException;
+import com.polvisoft.exceptions.UniqueException;
+import com.polvisoft.filter.FilterMap;
+import com.polvisoft.service.impl.ServiceImpl;
 
 /**
  * The abstract Class Given.

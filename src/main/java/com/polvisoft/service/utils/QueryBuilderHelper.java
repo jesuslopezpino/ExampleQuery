@@ -1,4 +1,4 @@
-package foo.bar.service.utils;
+package com.polvisoft.service.utils;
 
 import java.util.Map;
 

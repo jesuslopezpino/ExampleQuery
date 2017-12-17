@@ -1,9 +1,9 @@
-package foo.bar.filter;
+package com.polvisoft.filter;
 
 import java.util.HashMap;
 import java.util.Map;
 
-import foo.bar.service.utils.HqlConditions;
+import com.polvisoft.service.utils.HqlConditions;
 
 public class FilterMap {
 

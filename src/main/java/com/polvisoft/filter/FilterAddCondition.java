@@ -1,4 +1,4 @@
-package foo.bar.filter;
+package com.polvisoft.filter;
 
 public enum FilterAddCondition {
 

@@ -1,12 +1,12 @@
-package foo.bar.service.utils;
+package com.polvisoft.service.utils;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.Collection;
 
 import org.apache.log4j.Logger;
 
-import foo.bar.annotations.readers.FilterForFieldReader;
-import foo.bar.filter.FilterAddCondition;
+import com.polvisoft.annotations.readers.FilterForFieldReader;
+import com.polvisoft.filter.FilterAddCondition;
 
 public class UtilsService {
 

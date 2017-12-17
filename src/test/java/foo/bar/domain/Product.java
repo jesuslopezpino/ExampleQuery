@@ -14,8 +14,9 @@ import javax.persistence.UniqueConstraint;
 
 import org.hibernate.validator.constraints.NotBlank;
 
-import foo.bar.annotations.FilterForField;
-import foo.bar.exceptions.ExampleQueryException;
+import com.polvisoft.annotations.FilterForField;
+import com.polvisoft.domain.BasicVO;
+import com.polvisoft.exceptions.ExampleQueryException;
 
 @Entity
 @Table(name = "PRODUCT", uniqueConstraints = {

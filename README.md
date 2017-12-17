@@ -66,7 +66,7 @@ To use ExampleQuery in your project you need to include the dependency at your p
 <dependencies>
 	...
 	<dependency>
-		<groupId>foo.bar</groupId>
+		<groupId>com.polvisoft</groupId>
 		<artifactId>ExampleQuery</artifactId>
 		<version>0.0.1-SNAPSHOT</version>
 	</dependency>
@@ -140,9 +140,9 @@ This is like that because we want that `@Id` annotation will be set in pk field 
 To create a ExampleQuery service instance you just need to create a class that extends the abstract class `ServiceImpl<VO extends BasicVO>` with an entity class that extends `BasicVO` as type parameter.
 
 ```java
-package foo.bar.service.impl;
+package com.polvisoft.service.impl;
 
-import foo.bar.domain.Product;
+import com.polvisoft.domain.Product;
 
 public class ProductServiceImpl extends ServiceImpl<Product> {
 
@@ -168,7 +168,7 @@ Conditions are applied in two ways, all* or automatic. In automatic mode the con
 `HqlConditions` is an enum that contains the allowed filtering types to use with ExampleQuery. They are basically the most common jpql conditions clause.
 
 ```java
-package foo.bar.service.utils;
+package com.polvisoft.service.utils;
 
 public enum HqlConditions {
 
@@ -277,7 +277,7 @@ Execution of that example will result in that hql query:
 select 
 	product 
 from 
-	foo.bar.domain.Product product 
+	com.polvisoft.domain.Product product 
 where 
 	(product.name = :name) and 
 	(UPPER(product.description) LIKE :description)
@@ -346,7 +346,7 @@ Execution of that example will result in that hql query:
 select 
 	customer 
 from 
-	foo.bar.domain.Customer customer 
+	com.polvisoft.domain.Customer customer 
 	where 
 	(customer.birthDate >= :birthDateStart) and
 	(customer.birthDate < :birthDateEnd)
@@ -395,7 +395,7 @@ Execution of that example will result in that hql query:
 select 
 	customer 
 from 
-	foo.bar.domain.Customer customer 
+	com.polvisoft.domain.Customer customer 
 	join customer.customerOrders customerOrders  
 	join customerOrders.productsStock productsStock  
 	join productsStock.product product  
@@ -438,7 +438,7 @@ That will result in the next query:
 select 
 	customerOrder 
 from 
-	foo.bar.domain.CustomerOrder customerOrder 
+	com.polvisoft.domain.CustomerOrder customerOrder 
 	join customerOrder.customer customer  
 where 
 	(customer.name != :customer_name)
@@ -480,7 +480,7 @@ Hibernate:
 			customer.lastName as customer_lastName
 		) 
 	from 
-		foo.bar.domain.CustomerOrder customerOrder 
+		com.polvisoft.domain.CustomerOrder customerOrder 
 		join customerOrder.customer customer  
 	where 
 		pk = :pk
@@ -512,7 +512,7 @@ Hibernate:
     select 
     	count(*)
     from 
-    	foo.bar.domain.Customer customer 
+    	com.polvisoft.domain.Customer customer 
     where  
     	(customer.name like :name) and 
     	(customer.lastName = :lastName) and 
@@ -539,7 +539,7 @@ Hibernate:
     select 
     	count(*)
     from 
-    	foo.bar.domain.Customer customer 
+    	com.polvisoft.domain.Customer customer 
     where  
     	(customer.name like :name) and 
     	(customer.lastName = :lastName) and 
@@ -559,7 +559,7 @@ That will result in the next query:
 select 
 	customer 
 from 
-	foo.bar.domain.Customer customer
+	com.polvisoft.domain.Customer customer
 ```
 ## countAll
 ExampleQuery Service offers and method to count all element in a table.
@@ -573,7 +573,7 @@ That will result in the next query:
 select 
 	count(*) 
 from 
-	foo.bar.domain.Product
+	com.polvisoft.domain.Product
 ```
 ## delete
 ExampleQuery Service offers and method to delete a row of table.
@@ -669,12 +669,12 @@ mvn test
 To create an test class for an Entity and Service you will have to provide a Given Entity Class instance. For example, to test Customer entity and CustomerServiceImpl we only need to provide the GivenCustomer class:
 
 ```java
-package foo.bar.test.service;
+package com.polvisoft.test.service;
 
-import foo.bar.domain.Customer;
-import foo.bar.service.impl.CustomerServiceImpl;
-import foo.bar.test.common.TestCommon;
-import foo.bar.test.given.GivenCustomer;
+import com.polvisoft.domain.Customer;
+import com.polvisoft.service.impl.CustomerServiceImpl;
+import com.polvisoft.test.common.TestCommon;
+import com.polvisoft.test.given.GivenCustomer;
 
 public class TestCustomerService extends TestCommon<CustomerServiceImpl, Customer, GivenCustomer> {
 

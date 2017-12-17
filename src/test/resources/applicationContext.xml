@@ -13,7 +13,7 @@
 	]]></description>
 
 	<!-- context -->
-	<context:component-scan base-package="foo.bar" />
+	<context:component-scan base-package="com.polvisoft" />
 	<context:annotation-config />
 
 	<!-- Beans para inyección de dependencias por anotaciones JPA -->

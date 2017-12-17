@@ -1,4 +1,4 @@
-package foo.bar.utils;
+package com.polvisoft.utils;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
@@ -11,8 +11,8 @@ import java.util.Date;
 import org.apache.commons.lang3.reflect.FieldUtils;
 import org.apache.log4j.Logger;
 
-import foo.bar.domain.BasicVO;
-import foo.bar.exceptions.ExampleQueryException;
+import com.polvisoft.domain.BasicVO;
+import com.polvisoft.exceptions.ExampleQueryException;
 
 public class Utils {
 

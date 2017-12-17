@@ -1,11 +1,11 @@
-package foo.bar.service;
+package com.polvisoft.service;
 
 import java.util.List;
 
-import foo.bar.domain.BasicVO;
-import foo.bar.exceptions.ExampleQueryException;
-import foo.bar.exceptions.UniqueException;
-import foo.bar.filter.FilterMap;
+import com.polvisoft.domain.BasicVO;
+import com.polvisoft.exceptions.ExampleQueryException;
+import com.polvisoft.exceptions.UniqueException;
+import com.polvisoft.filter.FilterMap;
 
 public interface Service<VO extends BasicVO<?>> {
 

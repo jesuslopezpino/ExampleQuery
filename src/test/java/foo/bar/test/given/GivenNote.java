@@ -8,15 +8,16 @@ import javax.persistence.EntityManager;
 
 import org.apache.log4j.Logger;
 
+import com.polvisoft.exceptions.ExampleQueryException;
+import com.polvisoft.exceptions.UniqueException;
+import com.polvisoft.filter.FilterMap;
+import com.polvisoft.service.utils.HqlConditions;
+import com.polvisoft.utils.Utils;
+
 import foo.bar.domain.Customer;
 import foo.bar.domain.Note;
-import foo.bar.exceptions.ExampleQueryException;
-import foo.bar.exceptions.UniqueException;
-import foo.bar.filter.FilterMap;
 import foo.bar.service.impl.NoteServiceImpl;
-import foo.bar.service.utils.HqlConditions;
 import foo.bar.test.common.Given;
-import foo.bar.utils.Utils;
 
 public class GivenNote extends Given<Note, NoteServiceImpl> {
 

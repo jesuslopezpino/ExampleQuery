@@ -1,4 +1,4 @@
-package foo.bar.service.query;
+package com.polvisoft.service.query;
 
 public class CustomField {
 
