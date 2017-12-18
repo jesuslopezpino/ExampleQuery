@@ -12,7 +12,7 @@ public class FilterMap {
 	 */
 	private static final long serialVersionUID = 6271753688743170694L;
 
-	private FilterAddCondition filterAddCondition;
+	private final FilterAddCondition filterAddCondition;
 
 	private Map<String, Object> map = new HashMap<>();
 
@@ -21,7 +21,7 @@ public class FilterMap {
 		this.filterAddCondition = FilterAddCondition.AND;
 	}
 
-	public FilterMap(FilterAddCondition filterAddCondition) {
+	public FilterMap(final FilterAddCondition filterAddCondition) {
 		super();
 		this.filterAddCondition = filterAddCondition;
 	}
@@ -30,11 +30,11 @@ public class FilterMap {
 		return this.filterAddCondition;
 	}
 
-	public void put(String key, HqlConditions condition) {
+	public void put(final String key, final HqlConditions condition) {
 		this.map.put(key, condition);
 	}
 
-	public void put(FilterMap filterMap) {
+	public void put(final FilterMap filterMap) {
 		this.map.put(filterMap.hashCode() + "", filterMap);
 	}
 
@@ -42,7 +42,7 @@ public class FilterMap {
 		return this.map;
 	}
 
-	public void setMap(Map<String, Object> map) {
+	public void setMap(final Map<String, Object> map) {
 		this.map = map;
 	}
 

@@ -23,9 +23,9 @@ public abstract class BasicDTO<PK> {
 	public abstract String toStringDebug();
 
 	@Override
-	public boolean equals(Object obj) {
+	public boolean equals(final Object obj) {
 		if (obj != null && obj instanceof BasicDTO) {
-			BasicDTO other = (BasicDTO) obj;
+			final BasicDTO other = (BasicDTO) obj;
 			if (other.getPk().equals(this.getPk())) {
 				return true;
 			}

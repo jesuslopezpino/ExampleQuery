@@ -1,10 +1,10 @@
 package com.polvisoft.exampleQuery.enums;
 
 public enum HqlFunctions {
-    AVG("avg"), 
-    SUM("sum"),
-    COUNT("count"),
-	MAX("max"), 
+	AVG("avg"),
+	SUM("sum"),
+	COUNT("count"),
+	MAX("max"),
 	MIN("min");
 
 	private final String function;
@@ -18,7 +18,7 @@ public enum HqlFunctions {
 		this.function = function;
 	}
 
-	public boolean equalsName(String otherName) {
+	public boolean equalsName(final String otherName) {
 		return this.function.equals(otherName);
 	}
 }

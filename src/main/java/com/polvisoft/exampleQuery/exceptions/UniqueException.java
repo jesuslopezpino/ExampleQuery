@@ -20,7 +20,7 @@ public class UniqueException extends Exception {
 
 	private Table table;
 
-	public UniqueException(Class clazz, String uk, BasicDTO entity) {
+	public UniqueException(final Class clazz, final String uk, final BasicDTO entity) {
 		super();
 		this.clazz = clazz;
 		this.entity = entity;
@@ -31,7 +31,7 @@ public class UniqueException extends Exception {
 		return this.entity;
 	}
 
-	public void setEntity(BasicDTO entity) {
+	public void setEntity(final BasicDTO entity) {
 		this.entity = entity;
 	}
 
@@ -39,7 +39,7 @@ public class UniqueException extends Exception {
 		return this.clazz;
 	}
 
-	public void setClazz(Class clazz) {
+	public void setClazz(final Class clazz) {
 		this.clazz = clazz;
 	}
 
@@ -47,17 +47,17 @@ public class UniqueException extends Exception {
 		return this.uk;
 	}
 
-	public void setUk(String uk) {
+	public void setUk(final String uk) {
 		this.uk = uk;
 	}
 
 	public UniqueConstraint getUniqueConstraint() {
 		UniqueConstraint result = null;
-		boolean found = false;
+		final boolean found = false;
 		this.table = (Table) this.clazz.getAnnotation(Table.class);
 		if (this.table != null && this.table.uniqueConstraints().length > 0) {
 			for (int i = 0; i < this.table.uniqueConstraints().length; i++) {
-				UniqueConstraint uniqueConstraint = this.table.uniqueConstraints()[i];
+				final UniqueConstraint uniqueConstraint = this.table.uniqueConstraints()[i];
 				if (uniqueConstraint.name().equals(this.uk)) {
 					result = uniqueConstraint;
 					break;

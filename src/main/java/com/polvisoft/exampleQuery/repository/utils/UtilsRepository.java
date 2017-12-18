@@ -13,12 +13,12 @@ public class UtilsRepository {
 
 	private static Logger LOGGER = Logger.getLogger(UtilsRepository.class);
 
-	public static String getFieldForQuery(Object example, String filterField)
+	public static String getFieldForQuery(final Object example, final String filterField)
 			throws NoSuchFieldException, SecurityException, IllegalAccessException, IllegalArgumentException,
 			InvocationTargetException, NoSuchMethodException {
 		String fieldForQuery;
 		// first check if the field is @FilterForField or not
-		boolean isFilterForField = FilterForFieldReader.isAnnotatedField(filterField, example);
+		final boolean isFilterForField = FilterForFieldReader.isAnnotatedField(filterField, example);
 		if (isFilterForField) {
 			// field for query = the referenced field
 			fieldForQuery = FilterForFieldReader.getValue(filterField, example);
@@ -29,7 +29,7 @@ public class UtilsRepository {
 		return fieldForQuery;
 	}
 
-	public static boolean hasToApplyConditionForQuery(HqlConditions condition, Object value) {
+	public static boolean hasToApplyConditionForQuery(final HqlConditions condition, final Object value) {
 		boolean result = false;
 		switch (condition) {
 		case IS_NOT_EMPTY:
@@ -38,7 +38,7 @@ public class UtilsRepository {
 		case IS_NULL:
 			result = true;
 			break;
-		// case HqlConditions.BETWEEN:
+			// case HqlConditions.BETWEEN:
 		case EQUALS:
 		case GREATER_EQUALS:
 		case GREATER_THAN:
@@ -56,18 +56,18 @@ public class UtilsRepository {
 				result = true;
 			}
 			break;
-		// TODO: consider???
-		// case HqlConditions.MEMBER_OF:
-		// case HqlConditions.NOT_MEMBER_OF:
-		// break;
+			// TODO: consider???
+			// case HqlConditions.MEMBER_OF:
+			// case HqlConditions.NOT_MEMBER_OF:
+			// break;
 		default:
 			break;
 		}
 		return result;
 	}
 
-	public static String getClauseCondition(String tableName, String filterField, HqlConditions condition,
-			String nameForParameter, FilterAddCondition filterAddCondition) {
+	public static String getClauseCondition(final String tableName, final String filterField,
+			final HqlConditions condition, final String nameForParameter, final FilterAddCondition filterAddCondition) {
 		LOGGER.debug("tableName: " + tableName);
 		LOGGER.debug("filterField: " + filterField);
 		LOGGER.debug("condition: " + condition);
@@ -93,7 +93,7 @@ public class UtilsRepository {
 		case IS_NULL:
 			result = getClauseIsNullOrNotNull(tableName, filterField, condition, addCondition);
 			break;
-		// case HqlConditions.BETWEEN:
+			// case HqlConditions.BETWEEN:
 		case IN:
 		case NOT_IN:
 			result = getClauseIn(tableName, filterField, condition, nameForParameter, addCondition);
@@ -106,43 +106,43 @@ public class UtilsRepository {
 		case NOT_EQUALS:
 			result = getClauseConditionCase(tableName, filterField, condition, nameForParameter, addCondition);
 			break;
-		// case HqlConditions.MEMBER_OF:
-		// case HqlConditions.NOT_MEMBER_OF:
-		// // TODO: consider???
-		// break;
+			// case HqlConditions.MEMBER_OF:
+			// case HqlConditions.NOT_MEMBER_OF:
+			// // TODO: consider???
+			// break;
 		}
 		return result;
 	}
 
-	private static String getClauseIn(String tableName, String filterField, HqlConditions condition,
-			String nameForParameter, String filterAddCondition) {
+	private static String getClauseIn(final String tableName, final String filterField, final HqlConditions condition,
+			final String nameForParameter, final String filterAddCondition) {
 		return filterAddCondition + "(" + tableName + "." + filterField + " " + condition + " (:" + nameForParameter
 				+ "))";
 	}
 
-	public static String getClauseIsNullOrNotNull(String tableName, String filterField, HqlConditions condition,
-			String filterAddCondition) {
+	public static String getClauseIsNullOrNotNull(final String tableName, final String filterField,
+			final HqlConditions condition, final String filterAddCondition) {
 		return filterAddCondition + "(" + tableName + "." + filterField + " " + condition + ")";
 	}
 
-	public static String getClauseLike(String tableName, String filterField, final HqlConditions condition,
-			String nameForParameter, String filterAddCondition) {
+	public static String getClauseLike(final String tableName, final String filterField, final HqlConditions condition,
+			final String nameForParameter, final String filterAddCondition) {
 		return filterAddCondition + "(" + tableName + "." + filterField + " " + condition + " :" + nameForParameter
 				+ ")";
 	}
 
-	public static String getClauseLikeIgnoreCase(String tableName, String filterField, final HqlConditions condition,
-			String nameForParameter, String filterAddCondition) {
+	public static String getClauseLikeIgnoreCase(final String tableName, final String filterField,
+			final HqlConditions condition, final String nameForParameter, final String filterAddCondition) {
 		return filterAddCondition + "(UPPER(" + tableName + "." + filterField + ")" + condition + ":" + nameForParameter
 				+ ")";
 	}
 
-	private static String getClauseConditionCase(String tableName, String filterField, final HqlConditions condition,
-			String nameForParameter, String filterAddCondition) {
+	private static String getClauseConditionCase(final String tableName, final String filterField,
+			final HqlConditions condition, final String nameForParameter, final String filterAddCondition) {
 		return filterAddCondition + "(" + tableName + "." + filterField + "" + condition + ":" + nameForParameter + ")";
 	}
 
-	public static String getNameForParameter(String filterField, HqlConditions condition) {
+	public static String getNameForParameter(final String filterField, final HqlConditions condition) {
 		String result = null;
 		switch (condition) {
 		case IS_NOT_EMPTY:
@@ -157,7 +157,7 @@ public class UtilsRepository {
 		return result;
 	}
 
-	public static Object fixValueForQuery(Object valueForQuery, HqlConditions condition) {
+	public static Object fixValueForQuery(final Object valueForQuery, final HqlConditions condition) {
 		Object result = null;
 		String stringValue = null;
 		switch (condition) {
@@ -177,11 +177,11 @@ public class UtilsRepository {
 		return result;
 	}
 
-	public static String getAliasForField(String field) {
+	public static String getAliasForField(final String field) {
 		return field.replaceAll("\\.", "_");
 	}
 
-	public static String getFieldFromAlias(String alias) {
+	public static String getFieldFromAlias(final String alias) {
 		return alias.replaceAll("_", "\\.");
 	}
 }

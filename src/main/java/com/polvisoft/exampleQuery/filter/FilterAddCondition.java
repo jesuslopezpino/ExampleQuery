@@ -15,9 +15,9 @@ public enum FilterAddCondition {
 	FilterAddCondition(final String addCondition) {
 		this.addCondition = addCondition;
 	}
-	
-	public boolean equalsName(String otherName) {
-        // (otherName == null) check is not needed because name.equals(null) returns false 
-        return this.addCondition.equals(otherName);
-    }
+
+	public boolean equalsName(final String otherName) {
+		// (otherName == null) check is not needed because name.equals(null) returns false
+		return this.addCondition.equals(otherName);
+	}
 }

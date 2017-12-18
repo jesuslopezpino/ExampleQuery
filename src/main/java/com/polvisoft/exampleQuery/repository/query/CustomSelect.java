@@ -14,17 +14,17 @@ public class CustomSelect {
 		this.distinct = false;
 	}
 
-	public CustomSelect(boolean distinct) {
+	public CustomSelect(final boolean distinct) {
 		this.fields = new ArrayList<>();
 		this.distinct = distinct;
 	}
 
-	public void addField(String field) {
-		CustomField customField = new CustomField(field);
+	public void addField(final String field) {
+		final CustomField customField = new CustomField(field);
 		this.fields.add(customField);
 	}
 
-	public void addField(CustomField customField) {
+	public void addField(final CustomField customField) {
 		this.fields.add(customField);
 	}
 
@@ -32,7 +32,7 @@ public class CustomSelect {
 		return this.distinct;
 	}
 
-	public void setDistinct(boolean distinct) {
+	public void setDistinct(final boolean distinct) {
 		this.distinct = distinct;
 	}
 
@@ -40,7 +40,7 @@ public class CustomSelect {
 		return this.fields;
 	}
 
-	public void setFields(List<CustomField> fields) {
+	public void setFields(final List<CustomField> fields) {
 		this.fields = fields;
 	}
 

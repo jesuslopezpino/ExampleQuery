@@ -8,11 +8,11 @@ public class CustomField {
 
 	private String fieldName;
 
-	public CustomField(String fieldName) {
+	public CustomField(final String fieldName) {
 		this.fieldName = fieldName;
 	}
 
-	public CustomField(String fieldName, HqlFunctions function) {
+	public CustomField(final String fieldName, final HqlFunctions function) {
 		this.fieldName = fieldName;
 		this.function = function;
 	}
@@ -21,7 +21,7 @@ public class CustomField {
 		return this.fieldName;
 	}
 
-	public void setFieldName(String fieldName) {
+	public void setFieldName(final String fieldName) {
 		this.fieldName = fieldName;
 	}
 
@@ -29,7 +29,7 @@ public class CustomField {
 		return this.function;
 	}
 
-	public void setFunction(HqlFunctions function) {
+	public void setFunction(final HqlFunctions function) {
 		this.function = function;
 	}
 

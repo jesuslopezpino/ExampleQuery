@@ -9,11 +9,11 @@ public class ExampleQueryException extends Exception {
 	 */
 	private static final long serialVersionUID = 5907339893739561101L;
 
-	private Exception exception;
+	private final Exception exception;
 
 	private static final Logger LOGGER = Logger.getLogger(ExampleQueryException.class);
 
-	public ExampleQueryException(Exception exception) {
+	public ExampleQueryException(final Exception exception) {
 		this.exception = exception;
 		exception.printStackTrace();
 	}

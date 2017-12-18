@@ -14,7 +14,8 @@ public class QueryBuilderHelper {
 
 	private Map<String, Object> parameters;
 
-	public QueryBuilderHelper(String select, String from, String where, Map<String, Object> parameters) {
+	public QueryBuilderHelper(final String select, final String from, final String where,
+			final Map<String, Object> parameters) {
 		super();
 		this.select = select;
 		this.from = from;
@@ -26,7 +27,7 @@ public class QueryBuilderHelper {
 		return this.select;
 	}
 
-	public void setSelect(String select) {
+	public void setSelect(final String select) {
 		this.select = select;
 	}
 
@@ -34,7 +35,7 @@ public class QueryBuilderHelper {
 		return this.from;
 	}
 
-	public void setFrom(String from) {
+	public void setFrom(final String from) {
 		this.from = from;
 	}
 
@@ -42,7 +43,7 @@ public class QueryBuilderHelper {
 		return this.where;
 	}
 
-	public void setWhere(String where) {
+	public void setWhere(final String where) {
 		this.where = where;
 	}
 
@@ -50,7 +51,7 @@ public class QueryBuilderHelper {
 		return this.parameters;
 	}
 
-	public void setParameters(Map<String, Object> parameters) {
+	public void setParameters(final Map<String, Object> parameters) {
 		this.parameters = parameters;
 	}
 
