@@ -13,11 +13,11 @@ import javax.validation.constraints.NotNull;
 
 import org.hibernate.validator.constraints.NotEmpty;
 
-import com.polvisoft.exampleQuery.domain.BasicVO;
+import com.polvisoft.exampleQuery.domain.BasicDTO;
 
 @Entity
 @Table(name = "NOTE")
-public class Note extends BasicVO<Long> {
+public class Note extends BasicDTO<Long> {
 
 	public static final String CUSTOMER = "customer";
 

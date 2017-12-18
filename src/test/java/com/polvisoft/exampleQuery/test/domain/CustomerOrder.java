@@ -16,11 +16,11 @@ import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 
 import com.polvisoft.exampleQuery.annotations.FilterForField;
-import com.polvisoft.exampleQuery.domain.BasicVO;
+import com.polvisoft.exampleQuery.domain.BasicDTO;
 
 @Entity
 @Table(name = "CUSTOMER_ORDER")
-public class CustomerOrder extends BasicVO<Long> {
+public class CustomerOrder extends BasicDTO<Long> {
 
 	public static final String CUSTOMER = "customer";
 

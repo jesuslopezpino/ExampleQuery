@@ -3,7 +3,7 @@ package com.polvisoft.exampleQuery.exceptions;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
-import com.polvisoft.exampleQuery.domain.BasicVO;
+import com.polvisoft.exampleQuery.domain.BasicDTO;
 
 public class UniqueException extends Exception {
 
@@ -16,22 +16,22 @@ public class UniqueException extends Exception {
 
 	private String uk;
 
-	private BasicVO entity;
+	private BasicDTO entity;
 
 	private Table table;
 
-	public UniqueException(Class clazz, String uk, BasicVO entity) {
+	public UniqueException(Class clazz, String uk, BasicDTO entity) {
 		super();
 		this.clazz = clazz;
 		this.entity = entity;
 		this.uk = uk;
 	}
 
-	public BasicVO getEntity() {
+	public BasicDTO getEntity() {
 		return this.entity;
 	}
 
-	public void setEntity(BasicVO entity) {
+	public void setEntity(BasicDTO entity) {
 		this.entity = entity;
 	}
 

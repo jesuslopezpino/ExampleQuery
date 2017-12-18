@@ -17,12 +17,12 @@ import javax.validation.constraints.NotNull;
 import org.hibernate.validator.constraints.NotBlank;
 
 import com.polvisoft.exampleQuery.annotations.FilterForField;
-import com.polvisoft.exampleQuery.domain.BasicVO;
+import com.polvisoft.exampleQuery.domain.BasicDTO;
 
 @Entity
 @Table(name = "CUSTOMER", uniqueConstraints = {
 		@UniqueConstraint(name = "DOCUMENT_UK", columnNames = { Customer.DOCUMENT }) })
-public class Customer extends BasicVO<Long> {
+public class Customer extends BasicDTO<Long> {
 
 	public static final String NAME = "name";
 

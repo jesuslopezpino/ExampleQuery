@@ -20,7 +20,7 @@ import org.apache.log4j.Logger;
 import org.hibernate.exception.ConstraintViolationException;
 
 import com.polvisoft.exampleQuery.annotations.readers.FilterForFieldReader;
-import com.polvisoft.exampleQuery.domain.BasicVO;
+import com.polvisoft.exampleQuery.domain.BasicDTO;
 import com.polvisoft.exampleQuery.exceptions.ExampleQueryException;
 import com.polvisoft.exampleQuery.exceptions.UniqueException;
 import com.polvisoft.exampleQuery.filter.FilterMap;
@@ -30,7 +30,7 @@ import com.polvisoft.exampleQuery.service.utils.QueryBuilderHelper;
 import com.polvisoft.exampleQuery.service.utils.UtilsService;
 import com.polvisoft.exampleQuery.utils.Utils;
 
-public abstract class ServiceImpl<VO extends BasicVO<?>> implements Service<VO> {
+public abstract class ServiceImpl<VO extends BasicDTO<?>> implements Service<VO> {
 
 	EntityManager entityManager;
 
@@ -66,11 +66,11 @@ public abstract class ServiceImpl<VO extends BasicVO<?>> implements Service<VO> 
 	public VO findCustomByPk(Object primaryKey, String[] fields) throws ExampleQueryException {
 		String select = this.createCustomSelect(fields);
 		String from = this.createCustomFrom(fields);
-		String where = " where " + BasicVO.PK + " = :" + BasicVO.PK;
+		String where = " where " + BasicDTO.PK + " = :" + BasicDTO.PK;
 		String hqlString = select + from + where;
 		LOGGER.debug("hqlString: " + hqlString);
 		Query query = this.entityManager.createQuery(hqlString, Map.class);
-		query.setParameter(BasicVO.PK, primaryKey);
+		query.setParameter(BasicDTO.PK, primaryKey);
 		Map<String, Object> map = (Map<String, Object>) query.getSingleResult();
 		VO result = this.convertToEntity(map);
 		return result;

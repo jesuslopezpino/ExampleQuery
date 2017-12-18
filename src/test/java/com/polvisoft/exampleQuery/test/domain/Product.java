@@ -14,12 +14,12 @@ import javax.persistence.UniqueConstraint;
 import org.hibernate.validator.constraints.NotBlank;
 
 import com.polvisoft.exampleQuery.annotations.FilterForField;
-import com.polvisoft.exampleQuery.domain.BasicVO;
+import com.polvisoft.exampleQuery.domain.BasicDTO;
 
 @Entity
 @Table(name = "PRODUCT", uniqueConstraints = {
 		@UniqueConstraint(name = Product.PRODUCT_UK, columnNames = { Product.NAME }) })
-public class Product extends BasicVO<Long> {
+public class Product extends BasicDTO<Long> {
 
 	public static final String PRODUCT_UK = "PRODUCT_UK";
 

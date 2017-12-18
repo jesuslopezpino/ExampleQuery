@@ -74,12 +74,12 @@ To use ExampleQuery in your project you need to include the dependency at your p
 </dependencies>
 ```
 #### Setting up entities
-To be able to use ExampleQuery service your entity classes must extends abstract `BasicVO<PK>`.
+To be able to use ExampleQuery service your entity classes must extends abstract `BasicDTO<PK>`.
 
 ```java
 @Entity
 @Table(name = "PRODUCT")
-public class Product extends BasicVO<Long> {
+public class Product extends BasicDTO<Long> {
 ...
 }
 ```
@@ -112,7 +112,7 @@ Now we can define the rest of the entity as usual.
 }
 ```
 
-Developer still have to implements two abstract methods from `BasicVO`
+Developer still have to implements two abstract methods from `BasicDTO`
 
 ```java
 public abstract PK getPk();
@@ -124,7 +124,7 @@ This is like that because we want that `@Id` annotation will be set in pk field 
 
 
 #### Setting up services
-To create a ExampleQuery service instance you just need to create a class that extends the abstract class `ServiceImpl<VO extends BasicVO>` with an entity class that extends `BasicVO` as type parameter.
+To create a ExampleQuery service instance you just need to create a class that extends the abstract class `ServiceImpl<VO extends BasicDTO>` with an entity class that extends `BasicDTO` as type parameter.
 
 ```java
 package com.polvisoft.exampleQuery.service.impl;
@@ -227,7 +227,7 @@ public boolean deleteList(List<VO> list);
 
 ### findByExample
 
-ExampleQuery offers to developer an easy way to perform custom filtered queries, to do this `Service<BasicVO<PK>>` provides five methods to perform these queries:
+ExampleQuery offers to developer an easy way to perform custom filtered queries, to do this `Service<BasicDTO<PK>>` provides five methods to perform these queries:
 
 ```java
 public int countByExample(VO example, FilterMap filter) throws ExampleQueryException;
@@ -287,7 +287,7 @@ We have CustomerOrder class:
 ```java
 @Entity
 @Table(name = "CUSTOMER")
-public class Customer extends BasicVO<Long> {
+public class Customer extends BasicDTO<Long> {
 
 	...
 	public static final String BIRTH_DATE = "birthDate";
@@ -350,7 +350,7 @@ We have Customer class:
 ```java
 @Entity
 @Table(name = "CUSTOMER")
-public class Customer extends BasicVO<Long> {
+public class Customer extends BasicDTO<Long> {
 
 	...
 	@OneToMany(mappedBy = CustomerOrder.CUSTOMER, targetEntity = CustomerOrder.class)
@@ -394,7 +394,7 @@ It's not necessary to use a transient field with `@FilterForField` annotation if
 ```java
 @Entity
 @Table(name = "CUSTOMER_ORDER")
-public class CustomerOrder extends BasicVO<Long> {
+public class CustomerOrder extends BasicDTO<Long> {
 	...
 	public static final String CUSTOMER = "customer";
 	...
@@ -434,7 +434,7 @@ where
 Setting up parameter `:customer_name` with value `"Jesús"`.
 
 ### findCustomByPk
-ExampleQuery offers to developer an easy way to perform custom field selection for our query, to do this `Service<BasicVO<PK>>` provides two methods to perform these queries:
+ExampleQuery offers to developer an easy way to perform custom field selection for our query, to do this `Service<BasicDTO<PK>>` provides two methods to perform these queries:
 ```
 public VO findCustomByPk(Object primaryKey, String[] fields) throws ExampleQueryException;
 
@@ -637,7 +637,7 @@ A unique exception contains: the entity instance that violated the constraint, t
 @Entity
 @Table(name = "CUSTOMER", uniqueConstraints = {
 		@UniqueConstraint(name = "DOCUMENT_UK", columnNames = { Customer.DOCUMENT }) })
-public class Customer extends BasicVO<Long> {
+public class Customer extends BasicDTO<Long> {
 	...
 	public static final String DOCUMENT = "document";
 	...

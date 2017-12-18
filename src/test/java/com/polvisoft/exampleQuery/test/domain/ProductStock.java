@@ -11,11 +11,11 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 
 import com.polvisoft.exampleQuery.annotations.FilterForField;
-import com.polvisoft.exampleQuery.domain.BasicVO;
+import com.polvisoft.exampleQuery.domain.BasicDTO;
 
 @Entity
 @Table(name = "PRODUCT_STOCK")
-public class ProductStock extends BasicVO<Long> {
+public class ProductStock extends BasicDTO<Long> {
 
 	public static final String PRODUCT = "product";
 

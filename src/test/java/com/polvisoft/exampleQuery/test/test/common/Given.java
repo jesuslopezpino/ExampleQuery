@@ -5,7 +5,7 @@ import java.util.Map;
 
 import javax.persistence.EntityManager;
 
-import com.polvisoft.exampleQuery.domain.BasicVO;
+import com.polvisoft.exampleQuery.domain.BasicDTO;
 import com.polvisoft.exampleQuery.exceptions.ExampleQueryException;
 import com.polvisoft.exampleQuery.exceptions.UniqueException;
 import com.polvisoft.exampleQuery.filter.FilterMap;
@@ -23,7 +23,7 @@ import com.polvisoft.exampleQuery.service.impl.ServiceImpl;
  *            the generic service type for our VOs
  */
 // TODO: Given must focus on new specific MethodGiven class
-public abstract class Given<VO extends BasicVO<?>, ServiceVO extends ServiceImpl<VO>> {
+public abstract class Given<VO extends BasicDTO<?>, ServiceVO extends ServiceImpl<VO>> {
 
 	/** The entity manager. */
 	protected EntityManager entityManager;

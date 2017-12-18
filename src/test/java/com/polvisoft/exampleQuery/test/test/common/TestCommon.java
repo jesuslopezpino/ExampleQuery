@@ -26,7 +26,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.polvisoft.exampleQuery.domain.BasicVO;
+import com.polvisoft.exampleQuery.domain.BasicDTO;
 import com.polvisoft.exampleQuery.exceptions.ExampleQueryException;
 import com.polvisoft.exampleQuery.exceptions.UniqueException;
 import com.polvisoft.exampleQuery.filter.FilterMap;
@@ -37,7 +37,7 @@ import com.polvisoft.exampleQuery.utils.Utils;
 @ContextConfiguration(locations = { "classpath:applicationContext.xml" })
 @Transactional
 // TODO: add DTO
-public abstract class TestCommon<ServiceVO extends ServiceImpl<VO>, VO extends BasicVO<?>, GivenVO extends Given<VO, ServiceVO>> {
+public abstract class TestCommon<ServiceVO extends ServiceImpl<VO>, VO extends BasicDTO<?>, GivenVO extends Given<VO, ServiceVO>> {
 
 	protected static Logger LOGGER = Logger.getLogger(TestCommon.class);
 

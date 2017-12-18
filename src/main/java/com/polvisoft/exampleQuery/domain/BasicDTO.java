@@ -3,11 +3,11 @@ package com.polvisoft.exampleQuery.domain;
 import javax.persistence.MappedSuperclass;
 
 @MappedSuperclass
-public abstract class BasicVO<PK> {
+public abstract class BasicDTO<PK> {
 
 	public static final String PK = "pk";
 
-	public BasicVO() {
+	public BasicDTO() {
 		super();
 	}
 
@@ -17,15 +17,15 @@ public abstract class BasicVO<PK> {
 
 	@Override
 	public String toString() {
-		return "BasicVO [pk=" + this.getPk() + "]";
+		return "BasicDTO [pk=" + this.getPk() + "]";
 	}
 
 	public abstract String toStringDebug();
 
 	@Override
 	public boolean equals(Object obj) {
-		if (obj != null && obj instanceof BasicVO) {
-			BasicVO other = (BasicVO) obj;
+		if (obj != null && obj instanceof BasicDTO) {
+			BasicDTO other = (BasicDTO) obj;
 			if (other.getPk().equals(this.getPk())) {
 				return true;
 			}
