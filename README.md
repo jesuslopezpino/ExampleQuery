@@ -124,7 +124,7 @@ This is like that because we want that `@Id` annotation will be set in pk field 
 
 
 #### Setting up services
-To create a ExampleQuery service instance you just need to create a class that extends the abstract class `ServiceImpl<VO extends BasicDTO>` with an entity class that extends `BasicDTO` as type parameter.
+To create a ExampleQuery service instance you just need to create a class that extends the abstract class `ServiceImpl<DTO extends BasicDTO>` with an entity class that extends `BasicDTO` as type parameter.
 
 ```java
 package com.polvisoft.exampleQuery.service.impl;
@@ -196,33 +196,33 @@ ExampleQuery provides an abstract interface that also implements that offers mos
 ```java
 public int countAll() throws ExampleQueryException;
 
-public List<VO> findAll() throws ExampleQueryException;
+public List<DTO> findAll() throws ExampleQueryException;
 
-public VO findByPk(Object primaryKey);
+public DTO findByPk(Object primaryKey);
 
-public VO findCustomByPk(Object primaryKey, String[] fields) throws ExampleQueryException;
+public DTO findCustomByPk(Object primaryKey, String[] fields) throws ExampleQueryException;
 
-public int countByExample(VO example, FilterMap filter) throws ExampleQueryException;
+public int countByExample(DTO example, FilterMap filter) throws ExampleQueryException;
 
-public List<VO> findByExample(VO example, FilterMap filter) throws ExampleQueryException;
+public List<DTO> findByExample(DTO example, FilterMap filter) throws ExampleQueryException;
 
-public List<VO> findByExample(VO example, FilterMap filter, int pageNumber, int pageSize) throws ExampleQueryException;
+public List<DTO> findByExample(DTO example, FilterMap filter, int pageNumber, int pageSize) throws ExampleQueryException;
 
-public List<VO> findCustomByExample(VO example, String[] fields, FilterMap filter) throws ExampleQueryException;
+public List<DTO> findCustomByExample(DTO example, String[] fields, FilterMap filter) throws ExampleQueryException;
 
-public List<VO> findCustomByExample(VO example, String[] fields, FilterMap filter, int pageNumber, int pageSize) throws ExampleQueryException;
+public List<DTO> findCustomByExample(DTO example, String[] fields, FilterMap filter, int pageNumber, int pageSize) throws ExampleQueryException;
 
-boolean delete(VO element);
+boolean delete(DTO element);
 
-public VO save(VO element) throws UniqueException;
+public DTO save(DTO element) throws UniqueException;
 
-public VO update(VO element) throws UniqueException;
+public DTO update(DTO element) throws UniqueException;
 
-public List<VO> saveList(List<VO> list) throws UniqueException;
+public List<DTO> saveList(List<DTO> list) throws UniqueException;
 
-public List<VO> updateList(List<VO> list) throws UniqueException;
+public List<DTO> updateList(List<DTO> list) throws UniqueException;
 
-public boolean deleteList(List<VO> list);
+public boolean deleteList(List<DTO> list);
 ```
 
 ### findByExample
@@ -230,15 +230,15 @@ public boolean deleteList(List<VO> list);
 ExampleQuery offers to developer an easy way to perform custom filtered queries, to do this `Service<BasicDTO<PK>>` provides five methods to perform these queries:
 
 ```java
-public int countByExample(VO example, FilterMap filter) throws ExampleQueryException;
+public int countByExample(DTO example, FilterMap filter) throws ExampleQueryException;
 
-public List<VO> findByExample(VO example, FilterMap filter) throws ExampleQueryException;
+public List<DTO> findByExample(DTO example, FilterMap filter) throws ExampleQueryException;
 
-public List<VO> findByExample(VO example, FilterMap filter, int pageNumber, int pageSize) throws ExampleQueryException;
+public List<DTO> findByExample(DTO example, FilterMap filter, int pageNumber, int pageSize) throws ExampleQueryException;
 
-public List<VO> findCustomByExample(VO example, String[] fields, FilterMap filter) throws ExampleQueryException;
+public List<DTO> findCustomByExample(DTO example, String[] fields, FilterMap filter) throws ExampleQueryException;
 
-public List<VO> findCustomByExample(VO example, String[] fields, FilterMap filter, int pageNumber, int pageSize) throws ExampleQueryException;
+public List<DTO> findCustomByExample(DTO example, String[] fields, FilterMap filter, int pageNumber, int pageSize) throws ExampleQueryException;
 ```
 
 For first example we want to filter products by 2 conditions, name has to be equals and description like ignore case.
@@ -255,7 +255,7 @@ Product example = new Product();
 example.setName("Pizza");
 example.setDescription("food");
 
-List<VO> result = service.findByExample(example, filter); 
+List<DTO> result = service.findByExample(example, filter); 
 ```
 
 Execution of that example will result in that hql query:
@@ -324,7 +324,7 @@ Customer example = new Customer();
 example.setBirthDateStart(Utils.getDateTime("01/01/1983 00:00:00"));
 example.setBirthDateEnd(Utils.getDateTime("12/12/1983 23:59:59"));	
 
-List<VO> result = service.findByExample(example, filter); 	
+List<DTO> result = service.findByExample(example, filter); 	
 ```
 
 Execution of that example will result in that hql query:
@@ -375,7 +375,7 @@ filter.put(Customer.ORDERS_PRODUCTS_NAME, HqlConditions.LIKE_IGNORE_CASE);
 Customer example = new Customer();
 example.setCustomerOrdersProductName("pizza");
 
-List<VO> result = service.findByExample(example, filter); 
+List<DTO> result = service.findByExample(example, filter); 
 ```
 Execution of that example will result in that hql query:
 ```
@@ -418,7 +418,7 @@ Customer customer = new Customer();
 customer.setName("Jesús");
 example.setCustomer(customer);
 
-List<VO> result = service.findByExample(example, filter); 
+List<DTO> result = service.findByExample(example, filter); 
 ```
 That will result in the next query:
 ```
@@ -436,9 +436,9 @@ Setting up parameter `:customer_name` with value `"Jesús"`.
 ### findCustomByPk
 ExampleQuery offers to developer an easy way to perform custom field selection for our query, to do this `Service<BasicDTO<PK>>` provides two methods to perform these queries:
 ```
-public VO findCustomByPk(Object primaryKey, String[] fields) throws ExampleQueryException;
+public DTO findCustomByPk(Object primaryKey, String[] fields) throws ExampleQueryException;
 
-public List<VO> findCustomByExample(VO example, String[] fields, FilterMap filter) throws ExampleQueryException;
+public List<DTO> findCustomByExample(DTO example, String[] fields, FilterMap filter) throws ExampleQueryException;
 ```
 Just filling an String[] variable we will customize the fields that we want to retrieve. Those fields will be represented with an string that will contain the path to the field that we want to include with `"."` working as field path separator. We can see an example:
 ```java
@@ -676,9 +676,9 @@ public abstract void givenExamplesEnvironment() throws UniqueException, ExampleQ
 
 public abstract String[] initCustomFields();
 
-public abstract VO[] initExamples() throws UniqueException, ExampleQueryException;
+public abstract DTO[] initExamples() throws UniqueException, ExampleQueryException;
 
-public abstract VO initTestSaveInstance() throws UniqueException, ExampleQueryException;
+public abstract DTO initTestSaveInstance() throws UniqueException, ExampleQueryException;
 
 public abstract FilterMap initFilter();
 

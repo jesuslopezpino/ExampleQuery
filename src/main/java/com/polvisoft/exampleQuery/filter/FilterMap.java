@@ -3,7 +3,7 @@ package com.polvisoft.exampleQuery.filter;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.polvisoft.exampleQuery.service.utils.HqlConditions;
+import com.polvisoft.exampleQuery.enums.HqlConditions;
 
 public class FilterMap {
 

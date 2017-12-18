@@ -3,9 +3,9 @@ package com.polvisoft.exampleQuery.controller;
 import java.util.List;
 import java.util.Map;
 
-import com.polvisoft.exampleQuery.service.utils.HqlConditions;
+import com.polvisoft.exampleQuery.enums.HqlConditions;
 
-public interface Controller<VO> {
+public interface Controller<DTO> {
 
 	Map<String, HqlConditions> getFinderConditions();
 
@@ -21,8 +21,8 @@ public interface Controller<VO> {
 
 	void resetEditForm();
 
-	List<VO> findAll();
+	List<DTO> findAll();
 
-	List<VO> findByExample(VO example);
+	List<DTO> findByExample(DTO example);
 
 }
