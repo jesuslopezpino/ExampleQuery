@@ -17,13 +17,10 @@ public class UtilsRepository {
 			throws NoSuchFieldException, SecurityException, IllegalAccessException, IllegalArgumentException,
 			InvocationTargetException, NoSuchMethodException {
 		String fieldForQuery;
-		// first check if the field is @FilterForField or not
 		final boolean isFilterForField = FilterForFieldReader.isAnnotatedField(filterField, example);
 		if (isFilterForField) {
-			// field for query = the referenced field
 			fieldForQuery = FilterForFieldReader.getValue(filterField, example);
 		} else {
-			// field for query = the current field name
 			fieldForQuery = filterField;
 		}
 		return fieldForQuery;
@@ -38,7 +35,6 @@ public class UtilsRepository {
 		case IS_NULL:
 			result = true;
 			break;
-			// case HqlConditions.BETWEEN:
 		case EQUALS:
 		case GREATER_EQUALS:
 		case GREATER_THAN:
@@ -56,10 +52,6 @@ public class UtilsRepository {
 				result = true;
 			}
 			break;
-			// TODO: consider???
-			// case HqlConditions.MEMBER_OF:
-			// case HqlConditions.NOT_MEMBER_OF:
-			// break;
 		default:
 			break;
 		}
@@ -93,7 +85,6 @@ public class UtilsRepository {
 		case IS_NULL:
 			result = getClauseIsNullOrNotNull(tableName, filterField, condition, addCondition);
 			break;
-			// case HqlConditions.BETWEEN:
 		case IN:
 		case NOT_IN:
 			result = getClauseIn(tableName, filterField, condition, nameForParameter, addCondition);
@@ -106,10 +97,6 @@ public class UtilsRepository {
 		case NOT_EQUALS:
 			result = getClauseConditionCase(tableName, filterField, condition, nameForParameter, addCondition);
 			break;
-			// case HqlConditions.MEMBER_OF:
-			// case HqlConditions.NOT_MEMBER_OF:
-			// // TODO: consider???
-			// break;
 		}
 		return result;
 	}
@@ -133,13 +120,13 @@ public class UtilsRepository {
 
 	public static String getClauseLikeIgnoreCase(final String tableName, final String filterField,
 			final HqlConditions condition, final String nameForParameter, final String filterAddCondition) {
-		return filterAddCondition + "(UPPER(" + tableName + "." + filterField + ")" + condition + ":" + nameForParameter
+		return filterAddCondition + "(UPPER(" + tableName + "." + filterField + ") " + condition + " :" + nameForParameter
 				+ ")";
 	}
 
 	private static String getClauseConditionCase(final String tableName, final String filterField,
 			final HqlConditions condition, final String nameForParameter, final String filterAddCondition) {
-		return filterAddCondition + "(" + tableName + "." + filterField + "" + condition + ":" + nameForParameter + ")";
+		return filterAddCondition + "(" + tableName + "." + filterField + " " + condition + " :" + nameForParameter + ")";
 	}
 
 	public static String getNameForParameter(final String filterField, final HqlConditions condition) {
@@ -170,7 +157,6 @@ public class UtilsRepository {
 			result = "%" + stringValue.toUpperCase() + "%";
 			break;
 		default:
-			// TODO: consider date formats here!!!
 			result = valueForQuery;
 			break;
 		}
