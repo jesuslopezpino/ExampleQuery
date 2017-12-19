@@ -53,7 +53,7 @@ public abstract class RepositoryImpl<DTO extends BasicDTO<?>> implements Resposi
 
 	@Override
 	public int countAll() throws ExampleQueryException {
-		final String hqlString = "select count(*) from " + this.voClass.getName();
+		final String hqlString = "select count(*) from " + this.voClass.getSimpleName();
 		LOGGER.debug("hqlString: " + hqlString);
 		final Long result = (Long) this.entityManager.createQuery(hqlString).getSingleResult();
 		return result.intValue();
@@ -80,7 +80,7 @@ public abstract class RepositoryImpl<DTO extends BasicDTO<?>> implements Resposi
 
 	private String createCustomFrom(final String[] fields) {
 		final String tableAlias = this.getTableAliasForClass(this.voClass);
-		String from = " from " + this.voClass.getName() + " " + tableAlias;
+		String from = " from " + this.voClass.getSimpleName() + " " + tableAlias;
 		final int fieldsLength = fields.length;
 		// TODO: detect duplicated fields to avoid problems
 		for (int i = 0; i < fieldsLength; i++) {
@@ -99,8 +99,8 @@ public abstract class RepositoryImpl<DTO extends BasicDTO<?>> implements Resposi
 	public List<DTO> findByExample(final DTO example, final FilterMap filter) throws ExampleQueryException {
 		final String tableAlias = this.getTableAliasForClass(this.voClass);
 		final String select = "select " + tableAlias;
-		final String from = " from " + this.voClass.getName() + " " + tableAlias;
-		final Query query = this.createQueryForExample(example, filter, select, from);
+		final String from = " from " + this.voClass.getSimpleName() + " " + tableAlias;
+		final Query query = this.createQueryForExample(example, filter, select, from, this.voClass);
 		return query.getResultList();
 	}
 
@@ -109,8 +109,8 @@ public abstract class RepositoryImpl<DTO extends BasicDTO<?>> implements Resposi
 			throws ExampleQueryException {
 		final String tableAlias = this.getTableAliasForClass(this.voClass);
 		final String select = "select " + tableAlias;
-		final String from = " from " + this.voClass.getName() + " " + tableAlias;
-		final Query query = this.createQueryForExample(example, filter, select, from);
+		final String from = " from " + this.voClass.getSimpleName() + " " + tableAlias;
+		final Query query = this.createQueryForExample(example, filter, select, from, this.voClass);
 		query.setFirstResult(pageSize * pageNumber);
 		query.setMaxResults(pageNumber);
 		return query.getResultList();
@@ -120,8 +120,8 @@ public abstract class RepositoryImpl<DTO extends BasicDTO<?>> implements Resposi
 	public int countByExample(final DTO example, final FilterMap filter) throws ExampleQueryException {
 		final String select = "select count(*) ";
 		final String tableAlias = this.getTableAliasForClass(this.voClass);
-		final String from = " from " + this.voClass.getName() + " " + tableAlias;
-		final Query query = this.createQueryForExample(example, filter, select, from);
+		final String from = " from " + this.voClass.getSimpleName() + " " + tableAlias;
+		final Query query = this.createQueryForExample(example, filter, select, from, Long.class);
 		final Long result = (Long) query.getSingleResult();
 		return result.intValue();
 	}
@@ -130,7 +130,7 @@ public abstract class RepositoryImpl<DTO extends BasicDTO<?>> implements Resposi
 	public List<DTO> findCustomByExample(final DTO example, final String[] fields, final FilterMap filter) throws ExampleQueryException {
 		final String select = this.createCustomSelect(fields);
 		final String from = this.createCustomFrom(fields);
-		final Query query = this.createQueryForExample(example, filter, select, from);
+		final Query query = this.createQueryForExample(example, filter, select, from, Map.class);
 		final List<Map<String, Object>> list = query.getResultList();
 		final List<DTO> result = this.converToEntityList(list);
 		return result;
@@ -141,7 +141,7 @@ public abstract class RepositoryImpl<DTO extends BasicDTO<?>> implements Resposi
 			throws ExampleQueryException {
 		final String select = this.createCustomSelect(fields);
 		final String from = this.createCustomFrom(fields);
-		final Query query = this.createQueryForExample(example, filter, select, from);
+		final Query query = this.createQueryForExample(example, filter, select, from, Map.class);
 		query.setFirstResult(pageSize * pageNumber);
 		query.setMaxResults(pageNumber);
 		final List<Map<String, Object>> list = query.getResultList();
@@ -333,12 +333,12 @@ public abstract class RepositoryImpl<DTO extends BasicDTO<?>> implements Resposi
 		return from;
 	}
 
-	private Query createQueryForExample(final DTO example, final FilterMap filter, final String select, final String from)
+	private Query createQueryForExample(final DTO example, final FilterMap filter, final String select, final String from, final Class resultClass)
 			throws ExampleQueryException {
-		return this.createQueryForExample(example, filter, select, from, "");
+		return this.createQueryForExample(example, filter, select, from, "", resultClass);
 	}
 
-	private Query createQueryForExample(final DTO example, final FilterMap filter, final String select, final String from, final String where)
+	private Query createQueryForExample(final DTO example, final FilterMap filter, final String select, final String from, final String where, final Class resultClass)
 			throws ExampleQueryException {
 		final String tableAlias = this.getTableAliasForClass(this.voClass);
 		final Map<String, Object> parameters = new HashMap<>();
@@ -346,7 +346,7 @@ public abstract class RepositoryImpl<DTO extends BasicDTO<?>> implements Resposi
 		// try {
 		builderHelper = this.buildQueryForFilterMap(example, filter, tableAlias, builderHelper);
 		LOGGER.info("HQL STRING: " + builderHelper.getHqlString());
-		final Query query = this.entityManager.createQuery(builderHelper.getHqlString());
+		final Query query = this.entityManager.createQuery(builderHelper.getHqlString(), resultClass);
 		this.setQueryParams(query, builderHelper.getParameters());
 		return query;
 	}
