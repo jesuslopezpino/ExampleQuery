@@ -264,7 +264,7 @@ Execution of that example will result in that hql query:
 select 
 	product 
 from 
-	com.polvisoft.exampleQuery.domain.Product product 
+	Product product 
 where 
 	(product.name = :name) and 
 	(UPPER(product.description) LIKE :description)
@@ -333,13 +333,12 @@ Execution of that example will result in that hql query:
 select 
 	customer 
 from 
-	com.polvisoft.exampleQuery.domain.Customer customer 
-	where 
+	Customer customer 
+where 
 	(customer.birthDate >= :birthDateStart) and
 	(customer.birthDate < :birthDateEnd)
 ```
 Setting up parameter `:birthDateStart` with value `"Sun Dec 26 00:00:00 CET 1982"` and `:birthDateEnd` with value `"Sun Dec 26 23:59:00 CET 1982"`
-
 
 #### @FilterForField: Second usage
 
@@ -382,7 +381,7 @@ Execution of that example will result in that hql query:
 select 
 	customer 
 from 
-	com.polvisoft.exampleQuery.domain.Customer customer 
+	Customer customer 
 	join customer.customerOrders customerOrders  
 	join customerOrders.productsStock productsStock  
 	join productsStock.product product  
@@ -425,7 +424,7 @@ That will result in the next query:
 select 
 	customerOrder 
 from 
-	com.polvisoft.exampleQuery.domain.CustomerOrder customerOrder 
+	CustomerOrder customerOrder 
 	join customerOrder.customer customer  
 where 
 	(customer.name != :customer_name)
@@ -467,7 +466,7 @@ Hibernate:
 			customer.lastName as customer_lastName
 		) 
 	from 
-		com.polvisoft.exampleQuery.domain.CustomerOrder customerOrder 
+		CustomerOrder customerOrder 
 		join customerOrder.customer customer  
 	where 
 		pk = :pk
@@ -499,7 +498,7 @@ Hibernate:
     select 
     	count(*)
     from 
-    	com.polvisoft.exampleQuery.domain.Customer customer 
+    	Customer customer 
     where  
     	(customer.name like :name) and 
     	(customer.lastName = :lastName) and 
@@ -526,7 +525,7 @@ Hibernate:
     select 
     	count(*)
     from 
-    	com.polvisoft.exampleQuery.domain.Customer customer 
+    	Customer customer 
     where  
     	(customer.name like :name) and 
     	(customer.lastName = :lastName) and 
@@ -560,7 +559,7 @@ That will result in the next query:
 select 
 	count(*) 
 from 
-	com.polvisoft.exampleQuery.domain.Product
+	Product
 ```
 ### delete
 ExampleQuery Service offers and method to delete a row of table.
