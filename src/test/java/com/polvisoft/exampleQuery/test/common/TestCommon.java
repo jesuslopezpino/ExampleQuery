@@ -74,7 +74,7 @@ public abstract class TestCommon<ServiceVO extends RepositoryImpl<DTO>, DTO exte
 				.getActualTypeArguments()[2];
 		LOGGER.info("Unit Test Class: " + this.getClass().getName());
 		LOGGER.info("Entity: " + this.voClass.getName());
-		LOGGER.info("Respository: " + this.repositoryClass.getName());
+		LOGGER.info("Repository: " + this.repositoryClass.getName());
 		LOGGER.info("Given: " + this.givenVoClass.getName());
 		logLine();
 	}

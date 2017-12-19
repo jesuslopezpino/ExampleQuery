@@ -19,6 +19,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.polvisoft.exampleQuery.annotations.readers.FilterForFieldReader;
 import com.polvisoft.exampleQuery.domain.BasicDTO;
@@ -26,12 +27,12 @@ import com.polvisoft.exampleQuery.enums.HqlConditions;
 import com.polvisoft.exampleQuery.exceptions.ExampleQueryException;
 import com.polvisoft.exampleQuery.exceptions.UniqueException;
 import com.polvisoft.exampleQuery.filter.FilterMap;
-import com.polvisoft.exampleQuery.repository.Respository;
+import com.polvisoft.exampleQuery.repository.Repository;
 import com.polvisoft.exampleQuery.repository.utils.QueryBuilderHelper;
 import com.polvisoft.exampleQuery.repository.utils.UtilsRepository;
 import com.polvisoft.exampleQuery.utils.Utils;
 
-public abstract class RepositoryImpl<DTO extends BasicDTO<?>> implements Respository<DTO> {
+public abstract class RepositoryImpl<DTO extends BasicDTO<?>> implements Repository<DTO> {
 
 	@Autowired
 	private EntityManager entityManager;
@@ -47,11 +48,13 @@ public abstract class RepositoryImpl<DTO extends BasicDTO<?>> implements Resposi
 	}
 
 	@Override
+	@Transactional(readOnly = true)
 	public List<DTO> findAll() throws ExampleQueryException {
 		return this.findByExample(null, null);
 	}
 
 	@Override
+	@Transactional(readOnly = true)
 	public int countAll() throws ExampleQueryException {
 		final String hqlString = "select count(*) from " + this.voClass.getSimpleName();
 		LOGGER.debug("hqlString: " + hqlString);
@@ -60,11 +63,13 @@ public abstract class RepositoryImpl<DTO extends BasicDTO<?>> implements Resposi
 	}
 
 	@Override
+	@Transactional(readOnly = true)
 	public DTO findByPk(final Object primaryKey) {
 		return this.entityManager.find(this.voClass, primaryKey);
 	}
 
 	@Override
+	@Transactional(readOnly = true)
 	public DTO findCustomByPk(final Object primaryKey, final String[] fields) throws ExampleQueryException {
 		final String select = this.createCustomSelect(fields);
 		final String from = this.createCustomFrom(fields);
@@ -96,6 +101,7 @@ public abstract class RepositoryImpl<DTO extends BasicDTO<?>> implements Resposi
 	}
 
 	@Override
+	@Transactional(readOnly = true)
 	public List<DTO> findByExample(final DTO example, final FilterMap filter) throws ExampleQueryException {
 		final String tableAlias = this.getTableAliasForClass(this.voClass);
 		final String select = "select " + tableAlias;
@@ -105,6 +111,7 @@ public abstract class RepositoryImpl<DTO extends BasicDTO<?>> implements Resposi
 	}
 
 	@Override
+	@Transactional(readOnly = true)
 	public List<DTO> findByExample(final DTO example, final FilterMap filter, final int pageNumber, final int pageSize)
 			throws ExampleQueryException {
 		final String tableAlias = this.getTableAliasForClass(this.voClass);
@@ -117,6 +124,7 @@ public abstract class RepositoryImpl<DTO extends BasicDTO<?>> implements Resposi
 	}
 
 	@Override
+	@Transactional(readOnly = true)
 	public int countByExample(final DTO example, final FilterMap filter) throws ExampleQueryException {
 		final String select = "select count(*) ";
 		final String tableAlias = this.getTableAliasForClass(this.voClass);
@@ -127,7 +135,9 @@ public abstract class RepositoryImpl<DTO extends BasicDTO<?>> implements Resposi
 	}
 
 	@Override
-	public List<DTO> findCustomByExample(final DTO example, final String[] fields, final FilterMap filter) throws ExampleQueryException {
+	@Transactional(readOnly = true)
+	public List<DTO> findCustomByExample(final DTO example, final String[] fields, final FilterMap filter)
+			throws ExampleQueryException {
 		final String select = this.createCustomSelect(fields);
 		final String from = this.createCustomFrom(fields);
 		final Query query = this.createQueryForExample(example, filter, select, from, Map.class);
@@ -137,8 +147,9 @@ public abstract class RepositoryImpl<DTO extends BasicDTO<?>> implements Resposi
 	}
 
 	@Override
-	public List<DTO> findCustomByExample(final DTO example, final String[] fields, final FilterMap filter, final int pageNumber, final int pageSize)
-			throws ExampleQueryException {
+	@Transactional(readOnly = true)
+	public List<DTO> findCustomByExample(final DTO example, final String[] fields, final FilterMap filter,
+			final int pageNumber, final int pageSize) throws ExampleQueryException {
 		final String select = this.createCustomSelect(fields);
 		final String from = this.createCustomFrom(fields);
 		final Query query = this.createQueryForExample(example, filter, select, from, Map.class);
@@ -161,7 +172,8 @@ public abstract class RepositoryImpl<DTO extends BasicDTO<?>> implements Resposi
 	protected DTO convertToEntity(final Map<String, Object> mapValues) throws ExampleQueryException {
 		try {
 			final DTO entity = this.voClass.newInstance();
-			for (final Iterator<Entry<String, Object>> iterator = mapValues.entrySet().iterator(); iterator.hasNext();) {
+			for (final Iterator<Entry<String, Object>> iterator = mapValues.entrySet().iterator(); iterator
+					.hasNext();) {
 				final Entry<String, Object> entry = iterator.next();
 				try {
 					final String fieldName = UtilsRepository.getFieldFromAlias(entry.getKey());
@@ -182,7 +194,7 @@ public abstract class RepositoryImpl<DTO extends BasicDTO<?>> implements Resposi
 		boolean result = false;
 		try {
 			this.entityManager.remove(entity);
-			this.entityManager.flush();
+			//			this.entityManager.flush();
 			result = true;
 		} catch (final Exception e) {
 			// TODO: implement
@@ -194,9 +206,10 @@ public abstract class RepositoryImpl<DTO extends BasicDTO<?>> implements Resposi
 	public List<DTO> saveList(final List<DTO> list) throws UniqueException {
 		final List<DTO> result = new ArrayList<>();
 		for (final Iterator iterator = list.iterator(); iterator.hasNext();) {
-			DTO vo = (DTO) iterator.next();
-			vo = this.save(vo);
-			result.add(vo);
+			final DTO entity = (DTO) iterator.next();
+			this.entityManager.persist(entity);
+			//			this.entityManager.flush();
+			result.add(entity);
 		}
 		return result;
 	}
@@ -205,9 +218,10 @@ public abstract class RepositoryImpl<DTO extends BasicDTO<?>> implements Resposi
 	public List<DTO> updateList(final List<DTO> list) throws UniqueException {
 		final List<DTO> result = new ArrayList<>();
 		for (final Iterator iterator = list.iterator(); iterator.hasNext();) {
-			DTO vo = (DTO) iterator.next();
-			vo = this.update(vo);
-			result.add(vo);
+			final DTO entity = (DTO) iterator.next();
+			this.entityManager.merge(entity);
+			//			this.entityManager.flush();
+			result.add(entity);
 		}
 		return result;
 	}
@@ -216,8 +230,11 @@ public abstract class RepositoryImpl<DTO extends BasicDTO<?>> implements Resposi
 	public boolean deleteList(final List<DTO> list) {
 		boolean result = true;
 		for (final Iterator iterator = list.iterator(); iterator.hasNext();) {
-			final DTO vo = (DTO) iterator.next();
-			result &= this.delete(vo);
+			result = false;
+			final DTO entity = (DTO) iterator.next();
+			this.entityManager.remove(entity);
+			//			this.entityManager.flush();
+			result = true;
 		}
 		return result;
 	}
@@ -226,7 +243,7 @@ public abstract class RepositoryImpl<DTO extends BasicDTO<?>> implements Resposi
 	public DTO save(final DTO entity) throws UniqueException {
 		try {
 			this.entityManager.persist(entity);
-			this.entityManager.flush();
+			//			this.entityManager.flush();
 		} catch (final Exception e) {
 			final String uniqueConstraintViolation = this.getConstraintNameViolation(e);
 			if (StringUtils.isNotBlank(uniqueConstraintViolation)
@@ -239,7 +256,8 @@ public abstract class RepositoryImpl<DTO extends BasicDTO<?>> implements Resposi
 		return entity;
 	}
 
-	protected void throwUniqueException(final DTO entity, final String uniqueConstraintViolation) throws UniqueException {
+	protected void throwUniqueException(final DTO entity, final String uniqueConstraintViolation)
+			throws UniqueException {
 		final UniqueException uniqueException = new UniqueException(this.voClass, uniqueConstraintViolation, entity);
 		LOGGER.error(uniqueException.getUniqueConstraint());
 		LOGGER.error(uniqueException.getEntity().toStringDebug());
@@ -263,7 +281,8 @@ public abstract class RepositoryImpl<DTO extends BasicDTO<?>> implements Resposi
 		if (e instanceof PersistenceException) {
 			final PersistenceException persistenceException = (PersistenceException) e;
 			if (persistenceException.getCause() instanceof ConstraintViolationException) {
-				final ConstraintViolationException cause = (ConstraintViolationException) persistenceException.getCause();
+				final ConstraintViolationException cause = (ConstraintViolationException) persistenceException
+						.getCause();
 				return cause.getConstraintName();
 			}
 		}
@@ -274,7 +293,7 @@ public abstract class RepositoryImpl<DTO extends BasicDTO<?>> implements Resposi
 	public DTO update(final DTO entity) throws UniqueException {
 		try {
 			this.entityManager.merge(entity);
-			this.entityManager.flush();
+			//			this.entityManager.flush();
 		} catch (final Exception e) {
 			final String uniqueConstraintViolation = this.getConstraintNameViolation(e);
 			if (StringUtils.isNotBlank(uniqueConstraintViolation)
@@ -333,13 +352,13 @@ public abstract class RepositoryImpl<DTO extends BasicDTO<?>> implements Resposi
 		return from;
 	}
 
-	private Query createQueryForExample(final DTO example, final FilterMap filter, final String select, final String from, final Class resultClass)
-			throws ExampleQueryException {
+	private Query createQueryForExample(final DTO example, final FilterMap filter, final String select,
+			final String from, final Class resultClass) throws ExampleQueryException {
 		return this.createQueryForExample(example, filter, select, from, "", resultClass);
 	}
 
-	private Query createQueryForExample(final DTO example, final FilterMap filter, final String select, final String from, final String where, final Class resultClass)
-			throws ExampleQueryException {
+	private Query createQueryForExample(final DTO example, final FilterMap filter, final String select,
+			final String from, final String where, final Class resultClass) throws ExampleQueryException {
 		final String tableAlias = this.getTableAliasForClass(this.voClass);
 		final Map<String, Object> parameters = new HashMap<>();
 		QueryBuilderHelper builderHelper = new QueryBuilderHelper(select, from, where, parameters);
@@ -351,8 +370,8 @@ public abstract class RepositoryImpl<DTO extends BasicDTO<?>> implements Resposi
 		return query;
 	}
 
-	protected QueryBuilderHelper buildQueryForFilterMap(final DTO example, final FilterMap filter, final String tableAlias,
-			final QueryBuilderHelper builderHelper) throws ExampleQueryException {
+	protected QueryBuilderHelper buildQueryForFilterMap(final DTO example, final FilterMap filter,
+			final String tableAlias, final QueryBuilderHelper builderHelper) throws ExampleQueryException {
 		final QueryBuilderHelper result = new QueryBuilderHelper(builderHelper.getSelect(), builderHelper.getFrom(),
 				builderHelper.getWhere(), builderHelper.getParameters());
 		if (filter != null) {
@@ -387,7 +406,8 @@ public abstract class RepositoryImpl<DTO extends BasicDTO<?>> implements Resposi
 					final String filterField = type.getKey();
 					try {
 						final Object valueForQuery = Utils.getFieldValue(example, filterField, true);
-						final boolean applyValue = UtilsRepository.hasToApplyConditionForQuery(condition, valueForQuery);
+						final boolean applyValue = UtilsRepository.hasToApplyConditionForQuery(condition,
+								valueForQuery);
 						if (applyValue) {
 							final String fieldForQuery = UtilsRepository.getFieldForQuery(example, filterField);
 							final String lastTableAlias = this.getTableAliasForField(fieldForQuery);
@@ -410,16 +430,16 @@ public abstract class RepositoryImpl<DTO extends BasicDTO<?>> implements Resposi
 		return result;
 	}
 
-	protected void applyFieldToParameters(final Map<String, Object> parameters, final HqlConditions condition, final Object valueForQuery,
-			final String nameForParameter) {
+	protected void applyFieldToParameters(final Map<String, Object> parameters, final HqlConditions condition,
+			final Object valueForQuery, final String nameForParameter) {
 		if (nameForParameter != null) {
 			final Object fixedValueForQuery = UtilsRepository.fixValueForQuery(valueForQuery, condition);
 			parameters.put(nameForParameter, fixedValueForQuery);
 		}
 	}
 
-	protected String applyFieldToWhere(final FilterMap filter, String where, final HqlConditions condition, final String fieldForQuery,
-			final String lastTableAlias, final String nameForParameter) {
+	protected String applyFieldToWhere(final FilterMap filter, String where, final HqlConditions condition,
+			final String fieldForQuery, final String lastTableAlias, final String nameForParameter) {
 		final String lastField = this.getLastField(fieldForQuery);
 		if (where.equals("")) {
 			where += UtilsRepository.getClauseCondition(lastTableAlias, lastField, condition, nameForParameter, null);
