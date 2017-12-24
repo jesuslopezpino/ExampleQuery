@@ -1,6 +1,6 @@
 # ExampleQuery
 
-ExampleQuery is a tool library where main utility is the ability of easily execute customized database queries without spend time creating or updating the queries, just using the defined entities class. You will build custom queries just identifying entity fields with the desired condition that you want to apply. Perform queries at tables by examples of entities with filters, so you will have the parameter value in the field that you chose for the filter. You won't have to worry about joins anymore! ExampleQuery will figure out it for you! You just have to worry about write the path to the field that you want to use, there will be cases that will be covered by `@FilterForField` annotation that will be very useful. Changes at database will not affect you so much in your code, besides ExampleQuery offers a TestCommon class to be able to set up a full battery of unit test for your services.
+ExampleQuery is a tool library where main utility is the ability of easily execute customized database queries without spend time creating or updating the queries, just using the defined entities class. You will build custom queries just identifying entity fields with the desired condition that you want to apply. Perform queries at tables by examples of entities with filters, so you will have the parameter value in the field that you chose for the filter. You won't have to worry about joins anymore! ExampleQuery will figure out it for you! You just have to worry about write the path to the field that you want to use, there will be cases that will be covered by `@FilterForField` annotation that will be very useful. Changes at database will not affect you so much in your code, besides ExampleQuery offers a TestCommon class to be able to set up a full battery of unit test for your repositories.
 
 *Example Query will use a combination of an example entity with a maps of filter values as main parameters that will be applied if it is necessary to the result query.* 
 	
@@ -15,11 +15,11 @@ ExampleQuery is a tool library where main utility is the ability of easily execu
 	* [Set up](#set-up)
 		* [Setting up project](#setting-up-project)
 		* [Setting up entities](#setting-up-entities)
-		* [Setting up services](#setting-up-services)
+		* [Setting up repositories](#setting-up-repositories)
 * [ExampleQuery Filters](#examplequery-filters)
 	* [HqlConditions](#hqlconditions)
 * [ExampleQuery Examples](#examplequery-examples)
-* [ExampleQuery Service](#examplequery-service)
+* [ExampleQuery Repository](#examplequery-repository)
 	* [findByExample](#findbyexample)
 		* [Annotation: @FilterForField](#annotation-filterforfield)
 		* [@FilterForField: First usage](#filterforfield-first-usage)
@@ -74,7 +74,7 @@ To use ExampleQuery in your project you need to include the dependency at your p
 </dependencies>
 ```
 #### Setting up entities
-To be able to use ExampleQuery service your entity classes must extends abstract `BasicDTO<PK>`.
+To be able to use ExampleQuery repository your entity classes must extends abstract `BasicDTO<PK>`.
 
 ```java
 @Entity
@@ -123,19 +123,20 @@ public abstract void setPk(PK pk);
 This is like that because we want that `@Id` annotation will be set in pk field that user must define in order to use sequence generator annotation instead of creating a field at abstract class.
 
 
-#### Setting up services
-To create a ExampleQuery service instance you just need to create a class that extends the abstract class `ServiceImpl<DTO extends BasicDTO>` with an entity class that extends `BasicDTO` as type parameter.
+#### Setting up repositories
+To create a ExampleQuery repository instance you just need to create a class that extends the abstract class `RepositoryImpl<DTO extends BasicDTO>` with an entity class that extends `BasicDTO` as type parameter.
 
 ```java
-package com.polvisoft.exampleQuery.service.impl;
+package com.polvisoft.exampleQuery.test.repository.impl;
 
-import com.polvisoft.exampleQuery.domain.Product;
+import com.polvisoft.exampleQuery.repository.impl.RepositoryImpl;
+import com.polvisoft.exampleQuery.test.domain.Product;
 
-public class ProductServiceImpl extends ServiceImpl<Product> {
+public class ProductRepositoryImpl extends RepositoryImpl<Product> {
 
 }
 ```
-That's all you need to set up and service of an entity.
+That's all you need to set up and repository of an entity.
 
 ## ExampleQuery Filters
 Filters in ExampleQuery are very simple, it is the composition of a *field name* and a *condition*. In this case, a filter is represented by a `Map<String, HqlCondition>` where the key will be the field value (with dot annotation) and the condition that will be applied to the field. In that case, allowed conditions are represented by a java enum `HqlConditions`. Each filter entry that has to be applied will be added with an `AND` to the where clause.
@@ -155,7 +156,7 @@ Conditions are applied in two ways, all* or automatic. In automatic mode the con
 `HqlConditions` is an enum that contains the allowed filtering types to use with ExampleQuery. They are basically the most common jpql conditions clause.
 
 ```java
-package com.polvisoft.exampleQuery.service.utils;
+package com.polvisoft.exampleQuery.repository.utils;
 
 public enum HqlConditions {
 
@@ -188,8 +189,8 @@ Customer example = new Customer();
 example.setName("Jesús");
 example.setLastName("López");
 ```
-This is an example that we can apply as filter values container for our queries to CUSTOMER table. We will see more uses of examples in the service method explanations. 
-## ExampleQuery Service
+This is an example that we can apply as filter values container for our queries to CUSTOMER table. We will see more uses of examples in the repository method explanations. 
+## ExampleQuery Repository
 
 ExampleQuery provides an abstract interface that also implements that offers most usual usage to deal with a data repository.
 
@@ -227,7 +228,7 @@ public boolean deleteList(List<DTO> list);
 
 ### findByExample
 
-ExampleQuery offers to developer an easy way to perform custom filtered queries, to do this `Service<BasicDTO<PK>>` provides five methods to perform these queries:
+ExampleQuery offers to developer an easy way to perform custom filtered queries, to do this `Repository<BasicDTO<PK>>` provides five methods to perform these queries:
 
 ```java
 public int countByExample(DTO example, FilterMap filter) throws ExampleQueryException;
@@ -245,7 +246,7 @@ For first example we want to filter products by 2 conditions, name has to be equ
 
 ```java
 @Autowired
-ProductService service;
+ProductRepository repository;
 ...
 FilterMap filter = new FilterMap();
 filter.put(Product.NAME, HqlConditions.EQUALS);
@@ -255,7 +256,7 @@ Product example = new Product();
 example.setName("Pizza");
 example.setDescription("food");
 
-List<DTO> result = service.findByExample(example, filter); 
+List<DTO> result = repository.findByExample(example, filter); 
 ```
 
 Execution of that example will result in that hql query:
@@ -314,7 +315,7 @@ public class Customer extends BasicDTO<Long> {
 We will set up the values for range at the transient fields.
 ```java
 @Autowired
-CustomerService service;
+CustomerRepository repository;
 ...
 FilterMap filter = new FilterMap();
 filter.put(Customer.BIRTH_DATE_START, HqlConditions.GREATER_EQUALS);
@@ -324,7 +325,7 @@ Customer example = new Customer();
 example.setBirthDateStart(Utils.getDateTime("01/01/1983 00:00:00"));
 example.setBirthDateEnd(Utils.getDateTime("12/12/1983 23:59:59"));	
 
-List<DTO> result = service.findByExample(example, filter); 	
+List<DTO> result = repository.findByExample(example, filter); 	
 ```
 
 Execution of that example will result in that hql query:
@@ -366,7 +367,7 @@ public class Customer extends BasicDTO<Long> {
 We will set up the value of product name at the transient field.
 ```java
 @Autowired
-CustomerService service;
+CustomerRepository repository;
 ...
 FilterMap filter = new FilterMap();
 filter.put(Customer.ORDERS_PRODUCTS_NAME, HqlConditions.LIKE_IGNORE_CASE);
@@ -374,7 +375,7 @@ filter.put(Customer.ORDERS_PRODUCTS_NAME, HqlConditions.LIKE_IGNORE_CASE);
 Customer example = new Customer();
 example.setCustomerOrdersProductName("pizza");
 
-List<DTO> result = service.findByExample(example, filter); 
+List<DTO> result = repository.findByExample(example, filter); 
 ```
 Execution of that example will result in that hql query:
 ```
@@ -407,7 +408,7 @@ public class CustomerOrder extends BasicDTO<Long> {
 We can built this example:
 ```java
 @Autowired
-CustomerOrderService service;
+CustomerOrderRepository repository;
 ...
 FilterMap filter = new FilterMap();
 filter.put(CustomerOrder.CUSTOMER + "." + Customer.NAME, HqlConditions.NOT_EQUALS);
@@ -417,7 +418,7 @@ Customer customer = new Customer();
 customer.setName("Jesús");
 example.setCustomer(customer);
 
-List<DTO> result = service.findByExample(example, filter); 
+List<DTO> result = repository.findByExample(example, filter); 
 ```
 That will result in the next query:
 ```
@@ -433,7 +434,7 @@ where
 Setting up parameter `:customer_name` with value `"Jesús"`.
 
 ### findCustomByPk
-ExampleQuery offers to developer an easy way to perform custom field selection for our query, to do this `Service<BasicDTO<PK>>` provides two methods to perform these queries:
+ExampleQuery offers to developer an easy way to perform custom field selection for our query, to do this `Repository<BasicDTO<PK>>` provides two methods to perform these queries:
 ```
 public DTO findCustomByPk(Object primaryKey, String[] fields) throws ExampleQueryException;
 
@@ -441,7 +442,7 @@ public List<DTO> findCustomByExample(DTO example, String[] fields, FilterMap fil
 ```
 Just filling an String[] variable we will customize the fields that we want to retrieve. Those fields will be represented with an string that will contain the path to the field that we want to include with `"."` working as field path separator. We can see an example:
 ```java
-CustomerOrderService service;
+CustomerOrderRepository repository;
 
 String field1 = CustomerOrder.PK;
 String field2 = CustomerOrder.DATE;
@@ -451,7 +452,7 @@ String field5 = CustomerOrder.CUSTOMER + "." + Customer.LAST_NAME;
 String fields[] = { field1, field2, field3, field4, field5 };
 
 
-List<CustomerOrder> result = service.findCustomByPk(1L, fields);
+List<CustomerOrder> result = repository.findCustomByPk(1L, fields);
 ```
 
 That will result in the next query:
@@ -472,10 +473,10 @@ Hibernate:
 		pk = :pk
 ```
 ### findCustomByExample
-ExampleQuery Service offers and method to find all elements in a table by a given example.
+ExampleQuery Repository offers and method to find all elements in a table by a given example.
 ```java
 @Autowired
-CustomerService service;
+CustomerRepository repository;
 ...
 FilterMap filter = new FilterMap();
 filter.put(Customer.NAME, HqlConditions.LIKE);
@@ -490,7 +491,7 @@ example.setName("Jesus");
 example.setLastName("Lopez");
 example.setDocument("XXXXXXX");
 
-int result = service.countByExample(example, filter);
+int result = repository.countByExample(example, filter);
 ```
 That will result in the next query:
 ```
@@ -508,16 +509,16 @@ Hibernate:
 ```
 
 ### countByExample
-ExampleQuery Service offers and method to count all element in a table by a given example.
+ExampleQuery Repository offers and method to count all element in a table by a given example.
 ```java
-CustomerService service;
+CustomerRepository repository;
 
 Customer example = new Customer();
 example.setName("Jesus");
 example.setLastName("Lopez");
 example.setDocument("XXXXXXX");
 
-int result = service.countByExample(example);
+int result = repository.countByExample(example);
 ```
 That will result in the next query:
 ```
@@ -534,11 +535,11 @@ Hibernate:
     	(customer.notes is empty)
 ```
 ### findAll
-ExampleQuery Service offers and method to find all element in a table.
+ExampleQuery Repository offers and method to find all element in a table.
 ```java
-CustomerService service;
+CustomerRepository repository;
 ...
-List<Customer> result = service.findAll(); 
+List<Customer> result = repository.findAll(); 
 ```
 That will result in the next query:
 ```
@@ -548,11 +549,11 @@ from
 	com.polvisoft.exampleQuery.domain.Customer customer
 ```
 ### countAll
-ExampleQuery Service offers and method to count all element in a table.
+ExampleQuery Repository offers and method to count all element in a table.
 ```java
-CustomerService service;
+CustomerRepository repository;
 ...
-int result = service.countAll(); 
+int result = repository.countAll(); 
 ```
 That will result in the next query:
 ```
@@ -562,13 +563,13 @@ from
 	Product
 ```
 ### delete
-ExampleQuery Service offers and method to delete a row of table.
+ExampleQuery Repository offers and method to delete a row of table.
 ```java
 @Autowired
-CustomerService service;
+CustomerRepository repository;
 Customer customer; // a customer instance
 ...
-boolean result = service.delete(customer); 
+boolean result = repository.delete(customer); 
 ```
 That will result in the next query:
 ```
@@ -580,14 +581,14 @@ Hibernate:
         pk=?
 ```
 ### update
-ExampleQuery Service offers and method to update a row of table.
+ExampleQuery Repository offers and method to update a row of table.
 ```java
 @Autowired
-CustomerService service;
+CustomerRepository repository;
 Customer customer;
 ...
 try {
-	boolean result = service.update(customer); 
+	boolean result = repository.update(customer); 
 catch(UniqueException e){
 	// handle UniqueException
 }
@@ -607,14 +608,14 @@ Hibernate:
         pk=?
 ```
 ### save
-ExampleQuery Service offers and method to save an entity.
+ExampleQuery Repository offers and method to save an entity.
 ```java
 @Autowired
-CustomerService service;
+CustomerRepository repository;
 Customer customer;
 ...
 try {
-	boolean result = service.save(customer); 
+	boolean result = repository.save(customer); 
 catch(UniqueException e){
 	// handle UniqueException
 }
@@ -631,7 +632,7 @@ Hibernate:
 ```
 #### UniqueException
 ExampleQuery returns `UniqueException` when a unique constraint is violated, this is because the rely on that constraint should be part of database. To consider that behavior part as save action exception, it will be easier for developer to identify that exception and the involved fields and values. 
-A unique exception contains: the entity instance that violated the constraint, the class of the entity, the `@UniqueException` annotation instance and a detailed message. `ServiceImpl` needs that the uk constraint name will be defined inside the annotation `@Table` unique constraints array.
+A unique exception contains: the entity instance that violated the constraint, the class of the entity, the `@UniqueException` annotation instance and a detailed message. `RepositoryImpl` needs that the uk constraint name will be defined inside the annotation `@Table` unique constraints array.
 ```java
 @Entity
 @Table(name = "CUSTOMER", uniqueConstraints = {
@@ -647,29 +648,29 @@ public class Customer extends BasicDTO<Long> {
 }
 ```
 ## Running the tests
-ExampleQuery includes a in-memory database to test all the ExampleQuery API. The basic examples includes a simple sample of database. That database includes a table system that represent a Note - Customer - CustomerOrder - ProductStock - Product. It is provided a test class for each entity that test the full service based on a Given class instance. 
+ExampleQuery includes a in-memory database to test all the ExampleQuery API. The basic examples includes a simple sample of database. That database includes a table system that represent a Note - Customer - CustomerOrder - ProductStock - Product. It is provided a test class for each entity that test the full repository based on a Given class instance. 
 To run the test, in the root application folder execute:
 ```
 mvn test
 ```
-To create an test class for an Entity and Service you will have to provide a Given Entity Class instance. For example, to test Customer entity and CustomerServiceImpl we only need to provide the GivenCustomer class:
+To create an test class for an Entity and Repository you will have to provide a Given Entity Class instance. For example, to test Customer entity and CustomerRepositoryImpl we only need to provide the GivenCustomer class:
 
 ```java
-package com.polvisoft.exampleQuery.test.service;
+package com.polvisoft.exampleQuery.test.repository;
 
 import com.polvisoft.exampleQuery.domain.Customer;
-import com.polvisoft.exampleQuery.service.impl.CustomerServiceImpl;
+import com.polvisoft.exampleQuery.repository.impl.CustomerRepositoryImpl;
 import com.polvisoft.exampleQuery.test.common.TestCommon;
 import com.polvisoft.exampleQuery.test.given.GivenCustomer;
 
-public class TestCustomerService extends TestCommon<CustomerServiceImpl, Customer, GivenCustomer> {
+public class TestCustomerRepository extends TestCommon<CustomerRepositoryImpl, Customer, GivenCustomer> {
 
 }
 
 ```
 
 ## Given abstract class
-`Given` is an abstract class that developer must extends to be able to test how the service deals with the entity in real time. Developer has to fill the abstract methods with code that will represent the use of services in a real environment in order to prove that all works fine.
+`Given` is an abstract class that developer must extends to be able to test how the repository deals with the entity in real time. Developer has to fill the abstract methods with code that will represent the use of repositories in a real environment in order to prove that all works fine.
 ```java
 public abstract void givenExamplesEnvironment() throws UniqueException, ExampleQueryException;
 

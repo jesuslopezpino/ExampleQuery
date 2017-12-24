@@ -19,23 +19,23 @@ import com.polvisoft.exampleQuery.test.repository.impl.ProductStockRepositoryImp
 
 public class GivenProductStock extends Given<ProductStock, ProductStockRepositoryImpl> {
 
-	public GivenProductStock(EntityManager entityManager) throws ExampleQueryException {
+	public GivenProductStock(final EntityManager entityManager) throws ExampleQueryException {
 		super(entityManager);
 	}
 
 	private static Logger LOGGER = Logger.getLogger(GivenProductStock.class);
 
-	public ProductStock givenAProductStock(Product product, Integer price) throws UniqueException {
-		ProductStock result = givenObjectProductStock(product, price);
-		ProductStockRepositoryImpl service = new ProductStockRepositoryImpl();
-		service.setEntityManager(this.entityManager);
-		service.save(result);
+	public ProductStock givenAProductStock(final Product product, final Integer price) throws UniqueException {
+		final ProductStock result = givenObjectProductStock(product, price);
+		final ProductStockRepositoryImpl repository = new ProductStockRepositoryImpl();
+		repository.setEntityManager(this.entityManager);
+		repository.save(result);
 		LOGGER.info("GivenProductStock instance persisted " + productStockToString(result));
 		return result;
 	}
 
-	public static ProductStock givenObjectProductStock(Product product, Integer price) {
-		ProductStock result = new ProductStock();
+	public static ProductStock givenObjectProductStock(final Product product, final Integer price) {
+		final ProductStock result = new ProductStock();
 		result.setProduct(product);
 		result.setPrice(price);
 		result.setCustomerOrder(null);
@@ -43,30 +43,30 @@ public class GivenProductStock extends Given<ProductStock, ProductStockRepositor
 		return result;
 	}
 
-	public static String productStockToString(ProductStock productStock) {
+	public static String productStockToString(final ProductStock productStock) {
 		return "ProductStock [pk=" + productStock.getPk() + ", customerOrder=" + productStock.getCustomerOrder()
-				+ ", product=" + productStock.getProduct() + ", price=" + productStock.getPrice() + "]";
+		+ ", product=" + productStock.getProduct() + ", price=" + productStock.getPrice() + "]";
 	}
 
 	@Override
 	public void givenExamplesEnvironment() throws ExampleQueryException, UniqueException {
-		GivenProduct givenProduct = new GivenProduct(this.entityManager);
-		Product product = givenProduct.givenAProduct("Samsung", "tv");
+		final GivenProduct givenProduct = new GivenProduct(this.entityManager);
+		final Product product = givenProduct.givenAProduct("Samsung", "tv");
 		this.givenAProductStock(product, 6);
 	}
 
 	@Override
 	public String[] initCustomFields() {
-		String field1 = ProductStock.PK;
-		String field2 = ProductStock.PRODUCT;
-		String field3 = ProductStock.PRICE;
-		String fields[] = { field1, field2, field3 };
+		final String field1 = ProductStock.PK;
+		final String field2 = ProductStock.PRODUCT;
+		final String field3 = ProductStock.PRICE;
+		final String fields[] = { field1, field2, field3 };
 		return fields;
 	}
 
 	@Override
 	public FilterMap initFilter() {
-		FilterMap filter = new FilterMap(FilterAddCondition.OR);
+		final FilterMap filter = new FilterMap(FilterAddCondition.OR);
 
 		// All examples
 		// filter.put(ProductStock.CUSTOMER_ORDER, HqlConditions.IS_NULL);
@@ -86,33 +86,33 @@ public class GivenProductStock extends Given<ProductStock, ProductStockRepositor
 	@Override
 	public ProductStock[] initExamples() {
 
-		ProductStock example1 = new ProductStock();
-		Product product = new Product();
+		final ProductStock example1 = new ProductStock();
+		final Product product = new Product();
 		product.setName("Samsung");
 		example1.setProduct(product);
 		// example1.setProductName("Samsung");
 
-		ProductStock example2 = new ProductStock();
+		final ProductStock example2 = new ProductStock();
 		example2.setMaxPrice(10);
 		example2.setMinPrice(3);
 
-		ProductStock example3 = new ProductStock();
+		final ProductStock example3 = new ProductStock();
 		example3.setPk(9999L);
 
-		ProductStock[] examples = { example1, example2, example3 };
+		final ProductStock[] examples = { example1, example2, example3 };
 		return examples;
 	}
 
 	@Override
 	public ProductStock initTestSaveInstance() throws UniqueException, ExampleQueryException {
-		GivenProduct givenProduct = new GivenProduct(this.entityManager);
-		Product product = givenProduct.givenAProduct("Samsung", "tv");
+		final GivenProduct givenProduct = new GivenProduct(this.entityManager);
+		final Product product = givenProduct.givenAProduct("Samsung", "tv");
 		return GivenProductStock.givenObjectProductStock(product, 20);
 	}
 
 	@Override
 	public Map<String, Object> initTestUpdateValues() {
-		Map<String, Object> result = new HashMap<>();
+		final Map<String, Object> result = new HashMap<>();
 		result.put(ProductStock.PRICE, 500);
 		return result;
 	}
